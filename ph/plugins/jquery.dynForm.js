@@ -219,6 +219,7 @@ var finder = {
 		finder.object={};
 	},
 	init : function(id, multiple, values){
+		alert("myFind");
 		finder.object[id]={};
 		alert(id);
 		if(values){
@@ -234,8 +235,6 @@ var finder = {
         $(".finder-"+id+" .selectParent").click(function(e){
         	e.preventDefault();
         	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
-        		//$(this).parent().find(".error").hide(700);
-        		alert("click");
     		typeSearch=$(this).data("types").split(",");
     		openSearch=$(this).data("open");
     		keyForm=$(this).data("id");
