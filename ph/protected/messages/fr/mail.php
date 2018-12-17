@@ -222,5 +222,12 @@
 
 		"There's something new in your network" => "Il y a du nouveau dans votre réseau",
 		"More than {count} notification(s) to discover" => "Plus que {count} notification(s) à découvrir",
+		"You can then change the password in your {where}" => "Vous pourrez ensuite changer le mot de passe dans vos {where}",
+		"settings" => "paramètres",
+
+
+		"We got news for you." => "Il y a du nouveau.",
+		"You can manage your notifications {here}" => "Vous pouvez gérer vos notifications {here}",
+		"Only one notification left to discover" => "Plus qu'une notification à découvrir",
 );
 ?> 

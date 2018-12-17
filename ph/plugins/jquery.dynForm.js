@@ -862,6 +862,10 @@ var dyFObj = {
 		{
 			if(typeof formInMap != 'undefined')
 				formInMap.formType = type;
+
+			if(typeof dyFObj.formInMap != 'undefined')
+				dyFObj.formInMap.formType = type;
+
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.startBuild(afterLoad,data);
 			},afterLoad, data);
@@ -1095,12 +1099,17 @@ var dyFObj = {
 	***************************************** */
 	drawAnswers : function (el,type,before,after) {
 		//alert("drawAnswers");
+		//list is filled in the page 
 	    var data = dyFObj.elementData;
 	    var prop = dyFObj[dyFObj.activeElem].dynForm.jsonSchema.properties;
 	    console.log("drawAnswers data",data);
 	    console.log("drawAnswers prop",prop);
 	    str = '<table class="table table-striped table-bordered table-hover">'+
 	        '<thead><tr>';
+	    
+	    /* ********************************
+	    Build TH title for the array
+	    ********************************** */
 	    if(before){
 	    	$.each(  before,function(ai,av) { 
 		        str += '<th>'+ai+'</th>';
@@ -1108,9 +1117,20 @@ var dyFObj = {
 	    }
 	    str += '<th>Date</th>';
 	    var keys = Object.keys( data );
-	    $.each(  data [ keys[0] ].answer,function(ai,av) { 
-	        str += '<th>'+((prop[ai] && prop[ai].placeholder) ? prop[ai].placeholder : ai)+'</th>';
+	    //find first Element containing an answer
+	    var firstIx = 0; 
+	    $.each(  data,function(ai,av) { 
+	    	if( data [ keys[firstIx] ] && data [ keys[firstIx] ].answer )
+	    		return;
+	    	else 
+	    		firstIx++;
 	    });
+	    
+	    if( data [ keys[firstIx] ] && data [ keys[firstIx] ].answer ){
+    		$.each(  data [ keys[firstIx] ].answer,function(ai,av) { 
+		        str += '<th>'+((prop[ai] && prop[ai].placeholder) ? prop[ai].placeholder : ai)+'</th>';
+		    });
+    	}
 	    if(after){
 	    	$.each( after,function(ai,av) { 
 	    		lbl = ai;
@@ -1121,6 +1141,13 @@ var dyFObj = {
 	    }
 	        
 	    str += '</tr></thead><tbody>';
+	    
+	    // ********************** END TH TITLES
+
+
+	    /* ********************************
+	    Filling every line of the array 
+	    ********************************** */
 	    //alert(Object.keys(data).length)
 	    $.each( data ,function(i,v) { 
 	        //LES REPONSE
@@ -1149,7 +1176,9 @@ var dyFObj = {
 			            str += "<td>"+ansV+"</td>";
 			        });
 			    
-			        
+			    /* ********************************
+			    ADD tools to each line
+			    ********************************** */
 		        if(after)
 		        {
 			    	$.each(  after,function(ai,av) 
@@ -2178,7 +2207,8 @@ var dyFObj = {
 							"</div>"+
 							"<div id='alertGeo' class='alert alert-warning col-xs-12 hidden' style='margin-bottom: 0px;'>"+
 							  "<strong>Warning!</strong> "+tradDynForm.doNotForgetToGeolocateYourAddress+
-							"</div></div>"+
+							"</div>"+
+						"</div>"+
 							"<div id='sumery' class='text-dark col-md-6 col-xs-12 no-padding'>"+
 								"<h4 class='text-center'>"+tradDynForm.addressSummary +" : </h4>"+
 								"<div id='street_sumery' class='col-xs-12'>"+
@@ -2202,11 +2232,13 @@ var dyFObj = {
 									tradDynForm.confirmAddress+
 								"</a>"+
 							"</div>";
+				fieldHTML +="<div id='divMapLocality' class='col-xs-12' style='height: 300px;'></div>";
 				fieldHTML +="<div id='divNewAddress' class='text-dark col-xs-12 no-padding '>"+
 								"<a href='javascript:;' class='btn btn-success' style='margin-bottom: 10px;' type='text' id='newAddress'>"+
 									'<i class="fa fa-plus"></i> '+tradDynForm.addANewAddress +
 								"</a>"+
 							"</div>";
+				
 
 
    //     		var isSelect2 = (fieldObj.isSelect2) ? "select2Input" : "";
@@ -3427,7 +3459,54 @@ var dyFObj = {
 		addressesIndex : false,
 		saveCities : {},
 		bindActived : false,
+		initMap : function(){
+			mylog.log("initMap");
+			
+			var ListPath = [
+				modules.map.assets+'/leaflet/leaflet.css',
+				modules.map.assets+'/leaflet/leaflet.js',
+				modules.map.assets+'/markercluster/MarkerCluster.css',
+				modules.map.assets+'/markercluster/MarkerCluster.Default.css',
+				modules.map.assets+'/markercluster/leaflet.markercluster.js',
+				modules.map.assets+'/js/map.js',
+				modules.map.assets+'/css/map.css',
+			];
+
+			lazyLoadMany2( ListPath, function() { return true; }, true);
+			// alert("HERE");
+			
+
+
+			// if( !$('script[src="'+modules.map.assets+'/js/map.js"]').length ){
+
+			// 	lazyLoad( modules.map.assets+'/js/map.js', null, function() { mylog.log("initMap HERE"); dyFObj.formInMap.initMap(); } );
+			// 	lazyLoad( modules.map.assets+'/js/map.js', null, function() { return }, true );
+			// }
+			// else if( !$('script[src="'+modules.map.assets+'/css/map.css"]').length )
+			// 	lazyLoad( modules.map.assets+'/css/map.css', null, function() { dyFObj.formInMap.initMap(); });
+			// else{
+			// 	var paramsMapLocality = {
+			// 		container : "divMapLocality",
+			// 		latLon : [ 39.74621, -104.98404],
+			// 		activeCluster : false,
+			// 		zoom : 16
+			// 	};
+			// 	mapObj.init(paramsMapLocality);
+			// 	var elt = { 
+			// 		type : "citoyens",
+			// 		geo : {
+			// 			latitude :  39.74621,
+			// 			longitude : -104.98404,
+			// 		}
+			// 	};
+			// 	var opt = {
+			// 		draggable: true
+			// 	};
+			// 	mapObj.addMarker(elt, false, true, opt);
+			// }
+		},
 		init : function(){
+			
 			mylog.log("forminmap showMarkerNewElement");
 			mylog.log("formType", dyFObj.formInMap.formType);
 			$(".locationBtn").addClass("hidden");
@@ -3455,9 +3534,11 @@ var dyFObj = {
 				$("#mapLegende").addClass("hidden");
 
 			dyFObj.formInMap.newAddress(false);
-			//mylog.log("here");
-			//dyFInputs.locationObj.init();
+			dyFObj.formInMap.initMap();
+
 			mylog.log("forminmap showMarkerNewElement END!");
+
+			
 		},
 		initCountry : function(){
 			if ( 	typeof dySObj != "undefined" && 
@@ -3686,10 +3767,54 @@ var dyFObj = {
 			if(notEmpty(newA) && newA == true ){
 				$('.formLocality').show();
 				$('#sumery').show();
+				$('#divMapLocality').show();
 				$('#divNewAddress').hide();
+
+				var paramsMapLocality = {
+					container : "divMapLocality",
+					latLon : [ 39.74621, -104.98404],
+					activeCluster : false,
+					zoom : 16
+				};
+				var elt = { 
+					type : "citoyens",
+					geo : {
+						latitude :  39.74621,
+						longitude : -104.98404,
+					}
+				};
+				var opt = {
+					draggable: true
+				};
+
+				mapObj.init(paramsMapLocality);
+				var paramMarker = {
+					elt : elt,
+					addPopUp : false, 
+					center : true, 
+					opt : opt
+				};
+				mapObj.addMarker(paramMarker);
+
+				mapObj.addFct(0, 'dragend', function(){
+					var latLonMarker = mapObj.markerList[0].getLatLng();
+					dyFObj.formInMap.NE_lat = latLonMarker.lat;
+					dyFObj.formInMap.NE_lng = latLonMarker.lng;
+
+					alert(dyFObj.formInMap.NE_lat + " : " + dyFObj.formInMap.NE_lng);
+					//Sig.markerFindPlace.openPopup();
+				});
+
+				// Sig.markerFindPlace.on('dragend', function(){
+				// 	formInMap.NE_lat = Sig.markerFindPlace.getLatLng().lat;
+				// 	formInMap.NE_lng = Sig.markerFindPlace.getLatLng().lng;
+				// 	Sig.markerFindPlace.openPopup();
+				// });
+
 			}else{
 				$('.formLocality').hide();
 				$('#sumery').hide();
+				$('#divMapLocality').hide();
 				$('#divNewAddress').show();
 			}
 		},
@@ -3757,15 +3882,105 @@ var dyFObj = {
 			if(countryDataGouv.indexOf(countryCode) != -1){
 				countryCode = dyFObj.formInMap.changeCountryForNominatim(countryCode);
 				mylog.log("countryCodeHere", countryCode);
-				callDataGouv(requestPart, countryCode);
+				dyFObj.formInMap.callDataGouv(requestPart, countryCode);
 				
 			}else{
 				countryCode = dyFObj.formInMap.changeCountryForNominatim(countryCode);
 				mylog.log("countryCode", countryCode);
-				callNominatim(requestPart, countryCode);
+				dyFObj.formInMap.callNominatim(requestPart, countryCode);
 			}
 			
 			//dyFObj.formInMap.btnValideDisable(false);
+		},
+		addResultsInForm : function (commonGeoObj, countryCode){
+			//success
+			mylog.log("addResultsInForm success callGeoWebService", commonGeoObj, countryCode);
+			//mylog.dir(objs);
+			var res = commonGeoObj; //getCommonGeoObject(objs, providerName);
+			mylog.dir(res);
+			var html = "";
+			$.each(res, function(key, value){ //mylog.log(allCities);
+				if(notEmpty(value.countryCode)){
+					mylog.log("Country Code",value.countryCode.toLowerCase(), countryCode.toLowerCase());
+					if(value.countryCode.toLowerCase() == countryCode.toLowerCase()){ 
+						html += "<li><a href='javascript:;' class='item-street-found' data-lat='"+value.geo.latitude+"' data-lng='"+value.geo.longitude+"'><i class='fa fa-marker-map'></i> "+value.name+"</a></li>";
+					}
+				}
+			});
+			if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
+			$("#dropdown-newElement_streetAddress-found").html(html);
+			$("#dropdown-newElement_streetAddress-found").show();
+
+			$(".item-street-found").click(function(){
+				// if(typeof Sig != "undefined"){
+				// 	Sig.markerFindPlace.setLatLng([$(this).data("lat"), $(this).data("lng")]);
+				// 	Sig.map.panTo([$(this).data("lat"), $(this).data("lng")]);
+				// 	Sig.map.setZoom(16);
+				// }
+
+				mapObj.setLatLng([$(this).data("lat"), $(this).data("lng")], 0);
+
+				mylog.log("lat lon", $(this).data("lat"), $(this).data("lng"));
+				$("#dropdown-newElement_streetAddress-found").hide();
+				$('[name="newElement_lat"]').val($(this).data("lat"));
+				$('[name="newElement_lng"]').val($(this).data("lng"));
+				
+				
+				dyFObj.formInMap.NE_lat = $(this).data("lat");
+				dyFObj.formInMap.NE_lng = $(this).data("lng");
+				dyFObj.formInMap.showWarningGeo(false);
+				
+			});
+		},
+		callDataGouv(requestPart, countryCode){ /*countryCode=="FR"*/
+			mylog.log('callDataGouv');
+			showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Data Gouv</small>");
+			callGeoWebService("data.gouv", requestPart, countryCode,
+				function(objDataGouv){ /*success nominatim*/
+					mylog.log("SUCCESS DataGouv"); 
+
+					if(objDataGouv.features.length != 0){
+						mylog.log('Résultat trouvé chez DataGouv !'); mylog.dir(objDataGouv);
+						var commonGeoObj = getCommonGeoObject(objDataGouv.features, "data.gouv");
+						var res = dyFObj.formInMap.addResultsInForm(commonGeoObj, countryCode);
+						if(res == 0) 
+							dyFObj.formInMap.callNominatim(requestPart, countryCode);
+					}else{
+						mylog.log('Aucun résultat chez DataGouv');
+						dyFObj.formInMap.callNominatim(requestPart, countryCode);
+					}
+				}, 
+				function(thisError){ /*error nominatim*/
+					mylog.log("ERROR DataGouv");
+					mylog.dir(thisError);
+				}
+			);
+		},
+		callNominatim : function (requestPart, countryCode){
+			mylog.log('callNominatim');
+			showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Nominatim</small>");
+			callGeoWebService("nominatim", requestPart, countryCode,
+				function(objNomi){ /*success nominatim*/
+					mylog.log("SUCCESS nominatim"); 
+
+					if(objNomi.length != 0){
+						mylog.log('Résultat trouvé chez Nominatim !'); mylog.dir(objNomi);
+
+						var commonGeoObj = getCommonGeoObject(objNomi, "nominatim");
+						var res = dyFObj.formInMap.addResultsInForm(commonGeoObj, countryCode);
+
+						if(res == 0) 
+							callGoogle(requestPart, countryCode);
+					}else{
+						mylog.log('Aucun résultat chez Nominatim');
+						callGoogle(requestPart, countryCode);
+					}
+				}, 
+				function(thisError){ /*error nominatim*/
+					mylog.log("ERROR nominatim");
+					mylog.dir(thisError);
+				}
+			);
 		},
 		autocompleteFormAddress : function(currentScopeType, scopeValue){
 			mylog.log("autocompleteFormAddress", currentScopeType, scopeValue);
@@ -3912,6 +4127,10 @@ var dyFObj = {
 				$("#divStreetAddress").removeClass("hidden");
 			$('[name="newElement_city"]').val(dyFObj.formInMap.NE_city);
 			dyFObj.formInMap.resumeLocality();
+
+
+			mapObj.setLatLng([data.data("lat"), data.data("lng")], 0);
+
 
 		},
 		changeSelectCountrytim : function(){
@@ -5690,7 +5909,7 @@ var processUrl = {
 		                if(extracted_url_send.indexOf("http")<0)
 		                	extracted_url_send = "http://"+extracted_url;
 		                $.ajax({
-							url: baseUrl+'/'+moduleId+"/news/extractprocess",
+							url: baseUrl+"/news/co/extractprocess",
 							data: {'url': extracted_url_send},
 							type: 'post',
 							dataType: 'json',
@@ -5766,7 +5985,7 @@ var processUrl = {
 		$(inputClass+" span.help-block").html(trad.waitWeFetch+" <i class='fa fa-spin fa-refresh'></i>");
 	
 		$.ajax({
-			url: baseUrl+'/'+moduleId+"/news/extractprocess",
+			url: baseUrl+"/news/extractprocess",
 			data: { 'url' : url },
 			type: 'post',
 			dataType: 'json',
@@ -5928,35 +6147,47 @@ var processUrl = {
 			img_arr_pos=1;
 	    }
 	    inputToSave="";
+	    widthMediaDescription="col-xs-12 margin-top-10";
 	    if(typeof(data.content) !="undefined" && typeof(data.content.imageSize) != "undefined"){
 	        if (data.content.videoLink){
 	            extractClass="extracted_thumb";
-	            width="100%";
-	            height="100%";
-
-	            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
+	            if(data.content.imageSize =="large" && (!notNull(action) || action=="show")){
+	                extractClass="extracted_thumb_large col-xs-12";
+	                width="100%";
+	                height="";
+	                faSize="4x";
+	            }
+	            else{
+	                extractClass="extracted_thumb col-xs-4";
+	                width="100%";
+	                height="100%";
+	                faSize="3x";
+	                widthMediaDescription="col-xs-8";
+	            }
+	            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-'+faSize+' fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
 	            inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
 	            "<input type='hidden' class='media_type' value='video_link' />";   
 			}
 	        else{
 	            aVideo="";
 	            endAVideo="";
-	            if(data.content.imageSize =="large"){
-	                extractClass="extracted_thumb_large";
+	            if(data.content.imageSize =="large" && (!notNull(action) || action=="show")){
+	                extractClass="extracted_thumb_large col-xs-12";
 	                width="100%";
 	                height="";
 	            }
 	            else{
-	                extractClass="extracted_thumb";
+	                extractClass="extracted_thumb col-xs-4";
 	                width="100";
 	                height="100";
+	                widthMediaDescription="col-xs-8";
 	            }
 	            inputToSave+="<input type='hidden' class='media_type' value='img_link' />";
 			}
 			inputToSave+="<input type='hidden' class='size_img' value='"+data.content.imageSize+"'/>"
 	    }
 	    if (typeof(data.content) !="undefined" && typeof(data.content.image)!="undefined"){
-	        inc_image = '<div class="'+extractClass+'  col-xs-4 no-padding" id="extracted_thumb">'+aVideo;
+	        inc_image = '<div class="'+extractClass+' no-padding" id="extracted_thumb">'+aVideo;
 	        if(data.content.type=="img_link"){
 		        if(typeof(data.content.imageId) != "undefined"){
 			       inc_image += "<input type='hidden' id='deleteImageCommunevent"+id+"' value='"+data.content.imageId+"'/>";
@@ -6000,14 +6231,14 @@ var processUrl = {
 		else
 			mediaUrl="";
 		if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
-			contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+			contentMedia='<div class="extracted_content '+widthMediaDescription+'">'+
 				'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
 				if(typeof(data.name) != "undefined" && data.name!=""){
 					contentMedia+='<h4>'+data.name+'</h4></a>';
 					inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
 				}
 				if(typeof(data.description) != "undefined" && data.description!=""){
-					contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+					contentMedia+='<p>'+data.description+'</p>'+countThumbail;
 					if(typeof(data.name) == "undefined" || data.name=="")
 						contentMedia+='</a>';
 					inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
@@ -6022,7 +6253,7 @@ var processUrl = {
 		content="";
 		if(action == "save")
 			content += '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>';
-	    content += '<div class="extracted_url padding-10">'+ inc_image +contentMedia+'</div>'+inputToSave;
+	    content += '<div class="extracted_url col-xs-12">'+ inc_image +contentMedia+'</div>'+inputToSave;
 	    return content;
 	},
 	getMediaVideo:function(data,action){

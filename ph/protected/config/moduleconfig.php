@@ -21,6 +21,9 @@ $activeModules = array(
 	//'cococarto', 
 	"survey",
 	"interop",
+	"map",
 	"eco",
-	"custom"
+	"custom",
+	"mynetwork",
+	"news"
 	);

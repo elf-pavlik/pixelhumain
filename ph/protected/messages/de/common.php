@@ -816,8 +816,8 @@ return array(
 	"CHECKGEOCODAGE" => "Geokodierung überprüfen",
 	
 	"air" => "Luft",
-	"seed" => "Saat",
-	"germ" => "Keim",
+	"seed" => "Samenkorn",
+	"germ" => "Keimling",
 	"plant" => "Pflanze",
 	"tree" => "Baum",
 	"forest" => "Wald",
@@ -1414,7 +1414,7 @@ return array(
 	"What ?" => "Wie bitte?",
 	"Buuurk" => "Mehhh",
 	"Glad" => "Freude",
-	"Bothering" => "Wirklich besorgt",
+	"Bothering" => "Geht gar nicht!",
 	"Sad" => "Macht mich traurig",
 	"Amazing" => "Echt beeindruckend",
 	"Scaring" => "Ist ja beängstigend",
@@ -1440,5 +1440,16 @@ return array(
 	"You are" => "Sie sind",
 	"Next to" => "Weiter zu",
 	"Notifications & Mails" => "Benachrichtigungen & Mails",
+	
+	"Notifications preferences" => "Einstellungen für Benachrichtigungen",
+	"Already follow" => "Folgt bereits",
+	"Already attendee" => "Bereits Teilnehmer",
+	"Already member" => "Bereits Mitglied",
+	"Already contributor" => "Schon Mitwirkender",
+	"In" => "in",
+	
+	"The bookmark is succesfully registered" => "Das Lesezeichen ist erfolgreich eingetragen worden",
+	"Write the keyword you want..." => "Schreiben Sie das gewünschte Keyword....",
+	"Open in another tab" => "Öffnen in einem neuen Tab",
 );
 ?>
