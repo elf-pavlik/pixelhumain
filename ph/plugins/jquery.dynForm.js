@@ -219,7 +219,6 @@ var finder = {
 		finder.object={};
 	},
 	init : function(id, multiple, values){
-		alert("myFind");
 		finder.object[id]={};
 		alert(id);
 		if(values){
@@ -230,7 +229,7 @@ var finder = {
 		else if(typeof contextData != "undefined" && notNull(contextData)){
 			finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
 		}else{
-			finder.addInForm(id, userId, "citoyens", userConnected.name+" (moi)", userConnected.profilThumbImageUrl);
+			finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+trad.me+")", userConnected.profilThumbImageUrl);
 		}
         $(".finder-"+id+" .selectParent").click(function(e){
         	e.preventDefault();
@@ -610,7 +609,11 @@ var dyFObj = {
 								key : formData.source
 							}
 		}
-		
+		if(typeof finder != "undefined" && Object.keys(finder.object).length > 0){
+			$.each(finder.object, function(key, object){
+				formData[key]=object;
+			});
+		}
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
 		
@@ -1644,6 +1647,7 @@ var dyFObj = {
         	//finder.set();
         	labelStr=(typeof fieldObj.multiple != "undefined" && fieldObj.multiple) ? tradDynForm.addtothelist: tradDynForm.changetheelement;
         	fieldHTML += '<div class="finder-'+field+'">'+
+        					'<input type="hidden" id="'+field+'" name="'+field+'"/>'+
         					'<button class="form-control col-xs-6 selectParent btn-success" data-id="'+field+'" data-types="'+fieldObj.initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
         					"<span class='error bg-warning' style='display:none'></span>"+
         					"<div class='form-list-finder'>"+
