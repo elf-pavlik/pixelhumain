@@ -215,28 +215,32 @@ var finder = {
 	object : {},
 	finderPopulation : {},
 	selectedItems:{},
+	typeAuthorized : {},
 	set : function(){
 		finder.object={};
+		finder.typeAuthorized={};
 	},
-	init : function(id, multiple, values){
+	init : function(id, multiple, initType, values, update){
+		alert(initType);
 		finder.object[id]={};
-		alert(id);
+		finder.typeAuthorized[id]=initType;
 		if(values){
 			$.each(values, function(e, v){
 				finder.addInForm(id, e, v.type, v.name, v.profilThumbImageUrl);	
 			});
 		}
-		else if(typeof contextData != "undefined" && notNull(contextData)){
-			finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
-		}else{
-			finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+trad.me+")", userConnected.profilThumbImageUrl);
+		else if(!notNull(update)){
+			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
+				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
+			else
+				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
         $(".finder-"+id+" .selectParent").click(function(e){
         	e.preventDefault();
         	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
-    		typeSearch=$(this).data("types").split(",");
-    		openSearch=$(this).data("open");
     		keyForm=$(this).data("id");
+    		typeSearch=finder.typeAuthorized[keyForm];
+    		openSearch=$(this).data("open");
     		multiple=($(this).data("multiple")) ? true : false;
     		finder.showPanel(keyForm, typeSearch, openSearch, multiple);
         	//}else{
@@ -246,6 +250,7 @@ var finder = {
 	},
 	addInForm : function(keyForm, id, type, name, img){
 		img= (img != "") ? baseUrl + img : assetPath + "/images/thumb/default_"+type+".png";
+		var str="";
 		str="<div class='col-xs-12 element-finder element-finder-"+id+" shadow2 padding-10'>"+
 					'<img src="'+ img+'" class="img-circle pull-left margin-right-10" height="35" width="35">'+
 					'<span class="info-contact pull-left margin-right-5">' +
@@ -305,6 +310,10 @@ var finder = {
 		    					"type": type,
 		    					"profilThumbImageUrl":v.profilThumbImageUrl
 		    				};
+		    				if(type=="events"){
+		    					finder.finderPopulation[e].startDate=v.startDate;
+		    					finder.finderPopulation[e].endDate=v.endDate;
+		    				}
 		    			});
 		    		}
 		    	});
@@ -342,6 +351,13 @@ var finder = {
 		str="";
 		if(first && typeof finder.object[keyForm][userId] == "undefined"){
 			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : assetPath + "/images/thumb/default_citoyens.png";
+			if(typeof finder.finderPopulation[userId]=="undefined"){
+				finder.finderPopulation[userId]={
+					name:userConnected.name + ' ('+tradDynForm.me+')',
+					type:"citoyens",
+					profilThumbImageUrl:userConnected.profilThumbImageUrl
+				};
+			}
 			str+="<div class='population-elt-finder population-elt-finder-"+userId+" col-xs-12' data-value='"+userId+"'>"+
 					'<div class="checkbox-content pull-left">'+
 						'<label>'+
@@ -352,7 +368,7 @@ var finder = {
 					"<div class='element-finder element-finder-"+userId+"'>"+
 						'<img src="'+img+'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
 						'<span class="info-contact pull-left margin-left-20">' +
-							'<span class="name-element text-dark text-bold" data-id="'+userId+'">' + userConnected.name + ' ('+trad.me+')</span>'+
+							'<span class="name-element text-dark text-bold" data-id="'+userId+'">' + userConnected.name + ' ('+tradDynForm.me+')</span>'+
 							'<br/>'+
 							'<span class="type-element text-light pull-left">' + trad.citoyens+ '</span>'+
 						'</span>' +
@@ -361,7 +377,7 @@ var finder = {
 		}
 		if(notNull(obj)){
 			$.each(obj, function(e, v){
-				if(typeof finder.object[keyForm][e] == "undefined"){
+				if(typeof finder.object[keyForm][e] == "undefined" && e != userId){
 					if(typeof finder.finderPopulation[e]== "undefined")
 						finder.finderPopulation[e]=v;
 					if($(".population-elt-finder-"+e).length <= 0){
@@ -1646,16 +1662,21 @@ var dyFObj = {
         else if ( fieldObj.inputType == "finder" ) {
         	//finder.set();
         	labelStr=(typeof fieldObj.multiple != "undefined" && fieldObj.multiple) ? tradDynForm.addtothelist: tradDynForm.changetheelement;
+        	initType=fieldObj.initType;
         	fieldHTML += '<div class="finder-'+field+'">'+
         					'<input type="hidden" id="'+field+'" name="'+field+'"/>'+
-        					'<button class="form-control col-xs-6 selectParent btn-success" data-id="'+field+'" data-types="'+fieldObj.initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
+        					'<button class="form-control col-xs-6 selectParent btn-success" data-id="'+field+'" data-types="'+initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
         					"<span class='error bg-warning' style='display:none'></span>"+
         					"<div class='form-list-finder'>"+
         					"</div>"+
         				"</div>";
+        	if(typeof fieldObj.init == "undefined"){
         	dyFObj.initFieldOnload.finder = function(){
-        		finder.init(field, fieldObj.multiple);
+        		update=(typeof fieldObj.update != "undefined") ? true : null;
+        		initValues=(typeof fieldObj.values != "undefined" && notNull(fieldObj.values) && Object.keys(fieldObj.values).length > 0) ? fieldObj.values : null;
+        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
             }
+        	}
         }
         /* **************************************
 		* DATE INPUT , we use bootstrap-datepicker
