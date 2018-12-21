@@ -216,14 +216,17 @@ var finder = {
 	finderPopulation : {},
 	selectedItems:{},
 	typeAuthorized : {},
+	callback : {},
 	set : function(){
 		finder.object={};
 		finder.typeAuthorized={};
+		finder.callback={};
 	},
-	init : function(id, multiple, initType, values, update){
-		alert(initType);
+	init : function(id, multiple, initType, values, update, callbackSelect){
 		finder.object[id]={};
 		finder.typeAuthorized[id]=initType;
+		if(notNull(callbackSelect) && typeof callbackSelect == "function")
+		 	finder.callback[id]=callbackSelect;
 		if(values){
 			$.each(values, function(e, v){
 				finder.addInForm(id, e, v.type, v.name, v.profilThumbImageUrl);	
@@ -232,7 +235,7 @@ var finder = {
 		else if(!notNull(update)){
 			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
 				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
-			else
+			else if(finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") 
 				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
         $(".finder-"+id+" .selectParent").click(function(e){
@@ -436,6 +439,7 @@ var finder = {
 			$.each(finder.selectedItems, function(e, v){
 				finder.addInForm(keyForm, e, v.type, v.name, v.profilThumbImageUrl);
 			});
+			if(typeof finder.callback[keyForm] != "undefined") finder.callback[keyForm]();
 		}
 	},
 	searchAndPopulateFinder : function(keyForm, text, typeSearch, multiple){
