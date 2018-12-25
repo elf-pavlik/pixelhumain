@@ -147,7 +147,8 @@ var typeObj = {
                     chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
                 }},
     filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"},
-    curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"}
+    curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
+    badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"}
 };
 
     

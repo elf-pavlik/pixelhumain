@@ -700,7 +700,7 @@ var dyFObj = {
 				null,
 				function() { 
 					//alert(dfPath+type+'.js');
-					mylog.log("lazyLoaded",dfPath);
+					mylog.log("lazyLoaded",type,dfPath);
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
 					
@@ -5396,12 +5396,12 @@ var dyFInputs = {
     setSub : function(subClass) { 
     	dyFInputs.setHeader(subClass);
 		
-    	if( (contextData != null && contextData.type && contextData.id) || userId )
+    	if( (typeof contextData != "undefined" && contextData.type && contextData.id) || userId )
 		{
 			cId = userId;
 			cType = "citoyens";
 			cName = userConnected.name;
-			if(contextData != null && contextData.type && contextData.id){
+			if(typeof contextData != "undefined" && contextData.type && contextData.id){
 				cId = contextData.id;
 				cType = contextData.type;
 				cName = contextData.name;
