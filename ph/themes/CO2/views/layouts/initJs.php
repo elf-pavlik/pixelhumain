@@ -93,7 +93,7 @@ var typeObj = {
     
     entry : {   col:"surveys",  ctrl:"survey",  titleClass : "bg-dark",bgClass : "bgDDA",   icon : "gavel", color : "azure", 
         saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-    vote : {col:"actionRooms",ctrl:"survey"},
+    vote : {sameAs:"survey"},
     survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
     surveys : {sameAs:"survey"},
     proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
