@@ -276,10 +276,12 @@
             ************************ */
             $moduleAssets = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl()  : $this->module->assetsUrl;
             HtmlHelper::registerCssAndScriptsFiles( 
-                array('/js/default/formInMap.js', 
-                    //'/js/cooperation/uiCoop.js'
-                ), 
+                array('/js/default/formInMap.js'),
                 $moduleAssets
+            );
+            HtmlHelper::registerCssAndScriptsFiles( 
+                array('/js/uiCoop.js'), 
+                Yii::app()->getModule( "dda" )->getAssetsUrl()
             );
             /* ***********************
             END module stuff
