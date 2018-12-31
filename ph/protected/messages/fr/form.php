@@ -192,7 +192,9 @@
 		"Who is carrying the project"=>"Qui porte le projet",
 		"Add to the list"=>"Ajouter à la liste",
 		"Change the element"=>"Changer l&#146;élément ci-dessous",
-		
+		"Offer published by" => "Offre proposée par",
+		"Classified published by" => "Annonce publiée par",
+		"Ressource published by" => "Ressource publiée par",
 
 	)
 

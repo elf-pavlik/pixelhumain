@@ -1669,17 +1669,23 @@ var dyFObj = {
         	initType=fieldObj.initType;
         	fieldHTML += '<div class="finder-'+field+'">'+
         					'<input type="hidden" id="'+field+'" name="'+field+'"/>'+
-        					'<button class="form-control col-xs-6 selectParent btn-success" data-id="'+field+'" data-types="'+initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
+        					'<button class="form-control col-xs-6 selectParent btn-success margin-bottom-10" data-id="'+field+'" data-types="'+initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
         					"<span class='error bg-warning' style='display:none'></span>"+
         					"<div class='form-list-finder'>"+
         					"</div>"+
         				"</div>";
         	if(typeof fieldObj.init == "undefined"){
-        	dyFObj.initFieldOnload.finder = function(){
-        		update=(typeof fieldObj.update != "undefined") ? true : null;
-        		initValues=(typeof fieldObj.values != "undefined" && notNull(fieldObj.values) && Object.keys(fieldObj.values).length > 0) ? fieldObj.values : null;
-        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
-            }
+        		var initFinderFunction=function(){
+	        		update=(typeof fieldObj.update != "undefined") ? true : null;
+	        		initValues=null;
+	        		if(typeof fieldObj.values != "undefined" && notNull(fieldObj.values) && Object.keys(fieldObj.values).length > 0) 
+	        			initValues=fieldObj.values;
+	        		else if(typeof value != "undefined" && notNull(value) && Object.keys(value).length > 0) 
+	        			initValues=value;
+	        		
+	        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
+	            }
+	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
         	}
         }
         /* **************************************
@@ -5670,7 +5676,7 @@ var dyFInputs = {
     setSub : function(subClass) { 
     	dyFInputs.setHeader(subClass);
 		
-    	if( (contextData != null && contextData.type && contextData.id) || userId )
+    	/*if( (contextData != null && contextData.type && contextData.id) || userId )
 		{
 			cId = userId;
 			cType = "citoyens";
@@ -5687,7 +5693,7 @@ var dyFInputs = {
 		} 
 		$("#ajax-modal-modal-title").html(
 		 	$("#ajax-modal-modal-title").html()+
-		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );
+		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );*/
 		
     }
 };
@@ -6013,7 +6019,7 @@ var processUrl = {
 		$(inputClass+" span.help-block").html(trad.waitWeFetch+" <i class='fa fa-spin fa-refresh'></i>");
 	
 		$.ajax({
-			url: baseUrl+"/news/extractprocess",
+			url: baseUrl+"/news/co/extractprocess",
 			data: { 'url' : url },
 			type: 'post',
 			dataType: 'json',

@@ -237,7 +237,7 @@ jQuery(document).ready(function() {
 })
 
 function addBtnSwitch(){ 
-    $(".addBtnFoot").addClass("hidden");
+    /*$(".addBtnFoot").addClass("hidden");
     $(".addBtnAll").removeClass("hidden");
     
 
@@ -260,7 +260,7 @@ function addBtnSwitch(){
     else if(contextData.type == "projects" )
         $(".addBtnFoot_project").removeClass("hidden");
     else if(contextData.type == "events" )
-        $(".addBtnFoot_event").removeClass("hidden");
+        $(".addBtnFoot_event").removeClass("hidden");*/
 
 }
 
