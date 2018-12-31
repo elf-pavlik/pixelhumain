@@ -18,7 +18,7 @@
 
 <div class="pageContent">
 	<div class="col-md-12 col-lg-12 col-sm-12 imageSection no-padding" 
-		 style="margin-top: 80px; position:relative;">
+		 style="margin-top: 5px; position:relative;">
 
 		<div class="col-md-12">
 			<div id="videoDocsImg" class="col-xs-12 no-padding">

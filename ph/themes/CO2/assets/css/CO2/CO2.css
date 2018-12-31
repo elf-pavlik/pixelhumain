@@ -1148,7 +1148,7 @@ a, a:hover, a:focus, a:active, a.active{
 }
 
 .bootbox{
-	z-index: 100000;
+	z-index: 200000;
 }
 
 
@@ -2164,8 +2164,8 @@ margin-right: 5px;
 	}
 
 	.navbar-custom.affix {
-	  max-height: 55px;
-	  padding: 3px 0;
+	 /* max-height: 55px;
+	  padding: 3px 0;*/
 	}
 	.navbar-custom.affix-top {
 	  max-height: 58px;

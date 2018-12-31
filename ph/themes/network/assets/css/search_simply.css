@@ -137,8 +137,8 @@ button#btn-toogle-map:hover, #btn-menu-launch:hover, #btn-menu-add:hover{
 	min-width: 180px;
 }
 
-.villeFilter:hover,.tagFilter:hover,
-.villeFilter.active,.tagFilter.active{
+.villeFilter:hover,.tagFilter:hover, .eventsTypeAuto:hover,
+.villeFilter.active, .tagFilter.active, .eventsTypeAuto.active{
     background-color: #2BB0C6!important;
     color: #fff!important;
     border-color:transparent!important;
