@@ -93,7 +93,7 @@ var typeObj = {
     
     entry : {   col:"surveys",  ctrl:"survey",  titleClass : "bg-dark",bgClass : "bgDDA",   icon : "gavel", color : "azure", 
         saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-    vote : {col:"actionRooms",ctrl:"survey"},
+    vote : {sameAs:"proposals"},
     survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
     surveys : {sameAs:"survey"},
     proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
@@ -147,7 +147,8 @@ var typeObj = {
                     chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
                 }},
     filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"},
-    curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"}
+    curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
+    badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"}
 };
 
     
@@ -219,11 +220,12 @@ var typeObj = {
         "Group"         : { color: "turq",   icon: "circle-o",      name: trad.groups },
         "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad.projects },
         "events"        : { color: "orange",  icon: "calendar",     name: trad.events },
-        "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+        "vote"          : { color: "red",   icon: "gavel",        name: "Propositions, Votes" },
         "actions"       : { color: "lightblue2", icon: "cogs",      name: "actions" },
         "cities"        : { color: "red",        icon: "university",name: trad.municipalities },
         "poi"           : { color: "green-poi",  icon: "map-marker",name: trad.pointsinterests },
         "place"           : { color: "brown",    icon: "map-marker", name: trad.pointsinterests },
+        "proposals"     : { color: "red",    icon: "gavel", name: "Propositions" },
         //"interop"    : { color: "lightblue2",   icon: "group",      name: "interop" },
         // "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
         // "osm"         : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },

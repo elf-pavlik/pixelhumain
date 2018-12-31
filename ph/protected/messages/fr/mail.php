@@ -80,7 +80,7 @@
 
 		"In just a few clicks discover local activity on CO and use tools for your own organization : news feeds, agendas, classified ads, directories of initiatives towards a more sustainable world !" => "En quelques clics, d&eacute;couvrez votre dynamique locale et des outils pour votre communaut&eacute;  : fil d’actualit&eacute;, agenda, petites annonces, annuaire des initiatives allant vers un monde plus durable !",
 
-		"Connected like Facebook and open like Wikipedia join the movement!" => "Aussi connect&eacute; que Facebook et aussi ouvert que Wikip&eacute;dia, rejoignez le mouvement !" ,
+		"Open Like Wikipedia and as connected as Facebook join the movement!" => "Aussi ouvert que Wikipedia et aussi connect&eacute; que Facebook, rejoignez le mouvement !" ,
 
 		"{who} started without you, but you can join him at any time by clicking here" => "{who} est d&eacute;j&agrave; A<span style='color:#e5324f'>CO</span>eur. Rejoignez-nous sur votre réseau citoyen" ,
 		"The Human Pixels" => "Les Pixels Humains" ,
@@ -127,9 +127,8 @@
 		"{who} added a new classified : {what} on {where}" => "{who} a ajouté une nouvelle annonces : {what} dans {where}",
 		"{who} added a new point of interest : {what} on {where}" => "{who} a ajouté un point d'intéret : {what} dans {where}",
 		"{who} added a new proposal : {what} in {where}" => "{who} a ajouté une proposition : {what} sur {where}",
-		"{who} added a new action : {what} in {where}" => "{who} a ajouté une action : {what} sur {where}",
+		"{who} added a new action : {what} in {where}" => "{who} a ajouté l'action : {what} sur {where}",
 		"{who} added a new room : {what} on {where}" => "{who} a ajouté une espace de décision : {what} sur {where}",
-
 		"{who} have added new events on {where}"=>"{who} ont ajouté plusieurs événements sur {where}",
 		"{who} have added new classifieds on {where}"=>"{who} ont ajouté plusieurs annonces sur {where}",
 		"{who} have added points of interest on {where}"=>"{who} ont ajouté des points d'intérêt sur {where}",
@@ -140,10 +139,10 @@
 		"{who} added new events on {where}" => "{who} a ajouté plusieurs événements sur {where}",
 		"{who} have added new classifieds on {where}"=>"{who} ont ajouté plusieurs annonces sur {where}",
 		"{who} added new classifieds on {where}"=>"{who} a ajouté plusieurs annonces sur {where}",
-		"{who} added few proposals in {where}"=>"{who} a ajouté plusieurs proposition {where}",
-		"{who} added few actions in {where}"=> "{who} a ajouté plusieurs actions {where}",
-		"{who} have added few proposals in {where}"=>"{who} ont ajouté plusieurs proposition {where}",
-		"{who} have few actions in {where}"=> "{who} ont ajouté plusieurs actions {where}",
+		"{who} added few proposals in {where}"=>"{who} a ajouté plusieurs propositions sur {where}",
+		"{who} added few actions in {where}"=> "{who} a ajouté plusieurs actions sur {where}",
+		"{who} have added few proposals in {where}"=>"{who} ont ajouté plusieurs propositions sur {where}",
+		"{who} have few actions in {where}"=> "{who} ont ajouté plusieurs actions sur {where}",
 		"{who} added new rooms in the co-space on {where}"=>"{who} a ajouté plusieurs salles dans l'espace co sur {where}",
 		"{who} have added new rooms in the co-space on {where}"=>"{who} ont ajouté plusieurs salles dans l'espace co sur {where}",
 

@@ -276,10 +276,12 @@
             ************************ */
             $moduleAssets = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl()  : $this->module->assetsUrl;
             HtmlHelper::registerCssAndScriptsFiles( 
-                array('/js/default/formInMap.js', 
-                    '/js/cooperation/uiCoop.js'
-                ), 
+                array('/js/default/formInMap.js'),
                 $moduleAssets
+            );
+            HtmlHelper::registerCssAndScriptsFiles( 
+                array('/js/uiCoop.js'), 
+                Yii::app()->getModule( "dda" )->getAssetsUrl()
             );
             /* ***********************
             END module stuff
@@ -343,7 +345,7 @@
 
         <?php //$this->renderPartial($layoutPath.'initCommunexion', array()); ?>
         
-        <?php $this->renderPartial('../cooperation/pod/modalCommon', array()); ?>
+        <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); ?>
 
         <?php // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); ?>
         <?php $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); ?>

@@ -156,8 +156,8 @@
                 showWhere(true);
             }
         });
-        headerHeightPos(true);
 
+        headerHeightPos(true);
     });
 
 

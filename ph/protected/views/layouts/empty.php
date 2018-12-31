@@ -28,6 +28,9 @@
   HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->request->baseUrl);
   $cs = Yii::app()->getClientScript();
   $cs->registerScriptFile(Yii::app()->request->baseUrl. '/plugins/jQuery/jquery-2.1.1.min.js' );
+
+  $cs->registerScriptFile(Yii::app() -> createUrl("/co2/default/view/page/trad/dir/..|translation/layout/empty"));
+  
   ?>
   
   <script type="text/javascript">
