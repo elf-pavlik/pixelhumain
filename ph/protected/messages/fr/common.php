@@ -428,6 +428,7 @@ return array(
 	"Program" => "Programme",
 	"Classified" => "Annonce",
 	"Surveys" => "Sondages",
+	"Survey" => "Sondage",
 	"Point of interest" => "Point d'intérêt",
 	"point of interest" => "point d'intérêt",
 	"Collection"=>"Collection",

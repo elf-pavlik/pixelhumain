@@ -118,6 +118,13 @@
             "formType"=>"poi",
             "addClass"=> "addBtnAll bg-green-k",
             "href"=>"javascript:;"
+        ),
+        Survey::COLLECTION => array(
+            "label"=>Yii::t("common","Survey"),
+            "icon"=>Survey::ICON,
+            "formType"=>"survey",
+            "addClass"=> "addBtnAll bg-turq",
+            "href"=>"javascript:;"
         )
     );
     if( Yii::app()->params['rocketchatMultiEnabled'] ){
