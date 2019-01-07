@@ -178,7 +178,8 @@
 
   <script type="text/javascript">
     //var custom = {};            
-    jQuery(document).ready(function() { 
+    jQuery(document).ready(function() {
+      
       bindLBHLinks();
       themeObj.init();
       $(".btn-show-mainmenu").click(function(){

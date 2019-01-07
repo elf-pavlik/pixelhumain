@@ -5,7 +5,7 @@
         $themeParams["pages"]["#".$page]["mainTitle"] = "Rechercher une commune"; 
         $themeParams["pages"]["#".$page]["placeholderMainSearch"] = "Rechercher une commune"; 
     }
-
+    //var_dump($page); exit;
     $useHeader              = $themeParams["pages"]["#".$page]["useHeader"];
     $useFilter              = $themeParams["pages"]["#".$page]["useFilter"];
     $subdomain              = $themeParams["pages"]["#".$page]["subdomain"];
@@ -27,6 +27,8 @@
                     "type"=>@$type,
                     "me" => $me) );
     $cities = [];
+
+   
 ?>
 
 <!-- Header -->

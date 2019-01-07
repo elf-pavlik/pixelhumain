@@ -88,6 +88,7 @@
                   $subdomain == "agenda" ||
                   $subdomain == "live" ||
                   $subdomain == "power"  ||
+                  $subdomain == "dda"  ||
                   $subdomain == "interop"  ||
                   $subdomain == "annonces"//||
                   //$subdomain == "admin"
