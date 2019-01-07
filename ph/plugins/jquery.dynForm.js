@@ -211,7 +211,255 @@ function slugify (value, slug) {
 	.replace(/[^a-z0-9-]/g, '')
 	.replace(/\-{2,}/g,'-');
 };
-
+var finder = {
+	object : {},
+	finderPopulation : {},
+	selectedItems:{},
+	typeAuthorized : {},
+	callback : {},
+	set : function(){
+		finder.object={};
+		finder.typeAuthorized={};
+		finder.callback={};
+	},
+	init : function(id, multiple, initType, values, update, callbackSelect){
+		finder.object[id]={};
+		finder.typeAuthorized[id]=initType;
+		if(notNull(callbackSelect) && typeof callbackSelect == "function")
+		 	finder.callback[id]=callbackSelect;
+		if(values){
+			$.each(values, function(e, v){
+				finder.addInForm(id, e, v.type, v.name, v.profilThumbImageUrl);	
+			});
+		}
+		else if(!notNull(update)){
+			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
+				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
+			else if(finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") 
+				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
+		}
+        $(".finder-"+id+" .selectParent").click(function(e){
+        	e.preventDefault();
+        	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
+    		keyForm=$(this).data("id");
+    		typeSearch=finder.typeAuthorized[keyForm];
+    		openSearch=$(this).data("open");
+    		multiple=($(this).data("multiple")) ? true : false;
+    		finder.showPanel(keyForm, typeSearch, openSearch, multiple);
+        	//}else{
+        	//	$(this).parent().find(".error").show(700).text("Vous ne pouvez ajouter qu'un élément");
+        	//}
+        });
+	},
+	addInForm : function(keyForm, id, type, name, img){
+		img= (img != "") ? baseUrl + img : assetPath + "/images/thumb/default_"+type+".png";
+		var str="";
+		str="<div class='col-xs-12 element-finder element-finder-"+id+" shadow2 padding-10'>"+
+					'<img src="'+ img+'" class="img-circle pull-left margin-right-10" height="35" width="35">'+
+					'<span class="info-contact pull-left margin-right-5">' +
+						'<span class="name-contact text-dark text-bold">' + name + '</span>'+
+						'<br/>'+
+						'<span class="cp-contact text-light pull-left">' + trad[type]+ '</span>'+
+					'</span>' +
+					'<button class="bg-red text-white pull-right" style="border: none;font-size: 15px;border-radius: 6px;padding: 5px 10px !important;" onclick="finder.removeFromForm(\''+keyForm+'\', \''+id+'\')"><i class="fa fa-times"></i></button>'+
+			"</div>";
+		$(".finder-"+keyForm+" .form-list-finder").append(str);
+		finder.object[keyForm][id]={"type" : type};
+	},
+	removeFromForm : function(keyForm, id){
+		$(".finder-"+keyForm+" .form-list-finder .element-finder-"+id).remove();
+		delete finder.object[keyForm][id];	
+	},
+	showPanel: function(keyForm, typeSearch, open, multiple){
+		finder.selectedItems={};
+		titleForm="Sélectionner dans la liste";
+		if(!notNull(multiple) && !multiple)
+			titleForm+="(Un seulement)";
+		var dialog = bootbox.dialog({
+		    title: titleForm,
+		    message: '<div id="finderSelectHtml">'+
+		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
+						'<div id="list-finder-selected"></div>'+
+		    			'<hr/><div id="list-finder-selection" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
+		    		'</div>',
+		    closeButton:false,
+		    buttons: {
+			    cancel: {
+			        label: trad.close,
+			        className: 'btn-default',
+			        callback: function(){
+			            dialog.modal('hide');
+			        }
+			    },
+			    ok: {
+			        label: "Ajouter",
+			        className: 'btn-success',
+			        callback: function(e){
+			        	e.preventDefault();
+			        	finder.addSelectedToForm(keyForm, multiple);
+			        }
+			    }
+			}
+		});
+		dialog.init(function(){
+		    //setTimeout(function(){
+		    finder.finderPopulation={};
+		    if(typeof myContacts != "undefined"){
+		    	$.each(typeSearch, function(e, type){
+		    		if(typeof myContacts[type] != "undefined"){
+		    			$.each(myContacts[type], function(e, v){
+		    				finder.finderPopulation[e]={
+		    					"name": v.name,
+		    					"type": type,
+		    					"profilThumbImageUrl":v.profilThumbImageUrl
+		    				};
+		    				if(type=="events"){
+		    					finder.finderPopulation[e].startDate=v.startDate;
+		    					finder.finderPopulation[e].endDate=v.endDate;
+		    				}
+		    			});
+		    		}
+		    	});
+		    	
+		    }
+		    finder.populateFinder(keyForm, finder.finderPopulation, multiple, true);
+		    $("#populateFinder").keyup(function(){
+		    	if($(this).val().length < 3){
+		    		finder.filterPopulation($(this).val());
+		    	}else{
+		    		if(notNull(open) && open){
+		    			finder.filterPopulation($(this).val());
+		    			finder.searchAndPopulateFinder(keyForm,$(this).val(), typeSearch, multiple);
+		    		}else{
+		    			finder.filterPopulation($(this).val());
+		    		}
+		    	}
+		    });
+		});
+	},
+	filterPopulation : function(searchVal){
+		//recherche la valeur recherché dans les 3 champs "name", "cp", et "city"
+		if(searchVal != "")	$("#list-finder-selection .population-elt-finder").hide();
+		else $("#list-finder-selection .population-elt-finder").show();
+	
+		$.each($("#list-finder-selection .population-elt-finder .name-element"), function() { 
+			content = $(this).html();
+			found = content.search(new RegExp(searchVal, "i"));
+			console.log(searchVal, found, $(this).attr("id") );
+			if(found >= 0)
+				$("#list-finder-selection .population-elt-finder-"+$(this).data("id")).show();
+		});
+	},
+	populateFinder : function(keyForm, obj, multiple, first){
+		str="";
+		if(first && typeof finder.object[keyForm][userId] == "undefined"){
+			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : assetPath + "/images/thumb/default_citoyens.png";
+			if(typeof finder.finderPopulation[userId]=="undefined"){
+				finder.finderPopulation[userId]={
+					name:userConnected.name + ' ('+tradDynForm.me+')',
+					type:"citoyens",
+					profilThumbImageUrl:userConnected.profilThumbImageUrl
+				};
+			}
+			str+="<div class='population-elt-finder population-elt-finder-"+userId+" col-xs-12' data-value='"+userId+"'>"+
+					'<div class="checkbox-content pull-left">'+
+						'<label>'+
+		    				'<input type="checkbox" class="check-population-finder checkbox-info" data-value="'+userId+'">'+
+		    				'<span class="cr"><i class="cr-icon fa fa-check"></i></span>'+
+						'</label>'+
+					'</div>'+
+					"<div class='element-finder element-finder-"+userId+"'>"+
+						'<img src="'+img+'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
+						'<span class="info-contact pull-left margin-left-20">' +
+							'<span class="name-element text-dark text-bold" data-id="'+userId+'">' + userConnected.name + ' ('+tradDynForm.me+')</span>'+
+							'<br/>'+
+							'<span class="type-element text-light pull-left">' + trad.citoyens+ '</span>'+
+						'</span>' +
+					"</div>"+
+				"</div>";
+		}
+		if(notNull(obj)){
+			$.each(obj, function(e, v){
+				if(typeof finder.object[keyForm][e] == "undefined" && e != userId){
+					if(typeof finder.finderPopulation[e]== "undefined")
+						finder.finderPopulation[e]=v;
+					if($(".population-elt-finder-"+e).length <= 0){
+						img= (v.profilThumbImageUrl != "") ? baseUrl + v.profilThumbImageUrl : assetPath + "/images/thumb/default_"+v.type+".png";
+						str+="<div class='population-elt-finder population-elt-finder-"+e+" col-xs-12' data-value='"+e+"'>"+
+								'<div class="checkbox-content pull-left">'+
+									'<label>'+
+					    				'<input type="checkbox" class="check-population-finder checkbox-info" data-value="'+e+'">'+
+					    				'<span class="cr"><i class="cr-icon fa fa-check"></i></span>'+
+									'</label>'+
+								'</div>'+
+								"<div class='element-finder element-finder-"+e+"'>"+
+									'<img src="'+ img+'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
+									'<span class="info-contact pull-left margin-left-20">' +
+										'<span class="name-element text-dark text-bold" data-id="'+e+'">' + v.name + '</span>'+
+										'<br/>'+
+										'<span class="type-element text-light pull-left">' + trad[v.type]+ '</span>'+
+									'</span>' +
+								"</div>"+
+							"</div>";
+					}
+				}
+			});
+		}
+		if(first)
+			$("#list-finder-selection").html(str);
+		else
+			$("#list-finder-selection").append(str);
+		finder.bindSelectItems(multiple);
+	},
+	bindSelectItems : function(multiple){
+		$(".population-elt-finder").off().on("click", function(e){
+			if(e.target.className!="cr-icon fa fa-check" && e.target.className!="check-population-finder checkbox-info")
+				$(".check-population-finder[data-value='"+$(this).data("value")+"'").trigger("click");
+		});
+		$(".check-population-finder").off().on("click", function(){
+			if($(this).is(":checked")){
+				if(!multiple){
+					finder.selectedItems={};	
+					$("#list-finder-selected").html("");
+				}
+				finder.selectedItems[$(this).data("value")]=finder.finderPopulation[$(this).data("value")];
+				$(".population-elt-finder-"+$(this).data("value")).prependTo("#list-finder-selected");
+			}else{
+				delete finder.selectedItems[$(this).data("value")];
+				$(".population-elt-finder-"+$(this).data("value")).prependTo("#list-finder-selection");
+			}
+		});
+	},
+	addSelectedToForm: function(keyForm, multiple){
+		if(Object.keys(finder.selectedItems).length > 0){
+			if(!multiple){
+				finder.object[keyForm]={};
+				$(".finder-"+keyForm+" .form-list-finder").html("");
+			}
+			$.each(finder.selectedItems, function(e, v){
+				finder.addInForm(keyForm, e, v.type, v.name, v.profilThumbImageUrl);
+			});
+			if(typeof finder.callback[keyForm] != "undefined") finder.callback[keyForm]();
+		}
+	},
+	searchAndPopulateFinder : function(keyForm, text, typeSearch, multiple){
+		//finder.isSearching=true;
+  		$.ajax({
+			type: "POST",
+	        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
+	        data: {"searchType" : typeSearch, "name": text},
+	        dataType: "json",
+	        success: function(retdata){
+	        	if(!retdata){
+	        		toastr.error(retdata.content);
+	        	}else{
+		        	mylog.log(retdata);
+		        	finder.populateFinder(keyForm, retdata.results, multiple);
+	  			}
+			}	
+		});
+	}
+};
 var uploadObj = {
 	type : null,
 	id : null,
@@ -381,7 +629,11 @@ var dyFObj = {
 								key : formData.source
 							}
 		}
-		
+		if(typeof finder != "undefined" && Object.keys(finder.object).length > 0){
+			$.each(finder.object, function(key, object){
+				formData[key]=object;
+			});
+		}
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
 		
@@ -1394,8 +1646,8 @@ var dyFObj = {
         	dataField="data-type='"+fieldObj.contextType+"' data-id='"+fieldObj.contextId+"' data-doctype='"+fieldObj.docType+"' data-contentkey='"+fieldObj.contentKey+"'";
         	fieldHTML += iconOpen+'<button class="form-control col-xs-6 selectFolder btn-success" '+dataField+'>'+trad.choose+'</button><span class="nameFolder-form">'+fieldObj.emptyMsg+'</span>';
         	dyFObj.initFieldOnload.folder = function(){
-        		init={docType:fieldObj.docType};
-				if(typeof folderId != "undefined" && folderId != "" && navInFolders[folderId].docType == fieldObj.docType){
+        		   init={docType:fieldObj.docType}; 
+        		if(typeof folderId != "undefined" && folderId != "" && navInFolders[folderId].docType == fieldObj.docType){
 					dyFObj.init.folderUploadEvent(fieldObj.contextType, fieldObj.contextId, fieldObj.docType, fieldObj.contentKey, folderId);
 					init.folderId=folderId;
 				}
@@ -1407,6 +1659,34 @@ var dyFObj = {
 	    			}, init);
 	    		});
             }
+        }
+         /* **************************************
+		* Finder INPUT
+		***************************************** */
+        else if ( fieldObj.inputType == "finder" ) {
+        	//finder.set();
+        	labelStr=(typeof fieldObj.multiple != "undefined" && fieldObj.multiple) ? tradDynForm.addtothelist: tradDynForm.changetheelement;
+        	initType=fieldObj.initType;
+        	fieldHTML += '<div class="finder-'+field+'">'+
+        					'<input type="hidden" id="'+field+'" name="'+field+'"/>'+
+        					'<button class="form-control col-xs-6 selectParent btn-success margin-bottom-10" data-id="'+field+'" data-types="'+initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
+        					"<span class='error bg-warning' style='display:none'></span>"+
+        					"<div class='form-list-finder'>"+
+        					"</div>"+
+        				"</div>";
+        	if(typeof fieldObj.init == "undefined"){
+        		var initFinderFunction=function(){
+	        		update=(typeof fieldObj.update != "undefined") ? true : null;
+	        		initValues=null;
+	        		if(typeof fieldObj.values != "undefined" && notNull(fieldObj.values) && Object.keys(fieldObj.values).length > 0) 
+	        			initValues=fieldObj.values;
+	        		else if(typeof value != "undefined" && notNull(value) && Object.keys(value).length > 0) 
+	        			initValues=value;
+	        		
+	        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
+	            }
+	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
+        	}
         }
         /* **************************************
 		* DATE INPUT , we use bootstrap-datepicker
@@ -5396,7 +5676,7 @@ var dyFInputs = {
     setSub : function(subClass) { 
     	dyFInputs.setHeader(subClass);
 		
-    	if( (typeof contextData != "undefined" && contextData.type && contextData.id) || userId )
+    	/*if( (contextData != null && contextData.type && contextData.id) || userId )
 		{
 			cId = userId;
 			cType = "citoyens";
@@ -5413,7 +5693,7 @@ var dyFInputs = {
 		} 
 		$("#ajax-modal-modal-title").html(
 		 	$("#ajax-modal-modal-title").html()+
-		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );
+		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );*/
 		
     }
 };
@@ -5739,7 +6019,7 @@ var processUrl = {
 		$(inputClass+" span.help-block").html(trad.waitWeFetch+" <i class='fa fa-spin fa-refresh'></i>");
 	
 		$.ajax({
-			url: baseUrl+"/news/extractprocess",
+			url: baseUrl+"/news/co/extractprocess",
 			data: { 'url' : url },
 			type: 'post',
 			dataType: 'json',

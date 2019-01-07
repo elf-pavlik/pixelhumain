@@ -350,6 +350,7 @@ return array(
 	"organizer" => "organisateur",
 	"Organized by" => "Organisé par",
 	"Planned on" => "Au programme de",
+	"Manage by"=>"Géré par",
 	"Sort by role"=>"Trier par rôle",
 	"Roles"=> "Rôles",
 	"Role(s)"=>"Rôle(s)",
