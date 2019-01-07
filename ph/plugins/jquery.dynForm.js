@@ -468,6 +468,7 @@ var uploadObj = {
 	update  : false,
 	docListIds : [],
 	initList : [],
+	callBackData : null,
 	folder : "communecter", //on force pour pas casser toutes les vielles images
 	contentKey : "profil",
 	afterLoadUploader : false,
@@ -511,6 +512,7 @@ var uploadObj = {
 			uploadObj.type = null;
 			uploadObj.id = null;
 			uploadObj.path = null;
+			uploadObj.callBackData = null;
 			uploadObj.initList = {};
 		}
 	},
@@ -1080,6 +1082,22 @@ var dyFObj = {
         		window.location.reload();
         	else 
 				urlCtrl.loadByHash( uploadObj.gotoUrl );*/
+        }
+	},
+	coopAfterSave : function(data){
+		dyFObj.closeForm(); 
+       	var oldCount = $("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html();
+       	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
+       	if(typeof data.map.idParentRoom != "undefined"){
+           	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
+            setTimeout(function(){
+            	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
+            }, 1000);
+        }else{
+        	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
+            setTimeout(function(){
+            	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
+            }, 1000);
         }
 	},
 	//generate Id for upload feature of this element 
@@ -2766,7 +2784,9 @@ var dyFObj = {
 								}
 						    	if(uploadObj.afterLoadUploader){
 						    		//toastr.info( "Fichiers bien chargés !!");
-						    		if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
+						    		if(notNull(uploadObj.type) && uploadObj.type=="proposals"){
+						    			dyFObj.coopAfterSave(uploadObj.callBackData);
+						    		}else if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
 						    			v.afterUploadComplete();
 						    		}
 						     		uploadObj.gotoUrl = null;
@@ -4573,7 +4593,7 @@ var dyFInputs = {
         	},1500);
     	}
     },
-    image :function(label) { 
+    image :function(label, afterLoad) { 
     	
     	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
     		uploadObj.gotoUrl = location.hash ;
@@ -4587,6 +4607,11 @@ var dyFInputs = {
 	    	template:'qq-template-gallery',
 	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
 	    	afterUploadComplete : function(){
+	    		alert("ici");
+	    		if(notNull(afterLoad) && typeof afterLoad == "function" ){
+	    			alert("inside");
+	    			afterLoad();
+	    		}
 	    	    if(typeof urlCtrl != "undefined") {
 	            	dyFObj.closeForm();
 	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
