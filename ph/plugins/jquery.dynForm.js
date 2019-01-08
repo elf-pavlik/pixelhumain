@@ -4607,11 +4607,8 @@ var dyFInputs = {
 	    	template:'qq-template-gallery',
 	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
 	    	afterUploadComplete : function(){
-	    		alert("ici");
-	    		if(notNull(afterLoad) && typeof afterLoad == "function" ){
-	    			alert("inside");
+	    		if(notNull(afterLoad) && typeof afterLoad == "function" )
 	    			afterLoad();
-	    		}
 	    	    if(typeof urlCtrl != "undefined") {
 	            	dyFObj.closeForm();
 	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
