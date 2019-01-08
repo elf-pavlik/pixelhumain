@@ -125,6 +125,13 @@
             "formType"=>"survey",
             "addClass"=> "addBtnAll bg-turq",
             "href"=>"javascript:;"
+        ),
+        Proposal::COLLECTION => array(
+            "label"=>Yii::t("common","Proposal"),
+            "icon"=>Proposal::ICON,
+            "formType"=>"proposal2",
+            "addClass"=> "addBtnAll bg-turq",
+            "href"=>"javascript:;"
         )
     );
     if( Yii::app()->params['rocketchatMultiEnabled'] ){

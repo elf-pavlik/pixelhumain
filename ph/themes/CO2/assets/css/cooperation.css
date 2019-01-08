@@ -430,6 +430,7 @@ li.submenucoop{
 }
 
 #ajax-modal .form-group.amendementActivatedcheckboxSimple,
+#ajax-modal .form-group.amendementAndVotecheckboxSimple,
 #ajax-modal .form-group.amendementDateEnddatetime,
 #ajax-modal .form-group.voteActivatedcheckbox,
 #ajax-modal .form-group.voteDateEnddatetime,
