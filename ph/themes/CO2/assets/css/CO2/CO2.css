@@ -494,7 +494,6 @@ section {
 
 .navbar-custom .btn-show-mainmenu{
 	float:right;
-	margin-top:10px;
 	margin-left:-5px;
 	position: relative;
 	/*background-color: #fbbc05;*/
@@ -647,7 +646,6 @@ section {
         padding: 10px 5px;
     }
     .btn-show-filters{
-        margin-top: 5px;
         padding: 3px 15px;
         border: 1px solid rgba(0,0,0,0.1);
         background-color: white;
@@ -1060,7 +1058,7 @@ a, a:hover, a:focus, a:active, a.active{
 }
 
 .main-container.vertical .dropdown-main-menu{
-	top: 66px;
+	top: 58px;
 	right: 5px;
 }
 .dropdown-main-menu .dropdown-menu{
@@ -1119,7 +1117,7 @@ a, a:hover, a:focus, a:active, a.active{
 }
 
 .main-container.vertical .dropdown-main-menu .arrow_box:after, .main-container.vertical .dropdown-main-menu .arrow_box:before {
-	right: 23px;
+	right: 17px;
 }
 #list-dashboard-dda:before, #list-dashboard-dda:after{
 	left: 103px !important;
@@ -1422,10 +1420,6 @@ h3.title_panel_map{
     height: 40px;
     border: none;
     margin-right: 4px;
-    /* background: #F3F3F3; */
-    margin-top: 5px;
-    /* padding-left: 15px; */
-    /* border: 1px solid #dadada !important; */
     -webkit-box-shadow: 0px 0px 2px -1px rgba(0,0,0,0.5);
     -moz-box-shadow: 0px 0px 2px -1px rgba(0,0,0,0.5);
     box-shadow: 0px 0px 2px -1px rgba(0, 0, 0, 0.5);
@@ -1504,11 +1498,22 @@ h3.title_panel_map{
 }
 .navbar-collapse button,
 .navbar-nav button{
-	margin-top: 15px;
 	background-color: transparent;
 	padding: 0 10px;
 	border: none !important;
 }
+#mainNav .menu-btn-top{
+	font-size: 18px;
+    padding-top: 10px;
+    position: relative;
+}
+#mainNav .menu-btn-top:hover{
+	color:#777;
+}
+#mainNav .menu-btn-top.btn-menu-home{
+	padding-right: 10px;
+}
+
 .navbar-header .btn-menu-apps{
 	border: none;
     padding: 13px 15px 7px 15px;
@@ -1518,7 +1523,6 @@ h3.title_panel_map{
 .menu-name-profil{
 	font-weight: 300;
     letter-spacing: 0px;
-    margin-top:5px!important;
     margin-right:0px;
     position: relative;
     background-color:rgba(246,246,246,0.6)!important;

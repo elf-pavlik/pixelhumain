@@ -1406,19 +1406,14 @@ var dyFObj = {
 			//var onclick = ( fieldObj.onclick ) ? "onclick='"+fieldObj.onclick+"'" : "";
 			//var switchData = ( fieldObj.switch ) ? "data-on-text='"+fieldObj.params.onText+"' data-off-text='"+fieldObj.params.offText+"' data-label-text='"+fieldObj.switch.labelText+"' " : "";
 			mylog.log("build field "+field+">>>>>> checkbox");
-			fieldHTML += '<input type="hidden" class="'+fieldClass+'" name="'+field+'" id="'+field+'" '+
-								'value="'+thisValue+'" '+forced+' /> ';
+			fieldHTML += '<input type="hidden" class="'+fieldClass+'" name="'+field+'" id="'+field+'" value="'+thisValue+'" '+forced+' /> ';
 			fieldHTML += '<div class="col-lg-6 padding-5">'+
-							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-green col-xs-12"'+
-							' data-checkval="true"' +
-							'>'+
+							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-green col-xs-12" data-checkval="true">'+
 								fieldObj.params.onText+
 							'</a>'+
 						 '</div>';
 			fieldHTML += '<div class="col-lg-6 padding-5">'+
-							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-red col-xs-12"'+
-							' data-checkval="false"' +
-							'>'+
+							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-red col-xs-12" data-checkval="false" >'+
 								fieldObj.params.offText+
 							'</a>'+
 						 '</div>';
@@ -2290,26 +2285,6 @@ var dyFObj = {
 									'<i class="fa fa-plus"></i> '+tradDynForm.addANewAddress +
 								"</a>"+
 							"</div>";
-				
-
-
-   //     		var isSelect2 = (fieldObj.isSelect2) ? "select2Input" : "";
-   //     		fieldHTML += '<select class="'+isSelect2+' '+fieldClass+'" '+multiple+' name="'+field+'" id="'+field+'" style="width: 100%;height:30px;" data-placeholder="'+placeholder+'">';
-			// if(placeholder)
-			// 	fieldHTML += '<option class="text-red" style="font-weight:bold" disabled selected>'+placeholder+'</option>';
-			// else
-			// 	fieldHTML += '<option></option>';
-
-			// var selected = "";
-			// mylog.log("fieldObj select", fieldObj);
-			// //initialize values
-			// if(fieldObj.options)
-			// 	fieldHTML += buildSelectOptions(fieldObj.options, ((typeof fieldObj.value != "undefined")?fieldObj.value:value));
-
-			// if( fieldObj.groupOptions )
-			// 	fieldHTML += buildSelectGroupOptions(fieldObj.groupOptions, ((typeof fieldObj.value != "undefined")?fieldObj.value:value));
-			
-			// fieldHTML += '</select>';
         } else if ( fieldObj.inputType == "password" ) {
         	mylog.log("build field "+field+">>>>>> password");
         	fieldHTML += '<input id="'+field+'" name="'+field+'" class="form-control" type="password"/>';
