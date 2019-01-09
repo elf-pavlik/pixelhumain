@@ -98,6 +98,7 @@ var typeObj = {
     surveys : {sameAs:"survey"},
     proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
     proposals : { sameAs : "proposal" },
+    proposal2 : { sameAs : "proposal" },
     resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
     action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
     actions : { sameAs : "action" },

@@ -118,18 +118,10 @@
             "formType"=>"poi",
             "addClass"=> "addBtnAll bg-green-k",
             "href"=>"javascript:;"
-        ),
-        Survey::COLLECTION => array(
-            "label"=>Yii::t("common","Survey"),
-            "icon"=>Survey::ICON,
-            "formType"=>"survey",
-            "addClass"=> "addBtnAll bg-turq",
-            "href"=>"javascript:;"
-        ),
-        Proposal::COLLECTION => array(
+        ),Proposal::COLLECTION => array(
             "label"=>Yii::t("common","Proposal"),
             "icon"=>Proposal::ICON,
-            "formType"=>"proposal2",
+            "formType"=>"proposal",
             "addClass"=> "addBtnAll bg-turq",
             "href"=>"javascript:;"
         )
