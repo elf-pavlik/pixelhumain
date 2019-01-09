@@ -24,6 +24,7 @@
                     "mainTitle"=>$mainTitle,
                     "placeholderMainSearch"=>$placeholderMainSearch,
                     "menuApp"=>$menuApp,
+                    "useFilter"=>$useFilter,
                     "type"=>@$type,
                     "me" => $me) );
     $cities = [];
@@ -117,6 +118,7 @@
     jQuery(document).ready(function() {
         setTitle(titlePage, "", titlePage);
         initScopeMenu();
+        initPositionInterface();
         if( typeof custom != "undefined" && custom.logo ){
             custom.initMenu("mainSearch");
         }
@@ -176,7 +178,18 @@
         }
     }
 
+    function initPositionInterface(){
+        heightTopMenu=$("#mainNav").outerHeight();
+        $(".main-container").css("padding-top",heightTopMenu);
+        $(".main-container #notificationPanelSearch.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu").css("top",heightTopMenu);
+        $("header, #affix-sub-menu, #territorial-menu").css("top",heightTopMenu);
+        $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
 
+        if(heightTopMenu > 60){
+            marginTop=heightTopMenu-60;
+            $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
+        }
+    }
     function headerHeightPos(bool){
         setTimeout(function(){     
             headerScaling=bool; 
