@@ -142,30 +142,24 @@
     }
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
-    <div class="toolbar-bottom bottom-left font-montserrat">
-        <a href="https://www.helloasso.com/associations/open-atlas/collectes/communecter/don" target="_blank" id="donation-btn" class="btn btn-default donation-btn btn-menu-vertical">
-            <i class="fa fa-heart"></i> 
-            <span class="tooltips-menu-btn"><?php echo Yii::t("common","Be aCOeur") ?></span>
-        </a>
-    </div>
-
-
+    <?php if(!@$themeParams["footer"] || (@$themeParams["footer"]["donate"] && !empty($themeParams["footer"]["donate"]))){ ?> 
+    <a href="https://www.helloasso.com/associations/open-atlas/collectes/communecter/don" target="_blank" id="donation-btn" class="btn btn-default donation-btn btn-menu-vertical">
+        <i class="fa fa-heart"></i> 
+        <span class="tooltips-menu-btn"><?php echo Yii::t("common","Be aCOeur") ?></span>
+    </a>
+    <?php } ?>
     <button class="btn btn-link btn-sm letter-red tooltips font-montserrat no-padding hidden" 
         id="btn-open-radio" 
         data-placement="top" title="Radio-Pixel-Humain is on air, listen now !">
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
     </button>
-
-    <div class="toolbar-bottom bottom-right font-montserrat">
-
-        <?php if(@Yii::app()->session["userId"]) { ?>
+    <?php if(@Yii::app()->session["userId"]) { ?>
         <button class="btn btn-default bg-green-k text-white no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
             <span class="tooltips-menu-btn"><?php echo Yii::t("common","Add something") ?></span>
         </button>
-        <?php } ?>
+    <?php } ?>
 
-    </div>
 
 
     <div class="toolbar-bottom-adds toolbar-bottom-fullwidth font-montserrat hidden">
