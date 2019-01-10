@@ -51,6 +51,14 @@
 	line-height: 55px;
 	padding: 0px;
 }
+.footer-menu-vertical #show-bottom-add{
+    background-color: transparent !important;
+    color: #34a853 !important;
+}
+.footer-menu-vertical #donation-btn{
+    background-color: transparent;
+    color: #E5344D;
+}
 #donation-btn i{
 	font-size: 20px;
 }

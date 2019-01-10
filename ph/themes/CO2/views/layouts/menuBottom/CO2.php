@@ -171,34 +171,7 @@
                 <span><?php echo $v["label"] ?></span>
             </a>
         <?php } ?>
-        <!--<a href="javascript:;" data-form-type="organization" class="addBtnFoot btn-open-form btn btn-default bg-green inline-block margin-bottom-10"> 
-            <i class="fa <?php echo Organization::ICON; ?>"></i> 
-            <span><?php echo Yii::t("common","Organizations") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="project" class="addBtnFoot addBtnFoot_orga addBtnFoot_project btn-open-form btn btn-default bg-purple inline-block margin-bottom-10"> 
-            <i class="fa <?php echo  Project::ICON;?>"></i> 
-            <span><?php echo Yii::t("common","Project") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="event" class="addBtnFoot addBtnAll btn-open-form btn btn-default bg-orange margin-bottom-10"> 
-            <i class="fa fa-calendar"></i> 
-            <span><?php echo Yii::t("common","Event") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="classifieds" class="addBtnFoot addBtnFoot_orga addBtnFoot_project btn-open-form btn btn-default bg-azure margin-bottom-10"> 
-            <i class="fa fa-bullhorn"></i> 
-            <span><?php echo Yii::t("common","Classified") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="ressources" class="addBtnFoot addBtnAll btn-open-form btn btn-default bg-vine margin-bottom-10"> 
-            <i class="fa fa-cubes"></i> 
-            <span><?php echo Yii::t("common","Ressource") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="jobs" class="addBtnFoot hideBtnFoot_person addBtnFoot_orga addBtnFoot_project btn-open-form btn btn-default bg-yellow-k margin-bottom-10"> 
-            <i class="fa fa-briefcase"></i> 
-            <span><?php echo Yii::t("common","Jobs") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="poi" class="addBtnFoot addBtnAll btn-open-form btn btn-default bg-green-k margin-bottom-10"> 
-            <i class="fa fa-map-marker"></i> 
-            <span><?php echo Yii::t("common","Point of interest") ?></span>
-        </a>
+        <!--
         <?php 
         if( Yii::app()->params['rocketchatMultiEnabled'] )
         {
