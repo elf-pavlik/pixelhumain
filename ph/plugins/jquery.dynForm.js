@@ -61,8 +61,8 @@ onSave: (optional) overloads the generic saveProcess
 			* Error Section
 			***************************************** */
 			var errorHTML = '<div class="errorHandler alert alert-danger no-display">'+
-							'<i class="fa fa-remove-sign"></i> Merci de corriger les erreurs ci dessous.'+
-						'</div>';
+								'<i class="fa fa-remove-sign"></i> Merci de corriger les erreurs ci dessous.'+
+							'</div>';
 			$(settings.formId).append(errorHTML);
 
 			if(settings.beforeBuild && jQuery.isFunction( settings.beforeBuild ) )
@@ -1093,7 +1093,7 @@ var dyFObj = {
             setTimeout(function(){
             	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
             }, 1000);
-        }else{
+        } else {
         	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
             setTimeout(function(){
             	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
@@ -5296,6 +5296,11 @@ var dyFInputs = {
 	    					"<span class='lbl-status-check margin-left-10'>"+
 	    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>'+
 	    					"</span>");
+
+	    			setTimeout(function(){
+    			  		if(typeof params["inputTrue"] != "undefined") 
+    			  			$(params["inputTrue"]).hide(400);
+    			  	}, 1000);
 	        	}
 				else if(checked == "false" || !checked){ 
 	    			$(idFalse).addClass("bg-red").removeClass("letter-red");
@@ -5305,7 +5310,8 @@ var dyFInputs = {
 	    					"</span>");
 
 	    			setTimeout(function(){
-    			  		if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+    			  		if(typeof params["inputId"] != "undefined") 
+    			  			$(params["inputId"]).hide(400);
     			  	}, 1000);
 	    		}
 	    		
@@ -5322,6 +5328,8 @@ var dyFInputs = {
 	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    			  	
 	    			  	if(typeof params["inputId"] != "undefined") $(params["inputId"]).show(400);
+
+	    			  	if(typeof params["inputTrue"] != "undefined") $(params["inputTrue"]).hide(400);
 	    			}
 	    			else{
 	    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
@@ -5330,6 +5338,7 @@ var dyFInputs = {
 	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 
 	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+	    				if(typeof params["inputTrue"] != "undefined") $(params["inputTrue"]).show(400);
 	    			}
 	    		});
 
@@ -5361,11 +5370,13 @@ var dyFInputs = {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
+	    				$(params["inputTrue"]).hide(400);
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
+	    				$(params["inputTrue"]).show(400);
 	    			}
     			}, 1000);
 	        },
@@ -5382,6 +5393,7 @@ var dyFInputs = {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
+	    				$(params["inputTrue"]).hide(400);
 	    				/*if(id=="amendementActivated"){
 	    					var am = $("#ajaxFormModal #voteActivated").val();
 	    					mylog.log("am", am);
@@ -5399,6 +5411,7 @@ var dyFInputs = {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
+	    				$(params["inputTrue"]).show(400);
 	    			}
 	    		}
 		    }
