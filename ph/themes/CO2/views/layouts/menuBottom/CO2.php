@@ -119,7 +119,7 @@
             "addClass"=> "addBtnAll bg-green-k",
             "href"=>"javascript:;"
         ),Proposal::COLLECTION => array(
-            "label"=>Yii::t("common","Proposal"),
+            "label"=>Yii::t("common","Survey"),
             "icon"=>Proposal::ICON,
             "formType"=>"proposal",
             "addClass"=> "addBtnAll bg-turq",
