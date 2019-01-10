@@ -38,6 +38,7 @@ return array(
 	"amendables" => "Amendables",
 	"amendable" => "Amendable",
 	"tovote" => "À voter",
+	"amendementAndVote" => "À voter amender",
 	"todo" => "À faire",
 	"archived" => "Archivée",
 	"disabled" => "Désactivée",
