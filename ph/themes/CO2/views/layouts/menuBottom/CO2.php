@@ -154,7 +154,7 @@
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
     </button>
     <?php if(@Yii::app()->session["userId"]) { ?>
-        <button class="btn btn-default bg-green-k text-white no-padding btn-menu-vertical" id="show-bottom-add">
+        <button class="btn btn-default no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
             <span class="tooltips-menu-btn"><?php echo Yii::t("common","Add something") ?></span>
         </button>
