@@ -267,6 +267,7 @@ return array(
 	"Vote open until" => "Le vote est ouvert jusqu'au",
 
 	"voters" => "votants",
+	"Vote" => "Votez",
 
 	"click to vote" => "cliquer pour voter",
 	"number of voters" => "nombre de votants",
