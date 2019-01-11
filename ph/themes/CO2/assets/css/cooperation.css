@@ -456,6 +456,7 @@ li.submenucoop{
 }
 
 #ajax-modal .form-group.amendementActivatedcheckboxSimple,
+#ajax-modal .form-group.amendementAndVotecheckboxSimple,
 #ajax-modal .form-group.voteActivatedcheckbox{
 	margin-bottom:0px;
 	margin-top:30px;
