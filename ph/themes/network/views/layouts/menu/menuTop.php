@@ -382,6 +382,7 @@ if(  	@$params['enSavoirPlus'] &&
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+var headerScaling=false;
 	jQuery(document).ready(function() {
 		$("#btn-documentation").on("click", function(){
 	        enSavoirPlus();
