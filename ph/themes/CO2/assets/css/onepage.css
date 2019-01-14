@@ -353,7 +353,7 @@
 
 #btn-onepage-main-menu{
 		position: fixed;
-		top:85px;
+		top:5px;
 		left:20px;
 		border-radius: 1px;
 		letter-spacing: 2px;
@@ -369,8 +369,8 @@
 
 	.dropdown-onepage-main-menu{
 		position: fixed;
-		top: 85px;
-		left: 10px;
+		top: 50px;
+		left: 20px;
 		max-height:400px;
 		/*width:200px;*/
 		background-color:transparent;
