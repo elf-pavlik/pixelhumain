@@ -186,7 +186,7 @@
         $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
 
         if(heightTopMenu > 60){
-            marginTop=heightTopMenu-60;
+            marginTop=(heightTopMenu-55);
             $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
         }
     }
