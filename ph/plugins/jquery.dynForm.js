@@ -235,7 +235,7 @@ var finder = {
 		else if(!notNull(update)){
 			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
 				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
-			else if(finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") 
+			else if((finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") || finder.typeAuthorized[id][0] == "organizations")  
 				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
         $(".finder-"+id+" .selectParent").click(function(e){

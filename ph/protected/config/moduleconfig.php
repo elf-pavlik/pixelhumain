@@ -16,6 +16,7 @@ $activeModules = array(
 	//"classifieds",
 	"onepage",
 	"cooperation",
+	"costum",
 	//'terla',
 	'chat',
 	//'cococarto', 

@@ -899,7 +899,7 @@ return array(
 	"Update your comment"=>"Modifier votre commentaire",
 	"Search what" => "Quoi",
 	"Search where" => "Où", 
-
+	"Proposed by" => "Proposé par",
 	"MY DETAIL"			=> "MON PROFIL",
 	"NEWS"				=> "FIL D'ACTUALITÉ",
 	"MY PEOPLE"			=> "MES CONTACTS",
