@@ -103,11 +103,11 @@
             </button>
             <?php } ?>
             <?php if(@$searchBar["showFilter"] && 
-                ($menuApp=="vertical" || @Yii::app()->session['paramsConfig']["numberOfApp"]<=1)){ ?>
+                (@$menuApp=="vertical" || @Yii::app()->session['paramsConfig']["numberOfApp"]<=1)){ ?>
              <button class="btn btn-show-filters pull-left hidden-xs navbar-item-left"> <i class="fa fa-filter visible-sm pull-left" style="font-size:18px;"></i><span class="hidden-sm"><?php echo Yii::t("common", "Filters") ?></span> <span class="topbar-badge badge animated bounceIn badge-warning"></span> <i class="fa fa-angle-down"></i></button>
             <?php } ?>
             <?php if(@$searchBar["dropdownApp"]
-                && $menuApp!="vertical" 
+                && !empty($menuApp) && $menuApp!="vertical" 
                 && @$themeParams["numberOfApp"]==1 
                 && @$themeParams["pages"]){
              foreach (@$themeParams["pages"] as $key => $value) {
