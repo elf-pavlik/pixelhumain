@@ -638,6 +638,19 @@ var dyFObj = {
 		}
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
+
+		// input de tags différents
+		var nbListTags = 1 ;
+		mylog.log("Here", nbListTags, jsonHelper.notNull("formData.tags"+nbListTags));
+		while(jsonHelper.notNull("formData.tags"+nbListTags)){
+			tagsSave=formData["tags"+nbListTags].split(",");
+			if(!formData.tags)formData.tags = [];
+			$.each(tagsSave, function(i, e) {
+				formData.tags.push(e);
+			});
+			delete formData["tags"+nbListTags];
+			nbListTags++;
+		}
 		
 		if( typeof formData.openingHours != "undefined"){
 			if(typeof formData.hour != "undefined")
