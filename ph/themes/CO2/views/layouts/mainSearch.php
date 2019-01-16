@@ -74,7 +74,10 @@
                                  array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
     if($this->module->id == "custom"){
         $this->renderPartial( 'co2.views.custom.init' );
-    }else 
+    }else if($this->module->id == "costum"){
+        $this->renderPartial( 'costum.views.co.init', array("slug"=>@$_GET["slug"]  ) );
+    }
+    else 
         Yii::app()->session["custom"]=null;
         ?>
 
@@ -109,7 +112,7 @@
         
         <?php  if( isset(Yii::app()->session["userId"]) ){
                 $this->renderPartial($layoutPath.'.rocketchat'); 
-                $this->renderPartial($modulePath.'/news/modalShare', array());
+                //$this->renderPartial($modulePath.'/news/modalShare', array());
             } 
         ?>
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
@@ -276,10 +279,12 @@
             ************************ */
             $moduleAssets = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl()  : $this->module->assetsUrl;
             HtmlHelper::registerCssAndScriptsFiles( 
-                array('/js/default/formInMap.js', 
-                    '/js/cooperation/uiCoop.js'
-                ), 
+                array('/js/default/formInMap.js'),
                 $moduleAssets
+            );
+            HtmlHelper::registerCssAndScriptsFiles( 
+                array('/js/uiCoop.js'), 
+                Yii::app()->getModule( "dda" )->getAssetsUrl()
             );
             /* ***********************
             END module stuff
@@ -343,7 +348,7 @@
 
         <?php //$this->renderPartial($layoutPath.'initCommunexion', array()); ?>
         
-        <?php $this->renderPartial('../cooperation/pod/modalCommon', array()); ?>
+        <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); ?>
 
         <?php // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); ?>
         <?php $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); ?>

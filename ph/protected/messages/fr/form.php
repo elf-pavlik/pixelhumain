@@ -141,7 +141,7 @@
 		"Show"=>"Afficher",
 		"Me"=>"Moi",
 		"I am the author"=>"Je suis l'auteur",
-		"Show {who} as author"=>"Afficher {who} as author",
+		"Show {who} as author"=>"Afficher {who} comme auteur",
 		"Visibility of the news"=>"Visibilité du post",
 		"Write your news here"=> "Écrire votre post ici",
 		"Invalid username : Only characters A-Z, a-z, 0-9 and '-' are acceptable."=> "Le nom d'utilisateur est incorrect : Seul les caractères A-Z, a-z, 0-9 et '-' sont acceptés.",
@@ -189,6 +189,12 @@
 		"Make the ressource publicly visible"=>"Rendre la ressource visible publiquement",
 		"Add a new address" => "Ajouter une nouvelle adresse",
 		"You can&#146;t upload {netItems} items.  Item limit is {itemLimit}."=>"Vous ne pouvez pas ajouter {netItems} documents. La limite d'élément est de {itemLimit}.",
+		"Who is carrying the project"=>"Qui porte le projet",
+		"Add to the list"=>"Ajouter à la liste",
+		"Change the element"=>"Changer l&#146;élément ci-dessous",
+		"Offer published by" => "Offre proposée par",
+		"Classified published by" => "Annonce publiée par",
+		"Ressource published by" => "Ressource publiée par",
 
 	)
 

@@ -61,8 +61,8 @@ onSave: (optional) overloads the generic saveProcess
 			* Error Section
 			***************************************** */
 			var errorHTML = '<div class="errorHandler alert alert-danger no-display">'+
-							'<i class="fa fa-remove-sign"></i> Merci de corriger les erreurs ci dessous.'+
-						'</div>';
+								'<i class="fa fa-remove-sign"></i> Merci de corriger les erreurs ci dessous.'+
+							'</div>';
 			$(settings.formId).append(errorHTML);
 
 			if(settings.beforeBuild && jQuery.isFunction( settings.beforeBuild ) )
@@ -211,7 +211,255 @@ function slugify (value, slug) {
 	.replace(/[^a-z0-9-]/g, '')
 	.replace(/\-{2,}/g,'-');
 };
-
+var finder = {
+	object : {},
+	finderPopulation : {},
+	selectedItems:{},
+	typeAuthorized : {},
+	callback : {},
+	set : function(){
+		finder.object={};
+		finder.typeAuthorized={};
+		finder.callback={};
+	},
+	init : function(id, multiple, initType, values, update, callbackSelect){
+		finder.object[id]={};
+		finder.typeAuthorized[id]=initType;
+		if(notNull(callbackSelect) && typeof callbackSelect == "function")
+		 	finder.callback[id]=callbackSelect;
+		if(values){
+			$.each(values, function(e, v){
+				finder.addInForm(id, e, v.type, v.name, v.profilThumbImageUrl);	
+			});
+		}
+		else if(!notNull(update)){
+			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
+				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
+			else if((finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") || finder.typeAuthorized[id][0] == "organizations")  
+				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
+		}
+        $(".finder-"+id+" .selectParent").click(function(e){
+        	e.preventDefault();
+        	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
+    		keyForm=$(this).data("id");
+    		typeSearch=finder.typeAuthorized[keyForm];
+    		openSearch=$(this).data("open");
+    		multiple=($(this).data("multiple")) ? true : false;
+    		finder.showPanel(keyForm, typeSearch, openSearch, multiple);
+        	//}else{
+        	//	$(this).parent().find(".error").show(700).text("Vous ne pouvez ajouter qu'un élément");
+        	//}
+        });
+	},
+	addInForm : function(keyForm, id, type, name, img){
+		img= (img != "") ? baseUrl + img : assetPath + "/images/thumb/default_"+type+".png";
+		var str="";
+		str="<div class='col-xs-12 element-finder element-finder-"+id+" shadow2 padding-10'>"+
+					'<img src="'+ img+'" class="img-circle pull-left margin-right-10" height="35" width="35">'+
+					'<span class="info-contact pull-left margin-right-5">' +
+						'<span class="name-contact text-dark text-bold">' + name + '</span>'+
+						'<br/>'+
+						'<span class="cp-contact text-light pull-left">' + trad[type]+ '</span>'+
+					'</span>' +
+					'<button class="bg-red text-white pull-right" style="border: none;font-size: 15px;border-radius: 6px;padding: 5px 10px !important;" onclick="finder.removeFromForm(\''+keyForm+'\', \''+id+'\')"><i class="fa fa-times"></i></button>'+
+			"</div>";
+		$(".finder-"+keyForm+" .form-list-finder").append(str);
+		finder.object[keyForm][id]={"type" : type};
+	},
+	removeFromForm : function(keyForm, id){
+		$(".finder-"+keyForm+" .form-list-finder .element-finder-"+id).remove();
+		delete finder.object[keyForm][id];	
+	},
+	showPanel: function(keyForm, typeSearch, open, multiple){
+		finder.selectedItems={};
+		titleForm="Sélectionner dans la liste";
+		if(!notNull(multiple) && !multiple)
+			titleForm+="(Un seulement)";
+		var dialog = bootbox.dialog({
+		    title: titleForm,
+		    message: '<div id="finderSelectHtml">'+
+		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
+						'<div id="list-finder-selected"></div>'+
+		    			'<hr/><div id="list-finder-selection" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
+		    		'</div>',
+		    closeButton:false,
+		    buttons: {
+			    cancel: {
+			        label: trad.close,
+			        className: 'btn-default',
+			        callback: function(){
+			            dialog.modal('hide');
+			        }
+			    },
+			    ok: {
+			        label: "Ajouter",
+			        className: 'btn-success',
+			        callback: function(e){
+			        	e.preventDefault();
+			        	finder.addSelectedToForm(keyForm, multiple);
+			        }
+			    }
+			}
+		});
+		dialog.init(function(){
+		    //setTimeout(function(){
+		    finder.finderPopulation={};
+		    if(typeof myContacts != "undefined"){
+		    	$.each(typeSearch, function(e, type){
+		    		if(typeof myContacts[type] != "undefined"){
+		    			$.each(myContacts[type], function(e, v){
+		    				finder.finderPopulation[e]={
+		    					"name": v.name,
+		    					"type": type,
+		    					"profilThumbImageUrl":v.profilThumbImageUrl
+		    				};
+		    				if(type=="events"){
+		    					finder.finderPopulation[e].startDate=v.startDate;
+		    					finder.finderPopulation[e].endDate=v.endDate;
+		    				}
+		    			});
+		    		}
+		    	});
+		    	
+		    }
+		    finder.populateFinder(keyForm, finder.finderPopulation, multiple, true);
+		    $("#populateFinder").keyup(function(){
+		    	if($(this).val().length < 3){
+		    		finder.filterPopulation($(this).val());
+		    	}else{
+		    		if(notNull(open) && open){
+		    			finder.filterPopulation($(this).val());
+		    			finder.searchAndPopulateFinder(keyForm,$(this).val(), typeSearch, multiple);
+		    		}else{
+		    			finder.filterPopulation($(this).val());
+		    		}
+		    	}
+		    });
+		});
+	},
+	filterPopulation : function(searchVal){
+		//recherche la valeur recherché dans les 3 champs "name", "cp", et "city"
+		if(searchVal != "")	$("#list-finder-selection .population-elt-finder").hide();
+		else $("#list-finder-selection .population-elt-finder").show();
+	
+		$.each($("#list-finder-selection .population-elt-finder .name-element"), function() { 
+			content = $(this).html();
+			found = content.search(new RegExp(searchVal, "i"));
+			console.log(searchVal, found, $(this).attr("id") );
+			if(found >= 0)
+				$("#list-finder-selection .population-elt-finder-"+$(this).data("id")).show();
+		});
+	},
+	populateFinder : function(keyForm, obj, multiple, first){
+		str="";
+		if(first && typeof finder.object[keyForm][userId] == "undefined"){
+			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : assetPath + "/images/thumb/default_citoyens.png";
+			if(typeof finder.finderPopulation[userId]=="undefined"){
+				finder.finderPopulation[userId]={
+					name:userConnected.name + ' ('+tradDynForm.me+')',
+					type:"citoyens",
+					profilThumbImageUrl:userConnected.profilThumbImageUrl
+				};
+			}
+			str+="<div class='population-elt-finder population-elt-finder-"+userId+" col-xs-12' data-value='"+userId+"'>"+
+					'<div class="checkbox-content pull-left">'+
+						'<label>'+
+		    				'<input type="checkbox" class="check-population-finder checkbox-info" data-value="'+userId+'">'+
+		    				'<span class="cr"><i class="cr-icon fa fa-check"></i></span>'+
+						'</label>'+
+					'</div>'+
+					"<div class='element-finder element-finder-"+userId+"'>"+
+						'<img src="'+img+'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
+						'<span class="info-contact pull-left margin-left-20">' +
+							'<span class="name-element text-dark text-bold" data-id="'+userId+'">' + userConnected.name + ' ('+tradDynForm.me+')</span>'+
+							'<br/>'+
+							'<span class="type-element text-light pull-left">' + trad.citoyens+ '</span>'+
+						'</span>' +
+					"</div>"+
+				"</div>";
+		}
+		if(notNull(obj)){
+			$.each(obj, function(e, v){
+				if(typeof finder.object[keyForm][e] == "undefined" && e != userId){
+					if(typeof finder.finderPopulation[e]== "undefined")
+						finder.finderPopulation[e]=v;
+					if($(".population-elt-finder-"+e).length <= 0){
+						img= (v.profilThumbImageUrl != "") ? baseUrl + v.profilThumbImageUrl : assetPath + "/images/thumb/default_"+v.type+".png";
+						str+="<div class='population-elt-finder population-elt-finder-"+e+" col-xs-12' data-value='"+e+"'>"+
+								'<div class="checkbox-content pull-left">'+
+									'<label>'+
+					    				'<input type="checkbox" class="check-population-finder checkbox-info" data-value="'+e+'">'+
+					    				'<span class="cr"><i class="cr-icon fa fa-check"></i></span>'+
+									'</label>'+
+								'</div>'+
+								"<div class='element-finder element-finder-"+e+"'>"+
+									'<img src="'+ img+'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
+									'<span class="info-contact pull-left margin-left-20">' +
+										'<span class="name-element text-dark text-bold" data-id="'+e+'">' + v.name + '</span>'+
+										'<br/>'+
+										'<span class="type-element text-light pull-left">' + trad[v.type]+ '</span>'+
+									'</span>' +
+								"</div>"+
+							"</div>";
+					}
+				}
+			});
+		}
+		if(first)
+			$("#list-finder-selection").html(str);
+		else
+			$("#list-finder-selection").append(str);
+		finder.bindSelectItems(multiple);
+	},
+	bindSelectItems : function(multiple){
+		$(".population-elt-finder").off().on("click", function(e){
+			if(e.target.className!="cr-icon fa fa-check" && e.target.className!="check-population-finder checkbox-info")
+				$(".check-population-finder[data-value='"+$(this).data("value")+"'").trigger("click");
+		});
+		$(".check-population-finder").off().on("click", function(){
+			if($(this).is(":checked")){
+				if(!multiple){
+					finder.selectedItems={};	
+					$("#list-finder-selected").html("");
+				}
+				finder.selectedItems[$(this).data("value")]=finder.finderPopulation[$(this).data("value")];
+				$(".population-elt-finder-"+$(this).data("value")).prependTo("#list-finder-selected");
+			}else{
+				delete finder.selectedItems[$(this).data("value")];
+				$(".population-elt-finder-"+$(this).data("value")).prependTo("#list-finder-selection");
+			}
+		});
+	},
+	addSelectedToForm: function(keyForm, multiple){
+		if(Object.keys(finder.selectedItems).length > 0){
+			if(!multiple){
+				finder.object[keyForm]={};
+				$(".finder-"+keyForm+" .form-list-finder").html("");
+			}
+			$.each(finder.selectedItems, function(e, v){
+				finder.addInForm(keyForm, e, v.type, v.name, v.profilThumbImageUrl);
+			});
+			if(typeof finder.callback[keyForm] != "undefined") finder.callback[keyForm]();
+		}
+	},
+	searchAndPopulateFinder : function(keyForm, text, typeSearch, multiple){
+		//finder.isSearching=true;
+  		$.ajax({
+			type: "POST",
+	        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
+	        data: {"searchType" : typeSearch, "name": text},
+	        dataType: "json",
+	        success: function(retdata){
+	        	if(!retdata){
+	        		toastr.error(retdata.content);
+	        	}else{
+		        	mylog.log(retdata);
+		        	finder.populateFinder(keyForm, retdata.results, multiple);
+	  			}
+			}	
+		});
+	}
+};
 var uploadObj = {
 	type : null,
 	id : null,
@@ -220,6 +468,7 @@ var uploadObj = {
 	update  : false,
 	docListIds : [],
 	initList : [],
+	callBackData : null,
 	folder : "communecter", //on force pour pas casser toutes les vielles images
 	contentKey : "profil",
 	afterLoadUploader : false,
@@ -263,6 +512,7 @@ var uploadObj = {
 			uploadObj.type = null;
 			uploadObj.id = null;
 			uploadObj.path = null;
+			uploadObj.callBackData = null;
 			uploadObj.initList = {};
 		}
 	},
@@ -381,7 +631,11 @@ var dyFObj = {
 								key : formData.source
 							}
 		}
-		
+		if(typeof finder != "undefined" && Object.keys(finder.object).length > 0){
+			$.each(finder.object, function(key, object){
+				formData[key]=object;
+			});
+		}
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
 		
@@ -632,6 +886,10 @@ var dyFObj = {
 		{
 			if(typeof formInMap != 'undefined')
 				formInMap.formType = type;
+
+			if(typeof dyFObj.formInMap != 'undefined')
+				dyFObj.formInMap.formType = type;
+
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.startBuild(afterLoad,data);
 			},afterLoad, data);
@@ -696,7 +954,7 @@ var dyFObj = {
 				null,
 				function() { 
 					//alert(dfPath+type+'.js');
-					mylog.log("lazyLoaded",dfPath);
+					mylog.log("lazyLoaded",type,dfPath);
 					mylog.dir(dynForm);
 					//typeObj[type].dynForm = dynForm;
 					
@@ -826,6 +1084,22 @@ var dyFObj = {
 				urlCtrl.loadByHash( uploadObj.gotoUrl );*/
         }
 	},
+	coopAfterSave : function(data){
+		dyFObj.closeForm(); 
+       	var oldCount = $("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html();
+       	$("li.sub-proposals a.load-coop-data[data-status='"+data.map.status+"'] .badge").html(parseInt(oldCount)+1);
+       	if(typeof data.map.idParentRoom != "undefined"){
+           	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, data.map.idParentRoom);
+            setTimeout(function(){
+            	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, data.id);
+            }, 1000);
+        } else {
+        	uiCoop.getCoopData(contextData.type, contextData.id, "room", null, currentRoomId);
+            setTimeout(function(){
+            	uiCoop.getCoopData(contextData.type, contextData.id, "proposal", null, idParentProposal);
+            }, 1000);
+        }
+	},
 	//generate Id for upload feature of this element 
 	setMongoId : function(type,callback) { 
 		//alert("setMongoId"+type);
@@ -865,12 +1139,17 @@ var dyFObj = {
 	***************************************** */
 	drawAnswers : function (el,type,before,after) {
 		//alert("drawAnswers");
+		//list is filled in the page 
 	    var data = dyFObj.elementData;
 	    var prop = dyFObj[dyFObj.activeElem].dynForm.jsonSchema.properties;
 	    console.log("drawAnswers data",data);
 	    console.log("drawAnswers prop",prop);
 	    str = '<table class="table table-striped table-bordered table-hover">'+
 	        '<thead><tr>';
+	    
+	    /* ********************************
+	    Build TH title for the array
+	    ********************************** */
 	    if(before){
 	    	$.each(  before,function(ai,av) { 
 		        str += '<th>'+ai+'</th>';
@@ -878,9 +1157,20 @@ var dyFObj = {
 	    }
 	    str += '<th>Date</th>';
 	    var keys = Object.keys( data );
-	    $.each(  data [ keys[0] ].answer,function(ai,av) { 
-	        str += '<th>'+((prop[ai] && prop[ai].placeholder) ? prop[ai].placeholder : ai)+'</th>';
+	    //find first Element containing an answer
+	    var firstIx = 0; 
+	    $.each(  data,function(ai,av) { 
+	    	if( data [ keys[firstIx] ] && data [ keys[firstIx] ].answer )
+	    		return;
+	    	else 
+	    		firstIx++;
 	    });
+	    
+	    if( data [ keys[firstIx] ] && data [ keys[firstIx] ].answer ){
+    		$.each(  data [ keys[firstIx] ].answer,function(ai,av) { 
+		        str += '<th>'+((prop[ai] && prop[ai].placeholder) ? prop[ai].placeholder : ai)+'</th>';
+		    });
+    	}
 	    if(after){
 	    	$.each( after,function(ai,av) { 
 	    		lbl = ai;
@@ -891,6 +1181,13 @@ var dyFObj = {
 	    }
 	        
 	    str += '</tr></thead><tbody>';
+	    
+	    // ********************** END TH TITLES
+
+
+	    /* ********************************
+	    Filling every line of the array 
+	    ********************************** */
 	    //alert(Object.keys(data).length)
 	    $.each( data ,function(i,v) { 
 	        //LES REPONSE
@@ -919,7 +1216,9 @@ var dyFObj = {
 			            str += "<td>"+ansV+"</td>";
 			        });
 			    
-			        
+			    /* ********************************
+			    ADD tools to each line
+			    ********************************** */
 		        if(after)
 		        {
 			    	$.each(  after,function(ai,av) 
@@ -1107,19 +1406,14 @@ var dyFObj = {
 			//var onclick = ( fieldObj.onclick ) ? "onclick='"+fieldObj.onclick+"'" : "";
 			//var switchData = ( fieldObj.switch ) ? "data-on-text='"+fieldObj.params.onText+"' data-off-text='"+fieldObj.params.offText+"' data-label-text='"+fieldObj.switch.labelText+"' " : "";
 			mylog.log("build field "+field+">>>>>> checkbox");
-			fieldHTML += '<input type="hidden" class="'+fieldClass+'" name="'+field+'" id="'+field+'" '+
-								'value="'+thisValue+'" '+forced+' /> ';
+			fieldHTML += '<input type="hidden" class="'+fieldClass+'" name="'+field+'" id="'+field+'" value="'+thisValue+'" '+forced+' /> ';
 			fieldHTML += '<div class="col-lg-6 padding-5">'+
-							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-green col-xs-12"'+
-							' data-checkval="true"' +
-							'>'+
+							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-green col-xs-12" data-checkval="true">'+
 								fieldObj.params.onText+
 							'</a>'+
 						 '</div>';
 			fieldHTML += '<div class="col-lg-6 padding-5">'+
-							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-red col-xs-12"'+
-							' data-checkval="false"' +
-							'>'+
+							'<a href="javascript:" class="btn-dyn-checkbox btn btn-sm bg-white letter-red col-xs-12" data-checkval="false" >'+
 								fieldObj.params.offText+
 							'</a>'+
 						 '</div>';
@@ -1365,8 +1659,8 @@ var dyFObj = {
         	dataField="data-type='"+fieldObj.contextType+"' data-id='"+fieldObj.contextId+"' data-doctype='"+fieldObj.docType+"' data-contentkey='"+fieldObj.contentKey+"'";
         	fieldHTML += iconOpen+'<button class="form-control col-xs-6 selectFolder btn-success" '+dataField+'>'+trad.choose+'</button><span class="nameFolder-form">'+fieldObj.emptyMsg+'</span>';
         	dyFObj.initFieldOnload.folder = function(){
-        		init={docType:fieldObj.docType};
-				if(typeof folderId != "undefined" && folderId != "" && navInFolders[folderId].docType == fieldObj.docType){
+        		   init={docType:fieldObj.docType}; 
+        		if(typeof folderId != "undefined" && folderId != "" && navInFolders[folderId].docType == fieldObj.docType){
 					dyFObj.init.folderUploadEvent(fieldObj.contextType, fieldObj.contextId, fieldObj.docType, fieldObj.contentKey, folderId);
 					init.folderId=folderId;
 				}
@@ -1378,6 +1672,34 @@ var dyFObj = {
 	    			}, init);
 	    		});
             }
+        }
+         /* **************************************
+		* Finder INPUT
+		***************************************** */
+        else if ( fieldObj.inputType == "finder" ) {
+        	//finder.set();
+        	labelStr=(typeof fieldObj.multiple != "undefined" && fieldObj.multiple) ? tradDynForm.addtothelist: tradDynForm.changetheelement;
+        	initType=fieldObj.initType;
+        	fieldHTML += '<div class="finder-'+field+'">'+
+        					'<input type="hidden" id="'+field+'" name="'+field+'"/>'+
+        					'<button class="form-control col-xs-6 selectParent btn-success margin-bottom-10" data-id="'+field+'" data-types="'+initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
+        					"<span class='error bg-warning' style='display:none'></span>"+
+        					"<div class='form-list-finder'>"+
+        					"</div>"+
+        				"</div>";
+        	if(typeof fieldObj.init == "undefined"){
+        		var initFinderFunction=function(){
+	        		update=(typeof fieldObj.update != "undefined") ? true : null;
+	        		initValues=null;
+	        		if(typeof fieldObj.values != "undefined" && notNull(fieldObj.values) && Object.keys(fieldObj.values).length > 0) 
+	        			initValues=fieldObj.values;
+	        		else if(typeof value != "undefined" && notNull(value) && Object.keys(value).length > 0) 
+	        			initValues=value;
+	        		
+	        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
+	            }
+	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
+        	}
         }
         /* **************************************
 		* DATE INPUT , we use bootstrap-datepicker
@@ -1932,7 +2254,8 @@ var dyFObj = {
 							"</div>"+
 							"<div id='alertGeo' class='alert alert-warning col-xs-12 hidden' style='margin-bottom: 0px;'>"+
 							  "<strong>Warning!</strong> "+tradDynForm.doNotForgetToGeolocateYourAddress+
-							"</div></div>"+
+							"</div>"+
+						"</div>"+
 							"<div id='sumery' class='text-dark col-md-6 col-xs-12 no-padding'>"+
 								"<h4 class='text-center'>"+tradDynForm.addressSummary +" : </h4>"+
 								"<div id='street_sumery' class='col-xs-12'>"+
@@ -1956,30 +2279,12 @@ var dyFObj = {
 									tradDynForm.confirmAddress+
 								"</a>"+
 							"</div>";
+				fieldHTML +="<div id='divMapLocality' class='col-xs-12' style='height: 300px;'></div>";
 				fieldHTML +="<div id='divNewAddress' class='text-dark col-xs-12 no-padding '>"+
 								"<a href='javascript:;' class='btn btn-success' style='margin-bottom: 10px;' type='text' id='newAddress'>"+
 									'<i class="fa fa-plus"></i> '+tradDynForm.addANewAddress +
 								"</a>"+
 							"</div>";
-
-
-   //     		var isSelect2 = (fieldObj.isSelect2) ? "select2Input" : "";
-   //     		fieldHTML += '<select class="'+isSelect2+' '+fieldClass+'" '+multiple+' name="'+field+'" id="'+field+'" style="width: 100%;height:30px;" data-placeholder="'+placeholder+'">';
-			// if(placeholder)
-			// 	fieldHTML += '<option class="text-red" style="font-weight:bold" disabled selected>'+placeholder+'</option>';
-			// else
-			// 	fieldHTML += '<option></option>';
-
-			// var selected = "";
-			// mylog.log("fieldObj select", fieldObj);
-			// //initialize values
-			// if(fieldObj.options)
-			// 	fieldHTML += buildSelectOptions(fieldObj.options, ((typeof fieldObj.value != "undefined")?fieldObj.value:value));
-
-			// if( fieldObj.groupOptions )
-			// 	fieldHTML += buildSelectGroupOptions(fieldObj.groupOptions, ((typeof fieldObj.value != "undefined")?fieldObj.value:value));
-			
-			// fieldHTML += '</select>';
         } else if ( fieldObj.inputType == "password" ) {
         	mylog.log("build field "+field+">>>>>> password");
         	fieldHTML += '<input id="'+field+'" name="'+field+'" class="form-control" type="password"/>';
@@ -2454,7 +2759,9 @@ var dyFObj = {
 								}
 						    	if(uploadObj.afterLoadUploader){
 						    		//toastr.info( "Fichiers bien chargés !!");
-						    		if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
+						    		if(notNull(uploadObj.type) && uploadObj.type=="proposals"){
+						    			dyFObj.coopAfterSave(uploadObj.callBackData);
+						    		}else if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
 						    			v.afterUploadComplete();
 						    		}
 						     		uploadObj.gotoUrl = null;
@@ -3181,7 +3488,54 @@ var dyFObj = {
 		addressesIndex : false,
 		saveCities : {},
 		bindActived : false,
+		initMap : function(){
+			mylog.log("initMap");
+			
+			var ListPath = [
+				modules.map.assets+'/leaflet/leaflet.css',
+				modules.map.assets+'/leaflet/leaflet.js',
+				modules.map.assets+'/markercluster/MarkerCluster.css',
+				modules.map.assets+'/markercluster/MarkerCluster.Default.css',
+				modules.map.assets+'/markercluster/leaflet.markercluster.js',
+				modules.map.assets+'/js/map.js',
+				modules.map.assets+'/css/map.css',
+			];
+
+			lazyLoadMany2( ListPath, function() { return true; }, true);
+			// alert("HERE");
+			
+
+
+			// if( !$('script[src="'+modules.map.assets+'/js/map.js"]').length ){
+
+			// 	lazyLoad( modules.map.assets+'/js/map.js', null, function() { mylog.log("initMap HERE"); dyFObj.formInMap.initMap(); } );
+			// 	lazyLoad( modules.map.assets+'/js/map.js', null, function() { return }, true );
+			// }
+			// else if( !$('script[src="'+modules.map.assets+'/css/map.css"]').length )
+			// 	lazyLoad( modules.map.assets+'/css/map.css', null, function() { dyFObj.formInMap.initMap(); });
+			// else{
+			// 	var paramsMapLocality = {
+			// 		container : "divMapLocality",
+			// 		latLon : [ 39.74621, -104.98404],
+			// 		activeCluster : false,
+			// 		zoom : 16
+			// 	};
+			// 	mapObj.init(paramsMapLocality);
+			// 	var elt = { 
+			// 		type : "citoyens",
+			// 		geo : {
+			// 			latitude :  39.74621,
+			// 			longitude : -104.98404,
+			// 		}
+			// 	};
+			// 	var opt = {
+			// 		draggable: true
+			// 	};
+			// 	mapObj.addMarker(elt, false, true, opt);
+			// }
+		},
 		init : function(){
+			
 			mylog.log("forminmap showMarkerNewElement");
 			mylog.log("formType", dyFObj.formInMap.formType);
 			$(".locationBtn").addClass("hidden");
@@ -3209,9 +3563,11 @@ var dyFObj = {
 				$("#mapLegende").addClass("hidden");
 
 			dyFObj.formInMap.newAddress(false);
-			//mylog.log("here");
-			//dyFInputs.locationObj.init();
+			dyFObj.formInMap.initMap();
+
 			mylog.log("forminmap showMarkerNewElement END!");
+
+			
 		},
 		initCountry : function(){
 			if ( 	typeof dySObj != "undefined" && 
@@ -3440,10 +3796,54 @@ var dyFObj = {
 			if(notEmpty(newA) && newA == true ){
 				$('.formLocality').show();
 				$('#sumery').show();
+				$('#divMapLocality').show();
 				$('#divNewAddress').hide();
+
+				var paramsMapLocality = {
+					container : "divMapLocality",
+					latLon : [ 39.74621, -104.98404],
+					activeCluster : false,
+					zoom : 16
+				};
+				var elt = { 
+					type : "citoyens",
+					geo : {
+						latitude :  39.74621,
+						longitude : -104.98404,
+					}
+				};
+				var opt = {
+					draggable: true
+				};
+
+				mapObj.init(paramsMapLocality);
+				var paramMarker = {
+					elt : elt,
+					addPopUp : false, 
+					center : true, 
+					opt : opt
+				};
+				mapObj.addMarker(paramMarker);
+
+				mapObj.addFct(0, 'dragend', function(){
+					var latLonMarker = mapObj.markerList[0].getLatLng();
+					dyFObj.formInMap.NE_lat = latLonMarker.lat;
+					dyFObj.formInMap.NE_lng = latLonMarker.lng;
+
+					alert(dyFObj.formInMap.NE_lat + " : " + dyFObj.formInMap.NE_lng);
+					//Sig.markerFindPlace.openPopup();
+				});
+
+				// Sig.markerFindPlace.on('dragend', function(){
+				// 	formInMap.NE_lat = Sig.markerFindPlace.getLatLng().lat;
+				// 	formInMap.NE_lng = Sig.markerFindPlace.getLatLng().lng;
+				// 	Sig.markerFindPlace.openPopup();
+				// });
+
 			}else{
 				$('.formLocality').hide();
 				$('#sumery').hide();
+				$('#divMapLocality').hide();
 				$('#divNewAddress').show();
 			}
 		},
@@ -3511,15 +3911,105 @@ var dyFObj = {
 			if(countryDataGouv.indexOf(countryCode) != -1){
 				countryCode = dyFObj.formInMap.changeCountryForNominatim(countryCode);
 				mylog.log("countryCodeHere", countryCode);
-				callDataGouv(requestPart, countryCode);
+				dyFObj.formInMap.callDataGouv(requestPart, countryCode);
 				
 			}else{
 				countryCode = dyFObj.formInMap.changeCountryForNominatim(countryCode);
 				mylog.log("countryCode", countryCode);
-				callNominatim(requestPart, countryCode);
+				dyFObj.formInMap.callNominatim(requestPart, countryCode);
 			}
 			
 			//dyFObj.formInMap.btnValideDisable(false);
+		},
+		addResultsInForm : function (commonGeoObj, countryCode){
+			//success
+			mylog.log("addResultsInForm success callGeoWebService", commonGeoObj, countryCode);
+			//mylog.dir(objs);
+			var res = commonGeoObj; //getCommonGeoObject(objs, providerName);
+			mylog.dir(res);
+			var html = "";
+			$.each(res, function(key, value){ //mylog.log(allCities);
+				if(notEmpty(value.countryCode)){
+					mylog.log("Country Code",value.countryCode.toLowerCase(), countryCode.toLowerCase());
+					if(value.countryCode.toLowerCase() == countryCode.toLowerCase()){ 
+						html += "<li><a href='javascript:;' class='item-street-found' data-lat='"+value.geo.latitude+"' data-lng='"+value.geo.longitude+"'><i class='fa fa-marker-map'></i> "+value.name+"</a></li>";
+					}
+				}
+			});
+			if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
+			$("#dropdown-newElement_streetAddress-found").html(html);
+			$("#dropdown-newElement_streetAddress-found").show();
+
+			$(".item-street-found").click(function(){
+				// if(typeof Sig != "undefined"){
+				// 	Sig.markerFindPlace.setLatLng([$(this).data("lat"), $(this).data("lng")]);
+				// 	Sig.map.panTo([$(this).data("lat"), $(this).data("lng")]);
+				// 	Sig.map.setZoom(16);
+				// }
+
+				mapObj.setLatLng([$(this).data("lat"), $(this).data("lng")], 0);
+
+				mylog.log("lat lon", $(this).data("lat"), $(this).data("lng"));
+				$("#dropdown-newElement_streetAddress-found").hide();
+				$('[name="newElement_lat"]').val($(this).data("lat"));
+				$('[name="newElement_lng"]').val($(this).data("lng"));
+				
+				
+				dyFObj.formInMap.NE_lat = $(this).data("lat");
+				dyFObj.formInMap.NE_lng = $(this).data("lng");
+				dyFObj.formInMap.showWarningGeo(false);
+				
+			});
+		},
+		callDataGouv(requestPart, countryCode){ /*countryCode=="FR"*/
+			mylog.log('callDataGouv');
+			showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Data Gouv</small>");
+			callGeoWebService("data.gouv", requestPart, countryCode,
+				function(objDataGouv){ /*success nominatim*/
+					mylog.log("SUCCESS DataGouv"); 
+
+					if(objDataGouv.features.length != 0){
+						mylog.log('Résultat trouvé chez DataGouv !'); mylog.dir(objDataGouv);
+						var commonGeoObj = getCommonGeoObject(objDataGouv.features, "data.gouv");
+						var res = dyFObj.formInMap.addResultsInForm(commonGeoObj, countryCode);
+						if(res == 0) 
+							dyFObj.formInMap.callNominatim(requestPart, countryCode);
+					}else{
+						mylog.log('Aucun résultat chez DataGouv');
+						dyFObj.formInMap.callNominatim(requestPart, countryCode);
+					}
+				}, 
+				function(thisError){ /*error nominatim*/
+					mylog.log("ERROR DataGouv");
+					mylog.dir(thisError);
+				}
+			);
+		},
+		callNominatim : function (requestPart, countryCode){
+			mylog.log('callNominatim');
+			showMsgListRes("<i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+" <small>Nominatim</small>");
+			callGeoWebService("nominatim", requestPart, countryCode,
+				function(objNomi){ /*success nominatim*/
+					mylog.log("SUCCESS nominatim"); 
+
+					if(objNomi.length != 0){
+						mylog.log('Résultat trouvé chez Nominatim !'); mylog.dir(objNomi);
+
+						var commonGeoObj = getCommonGeoObject(objNomi, "nominatim");
+						var res = dyFObj.formInMap.addResultsInForm(commonGeoObj, countryCode);
+
+						if(res == 0) 
+							callGoogle(requestPart, countryCode);
+					}else{
+						mylog.log('Aucun résultat chez Nominatim');
+						callGoogle(requestPart, countryCode);
+					}
+				}, 
+				function(thisError){ /*error nominatim*/
+					mylog.log("ERROR nominatim");
+					mylog.dir(thisError);
+				}
+			);
 		},
 		autocompleteFormAddress : function(currentScopeType, scopeValue){
 			mylog.log("autocompleteFormAddress", currentScopeType, scopeValue);
@@ -3666,6 +4156,10 @@ var dyFObj = {
 				$("#divStreetAddress").removeClass("hidden");
 			$('[name="newElement_city"]').val(dyFObj.formInMap.NE_city);
 			dyFObj.formInMap.resumeLocality();
+
+
+			mapObj.setLatLng([data.data("lat"), data.data("lng")], 0);
+
 
 		},
 		changeSelectCountrytim : function(){
@@ -4074,7 +4568,7 @@ var dyFInputs = {
         	},1500);
     	}
     },
-    image :function(label) { 
+    image :function(label, afterLoad) { 
     	
     	if( !jsonHelper.notNull("uploadObj.gotoUrl") ) 
     		uploadObj.gotoUrl = location.hash ;
@@ -4088,6 +4582,8 @@ var dyFInputs = {
 	    	template:'qq-template-gallery',
 	    	filetypes:['jpeg', 'jpg', 'gif', 'png'],
 	    	afterUploadComplete : function(){
+	    		if(notNull(afterLoad) && typeof afterLoad == "function" )
+	    			afterLoad();
 	    	    if(typeof urlCtrl != "undefined") {
 	            	dyFObj.closeForm();
 	            	urlCtrl.loadByHash( (uploadObj.gotoUrl) ? uploadObj.gotoUrl : location.hash );
@@ -4573,12 +5069,12 @@ var dyFInputs = {
 		        $("#ajaxFormModal #dropdown-multi-scope-found").show();
 		        if($('#ajaxFormModal #input-add-multi-scope').val()!=""){
 		            if(typeof timeoutAddScope != "undefined") clearTimeout(timeoutAddScope);
-		            timeoutAddScope = setTimeout(function(){ autocompleteMultiScope(); }, 500);
+		            timeoutAddScope = setTimeout(function(){  dyFInputs.scopeObj.autocompleteMultiScope(); }, 500);
 		        }
 		    });
 
 			$("#ajaxFormModal .btn-group-scope-type .btn-default").click(function(){
-				currentScopeType = $(this).data("scope-type");
+				var currentScopeType = $(this).data("scope-type");
 				$("#ajaxFormModal .btn-group-scope-type .btn-default").removeClass("active");
 				$(this).addClass("active");
 				if(currentScopeType == "city") $('#ajaxFormModal #input-add-multi-scope').attr("placeholder", tradDynForm["Add a city"]+" ...");
@@ -4590,16 +5086,84 @@ var dyFInputs = {
     },
     scopeObj : {
 		scope : {},
+		currentScopeType : "",
 		scopeExists : function (scopeValue){
+			mylog.log("scopeExists");
 			return typeof dyFInputs.scopeObj.scope[scopeValue] != "undefined";
 		},
+		autocompleteMultiScope : function (){
+			var scopeValue = $('#input-add-multi-scope').val();
+			var countryCode = $('#select-country').val();
+
+			var currentScopeType = $('.btn-group-justified .active').data("scope-type");
+			$("#dropdown-multi-scope-found").html("<li><i class='fa fa-refresh fa-spin'></i></li>");
+			$.ajax({
+				type: "POST",
+				url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
+				data: {
+						type: currentScopeType, 
+						scopeValue: scopeValue,
+						countryCode: countryCode
+				},
+				dataType: "json",
+				success: function(data){
+					mylog.log("autocompleteMultiScope() success");
+					mylog.dir(data);
+					$("#dropdown-multi-scope-found").html(trad.noresult);
+					html="";
+					var allCP = new Array();
+					var allCities = new Array();
+					$.each(data.cities, function(key, value){
+						if(currentScopeType == "city") { //mylog.log("in scope city");
+							//val = value.country + '_' + value.insee;
+							val = key;
+							lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
+							lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
+							html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+
+						};
+						if(currentScopeType == "cp") { 
+							$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
+								val = valueCP.postalCode;
+								lbl = valueCP.postalCode ;
+								lblList = valueCP.name + ", " +valueCP.postalCode ;
+								html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+							});
+						}; 
+						
+						if(currentScopeType == "zone"){
+							val = key;
+							lbl = (typeof value.name!= "undefined") ? value.name : ""; 
+							lblList = lbl + " (" +value.countryCode + ")";
+							level = value.level[0];
+							html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
+
+						}
+					});
+					if(html != "")
+					$("#dropdown-multi-scope-found").html(html);
+					$("#dropdown-multi-scope-found").mouseleave(function(){
+						$(this).hide();
+					});
+
+					$(".addScope").click(function(){
+						dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
+					});
+					
+				},
+				error: function(error){
+					$("#dropdown-multi-scope-found").html("error");
+					mylog.log("Une erreur est survenue pendant autocompleteMultiScope");
+				}
+			});
+		},
        	addScope : function (scopeValue, scopeName, scopeLevel, scopeCountry){
-			mylog.log("addScope", scopeValue, scopeName);
-			if(scopeValue == "") return;
+			mylog.log("addScope!", scopeValue, scopeName);
+			//if(scopeValue == "") return;
 
 			if(!dyFInputs.scopeObj.scopeExists(scopeValue)){ 
 				mylog.log("adding", scopeValue);
-				var scopeType = currentScopeType;
+				var scopeType = $('.btn-group-justified .active').data("scope-type");;
 				dyFInputs.scopeObj.scope[scopeValue] = { name: scopeName, active: true, type: scopeType };
 				if(notEmpty(scopeLevel)){
 					if(scopeLevel == "1")
@@ -4626,7 +5190,7 @@ var dyFInputs = {
 				//showTagsScopesMin();
 				//bindCommunexionScopeEvents();
 			}else{
-				showMsgInfoMultiScope("Ce lieu est déjà dans votre liste", "info");
+				toastr.warning("Ce lieu est déjà dans votre liste", "info");
 			}
 			$("#ajaxFormModal #dropdown-multi-scope-found").hide();
        	},
@@ -4800,6 +5364,11 @@ var dyFInputs = {
 	    					"<span class='lbl-status-check margin-left-10'>"+
 	    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>'+
 	    					"</span>");
+
+	    			setTimeout(function(){
+    			  		if(typeof params["inputTrue"] != "undefined") 
+    			  			$(params["inputTrue"]).hide(400);
+    			  	}, 1000);
 	        	}
 				else if(checked == "false" || !checked){ 
 	    			$(idFalse).addClass("bg-red").removeClass("letter-red");
@@ -4809,7 +5378,8 @@ var dyFInputs = {
 	    					"</span>");
 
 	    			setTimeout(function(){
-    			  		if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+    			  		if(typeof params["inputId"] != "undefined") 
+    			  			$(params["inputId"]).hide(400);
     			  	}, 1000);
 	    		}
 	    		
@@ -4826,6 +5396,8 @@ var dyFInputs = {
 	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    			  	
 	    			  	if(typeof params["inputId"] != "undefined") $(params["inputId"]).show(400);
+
+	    			  	if(typeof params["inputTrue"] != "undefined") $(params["inputTrue"]).hide(400);
 	    			}
 	    			else{
 	    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
@@ -4834,6 +5406,7 @@ var dyFInputs = {
 	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 
 	    				if(typeof params["inputId"] != "undefined") $(params["inputId"]).hide(400);
+	    				if(typeof params["inputTrue"] != "undefined") $(params["inputTrue"]).show(400);
 	    			}
 	    		});
 
@@ -4865,11 +5438,13 @@ var dyFInputs = {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
+	    				$(params["inputTrue"]).hide(400);
 	    			} else {
 	    				
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
+	    				$(params["inputTrue"]).show(400);
 	    			}
     			}, 1000);
 	        },
@@ -4886,6 +5461,7 @@ var dyFInputs = {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+params["onLabel"]+'</span>');
 	    				$(params["inputId"]).show(400);
+	    				$(params["inputTrue"]).hide(400);
 	    				/*if(id=="amendementActivated"){
 	    					var am = $("#ajaxFormModal #voteActivated").val();
 	    					mylog.log("am", am);
@@ -4903,6 +5479,7 @@ var dyFInputs = {
 	    				$("#ajaxFormModal ."+id+"checkbox .lbl-status-check").html(
 	    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+params["offLabel"]+'</span>');
 	    				$(params["inputId"]).hide(400);
+	    				$(params["inputTrue"]).show(400);
 	    			}
 	    		}
 		    }
@@ -5177,12 +5754,12 @@ var dyFInputs = {
     setSub : function(subClass) { 
     	dyFInputs.setHeader(subClass);
 		
-    	if( (contextData != null && contextData.type && contextData.id) || userId )
+    	/*if( (contextData != null && contextData.type && contextData.id) || userId )
 		{
 			cId = userId;
 			cType = "citoyens";
 			cName = userConnected.name;
-			if(contextData != null && contextData.type && contextData.id){
+			if(typeof contextData != "undefined" && contextData.type && contextData.id){
 				cId = contextData.id;
 				cType = contextData.type;
 				cName = contextData.name;
@@ -5194,7 +5771,7 @@ var dyFInputs = {
 		} 
 		$("#ajax-modal-modal-title").html(
 		 	$("#ajax-modal-modal-title").html()+
-		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );
+		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );*/
 		
     }
 };
@@ -5444,7 +6021,7 @@ var processUrl = {
 		                if(extracted_url_send.indexOf("http")<0)
 		                	extracted_url_send = "http://"+extracted_url;
 		                $.ajax({
-							url: baseUrl+'/'+moduleId+"/news/extractprocess",
+							url: baseUrl+"/news/co/extractprocess",
 							data: {'url': extracted_url_send},
 							type: 'post',
 							dataType: 'json',
@@ -5520,7 +6097,7 @@ var processUrl = {
 		$(inputClass+" span.help-block").html(trad.waitWeFetch+" <i class='fa fa-spin fa-refresh'></i>");
 	
 		$.ajax({
-			url: baseUrl+'/'+moduleId+"/news/extractprocess",
+			url: baseUrl+"/news/co/extractprocess",
 			data: { 'url' : url },
 			type: 'post',
 			dataType: 'json',
@@ -5682,35 +6259,47 @@ var processUrl = {
 			img_arr_pos=1;
 	    }
 	    inputToSave="";
+	    widthMediaDescription="col-xs-12 margin-top-10";
 	    if(typeof(data.content) !="undefined" && typeof(data.content.imageSize) != "undefined"){
 	        if (data.content.videoLink){
 	            extractClass="extracted_thumb";
-	            width="100%";
-	            height="100%";
-
-	            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-3x fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
+	            if(data.content.imageSize =="large" && (!notNull(action) || action=="show")){
+	                extractClass="extracted_thumb_large col-xs-12";
+	                width="100%";
+	                height="";
+	                faSize="4x";
+	            }
+	            else{
+	                extractClass="extracted_thumb col-xs-4";
+	                width="100%";
+	                height="100%";
+	                faSize="3x";
+	                widthMediaDescription="col-xs-8";
+	            }
+	            aVideo='<a href="javascript:;" class="videoSignal text-white center"><i class="fa fa-'+faSize+' fa-play-circle-o"></i><input type="hidden" class="videoLink" value="'+data.content.videoLink+'"/></a>';
 	            inputToSave+="<input type='hidden' class='video_link_value' value='"+data.content.videoLink+"'/>"+
 	            "<input type='hidden' class='media_type' value='video_link' />";   
 			}
 	        else{
 	            aVideo="";
 	            endAVideo="";
-	            if(data.content.imageSize =="large"){
-	                extractClass="extracted_thumb_large";
+	            if(data.content.imageSize =="large" && (!notNull(action) || action=="show")){
+	                extractClass="extracted_thumb_large col-xs-12";
 	                width="100%";
 	                height="";
 	            }
 	            else{
-	                extractClass="extracted_thumb";
+	                extractClass="extracted_thumb col-xs-4";
 	                width="100";
 	                height="100";
+	                widthMediaDescription="col-xs-8";
 	            }
 	            inputToSave+="<input type='hidden' class='media_type' value='img_link' />";
 			}
 			inputToSave+="<input type='hidden' class='size_img' value='"+data.content.imageSize+"'/>"
 	    }
 	    if (typeof(data.content) !="undefined" && typeof(data.content.image)!="undefined"){
-	        inc_image = '<div class="'+extractClass+'  col-xs-4 no-padding" id="extracted_thumb">'+aVideo;
+	        inc_image = '<div class="'+extractClass+' no-padding" id="extracted_thumb">'+aVideo;
 	        if(data.content.type=="img_link"){
 		        if(typeof(data.content.imageId) != "undefined"){
 			       inc_image += "<input type='hidden' id='deleteImageCommunevent"+id+"' value='"+data.content.imageId+"'/>";
@@ -5754,14 +6343,14 @@ var processUrl = {
 		else
 			mediaUrl="";
 		if((typeof(data.description) !="undefined" || typeof(data.name) != "undefined") && (data.description !="" || data.name != "")){
-			contentMedia='<div class="extracted_content col-xs-8 padding-20">'+
+			contentMedia='<div class="extracted_content '+widthMediaDescription+'">'+
 				'<a href="'+mediaUrl+'" target="_blank" class="lastUrl text-dark">';
 				if(typeof(data.name) != "undefined" && data.name!=""){
 					contentMedia+='<h4>'+data.name+'</h4></a>';
 					inputToSave+="<input type='hidden' class='name' value='"+data.name+"'/>";
 				}
 				if(typeof(data.description) != "undefined" && data.description!=""){
-					contentMedia+='<p>'+data.description+'</p>'+countThumbail+'>';
+					contentMedia+='<p>'+data.description+'</p>'+countThumbail;
 					if(typeof(data.name) == "undefined" || data.name=="")
 						contentMedia+='</a>';
 					inputToSave+="<input type='hidden' class='description' value='"+data.description+"'/>"; 
@@ -5776,7 +6365,7 @@ var processUrl = {
 		content="";
 		if(action == "save")
 			content += '<a href="javascript:;" class="removeMediaUrl"><i class="fa fa-times"></i></a>';
-	    content += '<div class="extracted_url padding-10">'+ inc_image +contentMedia+'</div>'+inputToSave;
+	    content += '<div class="extracted_url col-xs-12">'+ inc_image +contentMedia+'</div>'+inputToSave;
 	    return content;
 	},
 	getMediaVideo:function(data,action){

@@ -118,6 +118,12 @@
             "formType"=>"poi",
             "addClass"=> "addBtnAll bg-green-k",
             "href"=>"javascript:;"
+        ),Proposal::COLLECTION => array(
+            "label"=>Yii::t("common","Survey"),
+            "icon"=>Proposal::ICON,
+            "formType"=>"proposal",
+            "addClass"=> "addBtnAll bg-turq",
+            "href"=>"javascript:;"
         )
     );
     if( Yii::app()->params['rocketchatMultiEnabled'] ){
@@ -136,30 +142,24 @@
     }
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
-    <div class="toolbar-bottom bottom-left font-montserrat">
-        <a href="https://www.helloasso.com/associations/open-atlas/collectes/communecter/don" target="_blank" id="donation-btn" class="btn btn-default donation-btn btn-menu-vertical">
-            <i class="fa fa-heart"></i> 
-            <span class="tooltips-menu-btn"><?php echo Yii::t("common","Be aCOeur") ?></span>
-        </a>
-    </div>
-
-
+    <?php if(!@$themeParams["footer"] || (@$themeParams["footer"]["donate"] && !empty($themeParams["footer"]["donate"]))){ ?> 
+    <a href="https://www.helloasso.com/associations/open-atlas/collectes/communecter/don" target="_blank" id="donation-btn" class="btn btn-default donation-btn btn-menu-vertical">
+        <i class="fa fa-heart"></i> 
+        <span class="tooltips-menu-btn"><?php echo Yii::t("common","Be aCOeur") ?></span>
+    </a>
+    <?php } ?>
     <button class="btn btn-link btn-sm letter-red tooltips font-montserrat no-padding hidden" 
         id="btn-open-radio" 
         data-placement="top" title="Radio-Pixel-Humain is on air, listen now !">
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
     </button>
-
-    <div class="toolbar-bottom bottom-right font-montserrat">
-
-        <?php if(@Yii::app()->session["userId"]) { ?>
-        <button class="btn btn-default bg-green-k text-white no-padding btn-menu-vertical" id="show-bottom-add">
+    <?php if(@Yii::app()->session["userId"]) { ?>
+        <button class="btn btn-default no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
             <span class="tooltips-menu-btn"><?php echo Yii::t("common","Add something") ?></span>
         </button>
-        <?php } ?>
+    <?php } ?>
 
-    </div>
 
 
     <div class="toolbar-bottom-adds toolbar-bottom-fullwidth font-montserrat hidden">
@@ -171,34 +171,7 @@
                 <span><?php echo $v["label"] ?></span>
             </a>
         <?php } ?>
-        <!--<a href="javascript:;" data-form-type="organization" class="addBtnFoot btn-open-form btn btn-default bg-green inline-block margin-bottom-10"> 
-            <i class="fa <?php echo Organization::ICON; ?>"></i> 
-            <span><?php echo Yii::t("common","Organizations") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="project" class="addBtnFoot addBtnFoot_orga addBtnFoot_project btn-open-form btn btn-default bg-purple inline-block margin-bottom-10"> 
-            <i class="fa <?php echo  Project::ICON;?>"></i> 
-            <span><?php echo Yii::t("common","Project") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="event" class="addBtnFoot addBtnAll btn-open-form btn btn-default bg-orange margin-bottom-10"> 
-            <i class="fa fa-calendar"></i> 
-            <span><?php echo Yii::t("common","Event") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="classifieds" class="addBtnFoot addBtnFoot_orga addBtnFoot_project btn-open-form btn btn-default bg-azure margin-bottom-10"> 
-            <i class="fa fa-bullhorn"></i> 
-            <span><?php echo Yii::t("common","Classified") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="ressources" class="addBtnFoot addBtnAll btn-open-form btn btn-default bg-vine margin-bottom-10"> 
-            <i class="fa fa-cubes"></i> 
-            <span><?php echo Yii::t("common","Ressource") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="jobs" class="addBtnFoot hideBtnFoot_person addBtnFoot_orga addBtnFoot_project btn-open-form btn btn-default bg-yellow-k margin-bottom-10"> 
-            <i class="fa fa-briefcase"></i> 
-            <span><?php echo Yii::t("common","Jobs") ?></span>
-        </a>
-        <a href="javascript:;" data-form-type="poi" class="addBtnFoot addBtnAll btn-open-form btn btn-default bg-green-k margin-bottom-10"> 
-            <i class="fa fa-map-marker"></i> 
-            <span><?php echo Yii::t("common","Point of interest") ?></span>
-        </a>
+        <!--
         <?php 
         if( Yii::app()->params['rocketchatMultiEnabled'] )
         {
@@ -237,7 +210,7 @@ jQuery(document).ready(function() {
 })
 
 function addBtnSwitch(){ 
-    $(".addBtnFoot").addClass("hidden");
+    /*$(".addBtnFoot").addClass("hidden");
     $(".addBtnAll").removeClass("hidden");
     
 
@@ -260,7 +233,7 @@ function addBtnSwitch(){
     else if(contextData.type == "projects" )
         $(".addBtnFoot_project").removeClass("hidden");
     else if(contextData.type == "events" )
-        $(".addBtnFoot_event").removeClass("hidden");
+        $(".addBtnFoot_event").removeClass("hidden");*/
 
 }
 

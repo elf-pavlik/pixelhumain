@@ -35,11 +35,29 @@
     border: none;
     height: 50px;
 }
+#show-bottom-add{
+    position: fixed;
+    bottom: 60px;
+    left: 1px;
+    z-index: 20000;
+}
 #donation-btn{
+    position: fixed;
+    left: 1px;
+    bottom: 5px;
+    z-index: 20000;
 	color: white;
 	background-color:#E5344D;
 	line-height: 55px;
 	padding: 0px;
+}
+.footer-menu-vertical #show-bottom-add{
+    background-color: transparent;
+    color: #34a853;
+}
+.footer-menu-vertical #donation-btn{
+    background-color: transparent;
+    color: #E5344D;
 }
 #donation-btn i{
 	font-size: 20px;

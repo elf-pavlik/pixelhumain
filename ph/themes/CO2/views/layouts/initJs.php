@@ -5,6 +5,7 @@
     $preferences = Preference::getPreferencesByTypeId(@Yii::app()->session["userId"], Person::COLLECTION);
 ?>
 <script>
+    //alert("init");
     var themeUrl = "<?php echo Yii::app()->theme->baseUrl;?>";
     var themeParams = <?php echo json_encode(@$themeParams);?>;
     var domainName = "<?php echo Yii::app()->params["CO2DomainName"];?>";
@@ -37,6 +38,8 @@
         "poi": <?php echo json_encode( Poi::getConfig() ) ?>,
         "chat": <?php echo json_encode( Chat::getConfig() ) ?>,
         "interop": <?php echo json_encode( Interop::getConfig() ) ?>,
+        //"mynetwork": <?php //echo json_encode( Mynetwork::getConfig() ) ?>,
+        "map": <?php echo json_encode( Map::getConfig() ) ?>,
         "eco" : <?php echo json_encode( array(
             "module" => "eco",
             "url"    => Yii::app()->getModule( "eco" )->assetsUrl
@@ -90,11 +93,12 @@ var typeObj = {
     
     entry : {   col:"surveys",  ctrl:"survey",  titleClass : "bg-dark",bgClass : "bgDDA",   icon : "gavel", color : "azure", 
         saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-    vote : {col:"actionRooms",ctrl:"survey"},
+    vote : {sameAs:"proposals"},
     survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
     surveys : {sameAs:"survey"},
     proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
     proposals : { sameAs : "proposal" },
+    proposal2 : { sameAs : "proposal" },
     resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
     action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
     actions : { sameAs : "action" },
@@ -144,7 +148,8 @@ var typeObj = {
                     chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
                 }},
     filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"},
-    curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"}
+    curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
+    badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"}
 };
 
     
@@ -216,11 +221,12 @@ var typeObj = {
         "Group"         : { color: "turq",   icon: "circle-o",      name: trad.groups },
         "projects"      : { color: "purple",  icon: "lightbulb-o",  name: trad.projects },
         "events"        : { color: "orange",  icon: "calendar",     name: trad.events },
-        "vote"          : { color: "azure",   icon: "gavel",        name: "Propositions, Questions, Votes" },
+        "vote"          : { color: "red",   icon: "gavel",        name: "Propositions, Votes" },
         "actions"       : { color: "lightblue2", icon: "cogs",      name: "actions" },
         "cities"        : { color: "red",        icon: "university",name: trad.municipalities },
         "poi"           : { color: "green-poi",  icon: "map-marker",name: trad.pointsinterests },
         "place"           : { color: "brown",    icon: "map-marker", name: trad.pointsinterests },
+        "proposals"     : { color: "red",    icon: "gavel", name: "Propositions" },
         //"interop"    : { color: "lightblue2",   icon: "group",      name: "interop" },
         // "datagouv"    : { color: "lightblue2",   icon: "bullhorn",   name: "DataGouv" },
         // "osm"         : { color: "lightblue2",   icon: "bullhorn",   name: "Open Street Map" },
@@ -302,8 +308,8 @@ var typeObj = {
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
             };
-            initFloopDrawer();
-            resizeInterface();
+            if(typeof initFloopDrawer != "undefined") initFloopDrawer();
+            if(typeof resizeInterface != "undefined") resizeInterface();
             initMyScopes();
             //if(typeof localStorage != "undefined" && typeof localStorage.circuit != "undefined")
               //  circuit.obj = JSON.parse(localStorage.getItem("circuit"));
@@ -505,7 +511,6 @@ function initMyScopes(){
     //var myScopes={};
     if( notNull(localStorage) && notNull(localStorage.myScopes) )
         myScopes = JSON.parse(localStorage.getItem("myScopes"));
-
     if( notNull(myScopes) && myScopes.userId == userId )  {
         myScopes.open={};
         myScopes.countActive = 0;

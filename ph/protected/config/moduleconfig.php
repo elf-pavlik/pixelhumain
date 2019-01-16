@@ -16,11 +16,16 @@ $activeModules = array(
 	//"classifieds",
 	"onepage",
 	"cooperation",
+	"costum",
 	//'terla',
 	'chat',
 	//'cococarto', 
 	"survey",
 	"interop",
+	"map",
 	"eco",
-	"custom"
+	"dda",
+	"custom",
+	"mynetwork",
+	"news"
 	);

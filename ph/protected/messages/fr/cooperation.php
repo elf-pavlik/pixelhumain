@@ -38,6 +38,7 @@ return array(
 	"amendables" => "Amendables",
 	"amendable" => "Amendable",
 	"tovote" => "À voter",
+	"amendementAndVote" => "À voter et à amender",
 	"todo" => "À faire",
 	"archived" => "Archivée",
 	"disabled" => "Désactivée",
@@ -92,8 +93,10 @@ return array(
 	"A proposal is used to discuss and seek community input on a given idea or question" => "Une proposition sert à discuter et demander l'avis d'une communauté sur une idée ou une question donnée",
 
 	"Votes are disabled during the amendment period" =>" Les votes sont désactivés pendant la période d'amendement",
+	"If Yes, votes are enabled during the amendment period" =>"Si oui, les votes sont activés pendant la période d'amendement",
 
 	"Enable amendments" =>" Activer les amendements",
+	"Amendments and votes at the same time" => "Les amendements et les votes en même temps",
 
 	"anonymous" => "anonyme",
 	"nominative" => "nominatif",
@@ -169,6 +172,8 @@ return array(
 	"End of vote session" => "fin du vote",
 	"You did vote" => "Vous avez voté",
 	"You did not vote" => "Vous n'avez pas voté",
+	"You did not vote yet" => "Vous n'avez pas encore voté",
+	"See votes" => "Voir les votes",
 	"You voted for this answer" => "Vous avez choisi cette réponse",
 	"The <b>resolution</b> is done : " => "La <b>résolution</b> suivante a été prise : ",
 	"The proposal is" => "la proposition est",
@@ -262,6 +267,7 @@ return array(
 	"Vote open until" => "Le vote est ouvert jusqu'au",
 
 	"voters" => "votants",
+	"Vote" => "Votez",
 
 	"click to vote" => "cliquer pour voter",
 	"number of voters" => "nombre de votants",
