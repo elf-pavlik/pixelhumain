@@ -1312,8 +1312,7 @@ var dyFObj = {
         		  fieldObj.inputType == "tags" || 
         		  fieldObj.inputType == "tags" ) {
         	mylog.log("build field "+field+">>>>>> text, numeric, tags, tags");
-        	if(fieldObj.inputType == "tags")
-        	{
+        	if(fieldObj.inputType == "tags"){
         		fieldClass += " select2TagsInput";
         		if(fieldObj.values){
         			if(!dyFObj.init.initValues[field])
@@ -2124,22 +2123,22 @@ var dyFObj = {
         * SCOPE USER 	
         ************************************** */
         else if( fieldObj.inputType == "scope" ) {
-        	fieldHTML += '<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
+        	fieldHTML += 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
 
-        	//	'<div id="scopes-news-form" class="no-padding">'+
+			//	'<div id="scopes-news-form" class="no-padding">'+
 			fieldHTML +=		'<div id="news-scope-search" class="col-xs-12 no-padding">'+
 									// '<label class="margin-left-5">'+
 									// 	'<i class="fa fa-angle-down"></i> '+trad.addplacestyournews+
 									// '</label><br>'+
 									//'<div class="bg-white padding-10">'+
-										'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
-											'<div class="input-group shadow-input-header">'+
-												'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
-												'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
-											'</div>'+
-											'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
-											'</div>'+
+									'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
+										'<div class="input-group shadow-input-header">'+
+											'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+											'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
 										'</div>'+
+										'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
+										'</div>'+
+									'</div>'+
 										// '<a href="javascript:;" id="multiscopes-news-btn" class="scopes-btn-news margin-left-20" data-type="multiscopes">'+
 										// 	'<i class="fa fa-star"></i> '+trad.facoritesplaces+
 										// '</a>'+
@@ -2148,43 +2147,16 @@ var dyFObj = {
 										// '</a>'+
 									//'</div>'+
 								'</div>'+
-								'<div id="news-scopes-container" class="scopes-container col-md-12 col-sm-12 col-xs-12">'+
-									'<hr class="submit">'+
-								'</div>'+
+								// '<div id="news-scopes-container" class="scopes-container col-md-12 col-sm-12 col-xs-12">'+
+								// 	'<hr class="submit">'+
+								// '</div>'+
 								'<div class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
 									'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
 								'</div>'+
 								'<div id="content-added-scopes-container" class="col-md-12 col-sm-12 col-xs-12">';
-									if(	typeof newsScopes !=  "undefined" &&
-										Object.keys(newsScopes).length > 0 ) {
-										$.each(newsScopes, function(key,value){
-											var btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
-																	"data-add='false' data-scope-value='"+value.id+"' "+
-																	'data-scope-key="'+key+'" '+
-																	"data-toggle='tooltip' data-placement='top' "+
-																	"data-original-title='Remove'>"+
-																		"<i class='fa fa-times-circle'></i>"+
-																"</span>";
-											fieldHTML += "<div class='scope-order text-red' data-level='"+value.level+"'>"+
-															btnScopeAction+
-															"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
-																"class='item-scope-checker item-scope-input' "+
-																'data-scope-key="'+key+'" '+
-																'data-scope-value="'+value.id+'" '+
-																'data-scope-name="'+value.name+'" '+
-																'data-scope-type="'+value.type+'" '+
-																'data-scope-level="'+value.type+'" ';
-																if(notNull(value.level))
-																	fieldHTML += 'data-level="'+value.level+'"';
-																fieldHTML += '>' + 
-																value.name + 
-															"</span>"+
-														"</div>";
-										});
-									}
 
-		    // fieldHTML +=		'</div>';
-        	fieldHTML += '</div>';
+		   	fieldHTML +=		'</div>';
+        	fieldHTML += 	'</div>';
         
     //     else if( fieldObj.inputType == "scope" ) {
     //     	mylog.log("build field "+field+">>>>>> scope");
