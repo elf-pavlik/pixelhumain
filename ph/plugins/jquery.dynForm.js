@@ -2124,98 +2124,161 @@ var dyFObj = {
         * SCOPE USER 	
         ************************************** */
         else if( fieldObj.inputType == "scope" ) {
-        	mylog.log("build field "+field+">>>>>> scope");
-        		//fieldClass += " select2TagsInput select2ScopeInput";				
-				fieldHTML += '<div class="col-md-12 no-padding">'+
-								'<div class="col-xs-12">'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
-										'<select id="select-country"></select>'+
-									'</div>'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
-												'data-toggle="tooltip" data-placement="top" '+
-												'title="'+tradDynForm["Add a city"]+'">'+
-												'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
-											'</button>'+
-										'</div>'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
-												'data-toggle="tooltip" data-placement="top" '+
-												'title="'+tradDynForm["Add a postal code"]+'">'+
-												'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
-											'</button>'+
-										'</div>'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
-												'data-toggle="tooltip" data-placement="top" '+
-												'title="'+tradDynForm["Add a zone"]+'">'+
-												'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
-											'</button>'+
-										'</div>'+
-									'</div>'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
-											'data-toggle="tooltip" data-placement="top" '+
-											'title="'+tradDynForm["Add a city"]+'">'+
-											'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
-											'</button>'+
-										'</div>'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
-											'data-toggle="tooltip" data-placement="top" '+
-											'title="'+tradDynForm["Add a postal code"]+'">'+
-											'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
-											'</button>'+
-										'</div>'+
-									'</div>'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
-											'data-toggle="tooltip" data-placement="top" '+
-											'title="'+tradDynForm["Add a zone"]+'">'+
-											'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
-											'</button>'+
-										'</div>'+
-									'</div>'+
-									'<div class="col-md-12 no-padding">'+
-										'<div class="input-group margin-bottom-10 col-md-12">'+
-											'<input id="input-add-multi-scope" type="text" class="form-control col-md-12" placeholder="'+tradDynForm["Add a city"]+' ...">'+
-											'<div class="dropdown">'+
-												'<ul class="dropdown-menu" id="dropdown-multi-scope-found"></ul>'+
+        	fieldHTML += '<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
+
+        	//	'<div id="scopes-news-form" class="no-padding">'+
+			fieldHTML +=		'<div id="news-scope-search" class="col-xs-12 no-padding">'+
+									// '<label class="margin-left-5">'+
+									// 	'<i class="fa fa-angle-down"></i> '+trad.addplacestyournews+
+									// '</label><br>'+
+									//'<div class="bg-white padding-10">'+
+										'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
+											'<div class="input-group shadow-input-header">'+
+												'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+												'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
+											'</div>'+
+											'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
 											'</div>'+
 										'</div>'+
-									'</div>'+
+										// '<a href="javascript:;" id="multiscopes-news-btn" class="scopes-btn-news margin-left-20" data-type="multiscopes">'+
+										// 	'<i class="fa fa-star"></i> '+trad.facoritesplaces+
+										// '</a>'+
+										// '<a href="javascript:;" id="communexion-news-btn" class="scopes-btn-news  margin-left-20" data-type="communexion">'+
+										// 	'<i class="fa fa-home"></i> <span class="communexion-btn-label"></span>'+
+										// '</a>'+
+									//'</div>'+
 								'</div>'+
-								'<div class="text-left">'+
-									'<div class="label label-info label-sm block text-left" id="lbl-info-select-multi-scope"></div>'+
-									'<div id="multi-scope-list-city" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Cities </h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-cp" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> '+tradDynForm["Postal code"]+'</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level4" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i>Administrative zone N°4</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level3" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Administrative zone N°3</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level2" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Administrative zone N°2</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level1" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Country</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
+								'<div id="news-scopes-container" class="scopes-container col-md-12 col-sm-12 col-xs-12">'+
+									'<hr class="submit">'+
 								'</div>'+
-							'</div>';
+								'<div class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+									'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
+								'</div>'+
+								'<div id="content-added-scopes-container" class="col-md-12 col-sm-12 col-xs-12">';
+									if(	typeof newsScopes !=  "undefined" &&
+										Object.keys(newsScopes).length > 0 ) {
+										$.each(newsScopes, function(key,value){
+											var btnScopeAction="<span class='manageMultiscopes tooltips margin-right-5 margin-left-10' "+
+																	"data-add='false' data-scope-value='"+value.id+"' "+
+																	'data-scope-key="'+key+'" '+
+																	"data-toggle='tooltip' data-placement='top' "+
+																	"data-original-title='Remove'>"+
+																		"<i class='fa fa-times-circle'></i>"+
+																"</span>";
+											fieldHTML += "<div class='scope-order text-red' data-level='"+value.level+"'>"+
+															btnScopeAction+
+															"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
+																"class='item-scope-checker item-scope-input' "+
+																'data-scope-key="'+key+'" '+
+																'data-scope-value="'+value.id+'" '+
+																'data-scope-name="'+value.name+'" '+
+																'data-scope-type="'+value.type+'" '+
+																'data-scope-level="'+value.type+'" ';
+																if(notNull(value.level))
+																	fieldHTML += 'data-level="'+value.level+'"';
+																fieldHTML += '>' + 
+																value.name + 
+															"</span>"+
+														"</div>";
+										});
+									}
+
+		    // fieldHTML +=		'</div>';
+        	fieldHTML += '</div>';
+        
+    //     else if( fieldObj.inputType == "scope" ) {
+    //     	mylog.log("build field "+field+">>>>>> scope");
+    //     		//fieldClass += " select2TagsInput select2ScopeInput";				
+				// fieldHTML += '<div class="col-md-12 no-padding">'+
+				// 				'<div class="col-xs-12">'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
+				// 						'<select id="select-country"></select>'+
+				// 					'</div>'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
+				// 								'data-toggle="tooltip" data-placement="top" '+
+				// 								'title="'+tradDynForm["Add a city"]+'">'+
+				// 								'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
+				// 								'data-toggle="tooltip" data-placement="top" '+
+				// 								'title="'+tradDynForm["Add a postal code"]+'">'+
+				// 								'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
+				// 								'data-toggle="tooltip" data-placement="top" '+
+				// 								'title="'+tradDynForm["Add a zone"]+'">'+
+				// 								'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
+				// 							'data-toggle="tooltip" data-placement="top" '+
+				// 							'title="'+tradDynForm["Add a city"]+'">'+
+				// 							'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
+				// 							'data-toggle="tooltip" data-placement="top" '+
+				// 							'title="'+tradDynForm["Add a postal code"]+'">'+
+				// 							'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
+				// 							'data-toggle="tooltip" data-placement="top" '+
+				// 							'title="'+tradDynForm["Add a zone"]+'">'+
+				// 							'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<div class="col-md-12 no-padding">'+
+				// 						'<div class="input-group margin-bottom-10 col-md-12">'+
+				// 							'<input id="input-add-multi-scope" type="text" class="form-control col-md-12" placeholder="'+tradDynForm["Add a city"]+' ...">'+
+				// 							'<div class="dropdown">'+
+				// 								'<ul class="dropdown-menu" id="dropdown-multi-scope-found"></ul>'+
+				// 							'</div>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 				'</div>'+
+				// 				'<div class="text-left">'+
+				// 					'<div class="label label-info label-sm block text-left" id="lbl-info-select-multi-scope"></div>'+
+				// 					'<div id="multi-scope-list-city" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Cities </h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-cp" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> '+tradDynForm["Postal code"]+'</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level4" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i>Administrative zone N°4</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level3" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Administrative zone N°3</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level2" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Administrative zone N°2</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level1" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Country</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 				'</div>'+
+				// 			'</div>';
 
 					
         } else if ( fieldObj.inputType == "formLocality") {
@@ -5044,240 +5107,43 @@ var dyFInputs = {
 			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
-    },
-    scope : {
-		label : tradDynForm.localization,
-       	inputType : "scope",
-       	init : function () {
-       		mylog.log("scopeObj", dyFInputs.scopeObj.scopeObj);
-       		dyFInputs.scopeObj.scope = {};
-       		getAjax( null , baseUrl+"/"+moduleId+"/opendata/getcountries/hasCity/true" , function(data){
-				mylog.log("getcountries", data);
-				var options = "";
-				$.each(data, function(key, val){
-			        if(notEmpty(userConnected) && notEmpty(userConnected.address) && userConnected.address.addressCountry != "" && userConnected.address.addressCountry == val.countryCode)
-			          options += '<option value="'+val.countryCode+'" checked>'+val.name+'</option>';
-			        else
-			          options += '<option value="'+val.countryCode+'">'+val.name+'</option>';
-				});
-				$("#ajaxFormModal #select-country").html(options);
-	    		$("#ajaxFormModal #dropdown-multi-scope-found").hide();
+	},
+	scope : {
+		label : trad.addplacestyournews,
+		inputType : "scope",
+		init : function () {
+			mylog.log("scopeObj", dyFInputs.scopeObj );
+			$("#searchScopeDF").off().on("keyup", function(e){
+				mylog.log("searchScopeDF", e.keyCode);
+				e.preventDefault();
+				// if(e.keyCode == 13){
+					searchTypeGS = ["cities"];
+					startGlobalSearch(0, 30, "#news-scope-search");
+				// }
 			});
-
-			$('#ajaxFormModal #input-add-multi-scope').filter_input({regex:'[^@#\'\"\`\\\\]'}); //[a-zA-Z0-9_] 
-		    $('#ajaxFormModal #input-add-multi-scope').keyup(function(){ 
-		        $("#ajaxFormModal #dropdown-multi-scope-found").show();
-		        if($('#ajaxFormModal #input-add-multi-scope').val()!=""){
-		            if(typeof timeoutAddScope != "undefined") clearTimeout(timeoutAddScope);
-		            timeoutAddScope = setTimeout(function(){  dyFInputs.scopeObj.autocompleteMultiScope(); }, 500);
-		        }
-		    });
-
-			$("#ajaxFormModal .btn-group-scope-type .btn-default").click(function(){
-				var currentScopeType = $(this).data("scope-type");
-				$("#ajaxFormModal .btn-group-scope-type .btn-default").removeClass("active");
-				$(this).addClass("active");
-				if(currentScopeType == "city") $('#ajaxFormModal #input-add-multi-scope').attr("placeholder", tradDynForm["Add a city"]+" ...");
-				if(currentScopeType == "cp") $('#ajaxFormModal #input-add-multi-scope').attr("placeholder", tradDynForm["Add a postal code"]+" ...");
-				if(currentScopeType == "zone") $('#ajaxFormModal #input-add-multi-scope').attr("placeholder", tradDynForm["Add a zone"]+" ...");
-			});
-			dyFInputs.scopeObj.showCountScope();
-       	}
-    },
-    scopeObj : {
-		scope : {},
-		currentScopeType : "",
-		scopeExists : function (scopeValue){
-			mylog.log("scopeExists");
-			return typeof dyFInputs.scopeObj.scope[scopeValue] != "undefined";
-		},
-		autocompleteMultiScope : function (){
-			var scopeValue = $('#input-add-multi-scope').val();
-			var countryCode = $('#select-country').val();
-
-			var currentScopeType = $('.btn-group-justified .active').data("scope-type");
-			$("#dropdown-multi-scope-found").html("<li><i class='fa fa-refresh fa-spin'></i></li>");
-			$.ajax({
-				type: "POST",
-				url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
-				data: {
-						type: currentScopeType, 
-						scopeValue: scopeValue,
-						countryCode: countryCode
-				},
-				dataType: "json",
-				success: function(data){
-					mylog.log("autocompleteMultiScope() success");
-					mylog.dir(data);
-					$("#dropdown-multi-scope-found").html(trad.noresult);
-					html="";
-					var allCP = new Array();
-					var allCities = new Array();
-					$.each(data.cities, function(key, value){
-						if(currentScopeType == "city") { //mylog.log("in scope city");
-							//val = value.country + '_' + value.insee;
-							val = key;
-							lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
-							lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
-							html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-
-						};
-						if(currentScopeType == "cp") { 
-							$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
-								val = valueCP.postalCode;
-								lbl = valueCP.postalCode ;
-								lblList = valueCP.name + ", " +valueCP.postalCode ;
-								html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-							});
-						}; 
-						
-						if(currentScopeType == "zone"){
-							val = key;
-							lbl = (typeof value.name!= "undefined") ? value.name : ""; 
-							lblList = lbl + " (" +value.countryCode + ")";
-							level = value.level[0];
-							html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-
-						}
-					});
-					if(html != "")
-					$("#dropdown-multi-scope-found").html(html);
-					$("#dropdown-multi-scope-found").mouseleave(function(){
-						$(this).hide();
-					});
-
-					$(".addScope").click(function(){
-						dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
-					});
-					
-				},
-				error: function(error){
-					$("#dropdown-multi-scope-found").html("error");
-					mylog.log("Une erreur est survenue pendant autocompleteMultiScope");
-				}
-			});
-		},
-       	addScope : function (scopeValue, scopeName, scopeLevel, scopeCountry){
-			mylog.log("addScope!", scopeValue, scopeName);
-			//if(scopeValue == "") return;
-
-			if(!dyFInputs.scopeObj.scopeExists(scopeValue)){ 
-				mylog.log("adding", scopeValue);
-				var scopeType = $('.btn-group-justified .active').data("scope-type");;
-				dyFInputs.scopeObj.scope[scopeValue] = { name: scopeName, active: true, type: scopeType };
-				if(notEmpty(scopeLevel)){
-					if(scopeLevel == "1")
-						scopeType = "level1";
-					else if(scopeLevel == "2")
-						scopeType = "level2";
-					else if(scopeLevel == "3")
-						scopeType = "level3";
-					else if(scopeLevel == "4")
-						scopeType = "level4";
-					dyFInputs.scopeObj.scope[scopeValue].type = scopeType ;
-					dyFInputs.scopeObj.scope[scopeValue].level = scopeLevel ;
-				}
-
-				if(notNull(scopeCountry))
-					dyFInputs.scopeObj.scope[scopeValue].countryCode = scopeCountry ;
-				//dyFInputs.scopeObj.scope[scopeValue].type = scopeType ;
-				mylog.log("dyFInputs.scopeObj.scope")
-				//alert();
-				dyFInputs.scopeObj.showScope(scopeValue);
-				$("#ajaxFormModal #input-add-multi-scope").val("");
-				dyFInputs.scopeObj.showCountScope();
-				//saveMultiScope();
-				//showTagsScopesMin();
-				//bindCommunexionScopeEvents();
-			}else{
-				toastr.warning("Ce lieu est déjà dans votre liste", "info");
-			}
-			$("#ajaxFormModal #dropdown-multi-scope-found").hide();
-       	},
-       	showScope : function (scopeValue){ 
-			mylog.log("showScope()", scopeValue);
-			var html = "";
-			if(dyFInputs.scopeObj.scopeExists(scopeValue)){
-				var scope = dyFInputs.scopeObj.scope[scopeValue];
-				mylog.log("scope", scope);
-				if(typeof scope.name == "undefined") scope.name = scopeValue;
-				var faActive = (dyFInputs.scopeObj.scope[scopeValue].active == true) ? "check-circle" : "circle-o";
-				var classDisable = (dyFInputs.scopeObj.scope[scopeValue].active == false) ? "disabled" : "";
-				html = '<span class="item-scope-input bg-red item-scope-'+scope.type+' '+classDisable+'" data-scope-value="'+scopeValue+'">' +
-							// '<a href="javascript:" class="item-scope-checker tooltips"' +
-							// 	'data-toggle="tooltip" data-placement="bottom" ' +
-							// 	'title="Activer/Désactiver" data-scope-value="'+scopeValue+'">' +
-							// 	'<i class="fa fa-'+faActive+'"></i>' +
-							// '</a>' +
-							'<span class="item-scope-name" >'+scope.name+'</span>' +
-							'<a href="javascript:" class="item-scope-deleter tooltips"' +
-								'data-toggle="tooltip" data-placement="bottom" ' +
-								'title="Supprimer" data-scope-value="'+scopeValue+'">' +
-								'<i class="fa fa-times"></i>' +
-							'</a>' +
-						'</span>';
-
-				var levelType = ( (scope.type == "zone") ? "level"+scope.level : scope.type ) ;
-				mylog.log("levelType", levelType, "#multi-scope-list-"+levelType);
-				$("#ajaxFormModal #multi-scope-list-"+levelType).append(html);
-				$("#ajaxFormModal #multi-scope-list-"+levelType).show();
-
-				// if(actionOnSetGlobalScope=="save")
-				// 	$("#scopeListContainerForm").html(html);
-				//$("#ajaxFormModal .item-scope-checker").off().click(function(){ toogleScopeMultiscope( $(this).data("scope-value")) });
-				$("#ajaxFormModal .item-scope-deleter").off().click(function(){ dyFInputs.scopeObj.deleteScope( $(this).data("scope-value")); });
-				//showMsgInfoMultiScope("Le scope a bien été ajouté", "success");
-			}else{
-				html = "";
-				//showMsgInfoMultiScope("showScope error : ce lieu n'existe pas - " + scopeValue, "error");
-			}
-			
-			$(".tooltips").tooltip();
-		},
-		deleteScope : function (scopeValue){ 
-			mylog.log("deleteScope(scopeValue)", scopeValue);
-			if(dyFInputs.scopeObj.scopeExists(scopeValue)){
-				delete dyFInputs.scopeObj.scope[scopeValue];
-				$("[data-scope-value=\""+scopeValue+"\"]").remove();
-				//saveMultiScope();
-			}
-		},
-		showCountScope : function (){
-			mylog.log("showCountScope");
-			var count = 0; 
-			var types = new Array("city", "cp", "level1", "level2", "level3", "level4");
-			$.each(dyFInputs.scopeObj.scope, function(key, value){
-				if(value.active==true) count++;
-				var levelType = ( (value.type == "zone") ? "level"+value.level : value.type ) ;
-				if(types.indexOf(levelType)>-1)
-					types.splice(types.indexOf(levelType), 1);
-			});
-			$.each(types, function(key, value){
-				$("#ajaxFormModal #multi-scope-list-"+value).hide();
-			});
-			$(".scope-count").html(count);
-			//showTagsScopesMin(".list_tags_scopes");
-			//showEmptyMsg();
 		}
-    },
-    //produces 
-    subDynForm : function(form, multi){
+	},
+	scopeObj : {
+		
+	},
+	//produces 
+	subDynForm : function(form, multi){
 
-    },
-    inputUrl :function (label,placeholder,rules, custom) {  
-    	label = ( notEmpty(label) ? label : tradDynForm.mainurl );
-    	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
-    	rules = ( notEmpty(rules) ? rules : { url: true } );
-    	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
-	    var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
-	    return inputObj;
+	},
+	inputUrl :function (label,placeholder,rules, custom) {  
+		label = ( notEmpty(label) ? label : tradDynForm.mainurl );
+		placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
+		rules = ( notEmpty(rules) ? rules : { url: true } );
+		custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
+		var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
+		return inputObj;
 	},
 	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
-    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
-    	inputObj.init = function(){
-            processUrl.getMediaFromUrlContent("#url", ".resultGetUrl0",0);
-            $(".urltext").css("display","none");
-        };
+		var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
+		inputObj.init = function(){
+			processUrl.getMediaFromUrlContent("#url", ".resultGetUrl0",0);
+			$(".urltext").css("display","none");
+	    };
 	    return inputObj;
 	},
     urls : {
