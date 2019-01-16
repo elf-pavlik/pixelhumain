@@ -4305,7 +4305,9 @@ var dyFInputs = {
 					if(v && notNull(object.dynForm)){
 						if(notNull(object.dynForm.extra)){
 							var nbListTags = 1 ;
-							while(jsonHelper.notNull("object.dynForm.extra.tags"+nbListTags)){
+							mylog.log("object.dynForm.extra.tags", jsonHelper.notNull("object.dynForm.extra.tags"+nbListTags), object.dynForm.extra["tags"+nbListTags]);
+							while( notNull(object.dynForm.extra["tags"+nbListTags] ) ){
+
 								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
 									"inputType" : "tags",
 									"placeholder" : object.dynForm.extra["tags"+nbListTags].placeholder,
@@ -4313,14 +4315,26 @@ var dyFInputs = {
 									"data" : networkTagsCategory[ object.dynForm.extra["tags"+nbListTags].list ],
 									"label" : object.dynForm.extra["tags"+nbListTags].list
 								};
+
+								mylog.log("object.dynForm.extra.tags 2 ", object.dynForm.extra["tags"+nbListTags]);
+								mylog.log("object.dynForm.extra.tags typeObj[key]", typeObj[key].dynForm.jsonSchema.properties);
 								nbListTags++;
 							}
-							delete typeObj[key].dynForm.jsonSchema.properties.tags;
+
+							if( typeof object.dynForm.extra.tags == "undefined" ||
+								object.dynForm.extra.tags == null ||
+								object.dynForm.extra.tags == false )
+								delete typeObj[key].dynForm.jsonSchema.properties.tags;
 						}
 					}
+
+					mylog.log("object.dynForm.extra.tags typeObj[key]2", typeObj[key].dynForm.jsonSchema.properties);
+
 				}
 			});
 		}
+
+
 	},
 	formLocality :function(label, placeholder) {
 		mylog.log("inputText ", inputObj);
