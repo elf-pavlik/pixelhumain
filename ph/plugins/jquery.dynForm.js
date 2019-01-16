@@ -4293,11 +4293,11 @@ var dyFInputs = {
 
 							if(	typeof typeObj[key] != "undefined" &&
 								typeof typeObj[key].dynForm != "undefined" && 
-								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined" &&
+								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"/* &&
 								( 	typeof object.dynForm == "undefined" ||
 									(	typeof object.dynForm.extra.tags == "undefined" ||
 										object.dynForm.extra.tags == null ||
-										object.dynForm.extra.tags == false ) ) ) {
+										object.dynForm.extra.tags == false ) )*/ ) {
 								typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
 								if(typeof object.request.mainTag != "undefined"){
 									typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = object.request.mainTag;
