@@ -638,6 +638,19 @@ var dyFObj = {
 		}
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
+
+		// input de tags différents
+		var nbListTags = 1 ;
+		mylog.log("Here", nbListTags, jsonHelper.notNull("formData.tags"+nbListTags));
+		while(jsonHelper.notNull("formData.tags"+nbListTags)){
+			tagsSave=formData["tags"+nbListTags].split(",");
+			if(!formData.tags)formData.tags = [];
+			$.each(tagsSave, function(i, e) {
+				formData.tags.push(e);
+			});
+			delete formData["tags"+nbListTags];
+			nbListTags++;
+		}
 		
 		if( typeof formData.openingHours != "undefined"){
 			if(typeof formData.hour != "undefined")
@@ -4280,7 +4293,11 @@ var dyFInputs = {
 
 							if(	typeof typeObj[key] != "undefined" &&
 								typeof typeObj[key].dynForm != "undefined" && 
-								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"/* &&
+								( 	typeof object.dynForm == "undefined" ||
+									(	typeof object.dynForm.extra.tags == "undefined" ||
+										object.dynForm.extra.tags == null ||
+										object.dynForm.extra.tags == false ) )*/ ) {
 								typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
 								if(typeof object.request.mainTag != "undefined"){
 									typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = object.request.mainTag;
@@ -4302,10 +4319,15 @@ var dyFInputs = {
 							}
 						}
 					}
+
+					var tetet = JSON.parse(JSON.stringify(typeObj[key].dynForm.jsonSchema.properties));
+					mylog.log("object.dynForm.extra.tags", tetet);
 					if(v && notNull(object.dynForm)){
 						if(notNull(object.dynForm.extra)){
 							var nbListTags = 1 ;
-							while(jsonHelper.notNull("object.dynForm.extra.tags"+nbListTags)){
+							
+							while( notNull(object.dynForm.extra["tags"+nbListTags] ) ){
+
 								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
 									"inputType" : "tags",
 									"placeholder" : object.dynForm.extra["tags"+nbListTags].placeholder,
@@ -4315,12 +4337,21 @@ var dyFInputs = {
 								};
 								nbListTags++;
 							}
-							delete typeObj[key].dynForm.jsonSchema.properties.tags;
+
+							if( typeof object.dynForm.extra.tags == "undefined" ||
+								object.dynForm.extra.tags == null ||
+								object.dynForm.extra.tags == false )
+								delete typeObj[key].dynForm.jsonSchema.properties.tags;
 						}
 					}
+
+					mylog.log("object.dynForm.extra.tags typeObj[key]2", typeObj[key].dynForm.jsonSchema.properties);
+
 				}
 			});
 		}
+
+
 	},
 	formLocality :function(label, placeholder) {
 		mylog.log("inputText ", inputObj);
@@ -4531,8 +4562,7 @@ var dyFInputs = {
 											});
 	},
 	tags : function(list, placeholder, label, minimumInputLength) { 
-    	//var tagsL = (list) ? list : tagsList;
-    	mylog.log("updateRole tags", list, placeholder, label)
+		mylog.log("inputTags", list, placeholder, label)
     	return {
 			inputType : "tags",
 			placeholder : placeholder != null ? placeholder : tradDynForm.tags,
