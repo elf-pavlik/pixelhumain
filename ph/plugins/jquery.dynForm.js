@@ -1351,6 +1351,7 @@ var dyFObj = {
 					mainTag=fieldObj.mainTag;
         		style = "style='width:100%;margin-bottom: 10px;border: 1px solid #ccc;'";
         	}
+        	mylog.log("select2TagsInput field",field, value );
         	//var label = '<label class="pull-left"><i class="fa fa-circle"></i> '+placeholder+'</label><br>';
         	fieldHTML += iconOpen+' <input type="text" class="form-control '+fieldClass+'" name="'+field+'" id="'+field+'" value="'+value+'" placeholder="'+placeholder+'" '+style+'/>'+iconClose;
         
@@ -2456,8 +2457,10 @@ var dyFObj = {
 						if(typeof dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength == "number")
 							selectOptions.minimumInputLength = dyFObj.init.initValues[$(this).attr("id")]["minimumInputLength"];
 
-						if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[$(this).attr("id")] != "undefined" && dyFObj.init.initSelectNetwork[$(this).attr("id")].length > 0)
+						if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[$(this).attr("id")] != "undefined" && dyFObj.init.initSelectNetwork[$(this).attr("id")].length > 0){
+							mylog.log("select2TagsInput data", dyFObj.init.initSelectNetwork[$(this).attr("id")]);
 							selectOptions.data=dyFObj.init.initSelectNetwork[$(this).attr("id")];
+						}
 						mylog.log( "select2TagsInput selectOptions ", selectOptions);
 						$(this).removeClass("form-control").select2(selectOptions);
 						if(typeof mainTag != "undefined")
@@ -4293,11 +4296,12 @@ var dyFInputs = {
 
 							if(	typeof typeObj[key] != "undefined" &&
 								typeof typeObj[key].dynForm != "undefined" && 
-								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"/* &&
+								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined" &&
 								( 	typeof object.dynForm == "undefined" ||
+									typeof object.dynForm.extra == "undefined" ||
 									(	typeof object.dynForm.extra.tags == "undefined" ||
 										object.dynForm.extra.tags == null ||
-										object.dynForm.extra.tags == false ) )*/ ) {
+										object.dynForm.extra.tags == false ) ) ) {
 								typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
 								if(typeof object.request.mainTag != "undefined"){
 									typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = object.request.mainTag;
@@ -4331,8 +4335,8 @@ var dyFInputs = {
 								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
 									"inputType" : "tags",
 									"placeholder" : object.dynForm.extra["tags"+nbListTags].placeholder,
-									"values" : networkTagsCategory[ object.dynForm.extra["tags"+nbListTags].list ],
-									"data" : networkTagsCategory[ object.dynForm.extra["tags"+nbListTags].list ],
+									"values" : object.dynForm.extra["tags"+nbListTags].tags,
+									//"data" : object.dynForm.extra["tags"+nbListTags].tags,
 									"label" : object.dynForm.extra["tags"+nbListTags].list
 								};
 								nbListTags++;
