@@ -181,8 +181,8 @@
     function initPositionInterface(){
         heightTopMenu=$("#mainNav").outerHeight();
         $(".main-container").css("padding-top",heightTopMenu);
-        $(".main-container #notificationPanelSearch.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu").css("top",heightTopMenu);
-        $("header, #affix-sub-menu, #vertical #territorial-menu").css("top",heightTopMenu);
+        $(".main-container #notificationPanelSearch.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search").css("top",heightTopMenu+4);
+        $("header, #affix-sub-menu, #vertical #territorial-menu").css("top",heightTopMenu+4);
         $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
 
         if(heightTopMenu > 70){
