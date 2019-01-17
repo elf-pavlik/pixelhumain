@@ -74,7 +74,10 @@
                                  array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
     if($this->module->id == "custom"){
         $this->renderPartial( 'co2.views.custom.init' );
-    }else 
+    }else if($this->module->id == "costum"){
+        $this->renderPartial( 'costum.views.co.init', array("slug"=>@$_GET["slug"]  ) );
+    }
+    else 
         Yii::app()->session["custom"]=null;
         ?>
 

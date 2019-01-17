@@ -235,7 +235,7 @@ var finder = {
 		else if(!notNull(update)){
 			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
 				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
-			else if(finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") 
+			else if((finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") || finder.typeAuthorized[id][0] == "organizations")  
 				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
         $(".finder-"+id+" .selectParent").click(function(e){
@@ -638,6 +638,19 @@ var dyFObj = {
 		}
 		if( typeof formData.tags != "undefined" && formData.tags != "" )
 			formData.tags = formData.tags.split(",");
+
+		// input de tags différents
+		var nbListTags = 1 ;
+		mylog.log("Here", nbListTags, jsonHelper.notNull("formData.tags"+nbListTags));
+		while(jsonHelper.notNull("formData.tags"+nbListTags)){
+			tagsSave=formData["tags"+nbListTags].split(",");
+			if(!formData.tags)formData.tags = [];
+			$.each(tagsSave, function(i, e) {
+				formData.tags.push(e);
+			});
+			delete formData["tags"+nbListTags];
+			nbListTags++;
+		}
 		
 		if( typeof formData.openingHours != "undefined"){
 			if(typeof formData.hour != "undefined")
@@ -1337,6 +1350,7 @@ var dyFObj = {
 					mainTag=fieldObj.mainTag;
         		style = "style='width:100%;margin-bottom: 10px;border: 1px solid #ccc;'";
         	}
+        	mylog.log("select2TagsInput field",field, value );
         	//var label = '<label class="pull-left"><i class="fa fa-circle"></i> '+placeholder+'</label><br>';
         	fieldHTML += iconOpen+' <input type="text" class="form-control '+fieldClass+'" name="'+field+'" id="'+field+'" value="'+value+'" placeholder="'+placeholder+'" '+style+'/>'+iconClose;
         
@@ -2478,8 +2492,10 @@ var dyFObj = {
 						if(typeof dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength == "number")
 							selectOptions.minimumInputLength = dyFObj.init.initValues[$(this).attr("id")]["minimumInputLength"];
 
-						if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[$(this).attr("id")] != "undefined" && dyFObj.init.initSelectNetwork[$(this).attr("id")].length > 0)
+						if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[$(this).attr("id")] != "undefined" && dyFObj.init.initSelectNetwork[$(this).attr("id")].length > 0){
+							mylog.log("select2TagsInput data", dyFObj.init.initSelectNetwork[$(this).attr("id")]);
 							selectOptions.data=dyFObj.init.initSelectNetwork[$(this).attr("id")];
+						}
 						mylog.log( "select2TagsInput selectOptions ", selectOptions);
 						$(this).removeClass("form-control").select2(selectOptions);
 						if(typeof mainTag != "undefined")
@@ -4315,7 +4331,12 @@ var dyFInputs = {
 
 							if(	typeof typeObj[key] != "undefined" &&
 								typeof typeObj[key].dynForm != "undefined" && 
-								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined"){
+								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined" &&
+								( 	typeof object.dynForm == "undefined" ||
+									typeof object.dynForm.extra == "undefined" ||
+									(	typeof object.dynForm.extra.tags == "undefined" ||
+										object.dynForm.extra.tags == null ||
+										object.dynForm.extra.tags == false ) ) ) {
 								typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
 								if(typeof object.request.mainTag != "undefined"){
 									typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = object.request.mainTag;
@@ -4337,25 +4358,39 @@ var dyFInputs = {
 							}
 						}
 					}
+
+					var tetet = JSON.parse(JSON.stringify(typeObj[key].dynForm.jsonSchema.properties));
+					mylog.log("object.dynForm.extra.tags", tetet);
 					if(v && notNull(object.dynForm)){
 						if(notNull(object.dynForm.extra)){
 							var nbListTags = 1 ;
-							while(jsonHelper.notNull("object.dynForm.extra.tags"+nbListTags)){
+							
+							while( notNull(object.dynForm.extra["tags"+nbListTags] ) ){
+
 								typeObj[key].dynForm.jsonSchema.properties["tags"+nbListTags] = {
 									"inputType" : "tags",
 									"placeholder" : object.dynForm.extra["tags"+nbListTags].placeholder,
-									"values" : networkTagsCategory[ object.dynForm.extra["tags"+nbListTags].list ],
-									"data" : networkTagsCategory[ object.dynForm.extra["tags"+nbListTags].list ],
+									"values" : object.dynForm.extra["tags"+nbListTags].tags,
+									//"data" : object.dynForm.extra["tags"+nbListTags].tags,
 									"label" : object.dynForm.extra["tags"+nbListTags].list
 								};
 								nbListTags++;
 							}
-							delete typeObj[key].dynForm.jsonSchema.properties.tags;
+
+							if( typeof object.dynForm.extra.tags == "undefined" ||
+								object.dynForm.extra.tags == null ||
+								object.dynForm.extra.tags == false )
+								delete typeObj[key].dynForm.jsonSchema.properties.tags;
 						}
 					}
+
+					mylog.log("object.dynForm.extra.tags typeObj[key]2", typeObj[key].dynForm.jsonSchema.properties);
+
 				}
 			});
 		}
+
+
 	},
 	formLocality :function(label, placeholder) {
 		mylog.log("inputText ", inputObj);
@@ -4566,8 +4601,7 @@ var dyFInputs = {
 											});
 	},
 	tags : function(list, placeholder, label, minimumInputLength) { 
-    	//var tagsL = (list) ? list : tagsList;
-    	mylog.log("updateRole tags", list, placeholder, label)
+		mylog.log("inputTags", list, placeholder, label)
     	return {
 			inputType : "tags",
 			placeholder : placeholder != null ? placeholder : tradDynForm.tags,
