@@ -874,28 +874,64 @@ var dyFObj = {
 	           toastr.error("something went wrong!! please try again.");
 	    });
 	},
-	
+	prepData : function(data){
+		var obj = null ;
+		if(typeof networkJson != 'undefined' && notNull(networkJson))
+			obj = networkJson;
+		if(typeof custom != 'undefined' && notNull(custom))
+			obj = custom;
+
+		if(obj != null && notNull(obj.dynForm) && notNull(data.tags)){
+			if(notNull(obj.dynForm.extra)){
+				var nbListTags = 1 ;
+				while( notNull(obj.dynForm.extra["tags"+nbListTags] ) ){
+					var tagsL = obj.dynForm.extra["tags"+nbListTags].tags;
+					tagsL.forEach(function(valTag) {
+						var index = $.inArray( valTag, data.tags );
+						if(index > -1){
+							if(typeof data["tags"+nbListTags] == "undefined"){
+								data["tags"+nbListTags] = [];
+							}
+							data["tags"+nbListTags].push(valTag);
+							data.tags.splice(index,1);
+						}
+					});
+					nbListTags++;
+				}
+
+				if( typeof obj.dynForm.extra.tags == "undefined" ||
+					obj.dynForm.extra.tags == null ||
+					obj.dynForm.extra.tags == false )
+					delete data.tags;
+			}
+		}
+		return data;
+
+	},
 	//entry point function for opening dynForms
 	openForm : function  (type, afterLoad,data, isSub) { 
-	    //mylog.clear();
-	    //alert("openForm");
-	    $.unblockUI();
-	    $("#openModal").modal("hide");
-	    mylog.warn("--------------- Open Form ",type, afterLoad,data);
-	    mylog.dir(data);
-	    uploadObj.contentKey="profil"; 
-	    if(notNull(data)){
-	    	if(typeof data.images != "undefined")
-	    		uploadObj.initList=data.images;
-	    	if(typeof data.files != "undefined" )
-	    		uploadObj.initList=data.files;
-	    }else{
-	    	uploadObj.initList={};
-	    }
-	    dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
-	    dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
-      	
-	    if(userId)
+		//mylog.clear();
+		//alert("openForm");
+		$.unblockUI();
+		$("#openModal").modal("hide");
+		mylog.warn("--------------- Open Form ",type, afterLoad,data);
+		mylog.dir(data);
+		uploadObj.contentKey="profil"; 
+		if(notNull(data)){
+			if(typeof data.images != "undefined")
+				uploadObj.initList=data.images;
+			if(typeof data.files != "undefined" )
+				uploadObj.initList=data.files;
+
+			data = dyFObj.prepData(data);
+
+		}else{
+			uploadObj.initList={};
+		}
+		dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
+		dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
+
+		if(userId)
 		{
 			if(typeof formInMap != 'undefined')
 				formInMap.formType = type;
@@ -4324,8 +4360,6 @@ var dyFInputs = {
 						}
 					}
 
-					var tetet = JSON.parse(JSON.stringify(typeObj[key].dynForm.jsonSchema.properties));
-					mylog.log("object.dynForm.extra.tags", tetet);
 					if(v && notNull(object.dynForm)){
 						if(notNull(object.dynForm.extra)){
 							var nbListTags = 1 ;
