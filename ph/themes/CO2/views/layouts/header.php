@@ -190,7 +190,7 @@
                 marginTop=(heightTopMenu-55);
                 $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
             }
-        }, 100);
+        }, 400);
     }
     function headerHeightPos(bool){
         setTimeout(function(){     
