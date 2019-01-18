@@ -252,7 +252,7 @@ return array(
 
 
 	"Amendements" => "Amendements",
-	"Write your amendement" => "Rédiger votre amendement",
+	"Write your amendement" => "Rédigez votre amendement",
 	"If your amendement is adopted, it will be added to the principale proposal, <br>and will incorporated the final proposal, submited to vote." => 
 	"Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera parti de la proposition finale, soumise au vote.",
 
