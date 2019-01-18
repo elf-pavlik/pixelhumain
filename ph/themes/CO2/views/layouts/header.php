@@ -179,16 +179,18 @@
     }
 
     function initPositionInterface(){
-        heightTopMenu=$("#mainNav").outerHeight();
-        $(".main-container").css("padding-top",heightTopMenu);
-        $(".main-container #notificationPanelSearch.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search").css("top",heightTopMenu+4);
-        $("header, #affix-sub-menu, #vertical #territorial-menu").css("top",heightTopMenu+4);
-        $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
+        setTimeout(function(){
+            heightTopMenu=$("#mainNav").outerHeight();
+            $(".main-container").css("padding-top",heightTopMenu);
+            $(".main-container #notificationPanelSearch.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search").css("top",heightTopMenu+4);
+            $("header, #affix-sub-menu, #vertical #territorial-menu").css("top",heightTopMenu+4);
+            $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
 
-        if(heightTopMenu > 70){
-            marginTop=(heightTopMenu-55);
-            $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
-        }
+            if(heightTopMenu > 70){
+                marginTop=(heightTopMenu-55);
+                $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
+            }
+        }, 100);
     }
     function headerHeightPos(bool){
         setTimeout(function(){     

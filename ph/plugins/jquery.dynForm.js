@@ -4283,7 +4283,7 @@ var dyFInputs = {
 				console.log("NETWORK searchTag", networkTags);
 			}
 		}
-		
+
 		if(typeof object.filter != "undefined" && typeof object.filter.linksTag != "undefined"){
 			$.each(object.filter.linksTag, function(category, properties) {
 				optgroupObject=new Object;
@@ -4311,8 +4311,6 @@ var dyFInputs = {
 				networkTagsCategory[category].push(optgroupObject);
 			});
 		}
-
-
 		if(	typeof object.add != "undefined"  && 
 			typeof typeObj != "undefined" ){
 			$.each(object.add, function(key, v) {
@@ -4322,6 +4320,7 @@ var dyFInputs = {
 				if( typeof typeObj[key].dynForm != "undefined"){
 					if( typeof object.request != "undefined"){
 						if(typeof object.request.sourceKey != "undefined"){
+							alert("ouiiiiiiiii");
 							sourceObject = {inputType:"hidden", value : object.request.sourceKey[0]};
 							typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 						}

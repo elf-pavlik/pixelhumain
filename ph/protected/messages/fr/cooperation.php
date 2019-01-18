@@ -301,4 +301,5 @@ return array(
 	"Surveys are published for all your followers" => "Les sondages sont automatiquement partagés avec tous vos abonnés",
 
 	"Add measure" => "Ajouter une mesure",
+	"Size min : 10 caracters"=> "Taille minimun : 10 caractères",
 );
