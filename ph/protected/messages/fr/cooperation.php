@@ -299,4 +299,6 @@ return array(
 	"Survey text" => "Votre texte",
 
 	"Surveys are published for all your followers" => "Les sondages sont automatiquement partagés avec tous vos abonnés",
+
+	"Add measure" => "Ajouter une mesure",
 );
