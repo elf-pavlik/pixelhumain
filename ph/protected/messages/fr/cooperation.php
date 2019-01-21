@@ -252,7 +252,7 @@ return array(
 
 
 	"Amendements" => "Amendements",
-	"Write your amendement" => "Rédiger votre amendement",
+	"Write your amendement" => "Rédigez votre amendement",
 	"If your amendement is adopted, it will be added to the principale proposal, <br>and will incorporated the final proposal, submited to vote." => 
 	"Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera parti de la proposition finale, soumise au vote.",
 
@@ -299,4 +299,7 @@ return array(
 	"Survey text" => "Votre texte",
 
 	"Surveys are published for all your followers" => "Les sondages sont automatiquement partagés avec tous vos abonnés",
+
+	"Add measure" => "Ajouter une mesure",
+	"Size min : 10 caracters"=> "Taille minimun : 10 caractères",
 );

@@ -1,5 +1,5 @@
 <?php   HtmlHelper::registerCssAndScriptsFiles(array('/assets/css/menus/multi_tags_scopes.css'), Yii::app()->theme->baseUrl); 
-    $themeParams = Yii::app()->session['paramsConfig'];//CO2::getThemeParams();    
+    $themeParams = Yii::app()->session['paramsConfig'];  
     if(@$type=="cities")    { 
         $lblCreate = "";
         $themeParams["pages"]["#".$page]["mainTitle"] = "Rechercher une commune"; 
@@ -179,16 +179,18 @@
     }
 
     function initPositionInterface(){
-        heightTopMenu=$("#mainNav").outerHeight();
-        $(".main-container").css("padding-top",heightTopMenu);
-        $(".main-container #notificationPanelSearch.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu").css("top",heightTopMenu);
-        $("header, #affix-sub-menu, #territorial-menu").css("top",heightTopMenu);
-        $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
+        setTimeout(function(){
+            heightTopMenu=$("#mainNav").outerHeight();
+            $(".main-container").css("padding-top",heightTopMenu);
+            $(".main-container #notificationPanelSearch.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search").css("top",heightTopMenu+4);
+            $("header, #affix-sub-menu, #vertical #territorial-menu").css("top",heightTopMenu+4);
+            $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
 
-        if(heightTopMenu > 60){
-            marginTop=(heightTopMenu-55);
-            $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
-        }
+            if(heightTopMenu > 70){
+                marginTop=(heightTopMenu-55);
+                $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
+            }
+        }, 400);
     }
     function headerHeightPos(bool){
         setTimeout(function(){     
