@@ -315,7 +315,7 @@ li.submenucoop{
 	position: fixed;
 	top: 53px;
 	bottom: 0px;
-	right: 0px;
+	left: 0px;
 	overflow-y: scroll;
 }
 
