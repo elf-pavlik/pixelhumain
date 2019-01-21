@@ -527,10 +527,14 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
             '<div id="comments-list-'+idNewComment+'" class="hidden pull-left col-xs-11 no-padding answerCommentContainer"></div>' +
               
           '</div>';
-
     if(!isAnswer){
       $("#comments-list-"+idComment).prepend(html);
       $("#comments-list-"+idComment).find(".noComment").remove();
+      if($("#comments-list-"+idComment).length <= 0 && typeof idParentProposal != "undefined" && idParentProposal != "" && $("#comments-list-"+idParentProposal).length){
+          $("#comments-list-"+idParentProposal).prepend(html);
+        $("#comments-list-"+idParentProposal).find(".noComment").remove();
+    
+      }
     }else{
       $('#container-txtarea-'+idComment).after(html);
     }

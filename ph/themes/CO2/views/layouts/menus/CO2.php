@@ -186,6 +186,12 @@
                                 if(Yii::app()->session["userIsAdmin"] || Yii::app()->session[ "userIsAdminPublic" ]){
                                     $show=true;
                                     $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
+                                }else if(@Yii::app()->session["userId"] 
+                                    && @Yii::app()->session["custom"]
+                                    && @Yii::app()->session["custom"]["admins"]
+                                    && @Yii::app()->session["custom"]["admins"][Yii::app()->session["userId"]]){
+                                    $show=true;
+                                    $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
                                 }else
                                     $how=false;
                             }
