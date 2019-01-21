@@ -4270,6 +4270,7 @@ var dyFInputs = {
 	},
 	initializeTypeObjForm : function(object){
 		// Initialize tags list for network in form of element
+		alert("initializeTypeObjForm");
 		var networkTags = [];
 		var networkTagsCategory = {};
 		tagsList = [];
@@ -4311,8 +4312,10 @@ var dyFInputs = {
 				networkTagsCategory[category].push(optgroupObject);
 			});
 		}
+		mylog.log("object.add", object.add, typeObj);
 		if(	typeof object.add != "undefined"  && 
 			typeof typeObj != "undefined" ){
+
 			$.each(object.add, function(key, v) {
 				mylog.log("key", key);
 				//key=(key=="jobs" || key=="ressources") ? "classifieds" : key;
