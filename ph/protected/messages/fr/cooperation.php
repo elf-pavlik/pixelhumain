@@ -302,4 +302,5 @@ return array(
 
 	"Add measure" => "Ajouter une mesure",
 	"Size min : 10 caracters"=> "Taille minimun : 10 caractères",
+	"Invite to vote" => "Inviter à voter"
 );
