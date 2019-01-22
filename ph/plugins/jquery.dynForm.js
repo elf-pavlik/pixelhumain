@@ -588,8 +588,8 @@ var dyFObj = {
 			}
 		}
 
-		if(notNull(dyFInputs.scopeObj.scope)){
-			formData.scope = dyFInputs.scopeObj.scope;
+		if(notNull(dyFInputs.scopeObj.selected)){
+			formData.scope = dyFInputs.scopeObj.selected;
 		}
 		
 		formData.medias = [];
@@ -1361,8 +1361,7 @@ var dyFObj = {
         		  fieldObj.inputType == "tags" || 
         		  fieldObj.inputType == "tags" ) {
         	mylog.log("build field "+field+">>>>>> text, numeric, tags, tags");
-        	if(fieldObj.inputType == "tags")
-        	{
+        	if(fieldObj.inputType == "tags"){
         		fieldClass += " select2TagsInput";
         		if(fieldObj.values){
         			if(!dyFObj.init.initValues[field])
@@ -2174,98 +2173,129 @@ var dyFObj = {
         * SCOPE USER 	
         ************************************** */
         else if( fieldObj.inputType == "scope" ) {
-        	mylog.log("build field "+field+">>>>>> scope");
-        		//fieldClass += " select2TagsInput select2ScopeInput";				
-				fieldHTML += '<div class="col-md-12 no-padding">'+
-								'<div class="col-xs-12">'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
-										'<select id="select-country"></select>'+
-									'</div>'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
-												'data-toggle="tooltip" data-placement="top" '+
-												'title="'+tradDynForm["Add a city"]+'">'+
-												'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
-											'</button>'+
+        	fieldHTML += 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
+
+			//	'<div id="scopes-news-form" class="no-padding">'+
+			fieldHTML +=		'<div id="news-scope-search" class="col-xs-12 no-padding">'+
+									// '<label class="margin-left-5">'+
+									// 	'<i class="fa fa-angle-down"></i> '+trad.addplacestyournews+
+									// '</label><br>'+
+									//'<div class="bg-white padding-10">'+
+									'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
+										'<div class="input-group shadow-input-header">'+
+											'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+											'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
 										'</div>'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
-												'data-toggle="tooltip" data-placement="top" '+
-												'title="'+tradDynForm["Add a postal code"]+'">'+
-												'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
-											'</button>'+
-										'</div>'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
-												'data-toggle="tooltip" data-placement="top" '+
-												'title="'+tradDynForm["Add a zone"]+'">'+
-												'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
-											'</button>'+
+										'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
 										'</div>'+
 									'</div>'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
-											'data-toggle="tooltip" data-placement="top" '+
-											'title="'+tradDynForm["Add a city"]+'">'+
-											'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
-											'</button>'+
-										'</div>'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
-											'data-toggle="tooltip" data-placement="top" '+
-											'title="'+tradDynForm["Add a postal code"]+'">'+
-											'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
-											'</button>'+
-										'</div>'+
-									'</div>'+
-									'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
-										'<div class="btn-group btn-group-justified">'+
-											'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
-											'data-toggle="tooltip" data-placement="top" '+
-											'title="'+tradDynForm["Add a zone"]+'">'+
-											'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
-											'</button>'+
-										'</div>'+
-									'</div>'+
-									'<div class="col-md-12 no-padding">'+
-										'<div class="input-group margin-bottom-10 col-md-12">'+
-											'<input id="input-add-multi-scope" type="text" class="form-control col-md-12" placeholder="'+tradDynForm["Add a city"]+' ...">'+
-											'<div class="dropdown">'+
-												'<ul class="dropdown-menu" id="dropdown-multi-scope-found"></ul>'+
-											'</div>'+
-										'</div>'+
-									'</div>'+
+										// '<a href="javascript:;" id="multiscopes-news-btn" class="scopes-btn-news margin-left-20" data-type="multiscopes">'+
+										// 	'<i class="fa fa-star"></i> '+trad.facoritesplaces+
+										// '</a>'+
+										// '<a href="javascript:;" id="communexion-news-btn" class="scopes-btn-news  margin-left-20" data-type="communexion">'+
+										// 	'<i class="fa fa-home"></i> <span class="communexion-btn-label"></span>'+
+										// '</a>'+
+									//'</div>'+
 								'</div>'+
-								'<div class="text-left">'+
-									'<div class="label label-info label-sm block text-left" id="lbl-info-select-multi-scope"></div>'+
-									'<div id="multi-scope-list-city" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Cities </h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-cp" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> '+tradDynForm["Postal code"]+'</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level4" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i>Administrative zone N°4</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level3" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Administrative zone N°3</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level2" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Administrative zone N°2</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
-									'<div id="multi-scope-list-level1" class="col-md-12 margin-top-15">'+
-										'<h5><i class="fa fa-angle-down"></i> Country</h5>'+
-										'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
-									'</div>'+
+								'<div class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+									'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
 								'</div>'+
-							'</div>';
+								'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
+        	fieldHTML += 	'</div>';
+        
+    //     else if( fieldObj.inputType == "scope" ) {
+    //     	mylog.log("build field "+field+">>>>>> scope");
+    //     		//fieldClass += " select2TagsInput select2ScopeInput";				
+				// fieldHTML += '<div class="col-md-12 no-padding">'+
+				// 				'<div class="col-xs-12">'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
+				// 						'<select id="select-country"></select>'+
+				// 					'</div>'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 hidden-xs btn-group-scope-type" role="group">'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
+				// 								'data-toggle="tooltip" data-placement="top" '+
+				// 								'title="'+tradDynForm["Add a city"]+'">'+
+				// 								'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
+				// 								'data-toggle="tooltip" data-placement="top" '+
+				// 								'title="'+tradDynForm["Add a postal code"]+'">'+
+				// 								'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
+				// 								'data-toggle="tooltip" data-placement="top" '+
+				// 								'title="'+tradDynForm["Add a zone"]+'">'+
+				// 								'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips active" data-scope-type="city"'+
+				// 							'data-toggle="tooltip" data-placement="top" '+
+				// 							'title="'+tradDynForm["Add a city"]+'">'+
+				// 							'<strong><i class="fa fa-bullseye"></i></strong> '+trad.city+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="cp"'+
+				// 							'data-toggle="tooltip" data-placement="top" '+
+				// 							'title="'+tradDynForm["Add a postal code"]+'">'+
+				// 							'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm["Postal code"]+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<div class="btn-group  btn-group-justified margin-bottom-10 visible-xs btn-group-scope-type" role="group">'+
+				// 						'<div class="btn-group btn-group-justified">'+
+				// 							'<button type="button" class="btn btn-default tooltips" data-scope-type="zone"'+
+				// 							'data-toggle="tooltip" data-placement="top" '+
+				// 							'title="'+tradDynForm["Add a zone"]+'">'+
+				// 							'<strong><i class="fa fa-bullseye"></i></strong> '+tradDynForm.Zone+
+				// 							'</button>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 					'<div class="col-md-12 no-padding">'+
+				// 						'<div class="input-group margin-bottom-10 col-md-12">'+
+				// 							'<input id="input-add-multi-scope" type="text" class="form-control col-md-12" placeholder="'+tradDynForm["Add a city"]+' ...">'+
+				// 							'<div class="dropdown">'+
+				// 								'<ul class="dropdown-menu" id="dropdown-multi-scope-found"></ul>'+
+				// 							'</div>'+
+				// 						'</div>'+
+				// 					'</div>'+
+				// 				'</div>'+
+				// 				'<div class="text-left">'+
+				// 					'<div class="label label-info label-sm block text-left" id="lbl-info-select-multi-scope"></div>'+
+				// 					'<div id="multi-scope-list-city" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Cities </h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-cp" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> '+tradDynForm["Postal code"]+'</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level4" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i>Administrative zone N°4</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level3" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Administrative zone N°3</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level2" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Administrative zone N°2</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 					'<div id="multi-scope-list-level1" class="col-md-12 margin-top-15">'+
+				// 						'<h5><i class="fa fa-angle-down"></i> Country</h5>'+
+				// 						'<hr style="margin-top: 10px; margin-bottom: 10px;">'+
+				// 					'</div>'+
+				// 				'</div>'+
+				// 			'</div>';
 
 					
         } else if ( fieldObj.inputType == "formLocality") {
@@ -4311,8 +4341,10 @@ var dyFInputs = {
 				networkTagsCategory[category].push(optgroupObject);
 			});
 		}
+		mylog.log("object.add", object.add, typeObj);
 		if(	typeof object.add != "undefined"  && 
 			typeof typeObj != "undefined" ){
+
 			$.each(object.add, function(key, v) {
 				mylog.log("key", key);
 				//key=(key=="jobs" || key=="ressources") ? "classifieds" : key;
@@ -5110,240 +5142,509 @@ var dyFInputs = {
 			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
 			dyFInputs.locationObj.elementLocations[ix].center = true;
 		}
-    },
-    scope : {
-		label : tradDynForm.localization,
-       	inputType : "scope",
-       	init : function () {
-       		mylog.log("scopeObj", dyFInputs.scopeObj.scopeObj);
-       		dyFInputs.scopeObj.scope = {};
-       		getAjax( null , baseUrl+"/"+moduleId+"/opendata/getcountries/hasCity/true" , function(data){
-				mylog.log("getcountries", data);
-				var options = "";
-				$.each(data, function(key, val){
-			        if(notEmpty(userConnected) && notEmpty(userConnected.address) && userConnected.address.addressCountry != "" && userConnected.address.addressCountry == val.countryCode)
-			          options += '<option value="'+val.countryCode+'" checked>'+val.name+'</option>';
-			        else
-			          options += '<option value="'+val.countryCode+'">'+val.name+'</option>';
-				});
-				$("#ajaxFormModal #select-country").html(options);
-	    		$("#ajaxFormModal #dropdown-multi-scope-found").hide();
-			});
+	},
+	scope : {
+		label : trad.addplacestyournews,
+		inputType : "scope",
+		init : function () {
+			mylog.log("scopeObj", dyFInputs.scopeObj );
+			$("#searchScopeDF").off().on("keyup", function(e){
+				mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
+				if($("#searchScopeDF").val().trim().length > 1){
+					if(notNull(dyFInputs.scopeObj.timeoutAddCity)) 
+						clearTimeout(dyFInputs.scopeObj.timeoutAddCity);
 
-			$('#ajaxFormModal #input-add-multi-scope').filter_input({regex:'[^@#\'\"\`\\\\]'}); //[a-zA-Z0-9_] 
-		    $('#ajaxFormModal #input-add-multi-scope').keyup(function(){ 
-		        $("#ajaxFormModal #dropdown-multi-scope-found").show();
-		        if($('#ajaxFormModal #input-add-multi-scope').val()!=""){
-		            if(typeof timeoutAddScope != "undefined") clearTimeout(timeoutAddScope);
-		            timeoutAddScope = setTimeout(function(){  dyFInputs.scopeObj.autocompleteMultiScope(); }, 500);
-		        }
-		    });
-
-			$("#ajaxFormModal .btn-group-scope-type .btn-default").click(function(){
-				var currentScopeType = $(this).data("scope-type");
-				$("#ajaxFormModal .btn-group-scope-type .btn-default").removeClass("active");
-				$(this).addClass("active");
-				if(currentScopeType == "city") $('#ajaxFormModal #input-add-multi-scope').attr("placeholder", tradDynForm["Add a city"]+" ...");
-				if(currentScopeType == "cp") $('#ajaxFormModal #input-add-multi-scope').attr("placeholder", tradDynForm["Add a postal code"]+" ...");
-				if(currentScopeType == "zone") $('#ajaxFormModal #input-add-multi-scope').attr("placeholder", tradDynForm["Add a zone"]+" ...");
+					dyFInputs.scopeObj.timeoutAddCity = setTimeout(function(){ 
+						dyFInputs.scopeObj.search(0, 30, "#scopeListContainerForm");
+					}, 500);
+				}
 			});
-			dyFInputs.scopeObj.showCountScope();
-       	}
-    },
-    scopeObj : {
-		scope : {},
-		currentScopeType : "",
-		scopeExists : function (scopeValue){
-			mylog.log("scopeExists");
-			return typeof dyFInputs.scopeObj.scope[scopeValue] != "undefined";
+		}
+	},
+	scopeObj : {
+		selected : {},
+		timeoutAddCity : null,
+		spinSearchAddon: function(bool){
+			removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
+			addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
+			$("#scopeListContainerForm .main-search-bar-addon,#scopeListContainerForm .second-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
 		},
-		autocompleteMultiScope : function (){
-			var scopeValue = $('#input-add-multi-scope').val();
-			var countryCode = $('#select-country').val();
+		showDropDownGS(show, dom){
+		if(typeof show == "undefined") show = true;
+			if(!notNull(dom)) dom=".dropdown-result-global-search";
+			if(show){
+				if($(dom).css("display") == "none"){
+					$(dom).css("maxHeight", "0px");
+					$(dom).show();
+					$(dom).animate({"maxHeight" : "70%"}, 300);
+					$(dom).mouseleave(function(){
+						$(this).hide(700);
+					});
+				}
+			} else {
+				if(!loadingDataGS){
+					$(dom).animate({"maxHeight" : "0%"}, 300);
+					$(dom).hide(300);
+				}
+			}
+		},
+		search : function(indexMin, indexMax, input){
+			mylog.log("dyFInputs.scopeObj.search", indexMin, indexMax, input);
 
-			var currentScopeType = $('.btn-group-justified .active').data("scope-type");
-			$("#dropdown-multi-scope-found").html("<li><i class='fa fa-refresh fa-spin'></i></li>");
+			var search = $(input+" .input-global-search").val();
+
+			if(search.length<3) return;
+
+			dyFInputs.scopeObj.spinSearchAddon(true);
+
+			if(typeof indexMin == "undefined") indexMin = 0;
+			if(typeof indexMax == "undefined") indexMax = indexStepGS;
+
+			dyFInputs.scopeObj.autoComplete(search, indexMin, indexMax, input);
+		},
+		autoComplete : function(search, indexMin, indexMax, input){
+			mylog.log("dyFInputs.scopeObj.autoComplete",search, indexMin, indexMax, input);
+
+			var data = {
+				name : search, 
+				locality : "", 
+				searchType : ["cities"], 
+				searchBy : "ALL",
+				indexMin : indexMin, 
+				indexMax : indexMax  
+			};
+
+			var domTarget = input+" .dropdown-result-global-search" ;
+			dyFInputs.scopeObj.showDropDownGS(true, domTarget);
+			$(domTarget).html("<h5 class='text-dark center padding-15'><i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyresearching+" ...</h5>");  
+			
+
+			if(search.indexOf("co.") === 0 ){
+				searchT = search.split(".");
+				if( searchT[1] && typeof co[ searchT[1] ] == "function" ){
+					co[ searchT[1] ](search);
+					return;
+				} else {
+					co.mands();
+				}
+			}
+
 			$.ajax({
 				type: "POST",
-				url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
-				data: {
-						type: currentScopeType, 
-						scopeValue: scopeValue,
-						countryCode: countryCode
-				},
+				url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
+				data: data,
 				dataType: "json",
-				success: function(data){
-					mylog.log("autocompleteMultiScope() success");
-					mylog.dir(data);
-					$("#dropdown-multi-scope-found").html(trad.noresult);
-					html="";
-					var allCP = new Array();
-					var allCities = new Array();
-					$.each(data.cities, function(key, value){
-						if(currentScopeType == "city") { //mylog.log("in scope city");
-							//val = value.country + '_' + value.insee;
-							val = key;
-							lbl = (typeof value.name!= "undefined") ? value.name : ""; //value.name ;
-							lblList = lbl + ((typeof value.level3Name!= "undefined") ? " (" +value.level3Name + ")" : "");
-							html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-
-						};
-						if(currentScopeType == "cp") { 
-							$.each(value.postalCodes, function(key, valueCP){ //mylog.log(allCities);
-								val = valueCP.postalCode;
-								lbl = valueCP.postalCode ;
-								lblList = valueCP.name + ", " +valueCP.postalCode ;
-								html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-							});
-						}; 
-						
-						if(currentScopeType == "zone"){
-							val = key;
-							lbl = (typeof value.name!= "undefined") ? value.name : ""; 
-							lblList = lbl + " (" +value.countryCode + ")";
-							level = value.level[0];
-							html += '<li><a href="javascript:;" class="addScope" data-country="'+value.country+'" data-level="'+level+'" data-val="'+val+'" data-lbl="'+lbl+'" >'+lblList+'</a></li>';
-
-						}
-					});
-					if(html != "")
-					$("#dropdown-multi-scope-found").html(html);
-					$("#dropdown-multi-scope-found").mouseleave(function(){
-						$(this).hide();
-					});
-
-					$(".addScope").click(function(){
-						dyFInputs.scopeObj.addScope($(this).data("val"), $(this).data("lbl"), $(this).data("level"), $(this).data("country"));
-					});
-					
+				error: function (data){
+					mylog.log("error"); mylog.dir(data);          
 				},
-				error: function(error){
-					$("#dropdown-multi-scope-found").html("error");
-					mylog.log("Une erreur est survenue pendant autocompleteMultiScope");
+				success: function(data){
+					spinSearchAddon();
+					var totalDataGS = 0;
+					if(!data){ toastr.error(data.content); }
+					else{
+						mylog.log("globalautocomplete DATA", data);
+						var countData = 0;
+						if(typeof data.count != "undefined")
+							$.each(data.count, function(e, v){countData+=v;});
+						else
+							$.each(data.results, function(i, v) { if(v.length!=0){ countData++; } });
+
+						totalDataGS += countData;
+
+						str = "";
+						var city, postalCode = "";
+
+						if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> "+trad.noresult;
+						else if(totalDataGS == 1) totalDataGSMSG = totalDataGS + " "+trad.result;   
+						else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " "+trad.results;   
+
+						if(totalDataGS > 0){
+							labelSearch=(Object.keys(data.results).length == totalDataGS) ? trad.extendedsearch : "Voir tous les résultats";
+							str += '<div class="text-left col-xs-12" id="footerDropdownGS" style="">';
+								str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
+								str += '<a href="#search" class="btn btn-default btn-sm pull-right lbh" id="btnShowMoreResultGS">'+
+											'<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+labelSearch+
+										'</a>';
+							str += '</div>';
+							str += "<hr style='margin: 0px; float:left; width:100%;'/>";
+						}
+
+						//parcours la liste des résultats de la recherche
+						$.each(data.results, function(i, o) {
+							mylog.log("globalsearch res : ", o);
+							var typeIco = i;
+							var ico = "fa-"+typeObj["default"].icon;
+							var color = mapColorIconTop["default"];
+
+							mapElementsGS.push(o);
+							if(typeof( typeObj[o.type] ) == "undefined")
+								itemType="poi";
+							typeIco = o.type;
+							//if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+							if(typeof o.typeOrga != "undefined")
+								typeIco = o.typeOrga;
+
+							var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+							ico =  "fa-"+obj.icon;
+							color = obj.color;
+							
+							htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";
+							if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){
+								var htmlIco= "<img width='80' height='80' alt='' class='img-circle bg-"+color+"' src='"+baseUrl+o.profilThumbImageUrl+"'/>"
+							}
+
+							city="";
+
+							var postalCode = o.postalCode
+							if (o.address != null) {
+								city = o.address.addressLocality;
+								postalCode = o.postalCode ? o.postalCode : o.address.postalCode ? o.address.postalCode : "";
+							}
+
+							var id = getObjectId(o);
+							var insee = o.insee ? o.insee : "";
+							type = o.type;
+							if(type=="citoyens") type = "person";
+							//var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
+							var url = (notEmpty(o.type) && notEmpty(id)) ? 
+							        '#page.type.'+o.type+'.id.' + id : "";
+
+							//var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
+							var onclickCp = "";
+							var target = " target='_blank'";
+							var dataId = "";
+							if(type == "city"){
+								dataId = o.name; //.replace("'", "\'");
+							}
+
+
+							var tags = "";
+							if(typeof o.tags != "undefined" && o.tags != null){
+								$.each(o.tags, function(key, value){
+									if(value != "")
+										tags +=   "<a href='javascript:' class='badge bg-red btn-tag'>#" + value + "</a>";
+								});
+							}
+
+							var name = typeof o.name != "undefined" ? o.name : "";
+							var postalCode = (	typeof o.address != "undefined" &&
+												o.address != null &&
+												typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
+
+							if(postalCode == "") postalCode = typeof o.postalCode != "undefined" ? o.postalCode : "";
+							var cityName = (typeof o.address != "undefined" &&
+											o.address != null &&
+											typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
+		                  	var countryCode=(typeof o.address != "undefined" && notNull(o.address) && typeof o.address.addressCountry != "undefined") ? "("+o.address.addressCountry+")" : ""; 
+							var fullLocality = postalCode + " " + cityName+" "+countryCode;
+							if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 
+								fullLocality = "<i class='fa fa-ban'></i>";
+							mylog.log("fullLocality", fullLocality);
+
+							var description = (	typeof o.shortDescription != "undefined" &&
+												o.shortDescription != null) ? o.shortDescription : "";
+							if(description == "") description = (	typeof o.description != "undefined" &&
+																	o.description != null) ? o.description : "";
+		           
+							var startDate = (typeof o.startDate != "undefined") ? "Du "+dateToStr(o.startDate, "fr", true, true) : null;
+							var endDate   = (typeof o.endDate   != "undefined") ? "Au "+dateToStr(o.endDate, "fr", true, true)   : null;
+
+							var followers = (typeof o.links != "undefined" && o.links != null && typeof o.links.followers != "undefined") ?
+							                o.links.followers : 0;
+							var nbFollower = 0;
+							if(followers !== 0)                 
+								$.each(followers, function(key, value){
+								nbFollower++;
+							});
+
+							target = "";
+
+							mylog.log("type", type);
+							if(type != "city" && type != "zone" ){ 
+								str += "<a href='"+url+"' class='lbh col-md-12 col-sm-12 col-xs-12 no-padding searchEntity'>";
+								str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter text-center'>";
+								str +=   htmlIco;
+								str += "</div>";
+								str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
+
+								str += "<div class='entityName text-dark'>" + name + "</div>";
+
+								str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+								"<i class='fa fa-home'></i> " + fullLocality;
+
+								if(nbFollower >= 1)
+								str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
+
+								str += '</div>';
+
+								str += "</div>";
+
+								str += "</a>";
+							}else{
+								o.input = input;
+			         	 		mylog.log("Here",o, typeof o.postalCode);
+
+			         	 		
+								if(type == "city"){
+									var valuesScopes = {
+										city : o._id.$id,
+										cityName : o.name,
+										postalCode : (typeof o.postalCode == "undefined" ? "" : o.postalCode),
+										country : o.country,
+										allCP : o.allCP,
+										uniqueCp : o.uniqueCp,
+										level1 : o.level1,
+										level1Name : o.level1Name
+									}
+
+									if( notEmpty( o.nameCity ) ){
+										valuesScopes.name = o.nameCity ;
+									}
+
+									if( notEmpty( o.uniqueCp ) ){
+										valuesScopes.uniqueCp = o.uniqueCp;
+									}
+
+									if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+										valuesScopes.level4 = o.level4 ;
+										valuesScopes.level4Name = o.level4Name ;
+									}
+									if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+										valuesScopes.level3 = o.level3 ;
+										valuesScopes.level3Name = o.level3Name ;
+									}
+									if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+										valuesScopes.level2 = o.level2 ;
+										valuesScopes.level2Name = o.level2Name ;
+									}
+
+									//valuesScopes.type = o.type;
+									valuesScopes.type = "cities";
+									o.type = "cities";
+									valuesScopes.key = valuesScopes.city+"cities" ;
+									mylog.log("valuesScopes", valuesScopes);
+									if(notNull(valuesScopes.allCP) && valuesScopes.allCP == false){
+										valuesScopes.key = valuesScopes.key + valuesScopes.postalCode ;
+									}
+
+
+									o.key = valuesScopes.key;
+				         	 		myScopes.search[valuesScopes.key] = valuesScopes;
+									str += directory.cityPanelHtml(o);
+								}
+								else if(type == "zone"){
+
+
+									valuesScopes = {
+										id : o._id.$id,
+										name : o.name,
+										country : o.countryCode,
+										level : o.level
+									}
+									mylog.log("valuesScopes",valuesScopes);
+
+									if(o.level.indexOf("1") >= 0){
+										typeSearchCity="level1";
+										levelSearchCity="1";
+										valuesScopes.numLevel = 1;
+									}else if(o.level.indexOf("2") >= 0){
+										typeSearchCity="level2";
+										levelSearchCity="2";
+										valuesScopes.numLevel = 2;
+									}else if(o.level.indexOf("3") >= 0){
+										typeSearchCity="level3";
+										levelSearchCity="3";
+										valuesScopes.numLevel = 3;
+									}else if(o.level.indexOf("4") >= 0){
+										typeSearchCity="level4";
+										levelSearchCity="4";
+										valuesScopes.numLevel = 4;
+									}
+									if(notNull(typeSearchCity))
+										valuesScopes.type = typeSearchCity;				
+
+									mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+
+									if( notEmpty( o.level1 ) && valuesScopes.id != o.level1){
+										mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+										valuesScopes.level1 = o.level1 ;
+										valuesScopes.level1Name = o.level1Name ;
+									}
+
+									var subTitle = "";
+
+									if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+										valuesScopes.level4 = o.level4 ;
+										valuesScopes.level4Name = o.level4Name ;
+										subTitle +=  (subTitle == "" ? "" : ", ") +  o.level4Name ;
+									}
+									if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+										valuesScopes.level3 = o.level3 ;
+										valuesScopes.level3Name = o.level3Name ;
+										subTitle +=  (subTitle == "" ? "" : ", ") +  o.level3Name ;
+									}
+									if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+										valuesScopes.level2 = o.level2 ;
+										valuesScopes.level2Name = o.level2Name ;
+										subTitle +=  (subTitle == "" ? "" : ", ") +  o.level2Name ;
+									}
+									//objToPush.id+objToPush.type+objToPush.postalCode
+									valuesScopes.key = valuesScopes.id+valuesScopes.type ;
+									mylog.log("valuesScopes.key", valuesScopes.key, valuesScopes);
+									myScopes.search[valuesScopes.key] = valuesScopes;
+
+									mylog.log("myScopes.search", myScopes.search);
+									o.key = valuesScopes.key;
+									str += directory.zonePanelHtml(o);
+								}
+							}
+						}); //end each
+
+						//on ajoute le texte dans le html
+						$(domTarget).html(str);
+						//on scroll pour coller le haut de l'arbre au menuTop
+						$(domTarget).scrollTop(0);
+						
+						//on affiche la dropdown
+						showDropDownGS(true, domTarget);
+						//bindScopesInputEvent();
+						
+						$(input+" .item-globalscope-checker").off().on('click', function(){
+							
+							var key = $(this).data("scope-value");
+							mylog.log("item-globalscope-checker myScopes", key, myScopes.search[key] );
+							if( typeof myScopes != "undefined" &&
+								typeof myScopes.search != "undefined" &&
+								typeof myScopes.search[key]  != "undefined" ){
+								var scopeDF = myScopes.search[key];
+								var btnScopeAction="<span class='removeScopeDF tooltips margin-right-5 margin-left-10' "+
+									"data-add='false' data-scope-value='"+scopeDF.id+"' "+
+									'data-scope-key="'+key+'" '+
+									"data-toggle='tooltip' data-placement='top' "+
+									"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
+										"<i class='fa fa-times-circle'></i>"+
+									"</span>";
+								var html = "<div class='scope-order text-red col-xs-12 col-sm-3' data-level='"+scopeDF.level+"''>"+
+				    				btnScopeAction+
+				    				"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
+										"class='item-scope-checker item-scope-input' "+
+										'data-scope-key="'+key+'" '+
+										'data-scope-value="'+scopeDF.id+'" '+
+										'data-scope-name="'+name+'" '+
+										'data-scope-type="'+scopeDF.type+'" '+
+										'data-scope-level="'+scopeDF.type+'" ' +
+										'data-scope-country="'+scopeDF.country+'" ' +
+										'data-btn-type="multiscope" ';
+										if(notNull(scopeDF.level))
+											html += 'data-level="'+scopeDF.level+'"';
+										html += '>' + 
+										scopeDF.cityName + 
+									"</span>"+
+								"</div>";
+								
+								$(input+" #scopes-container").append(html);
+								dyFInputs.scopeObj.selected[key] = myScopes.search[key];
+
+								$(".removeScopeDF").off().on('click', function(){
+									$(this).parent().remove();
+
+									// $.each(dyFInputs.scopeObj.selected, function(kScope, vScope) {
+									// 	if(vScope.key == $(this).data("scope-key")){
+									// 		delete dyFInputs.scopeObj.selected[kScope];
+									// 	}
+									// });
+									delete dyFInputs.scopeObj.selected[$(this).data("scope-key")];
+								});
+							}
+						});
+
+						bindLBHLinks();
+
+			            //signal que le chargement est terminé
+			            mylog.log("loadingDataGS false");
+			            loadingDataGS = false;
+				
+
+						//si le nombre de résultat obtenu est inférieur au indexStep => tous les éléments ont été chargé et affiché
+						if(indexMax - countData > indexMin){
+							$("#btnShowMoreResultGS").remove(); 
+							scrollEndGS = true;
+						}else{
+							scrollEndGS = false;
+						}
+
+						if(isMapEnd){
+							//affiche les éléments sur la carte
+							showDropDownGS(false);
+							Sig.showMapElements(Sig.map, mapElementsGS, "globe", "Recherche globale");
+						}
+					}
 				}
-			});
+			});	
 		},
-       	addScope : function (scopeValue, scopeName, scopeLevel, scopeCountry){
-			mylog.log("addScope!", scopeValue, scopeName);
-			//if(scopeValue == "") return;
+		changeCommunexionScope : function(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
+			mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
+			mylog.log("changeCommunexionScope appendDom", appendDom);
+			//communexionObj=scopeObject(values);
+			//mylog.log("changeCommunexionScope communexionObj",communexionObj);
+			//myScopes.open=communexionObj;
+			myScopes.type=="search";
+			//var newsAction = ( notNull(appendDom) && appendDom.indexOf("scopes-news-form") >= 0) ? true : false;
+			var newsAction = true;
+			mylog.log("changeCommunexionScope newsAction", newsAction);
 
-			if(!dyFInputs.scopeObj.scopeExists(scopeValue)){ 
-				mylog.log("adding", scopeValue);
-				var scopeType = $('.btn-group-justified .active').data("scope-type");;
-				dyFInputs.scopeObj.scope[scopeValue] = { name: scopeName, active: true, type: scopeType };
-				if(notEmpty(scopeLevel)){
-					if(scopeLevel == "1")
-						scopeType = "level1";
-					else if(scopeLevel == "2")
-						scopeType = "level2";
-					else if(scopeLevel == "3")
-						scopeType = "level3";
-					else if(scopeLevel == "4")
-						scopeType = "level4";
-					dyFInputs.scopeObj.scope[scopeValue].type = scopeType ;
-					dyFInputs.scopeObj.scope[scopeValue].level = scopeLevel ;
-				}
-
-				if(notNull(scopeCountry))
-					dyFInputs.scopeObj.scope[scopeValue].countryCode = scopeCountry ;
-				//dyFInputs.scopeObj.scope[scopeValue].type = scopeType ;
-				mylog.log("dyFInputs.scopeObj.scope")
-				//alert();
-				dyFInputs.scopeObj.showScope(scopeValue);
-				$("#ajaxFormModal #input-add-multi-scope").val("");
-				dyFInputs.scopeObj.showCountScope();
-				//saveMultiScope();
-				//showTagsScopesMin();
-				//bindCommunexionScopeEvents();
-			}else{
-				toastr.warning("Ce lieu est déjà dans votre liste", "info");
-			}
-			$("#ajaxFormModal #dropdown-multi-scope-found").hide();
-       	},
-       	showScope : function (scopeValue){ 
-			mylog.log("showScope()", scopeValue);
-			var html = "";
-			if(dyFInputs.scopeObj.scopeExists(scopeValue)){
-				var scope = dyFInputs.scopeObj.scope[scopeValue];
-				mylog.log("scope", scope);
-				if(typeof scope.name == "undefined") scope.name = scopeValue;
-				var faActive = (dyFInputs.scopeObj.scope[scopeValue].active == true) ? "check-circle" : "circle-o";
-				var classDisable = (dyFInputs.scopeObj.scope[scopeValue].active == false) ? "disabled" : "";
-				html = '<span class="item-scope-input bg-red item-scope-'+scope.type+' '+classDisable+'" data-scope-value="'+scopeValue+'">' +
-							// '<a href="javascript:" class="item-scope-checker tooltips"' +
-							// 	'data-toggle="tooltip" data-placement="bottom" ' +
-							// 	'title="Activer/Désactiver" data-scope-value="'+scopeValue+'">' +
-							// 	'<i class="fa fa-'+faActive+'"></i>' +
-							// '</a>' +
-							'<span class="item-scope-name" >'+scope.name+'</span>' +
-							'<a href="javascript:" class="item-scope-deleter tooltips"' +
-								'data-toggle="tooltip" data-placement="bottom" ' +
-								'title="Supprimer" data-scope-value="'+scopeValue+'">' +
-								'<i class="fa fa-times"></i>' +
-							'</a>' +
-						'</span>';
-
-				var levelType = ( (scope.type == "zone") ? "level"+scope.level : scope.type ) ;
-				mylog.log("levelType", levelType, "#multi-scope-list-"+levelType);
-				$("#ajaxFormModal #multi-scope-list-"+levelType).append(html);
-				$("#ajaxFormModal #multi-scope-list-"+levelType).show();
-
-				// if(actionOnSetGlobalScope=="save")
-				// 	$("#scopeListContainerForm").html(html);
-				//$("#ajaxFormModal .item-scope-checker").off().click(function(){ toogleScopeMultiscope( $(this).data("scope-value")) });
-				$("#ajaxFormModal .item-scope-deleter").off().click(function(){ dyFInputs.scopeObj.deleteScope( $(this).data("scope-value")); });
-				//showMsgInfoMultiScope("Le scope a bien été ajouté", "success");
-			}else{
-				html = "";
-				//showMsgInfoMultiScope("showScope error : ce lieu n'existe pas - " + scopeValue, "error");
-			}
-			
-			$(".tooltips").tooltip();
+			$(appendDom).html( constructScopesHtml(newsAction) );
+			$(appendDom+" .scope-order").sort(sortSpan) // sort elements
+						.appendTo(appendDom); // append again to the list
+			//localStorage.setItem("myScopes",JSON.stringify(myScopes));
+			// if(newsAction) bindScopesNewsEvent();
+			// else{
+			// 	searchObject.count=true;
+			// 	startSearch(0, indexStepInit);
+			// 	bindScopesInputEvent();
+			// }
 		},
-		deleteScope : function (scopeValue){ 
-			mylog.log("deleteScope(scopeValue)", scopeValue);
-			if(dyFInputs.scopeObj.scopeExists(scopeValue)){
-				delete dyFInputs.scopeObj.scope[scopeValue];
-				$("[data-scope-value=\""+scopeValue+"\"]").remove();
-				//saveMultiScope();
-			}
-		},
-		showCountScope : function (){
-			mylog.log("showCountScope");
-			var count = 0; 
-			var types = new Array("city", "cp", "level1", "level2", "level3", "level4");
-			$.each(dyFInputs.scopeObj.scope, function(key, value){
-				if(value.active==true) count++;
-				var levelType = ( (value.type == "zone") ? "level"+value.level : value.type ) ;
-				if(types.indexOf(levelType)>-1)
-					types.splice(types.indexOf(levelType), 1);
-			});
-			$.each(types, function(key, value){
-				$("#ajaxFormModal #multi-scope-list-"+value).hide();
-			});
-			$(".scope-count").html(count);
-			//showTagsScopesMin(".list_tags_scopes");
-			//showEmptyMsg();
-		}
-    },
-    //produces 
-    subDynForm : function(form, multi){
+		// changeCommunexionScopeOld : function(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
+		// 	mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
+		// 	mylog.log("changeCommunexionScope appendDom", appendDom);
+		// 	//communexionObj=scopeObject(values);
+		// 	//mylog.log("changeCommunexionScope communexionObj",communexionObj);
+		// 	//myScopes.open=communexionObj;
+		// 	myScopes.type=="search";
+		// 	//var newsAction = ( notNull(appendDom) && appendDom.indexOf("scopes-news-form") >= 0) ? true : false;
+		// 	var newsAction = true;
+		// 	mylog.log("changeCommunexionScope newsAction", newsAction);
 
-    },
-    inputUrl :function (label,placeholder,rules, custom) {  
-    	label = ( notEmpty(label) ? label : tradDynForm.mainurl );
-    	placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
-    	rules = ( notEmpty(rules) ? rules : { url: true } );
-    	custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
-	    var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
-	    return inputObj;
+		// 	$(appendDom).html( constructScopesHtml(newsAction) );
+		// 	$(appendDom+" .scope-order").sort(sortSpan) // sort elements
+		// 				.appendTo(appendDom); // append again to the list
+		// 	//localStorage.setItem("myScopes",JSON.stringify(myScopes));
+		// 	// if(newsAction) bindScopesNewsEvent();
+		// 	// else{
+		// 	// 	searchObject.count=true;
+		// 	// 	startSearch(0, indexStepInit);
+		// 	// 	bindScopesInputEvent();
+		// 	// }
+		// }
+	},
+	//produces 
+	subDynForm : function(form, multi){
+
+	},
+	inputUrl :function (label,placeholder,rules, custom) {  
+		label = ( notEmpty(label) ? label : tradDynForm.mainurl );
+		placeholder = ( notEmpty(placeholder) ? placeholder : "http://www.exemple.org" );
+		rules = ( notEmpty(rules) ? rules : { url: true } );
+		custom = ( notEmpty(custom) ? custom : "<div class='resultGetUrl resultGetUrl0 col-sm-12'></div>" );
+		var inputObj = dyFInputs.inputText(label, placeholder, rules, custom);
+		return inputObj;
 	},
 	inputUrlOptionnel :function (label, placeholder,rules, custom) {  
-    	var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
-    	inputObj.init = function(){
-            processUrl.getMediaFromUrlContent("#url", ".resultGetUrl0",0);
-            $(".urltext").css("display","none");
-        };
+		var inputObj = dyFInputs.inputUrl(label, placeholder, rules, custom);
+		inputObj.init = function(){
+			processUrl.getMediaFromUrlContent("#url", ".resultGetUrl0",0);
+			$(".urltext").css("display","none");
+	    };
 	    return inputObj;
 	},
     urls : {

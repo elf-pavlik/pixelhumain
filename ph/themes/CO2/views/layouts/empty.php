@@ -127,7 +127,7 @@
   } else if($this->module->id == "onepage" ){
     if(@$_GET['slug']){
       $el = Slug::getElementBySlug($_GET['slug']);
-      if(@$el["el"]["custom"]["menu"])
+      if(!empty($el["el"]) && !empty($el["el"]["custom"]) && !empty($el["el"]["custom"]["menu"]))
         $CO2DomainName = $el["el"]["custom"]["menu"];
 
       //if( @$el["el"]["custom"] )

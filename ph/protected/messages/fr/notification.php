@@ -153,6 +153,8 @@ return array(
 	"{who} mentionned {mentions} {where}"=>"{who} a mentionné {mentions} {where}",
 	"with {who}"=>"avec {who}",
 	"in a news"=> "dans un post",
-	"in a comment"=> "dans un commentaire",	
+	"in a comment"=> "dans un commentaire",
+	"{author} invites you to vote on the proposal : {where}" => "{author} vous invite à voter à la proposition : {where}",
+	"{author} invite you to vote on several proposals : {where}" => "{author} vous invite à voter à plusieurs propositions : {where}",
 );
 ?>
