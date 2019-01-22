@@ -193,7 +193,7 @@
                                     $show=true;
                                     $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
                                 }else
-                                    $how=false;
+                                    $show=false;
                             }
                             if($show){
                         ?>
