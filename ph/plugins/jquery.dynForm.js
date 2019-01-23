@@ -6179,7 +6179,7 @@ var dyFCustom = {
 			$("#"+k).val(v)
 	 	});	    		
 	},
-	rename : function(p) { 
+	html : function(p) { 
 		$.each(p,function(k,v) {
 			$("."+k).html(v)
 	 	});	    		
