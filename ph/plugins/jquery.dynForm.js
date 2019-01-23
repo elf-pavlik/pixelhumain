@@ -6141,6 +6141,54 @@ var dyFInputs = {
 		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );*/
 		
     }
+}
+var dyFCustom = {
+	init : function (type) { 
+		if( typeof custom.dynForm[type].onload != "undefined" 
+			&& typeof custom.dynForm[type].onload.actions != "undefined"){
+			$.each(custom.dynForm[type].onload.actions,function(f,p) {
+				if(typeof dyFCustom[f] == "function")
+					f = dyFCustom[f];
+				else if(typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
+					f = dyFObj.elementObj.dynForm.jsonSchema.actions[f]
+				
+				if(typeof f == "function"){
+					if(p==1)
+						f();
+					else if(typeof p == "object")
+						f(p);
+				}
+		 	})
+		}
+	},
+    adminOnly : function(p) {
+		if(  typeof custom != "undefined" 
+			&& typeof custom.admins != "undefined" 
+			&& typeof custom.admins[userId] != "undefined" 
+			&& typeof custom.admins[userId].isAdmin != "undefined" 
+			&& custom.admins[userId].isAdmin == true ){
+				
+			$.each(p,function(el,v) {
+				$("."+el).show();
+		 	});
+				
+		}
+	},
+	presetValue : function(p) { 
+		$.each(p,function(k,v) {
+			$("#"+k).val(v)
+	 	});	    		
+	},
+	rename : function(p) { 
+		$.each(p,function(k,v) {
+			$("."+k).html(v)
+	 	});	    		
+	},
+	hide : function(p) { 
+		$.each(p,function(k,v) {
+			$("."+k).hide();
+	 	});	    		
+	}
 };
 
 /* ***********************************
