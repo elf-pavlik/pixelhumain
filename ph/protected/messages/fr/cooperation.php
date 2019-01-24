@@ -134,6 +134,7 @@ return array(
 	"Open votes" => "Ouvrir les votes",
 	"Disabled my proposal" => "Désactiver ma proposition",
 	"Close my proposal" => "Fermer ma proposition",
+	"Delete my proposal" => "Effacer ma proposition",
 
 	"Edition disabled" => "Modifications désactivées",
 	"amendement session has begun" => "les amendements ont commencé",
