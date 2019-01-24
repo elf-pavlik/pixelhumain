@@ -165,6 +165,13 @@ return array(
 	"adopted" => "validée",
 	"adopteds" => "adoptées",
 	"voter" => "votant",
+	// pour défirencier le masculin est le féminin
+	"Validated2" => "Validé",
+	"Refused2" => "Refusé",
+	"validated2" => "validé",
+	"refused2" => "refusé",
+	"adopted2" => "validé",
+	"adopteds2" => "adoptés",
 
 	"Be the first to vote" => "Soyez le premier à voter",
 	"Vote open until undefined date" => "Vote ouvert jusqu'à une date non-définie",
@@ -254,7 +261,7 @@ return array(
 	"Amendements" => "Amendements",
 	"Write your amendement" => "Rédigez votre amendement",
 	"If your amendement is adopted, it will be added to the principale proposal, <br>and will incorporated the final proposal, submited to vote." => 
-	"Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera parti de la proposition finale, soumise au vote.",
+	"Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera partie de la proposition finale, soumise au vote.",
 
 	"your amendement" => "votre amendement",
 	"Size max : 1000 caracters" => "Les amendements ne peuvent dépasser la taille de 1000 caractères",
