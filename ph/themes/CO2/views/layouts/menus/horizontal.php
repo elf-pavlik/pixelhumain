@@ -16,7 +16,8 @@
             </a>  
         <?php   }
         } ?>
-        <?php if(@$useFilter && !empty($useFilter)){ ?>
+        <?php if(@$useFilter && !empty($useFilter)
+                && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) )){ ?>
             <button class="btn btn-show-filters"><?php echo Yii::t("common", "Filters") ?> <span class="topbar-badge badge animated bounceIn badge-warning bg-green"></span> <i class="fa fa-angle-down"></i></button>
         <?php } ?>
 </div>

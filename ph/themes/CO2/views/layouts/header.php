@@ -59,7 +59,8 @@
                 <div class="dropdown-result-global-search col-xs-12 no-padding"></div>
             <?php } ?>
         </div>
-        <?php if(@$useFilter != false){ ?>
+        <?php if(isset($useFilter) && !empty($useFilter) 
+                && (!isset($useFilter["scope"]) || !empty($useFilter["scope"]) ) ){ ?>
         <div id="filter-scopes-menu" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="display: none;">
             <div id="scope-container" class="scope-menu no-padding">
                 <div id="input-sec-search" class="col-xs-8 col-md-6 col-sm-6 col-lg-6">
@@ -99,7 +100,8 @@
         <?php 
             
             $this->renderPartial($layoutPath.'menus/'.$menuApp, array("params"=>$themeParams, "subdomainName"=>$subdomainName, "useFilter"=>@$useFilter )); 
-            if(@$useFilter != false)
+            if(@$useFilter != false
+                && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) ))
                 $this->renderPartial($layoutPath.'menus/filtersApp', array("params"=>$themeParams)); 
         ?>
         
