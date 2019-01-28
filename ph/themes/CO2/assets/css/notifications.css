@@ -231,17 +231,15 @@
 
 @media (max-width: 767px) {
 	#notificationPanelSearch{
-		left:0px !important;
+		left:10% !important;
 		right:0px !important;
 		bottom:0px !important;
 		max-width: unset !important;
 		width: unset !important;
-		top: 60px !important;
 	}
-	#notificationPanelSearch.arrow_box::after,
-	#notificationPanelSearch.arrow_box::before{
-		left:unset;
-		right:207px;
+	#notificationPanelSearch.arrow_box:after,
+	#notificationPanelSearch.arrow_box:before{
+		border: 0px;
 	}
 
 	.main-container.vertical #notificationPanelSearch.arrow_box:before,

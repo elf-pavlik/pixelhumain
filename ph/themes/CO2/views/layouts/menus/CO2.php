@@ -75,9 +75,11 @@
         <a href="#welcome" class="btn btn-link menu-btn-back-category pull-left no-padding lbh menu-btn-top" >
             <?php 
             $logo = (@Yii::app()->session['custom']["logo"]) ? Yii::app()->session['custom']["logo"] : Yii::app()->theme->baseUrl.$value["url"];
+            $logoMin = (@Yii::app()->session['custom']["logoMin"]) ? Yii::app()->session['custom']["logoMin"] : $logo;
             $height = (@$value["height"]) ? $value["height"] : 30;
             ?>
-            <img src="<?php echo $logo;?>" class="logo-menutop pull-left" height="<?php echo $height ?>">
+            <img src="<?php echo $logo;?>" class="logo-menutop pull-left hidden-xs" height="<?php echo $height ?>">
+            <img src="<?php echo $logoMin;?>" class="logo-menutop pull-left visible-xs" height="45">
         </a>
         <?php }
         // END LOGO HTML NAV BAR

@@ -2327,9 +2327,11 @@ margin-right: 5px;
 		width:30px !important;
 		height:30px !important;
 		margin-left:5px;
-		margin-top:9px !important;
 	}
-
+	#mainNav #navbar{
+		margin-top: 8px;
+		margin-right: 0px !important;
+	}
 	#container-text-action, 
 	#container-text-proposal, 
 	#container-text-resolution{
@@ -2375,16 +2377,29 @@ margin-right: 5px;
 
 	.dropdown-menu.arrow_box {
 	    position: absolute !important;
-	    top: 30px;
-	    right: -17px !important;
+	    /*top: 30px;
+	    right: -17px !important;*/
     }
-    .main-container.vertical #dropdown-user .arrow_box{
-	    position: absolute !important;
-		top: -7px;
-	    right: 50px !important;
-	    left: unset;
+    .main-container #dropdown-user .arrow_box{
+    	position: absolute !important;
+	    /* top: -7px; */
+	    top: 0px;
+	    right: 0px !important;
+	    bottom: 0px !important;
+	    left: 0px;
+	    border-radius: 0px !important;
     }
-	.navbar-map .menu-name-profil{
+    .main-container #dropdown-user .dropdown-main-menu{
+    	left: 20%;
+		max-height: inherit;
+		bottom: 0px;
+		right: 0px !important;
+		overflow-y: scroll;
+    }
+    .main-container #dropdown-user .arrow_box:before, .main-container #dropdown-user .arrow_box:after{
+    	border: 0px;
+    }
+   .navbar-map .menu-name-profil{
 		padding: 0px !important;
 	}
 	.navbar-map .menu-name-profil img{
