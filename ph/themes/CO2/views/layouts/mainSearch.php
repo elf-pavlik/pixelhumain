@@ -13,12 +13,20 @@
     $CO2DomainName = isset(Yii::app()->params["CO2DomainName"]) ? Yii::app()->params["CO2DomainName"] : "CO2";
 
     //Network::getNetworkJson(Yii::app()->params['networkParams']);
-
-    $params = CO2::getThemeParams();
-    Yii::app()->session['paramsConfig']=$params;
-    $metaTitle = @$params["metaTitle"];
-    $metaDesc = @$params["metaDesc"]; 
-    $metaImg = Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2".@$params["metaImg"];
+    if(!@Yii::app()->session['paramsConfig'])
+        Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
+    $metaTitle = (@$this->module->title) ? $this->module->title : Yii::app()->session['paramsConfig']["metaTitle"];
+    $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"]; 
+    $metaImg = (@$this->module->image) ? $this->module->image : Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"];
+    $keywords = "";
+    if(@$this->module->keywords)
+        $keywords = $this->module->keywords;
+    else if(@$this->keywords)
+        $keywords = $this->keywords;
+    if(@$this->module->favicon)
+        $favicon = $this->module->favicon;  
+    else 
+        $favicon =(@$this->module->assetsUrl) ? $this->module->assetsUrl."/images/favicon.ico" : "/images/favicon.ico";
 ?>
 
 <html lang="en" class="no-js">   
@@ -28,7 +36,16 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title></title>
+        <meta name="title" content="<?php echo $metaTitle; ?>">
+        <meta name="description" content="<?php echo $metaDesc; ?>">
+        <meta name="author" content="pixelhumain">
+
+        <meta property="og:image" content="<?php echo $metaImg; ?>"/>
+        <meta property="og:description" content="<?php echo $metaDesc; ?>"/>
+        <meta property="og:title" content="<?php echo $metaTitle; ?>"/>
+        <meta name="keywords" lang="<?php echo Yii::app()->language; ?>" content="<?php echo CHtml::encode($keywords); ?>" > 
+         <title><?php echo $metaTitle;//( @Yii::app()->params["module"]["name"] ) ? Yii::app()->params["module"]["name"] :  $CO2DomainName; ?></title>
+        <link rel='shortcut icon' type='image/x-icon' href="<?php echo $favicon;?>" /> 
  
 <?php if( Yii::app()->params["forceMapboxActive"]==true &&  Yii::app()->params["mapboxActive"]==true ){ ?>
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
@@ -53,32 +70,15 @@
             
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
     $this->renderPartial($layoutPath.'initJs', 
-                                 array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
+                                 array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>Yii::app()->session['paramsConfig']));
     if($this->module->id == "custom"){
         $this->renderPartial( 'co2.views.custom.init' );
     }else if($this->module->id == "costum"){
-        $this->renderPartial( 'costum.views.co.init', array("slug"=>@$_GET["slug"]  ) );
+        $this->renderPartial( 'costum.views.co.init' ) ;
     }
     else { ?>
 
-         <meta name="title" content="<?php echo $metaTitle; ?>">
-            <meta name="description" content="<?php echo $metaDesc; ?>">
-            <meta name="author" content="pixelhumain">
-
-            <meta property="og:image" content="<?php echo $metaImg; ?>"/>
-            <meta property="og:description" content="<?php echo $metaDesc; ?>"/>
-            <meta property="og:title" content="<?php echo $metaTitle; ?>"/>
-            <?php 
-            $keywords = "";
-            if(isset($this->keywords)) $keywords = $this->keywords;
-            else if(isset($this->module->keywords)) $keywords = $this->module->keywords;?>
-            <meta name="keywords" lang="<?php echo Yii::app()->language; ?>" content="<?php echo CHtml::encode($keywords); ?>" > 
-
-            <title><?php echo ( @Yii::app()->params["module"]["name"] ) ? Yii::app()->params["module"]["name"] :  $CO2DomainName; ?></title>
-
-            
-
-            <link rel='shortcut icon' type='image/x-icon' href="<?php echo (isset( $this->module->assetsUrl ) ) ? $this->module->assetsUrl : ""?>/images/favicon.ico" /> 
+        
         <?php Yii::app()->session["custom"]=null;
     }
         ?>
@@ -395,11 +395,10 @@
                         lazyLoad( v.init , null,null);
                     }
                 });
-                
                 if(themeObj.firstLoad){
                     themeObj.firstLoad=false;
                     urlCtrl.loadByHash(location.hash,true);
-                }
+               }
                 setTimeout(function(){
                     $("#page-top").show();
                 }, 500);
