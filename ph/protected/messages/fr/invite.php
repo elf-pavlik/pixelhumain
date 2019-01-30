@@ -26,6 +26,7 @@
 		"See the community"=>"Voir la communauté",
 		"Result of invitations sent"=>"Résultat des invitations envoyées",
 		"Not found ? Launch an invitation to join your network"=>"Pas trouvé ? Lancer une invitation à rejoindre votre réseau",
+		"Close invite" => "Fermer l'invitation",
 	);
 
 ?>
