@@ -882,7 +882,7 @@ return array(
 	"I love"=>"J&#146;adore",
 	"Enjoying"=>"Amusant",
 	"Too funny"=>"Trop drôle",
-	"I support"=>"Je soutien",
+	"I support"=>"Je soutiens",
 	"COoool"=> "COoool",
 	"What ?"=> "Quoi ?",
 	"Buuurk"=>"Beuuurk",
