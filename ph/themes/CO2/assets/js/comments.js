@@ -43,18 +43,18 @@ function initCommentsTools(listObjects, type, canComment, parentId){
         if(type=="news"){
           labelComments=trad.commenton;
           if(commentCount>0){
-            labelComments=commentCount+" "
+            labelComments="<span class='nbNewsComment'>"+commentCount+"</span> ";
             labelComments+=(commentCount>1) ? trad.comments : trad.comment;
           }
-          actionOn = '<a href="javascript:" class="newsAddComment letter-blue" data-media-id="'+idMedia+'"><i class="fa fa-comment"></i> '+labelComments+'</a>';
+          actionOn = '<a href="javascript:" class="newsAddComment letter-blue lblComment" data-media-id="'+idMedia+'"><i class="fa fa-comment"></i> '+labelComments+'</a>';
         }
         else if (type=="comments"){
+          parentId=(notNull(parentId)) ? parentId : idMedia;
           countReplies=(typeof media.replies != "undefined") ? Object.keys(media.replies).length : 0;
           s=(countReplies > 1) ? "s" : "";
-          lblReply = "<i class='fa fa-reply fa-rotate-180'></i> "+trad.answer;
-          parentId=(notNull(parentId)) ? parentId : idMedia;
-          if(countReplies >= 1) lblReply = "<i class='fa fa-reply fa-rotate-180'></i>"+countReplies+" "+trad["answer"+s];
-          actionOn= '<a class="" href="javascript:answerComment(\''+idMedia+'\', \''+idMedia+'\',\''+media.contextType+'\')">'+lblReply+'</a>';
+          lblReply = (countReplies == 0) ? trad.answerOn : trad["answer"+s];
+          if(countReplies >= 1) lblReply = "<span class='nbNewsComment'>"+countReplies+"</span> "+lblReply;
+          actionOn= '<a class="lblComment" href="javascript:answerComment(\''+idMedia+'\', \''+idMedia+'\',\''+media.contextType+'\')"><i class="fa fa-reply fa-rotate-180"></i> '+lblReply+'</a>';
         }
         // SHARE ACTION AND COUNT SHARE
         if(type=="news"){
@@ -321,7 +321,7 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
           //submit form via ajax, this is not JS but server side scripting so not showing here
           saveComment($(idTextArea).val(), parentCommentId, idTextArea, pathContext);
           $(idTextArea).val("");
-          $(idTextArea+", #container-txtarea-"+idUx).css('height', "34px");
+          $(idTextArea+", #container-txtarea-"+idUx).css('height', 34);
           //var heightTxtArea = $(idTextArea).css("height");
           //$("#container-txtarea-"+idUx).css('height', heightTxtArea);
         }else
@@ -436,8 +436,7 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
           }
           else { 
             toastr.success(data.msg);
-            var count = $("#newsFeed"+context["_id"]["$id"]+" .nbNewsComment").html();
-            
+            var count = $("#footer-"+data.newComment.contextType+"-"+data.newComment.contextId+" .nbNewsComment").text();
             if(!notEmpty(count)) count = 0;
             //mylog.log(count, context["_id"]["$id"]);
             comments[data.id.$id]=data.newComment;
@@ -446,18 +445,19 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
               count = parseInt(count);
               var newCount = count +1;
               var labelCom = (newCount>1) ? trad.comments : trad.comment;
-              $("#newsFeed"+context["_id"]["$id"]+" .lblComment").html("<i class='fa fa-comment'></i> <span class='nbNewsComment'>"+newCount+"</span> "+labelCom);
+              $("#footer-"+data.newComment.contextType+"-"+data.newComment.contextId+" .lblComment").html("<i class='fa fa-comment'></i><span class='nbNewsComment'>"+newCount+"</span> "+labelCom);
               $("#newsFeed"+context["_id"]["$id"]+" .newsAddComment").data('count', newCount);
             // }else{
             //  $("#newsFeed"+context["_id"]["$id"]+" .lblComment").html("<i class='fa fa-comment'></i> <span class='nbNewsComment'>1</span> commentaire");
             //  $("#newsFeed"+context["_id"]["$id"]+" .newsAddComment").data('count', 1);
             }
-            
-            // $('.nbComments').html((parseInt($('.nbComments').html()) || 0) + 1);
-            // if (data.newComment.contextType=="news"){
-            //  $(".newsAddComment[data-id='"+data.newComment.contextId+"']").children().children(".nbNewsComment").text(parseInt($('.nbComments').html()) || 0);
-            // }
-            //switchComment(commentId, data.newComment, parentCommentId);
+            if(typeof data.newComment.parentId != "undefined" && notEmpty(data.newComment.parentId)){
+              var count = $("#footer-comments-"+data.newComment.parentId+" .nbNewsComment").text();
+              count=(typeof count == "undefined" || !notEmpty(count)) ? 0 : count;
+              var newCount = parseInt(count) +1;
+              var labelCom = (newCount>1) ? trad.answers : trad.answer;
+              $("#footer-comments-"+data.newComment.parentId+" .lblComment").html("<i class='fa fa-reply fa-rotate-180'></i><span class='nbNewsComment'>"+newCount+"</span> "+labelCom);
+            }
             latestComments = data.time;
 
             var isAnswer = parentCommentId!="";
@@ -505,6 +505,7 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
   }
   function showOneComment(newComment, idComment, isAnswer, idNewComment, argval, mentionsArray){
     textComent=mentionAndLinkify(idNewComment,newComment, true);
+    idContainer=(typeof newComment.parentId != "undefined" && notEmpty(newComment.parentId)) ? newComment.parentId : newComment.contextId;
     var classArgument = "";
     if(argval == "up") classArgument = "bg-green-comment";
     if(argval == "down") classArgument = "bg-red-comment";
@@ -528,15 +529,14 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
               
           '</div>';
     if(!isAnswer){
-      $("#comments-list-"+idComment).prepend(html);
-      $("#comments-list-"+idComment).find(".noComment").remove();
-      if($("#comments-list-"+idComment).length <= 0 && typeof idParentProposal != "undefined" && idParentProposal != "" && $("#comments-list-"+idParentProposal).length){
+      $("#comments-list-"+idContainer).prepend(html);
+      $("#comments-list-"+idContainer).find(".noComment").remove();
+      if($("#comments-list-"+idContainer).length <= 0 && typeof idParentProposal != "undefined" && idParentProposal != "" && $("#comments-list-"+idParentProposal).length){
           $("#comments-list-"+idParentProposal).prepend(html);
-        $("#comments-list-"+idParentProposal).find(".noComment").remove();
-    
+          $("#comments-list-"+idParentProposal).find(".noComment").remove();
       }
     }else{
-      $('#container-txtarea-'+idComment).after(html);
+      $('#container-txtarea-'+idContainer).after(html);
     }
     initCommentsTools({newComment}, "comments", true, idComment);
   }
