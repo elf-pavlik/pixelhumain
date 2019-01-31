@@ -15,7 +15,7 @@
     //Network::getNetworkJson(Yii::app()->params['networkParams']);
     if(!@Yii::app()->session['paramsConfig'])
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
-    $metaTitle = (@$this->module->title) ? $this->module->title : Yii::app()->session['paramsConfig']["metaTitle"];
+    $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"];
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"]; 
     $metaImg = (@$this->module->image) ? $this->module->image : Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"];
     $keywords = "";
