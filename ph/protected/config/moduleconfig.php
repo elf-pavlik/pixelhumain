@@ -12,7 +12,7 @@ $activeModules = array(
 	"copi",
 	"connect",
 	"places",
-	//"ressources", //kill
+	"ressources", //kill
 	//"classifieds",
 	"onepage",
 	"cooperation",
