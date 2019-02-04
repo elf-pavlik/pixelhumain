@@ -134,6 +134,7 @@ return array(
 	"Open votes" => "Ouvrir les votes",
 	"Disabled my proposal" => "Désactiver ma proposition",
 	"Close my proposal" => "Fermer ma proposition",
+	"Delete my proposal" => "Effacer ma proposition",
 
 	"Edition disabled" => "Modifications désactivées",
 	"amendement session has begun" => "les amendements ont commencé",
@@ -165,6 +166,13 @@ return array(
 	"adopted" => "validée",
 	"adopteds" => "adoptées",
 	"voter" => "votant",
+	// pour défirencier le masculin est le féminin
+	"Validated2" => "Validé",
+	"Refused2" => "Refusé",
+	"validated2" => "validé",
+	"refused2" => "refusé",
+	"adopted2" => "validé",
+	"adopteds2" => "adoptés",
 
 	"Be the first to vote" => "Soyez le premier à voter",
 	"Vote open until undefined date" => "Vote ouvert jusqu'à une date non-définie",
@@ -252,9 +260,9 @@ return array(
 
 
 	"Amendements" => "Amendements",
-	"Write your amendement" => "Rédiger votre amendement",
+	"Write your amendement" => "Rédigez votre amendement",
 	"If your amendement is adopted, it will be added to the principale proposal, <br>and will incorporated the final proposal, submited to vote." => 
-	"Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera parti de la proposition finale, soumise au vote.",
+	"Si votre amendement est accepté, il sera ajouté à la suite de la proposition principale,<br>et fera partie de la proposition finale, soumise au vote.",
 
 	"your amendement" => "votre amendement",
 	"Size max : 1000 caracters" => "Les amendements ne peuvent dépasser la taille de 1000 caractères",
@@ -288,6 +296,7 @@ return array(
 	"click to vote" => "cliquer pour voter",
 
 	"Please login to post a message" => "Merci de vous connecter pour publier un message",
+	"Please login to vote" => "Connectez vous pour voter",
 	"I'm logging in" => "Je me connecte",
 	"I create my account" => "Je créé mon compte",
 	"free registration" => "inscription gratuite",
@@ -299,4 +308,8 @@ return array(
 	"Survey text" => "Votre texte",
 
 	"Surveys are published for all your followers" => "Les sondages sont automatiquement partagés avec tous vos abonnés",
+
+	"Add measure" => "Ajouter une mesure",
+	"Size min : 10 caracters"=> "Taille minimun : 10 caractères",
+	"Invite to vote" => "Inviter à voter"
 );

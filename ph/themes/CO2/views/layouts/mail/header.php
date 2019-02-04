@@ -1458,7 +1458,7 @@
               <tr style="padding: 0;vertical-align: top;text-align: left;">
             <th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
               <center style="width: 100%;min-width: 532px;">
-                <a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>" align="center" class="text-center" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">
+                <a href="<?php echo $urlRedirect ?>" align="center" class="text-center" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">
                 <!--http://localhost:8888/ph/images/logo-communecter.png-->
                 <img src="<?php echo $logoUrl ?>" class="swu-logo" alt="Logo Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: 170px;max-width: 100%;clear: both;display: block;border: none;height: auto;padding: 15px 0px 0px 0px;">
                 </a>

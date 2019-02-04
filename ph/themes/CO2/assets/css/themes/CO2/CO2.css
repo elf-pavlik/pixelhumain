@@ -35,28 +35,35 @@
     border: none;
     height: 50px;
 }
-#show-bottom-add{
-    position: fixed;
+
+#donation-btn, #show-bottom-add{
+    position: fixed;    
+}
+
+.footer-menu-horizontal #show-bottom-add{
+    background-color: #34a853;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+}
+.footer-menu-horizontal #donation-btn{
+    background-color: #E5344D;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+}
+.footer-menu-vertical #show-bottom-add{
     bottom: 60px;
     left: 1px;
     z-index: 20000;
-}
-#donation-btn{
-    position: fixed;
-    left: 1px;
-    bottom: 5px;
-    z-index: 20000;
-	color: white;
-	background-color:#E5344D;
-	line-height: 55px;
-	padding: 0px;
-}
-.footer-menu-vertical #show-bottom-add{
     background-color: transparent;
     color: #34a853;
 }
 .footer-menu-vertical #donation-btn{
     background-color: transparent;
+    left: 1px;
+    bottom: 5px;
+    z-index: 20000;
     color: #E5344D;
 }
 #donation-btn i{
@@ -174,7 +181,7 @@
     }
 
     #modal-preview-coop{
-        left:15%;
+        left:0%;
         right:0%;
     }
 } 

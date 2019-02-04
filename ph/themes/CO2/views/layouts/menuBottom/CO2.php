@@ -153,7 +153,7 @@
         data-placement="top" title="Radio-Pixel-Humain is on air, listen now !">
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
     </button>
-    <?php if(@Yii::app()->session["userId"]) { ?>
+    <?php if(@Yii::app()->session["userId"] && (!@$themeParams["footer"] || (@$themeParams["footer"]["add"] && !empty($themeParams["footer"]["add"])))) { ?>
         <button class="btn btn-default no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
             <span class="tooltips-menu-btn"><?php echo Yii::t("common","Add something") ?></span>
