@@ -17,7 +17,7 @@
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
     $CO2DomainName = Yii::app()->params["CO2DomainName"];
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
-   $this->renderPartial($layoutPath.'menus/'.$CO2DomainName, 
+    $this->renderPartial($layoutPath.'menus/'.$CO2DomainName, 
             array( "layoutPath"=>$layoutPath , 
                     "subdomain"=>$subdomain,
                     "subdomainName"=>$subdomainName,

@@ -74,8 +74,8 @@
         if($key=="logo"){ ?>
         <a href="#welcome" class="btn btn-link menu-btn-back-category pull-left no-padding lbh menu-btn-top" >
             <?php 
-            $logo = (@Yii::app()->session['custom']["logo"]) ? Yii::app()->session['custom']["logo"] : Yii::app()->theme->baseUrl.$value["url"];
-            $logoMin = (@Yii::app()->session['custom']["logoMin"]) ? Yii::app()->session['custom']["logoMin"] : $logo;
+            $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']["logo"] : Yii::app()->theme->baseUrl.$value["url"];
+            $logoMin = (@Yii::app()->session['costum']["logoMin"]) ? Yii::app()->session['costum']["logoMin"] : $logo;
             $height = (@$value["height"]) ? $value["height"] : 30;
             ?>
             <img src="<?php echo $logo;?>" class="logo-menutop pull-left hidden-xs" height="<?php echo $height ?>">
@@ -194,9 +194,9 @@
                                     $show=true;
                                     $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
                                 }else if(@Yii::app()->session["userId"] 
-                                    && @Yii::app()->session["custom"]
-                                    && @Yii::app()->session["custom"]["admins"]
-                                    && @Yii::app()->session["custom"]["admins"][Yii::app()->session["userId"]]){
+                                    && @Yii::app()->session["costum"]
+                                    && @Yii::app()->session["costum"]["admins"]
+                                    && @Yii::app()->session["costum"]["admins"][Yii::app()->session["userId"]]){
                                     $show=true;
                                     $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
                                 }else
