@@ -17,7 +17,7 @@
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
     $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"];
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"]; 
-    $metaImg = (@$this->module->image) ? $this->module->image : Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"];
+    $metaImg = (@$this->module->image) ? $this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"];
     $keywords = "";
     if(@$this->module->keywords)
         $keywords = $this->module->keywords;
@@ -39,7 +39,6 @@
         <meta name="title" content="<?php echo $metaTitle; ?>">
         <meta name="description" content="<?php echo $metaDesc; ?>">
         <meta name="author" content="pixelhumain">
-
         <meta property="og:image" content="<?php echo $metaImg; ?>"/>
         <meta property="og:description" content="<?php echo $metaDesc; ?>"/>
         <meta property="og:title" content="<?php echo $metaTitle; ?>"/>
@@ -270,7 +269,7 @@
             );
             if(Yii::app()->language!="en")
                 array_push($cssAnsScriptFilesModule,"/plugins/jquery-validation/localization/messages_".Yii::app()->language.".js");
-            HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->getRequest()->getBaseUrl(true));
+            HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, "https://co.viequotidienne.re/");
             /* ***********************
             END ph core stuff
             ************************ */
@@ -368,7 +367,7 @@
         <script>        
             var CO2DomainName = "<?php echo $CO2DomainName; ?>";
             var CO2params = <?php echo json_encode(Yii::app()->session['paramsConfig']); ?>;
-            alert("<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>");
+            alert("<?php echo "https://co.viequotidienne.re/"; ?>");
             alert("<?php echo Yii::app()->request->baseUrl; ?>");
             jQuery(document).ready(function() { 
                 $.blockUI({ message : themeObj.blockUi.processingMsg});                
