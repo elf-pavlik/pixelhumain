@@ -368,8 +368,8 @@
         <script>        
             var CO2DomainName = "<?php echo $CO2DomainName; ?>";
             var CO2params = <?php echo json_encode(Yii::app()->session['paramsConfig']); ?>;
-            
-            
+            alert(<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>);
+            alert(<?php echo Yii::app()->request->baseUrl; ?>);
             jQuery(document).ready(function() { 
                 $.blockUI({ message : themeObj.blockUi.processingMsg});                
                 if( typeof custom != "undefined" && custom.logo ){
