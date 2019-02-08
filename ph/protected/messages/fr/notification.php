@@ -156,5 +156,11 @@ return array(
 	"in a comment"=> "dans un commentaire",
 	"{author} invites you to vote on the proposal : {where}" => "{author} vous invite à voter à la proposition : {where}",
 	"{author} invite you to vote on several proposals : {where}" => "{author} vous invite à voter à plusieurs propositions : {where}",
+
+	"{author} invites you to vote on the proposal : {where}" => "{author} vous invite à voter à la proposition : {where}",
+	"{author} invite you to vote on several proposals : {where}" => "{author} vous invite à voter à plusieurs propositions : {where}",
+
+	"{author} assign you on the action : {where}" => "{author} vous assigne à une action : {where}",
+	"{author} assign you on several actions : {where}" => "{author} vous assigne à plusieurs actions : {where}",
 );
 ?>
