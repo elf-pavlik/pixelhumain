@@ -371,7 +371,8 @@
             
             
             jQuery(document).ready(function() { 
-                $.blockUI({ message : themeObj.blockUi.processingMsg});                
+                $.blockUI({ message : themeObj.blockUi.processingMsg});  
+              
                 if( typeof custom != "undefined" && custom.logo ){
                     custom.init("mainSearch");
                 }

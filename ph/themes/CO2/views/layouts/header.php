@@ -121,6 +121,7 @@
         setTitle(titlePage, "", titlePage);
         initScopeMenu();
         initPositionInterface();
+        resetNotifTimestamp();
         if( typeof custom != "undefined" && custom.logo ){
             custom.initMenu("mainSearch");
         }
