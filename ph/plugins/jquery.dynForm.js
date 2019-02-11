@@ -2825,7 +2825,7 @@ var dyFObj = {
 									addParams=mentionsInit.beforeSave(addParams,'#ajaxFormModal #createNews textarea');
 									$.ajax({
 								        type: "POST",
-								        url: baseUrl+"/"+moduleId+"/news/save?tpl=co2",
+								        url: baseUrl+"/news/co/save",
 								        //dataType: "json",
 								        data: addParams,
 										type: "POST",

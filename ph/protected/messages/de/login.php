@@ -24,7 +24,6 @@ return array(
         'Select your City...' => 'Wählen Sie Ihre Stadt aus ...',
         'Login'=>'Login',
         "LOG IN"=>"LOGIN",
-        'Don\'t have an account yet?' => 'Sie sind noch nicht registriert ?',
         'Create an account' => 'Hier registrieren',
         'Forget password ?' => 'Passwort vergessen ?',
         'Enter your e-mail address below to get your password by email.' => "Geben Sie Ihre E-Mail-Adresse unten ein, um Ihr Passwort per E-Mail zu erhalten.",
