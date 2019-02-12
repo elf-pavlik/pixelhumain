@@ -42,6 +42,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->the
 </div>
 <script type="text/javascript">
 	// Il n'est pas charger , il faudrai le mettre dans un jQuery
-	//resetNotifTimestamp();
+	
 </script>
 <!-- end: PAGESLIDE RIGHT -->
