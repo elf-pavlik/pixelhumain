@@ -14,7 +14,7 @@
 
     //Network::getNetworkJson(Yii::app()->params['networkParams']);
 
-     if(!@Yii::app()->session['paramsConfig']) 
+    if(!@Yii::app()->session['paramsConfig']) 
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
     $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
