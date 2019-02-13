@@ -122,10 +122,17 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding text-left subsub" id="sub-menu-left">
 					<?php
 						if(isset($params['filter']['linksTag']) && is_array($params['filter']['linksTag'])){ 
-						foreach($params['filter']['linksTag'] as $category => $listTag){ ?>
+						foreach($params['filter']['linksTag'] as $category => $listTag){ 
 
-						
-							<a href="javascript:;" class="btn btn-default text-dark margin-bottom-5 tagParent titleTag" style="margin-left:-5px;" data-keycat="<?php echo $listTag['tagParent']; ?>">
+
+
+							$hiddenTags = !empty($listTag["open"]) ? "" : "hidden" ;
+							$activeParentTags = !empty($listTag["open"]) ? "active" : "" ;
+
+							?>
+
+							
+							<a href="javascript:;" class="btn btn-default text-dark margin-bottom-5 tagParent titleTag <?php echo $activeParentTags ; ?>" style="margin-left:-5px;" data-keycat="<?php echo $listTag['tagParent']; ?>">
 								<?php if(isset($listTag['image'])){
 										echo "<img src='".$this->module->assetsUrl."/images/network/".$listTag['image']."' width='20px'/> ";
 									} else 
@@ -133,8 +140,11 @@
 									echo $category; ?> 
 							</a><br>
 							
-							<?php foreach($listTag['tags'] as $label => $tag){ ?>
-								<a href="javascript:;" class="btn btn-default text-azure margin-bottom-5 hidden tagFilter keycat-<?php echo $listTag['tagParent']; ?>" data-filtre="<?php echo $label ; ?>" data-parent="<?php echo $listTag['tagParent']; ?>">
+							<?php 
+
+
+							foreach($listTag['tags'] as $label => $tag){ ?>
+								<a href="javascript:;" class="btn btn-default text-azure margin-bottom-5 <?php echo $hiddenTags ; ?> tagFilter keycat-<?php echo $listTag['tagParent']; ?>" data-filtre="<?php echo $label ; ?>" data-parent="<?php echo $listTag['tagParent']; ?>">
 									<i class="fa fa-angle-right"></i> <?php echo $label; ?>
 								</a><br class="hidden">
 							<?php } ?>
