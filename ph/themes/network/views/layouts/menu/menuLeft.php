@@ -67,7 +67,10 @@
 				<?php } ?>
 				
 
-				<?php if (!empty($params['request']['searchType']) && in_array(Event::COLLECTION, $params['request']['searchType']) ){ ?>
+				<?php if (	!empty($params['request']['searchType']) && 
+							in_array(Event::COLLECTION, $params['request']['searchType']) &&
+							!empty($params['filter']['event']) &&
+							$params['filter']['event'] == true ){ ?>
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding text-left subsub" id="sub-menu-left">
 						
 						<a href="javascript:;" class="btn btn-default text-dark margin-bottom-5 tagParent titleTag" style="margin-left:-5px;" data-keycat="dateevent">
