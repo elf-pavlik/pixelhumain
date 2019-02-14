@@ -73,12 +73,7 @@
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
     $this->renderPartial($layoutPath.'initJs', 
                                  array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
-    if($this->module->id == "custom"){
-        //DO A REDIRECT TO COSTUM URL IN A FIRST TIME THEN DELETE THIS CONDITION 
-        // @Projects still under : lePort, pactePourLaTransition, Centres sociaux connectes
-        $this->renderPartial( 'co2.views.custom.init' );
-    }
-    else if($this->module->id == "costum")
+    if($this->module->id == "costum")
         $this->renderPartial( 'costum.views.co.init'  );
     else {
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
