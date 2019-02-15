@@ -318,6 +318,5 @@
 <?php 
 $this->renderPartial($layoutPath.'loginRegister', array("subdomain" => $subdomain)); 
 
-if(isset(Yii::app()->session['userId'])) $this->renderPartial($layoutPath.'notifications'); 
 $this->renderPartial($layoutPath.'formCreateElement'); ?>
 

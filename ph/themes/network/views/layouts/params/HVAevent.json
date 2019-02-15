@@ -40,13 +40,17 @@
         },
         "initmap" : [ 
             43.0542733,
-            2.51247145749955 ]
+            2.51247145749955 ],
+        "open" : {
+            "lists" :true
+        }
     },
     "add" : {
         "event" : true
     },
     "filter" : {
-        "types" : false
+        "types" : false,
+        "event" : true
     },
     "result" : {
         "displayImage" : true,
