@@ -373,6 +373,7 @@
                 if( typeof costum != "undefined" && costum.logo ){
                     costum.init("mainSearch");
                 }
+
                 var pageUrls = <?php echo json_encode(Yii::app()->session['paramsConfig']["pages"]); ?>;
                 $.each( pageUrls ,function(k , v){ 
                     if(typeof urlCtrl.loadableUrls[k] == "undefined")
