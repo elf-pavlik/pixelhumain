@@ -267,6 +267,7 @@ return array(
 	"today" => "ajourd'hui",
 	"Name" => "Nom",
 	"Username" => "Nom d'utilisateur",
+	"Username cannot be changed." => "Le nom d'utilisateur ne peut etre modifié.",
 	"Street Address" => "Rue",
 	"Address" => "Adresse",
 	"Postal Code" => "Code Postal",
