@@ -9,7 +9,7 @@ $cssAnsScriptFilesModule = array(
  );
 HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl. '/assets');
 ?>
-<div id="notificationPanelSearch" class="arrow_box">
+<div id="notificationPanelSearch" class="arrow_box panel-notif <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
 		<div class="notifications">
 			<a href="javascript:;" data-element="" data-id="<?php echo Yii::app()->session["userId"]?>" data-type="<?php echo Person::COLLECTION ?>" class="btn-notification-action pull-left btn-reload-notif">
 				<i class="fa fa-refresh"></i>
@@ -42,6 +42,6 @@ HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->the
 </div>
 <script type="text/javascript">
 	// Il n'est pas charger , il faudrai le mettre dans un jQuery
-	//resetNotifTimestamp();
+	
 </script>
 <!-- end: PAGESLIDE RIGHT -->
