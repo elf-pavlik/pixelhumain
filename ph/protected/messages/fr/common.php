@@ -1529,6 +1529,28 @@ merci de renseigner votre code postal dans l'adresse de votre profil.",
 
 	"Notifications & Mails"=>"Notifications & E-mail",
 
-	"COMMUNECTER still needs your help, just by giving 1€ per month, It's the guarantee, we can continue building freely this great open, libre & societal network" => "Tu peux soutenir COMMUNECTER en donnant chaque mois, même 1€, c'est l'assurance de la pérennité d'un outils d'échange libre et gratuit. On a besoin de vous."
+	"COMMUNECTER still needs your help, just by giving 1€ per month, It's the guarantee, we can continue building freely this great open, libre & societal network" => "Tu peux soutenir COMMUNECTER en donnant chaque mois, même 1€, c'est l'assurance de la pérennité d'un outils d'échange libre et gratuit. On a besoin de vous.",
+
+
+
+
+
+	"Request sent" => "Demande envoyé",
+	"Validation of actions" => "Validation d'actions",
+	"Please choose your actions" => "Veuillez choisir vos actions",
+	"Delete my email associated with items" => "Supprimer mon mail associé à des éléments",
+	"No longer allow my email to be informed about the platform" => "Ne plus autoriser mon mail a être renseigner sur la plateforme",
+	"An e-mail has just been sent to you to validate the request" => "Un e-mail vient de vous être envoyé pour valider la demande",
+	"Your mail" => "Votre e-mail",
+
+	"You have decided to do the following actions" => "Vous avez souhaité faire les actions suivantes",
+	"Validate the actions" => "Valider les actions",
+	"If you are not the originator of this request, you can ignore it" => "Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer",
+
+	"Your data" => "Votre données",
+	"Your data associated with your email address" => "Votre données associés avec votre adresse mail",
+	"If you are not the originator of this email. You can check your data and manage the sending of your email to {thisaddress}" => "Si vous n'êtes pas à l'origine de ce mail. Vous pouvez vérifier vos données et gérer l'envoie de votre mail à {thisaddress}",
+	"this address" => "cette adresse",
+
 );
 ?>
