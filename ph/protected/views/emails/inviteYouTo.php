@@ -8,7 +8,7 @@ $urlInvite=Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.".$parentType
 if(@$url){
 	$urlInvite=Yii::app()->getRequest()->getBaseUrl(true).$url;
 	$urlSite=$urlInvite;
-	if(strrpos($url, "custom") !== false)
+	if(strrpos($url, "costum") !== false)
 		$urlInvite=$urlSite."#page.type.".$parentType.".id.".$target["id"];
 }
 $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlSite));

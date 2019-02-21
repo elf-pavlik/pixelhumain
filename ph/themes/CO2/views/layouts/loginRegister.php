@@ -61,7 +61,9 @@
 }
 </style>
 
-<?php //if($subdomain != "welcome"){ ?>
+<?php //if($subdomain != "welcome"){ 
+$logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']["logo"] : $this->module->getParentAssetsUrl()."/images/logoLTxt.jpg";
+?>
 <form class="portfolio-modal modal fade form-login box-login" id="modalLogin" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content padding-top-15">
         <div class="close-modal" data-dismiss="modal">
@@ -82,10 +84,10 @@
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
                                 <?php  
-                                $logo = (@Yii::app()->session['custom']["logo"]) ? Yii::app()->session['custom']["logo"] : $this->module->getParentAssetsUrl()."/images/logoLTxt.jpg";
+                                
                                 
                                 $nameTheme = ( (Yii::app()->theme->name == "network") ? "CO2" : Yii::app()->theme->name );
-                                if(!@Yii::app()->session['custom']["logo"])
+                                if(!@Yii::app()->session['costum']["logo"])
                                     //$this->renderPartial('webroot.themes.'.$nameTheme.'.views.layouts.forms.CO2.menuTitle'); ?>
                                 <img style="width:100%; border: 10px solid white; border-bottom-width:0px;max-height: inherit;" class="pull-right logoLoginRegister" src="<?php echo $logo;?>"/>
                                 
@@ -450,7 +452,7 @@
                        <?php } else if(Yii::app()->params["CO2DomainName"] == "FI"){ ?>
                             <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/FI-logo.png" height="60" class="inline margin-bottom-15">
                        <?php } else { ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="100" class="inline margin-bottom-15">
+                            <img src="<?php echo $logo ?>" height="100" class="inline margin-bottom-15">
                         <?php } ?>
                     </span>
                     <h3 class="letter-red no-margin" style="margin-top:-15px!important;"><?php echo Yii::t("login", "You didn't receive the validation email ?") ?></h3><br>

@@ -14,7 +14,7 @@
 
     //Network::getNetworkJson(Yii::app()->params['networkParams']);
 
-     if(!@Yii::app()->session['paramsConfig']) 
+    if(!@Yii::app()->session['paramsConfig']) 
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
     $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
@@ -73,12 +73,7 @@
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
     $this->renderPartial($layoutPath.'initJs', 
                                  array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
-    if($this->module->id == "custom"){
-        //DO A REDIRECT TO COSTUM URL IN A FIRST TIME THEN DELETE THIS CONDITION 
-        // @Projects still under : lePort, pactePourLaTransition, Centres sociaux connectes
-        $this->renderPartial( 'co2.views.custom.init' );
-    }
-    else if($this->module->id == "costum")
+    if($this->module->id == "costum")
         $this->renderPartial( 'costum.views.co.init'  );
     else {
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
@@ -352,11 +347,13 @@
 
         <?php //$this->renderPartial($layoutPath.'initCommunexion', array()); ?>
         
-        <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); ?>
+        <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); 
+            if(isset(Yii::app()->session['userId'])) $this->renderPartial($layoutPath.'notifications'); 
 
-        <?php // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); ?>
-        <?php $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); ?>
-        <?php 
+
+            // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); 
+            $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); 
+
             if(false && (($CO2DomainName == "CO2" &&
                 !@Yii::app()->session["userId"] && 
                 !@Yii::app()->session["user"]["preferences"]) || 
@@ -378,6 +375,7 @@
                 if( typeof costum != "undefined" && costum.logo ){
                     costum.init("mainSearch");
                 }
+
                 var pageUrls = <?php echo json_encode(Yii::app()->session['paramsConfig']["pages"]); ?>;
                 $.each( pageUrls ,function(k , v){ 
                     if(typeof urlCtrl.loadableUrls[k] == "undefined")
