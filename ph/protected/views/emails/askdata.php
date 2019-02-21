@@ -48,10 +48,14 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 								} else {
 									echo "<li>".Yii::t("common", "Your e-mail is not referenced in any element.")."</li>" ;
 								}
+
+								$urlData = Yii::app()->getRequest()->getBaseUrl(true).'/co2/mailmanagement/getdata/id/'.$attach;
+
+								echo '<a href="'.$urlData.'" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">'. Yii::t("common","Lien vers votre données").'</a>';
 							?>
 						</th>
 					</tr>					
-				</table>
+				</table>https://www.communecter.org/co2/mailmanagement/getdata/id/5c6e652f40bb4e0551b91de2
 
 	        </th>
 		</tr>
