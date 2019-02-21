@@ -2,7 +2,6 @@
 
 $url = (!empty($url)) ? Yii::app()->getRequest()->getBaseUrl(true).$url : Yii::app()->getRequest()->getBaseUrl(true) ;
 
-$urlValidation=Yii::app()->getRequest()->getBaseUrl(true).'/co2#element.remove.id.'.$active;
 $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', 
 					array("logo" => ( (!empty($logo)) ? Yii::app()->getRequest()->getBaseUrl(true).$logo : null ),
 							"url" => $url));
@@ -17,32 +16,46 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 				<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;">
 					<tr style="padding: 0;vertical-align: top;text-align: left;">
 						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-							<b>
-								<h5 style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin-top: 15px; line-height: 1.3;word-wrap: normal;margin-bottom: 10px;font-size: 20px;">
-									<?php echo Yii::t("common","You have decided to do the following actions") ?> :
-								</h5>
-							</b>
-							<?php
-
-								echo "<ul>";
-								if ( !empty($removeMail) && ($removeMail == "true" || $removeMail == true ) ) {
-									echo "<li>".Yii::t("common","Delete my email associated with items")."</li>";
-								}
-
-								if ( !empty($notMail) && ( $notMail == "true" || $notMail == true ) ) {
-									echo "<li>".Yii::t("common","No longer allow my email to be informed about the platform")."</li>";
-								}
-								echo "</ul>";
-
-								echo '<a href="'.$urlValidation.'" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">'. Yii::t("common","Validate the actions").'</a>';
-							?>
 							<br/><br/>
-							<?php echo Yii::t("common","If you are not the originator of this request, you can ignore it"); ?>.
+							<b>
+								<?php echo Yii::t("common","Hello, you have made a request to know what data we have, you find attached the data and if below a summary") ?>
+							</b>
+							<br/><br/>
+							<?php 
+						
+								if(!empty($resume["account"])){
+									if(!empty($resume["tobeactivated"]) && $resume["tobeactivated"] == true){
+										if(!empty($resume["invitedBy"]) && $resume["invitedBy"] == true)
+											echo "<li>".Yii::t("common", "You have been invited to join Communicate")."</li>";
+										else
+											echo "<li>".Yii::t("common", "You have an account pending validation")."</li>";
+									
+									} else {
+										echo "<li>".Yii::t("common", "You have an account.")."</li>";
+									}
+								} else {
+									echo "<li>".Yii::t("common", "No user account is associated with your email")."</li>";
+								}
+
+
+								if(!empty($resume["elts"])){
+									echo "<li>".Yii::t("common", "Summary of the number of times your email has been referenced in items")."</li>" ;
+									echo "<ul>";
+									foreach ($resume["elts"] as $key => $value) {
+										echo "<li>".Yii::t("common", $key)." : ".$value."</li>";
+									}
+									echo "</ul>";
+								} else {
+									echo "<li>".Yii::t("common", "Your e-mail is not referenced in any element.")."</li>" ;
+								}
+							?>
 						</th>
 					</tr>					
 				</table>
+
 	        </th>
 		</tr>
+
 		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 				
@@ -50,8 +63,11 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 					array("logo" => @$logo,
 							"url" => $url,
 							"name" => @$title) ); ?>
+
 			</td>
+
 		</tr>
+
 	</tbody>
 </table>
 </center></td></tr></table>
