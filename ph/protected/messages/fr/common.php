@@ -1558,7 +1558,7 @@ merci de renseigner votre code postal dans l'adresse de votre profil.",
 	"You will no longer receive any emails from the platform" => "Vous ne recevrez plus d'email de la plateforme",
 	"You have not made any request or the request has expired" => "Vous n'avez fais aucune demande ou la demande à été expiré",
 
-	"Hello, you have made a request to know what data we have, you find in this email a summary and the link to all your data" => "Bonjour, vous avez fait une demande pour savoir quelles données nous disposons, vous trouvez dans ce mail un résumé et le lien vers l'ensemble de vos données",
+	"Hello, you have made a request to know what data we have, you will find in this email a summary and the link to all your data" => "Bonjour, vous avez fait une demande pour savoir quelles données nous disposons, vous trouverez dans ce mail un résumé et le lien vers l'ensemble de vos données",
 	"You have been invited to join Communicate" => "Vous avez été invité à rejoindre Communecter",
 	"You have an account pending validation" => "Vous avez un compte en attente de validation",
 	"You have an account." => "Vous avez un compte.",
