@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<!-- ****************************** THEME CO2 ******************************-->
+<!-- ****************************** THEME CO2 : mainSearch ******************************-->
 <?php 
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';

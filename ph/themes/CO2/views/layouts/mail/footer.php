@@ -9,6 +9,40 @@
 				<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;">
 					<tr style="padding: 0;vertical-align: top;text-align: left;">
 						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
+							<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px; font-style: italic;">
+								<hr>
+							</p>
+						</th>
+					</tr>
+					<tr style="padding: 0;vertical-align: top;text-align: left;">
+						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
+							<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px; font-style: italic;">
+								<?php 
+									$here = '<a href="'.Yii::app()->getRequest()->getBaseUrl(true).'/#settings.page.notificationsAccount">'.Yii::t("mail","here").'</a>';
+									echo Yii::t("mail","You can manage your notifications {here}", array("{here}" => $here) ) ; 
+								?>
+							</p>
+						</th>
+					</tr>
+					<tr style="padding: 0;vertical-align: top;text-align: left;">
+						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
+							<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px; font-style: italic;">
+								<?php 
+									$here = '<a href="'.Yii::app()->getRequest()->getBaseUrl(true).'/#element.removedata">'.Yii::t("common","this address").'</a>';
+									echo Yii::t("common","If you are not the originator of this email. You can check your data and manage the sending of your email to {thisaddress}", array("{thisaddress}" => $here) ) ; 
+								?>
+							</p>
+						</th>
+					</tr>
+					<tr style="padding: 0;vertical-align: top;text-align: left;">
+						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
+							<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px; font-style: italic;">
+								<hr>
+							</p>
+						</th>
+					</tr>
+					<tr style="padding: 0;vertical-align: top;text-align: left;">
+						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 						  <p style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px;"><?php echo Yii::t("mail","See you soon on {what}",array("{what}"=>'<a href="'.$urlRedirect.'" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">'.$urlRedirect.'</a>')) ?>, </p>
 						  <p style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px;"><?php echo Yii::t("mail","The team of {what}", array("{what}"=>$nameTeam)) ?>.</p>
 						</th>
@@ -21,7 +55,7 @@
 <?php if($nameTeam== "COmmunecter"){ ?>
 	<tr style="padding: 0;vertical-align: top;text-align: left;">
 		<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 15px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-			<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;">
+			<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;margin-top: 10px">
 				<tr style="padding: 0;vertical-align: top;text-align: left;">
 				  <th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 					<center style="width: 100%;min-width: 532px;">
@@ -49,16 +83,6 @@
 			    		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			    			<th class="small-12 large-12 columns first last" style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0 auto;text-align: left;line-height: 19px;font-size: 15px;padding-left: 16px;padding-bottom: 16px;width: 564px;padding-right: 16px;">
 							<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;">
-								<tr style="padding: 0;vertical-align: top;text-align: left;">
-									<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-										<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 20px 0px;text-align: center;line-height: 19px;font-size: 12px;font-style: italic;">
-											<?php 
-												$here = '<a href="'.Yii::app()->getRequest()->getBaseUrl(true).'/#settings.page.notificationsAccount">'.Yii::t("mail","here").'</a>';
-												echo Yii::t("mail","You can manage your notifications {here}", array("{here}" => $here) ) ; 
-											?>
-										</p>
-									</th>
-								</tr>
 								<tr style="padding: 0;vertical-align: top;text-align: left;">
 									<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 										<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 20px 0px;text-align: center;line-height: 19px;font-size: 12px;font-style: italic;"><?php echo Yii::t("mail","Mail send from") ?> <?php echo $urlRedirect; ?></p>

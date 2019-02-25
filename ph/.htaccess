@@ -552,3 +552,13 @@ RewriteRule . index.php
 php_value upload_max_filesize 60M
 php_value post_max_size 60M
 </IfModule>
+
+# Re-write rules
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI}  /\.well-known/webfinger$
+RewriteCond %{QUERY_STRING} resource=([^&]+)
+RewriteRule ^(.*)$ /wf/%1.json [L]
+
+RewriteRule ^/.well-known/webfinger$ - [L,R=400]
+

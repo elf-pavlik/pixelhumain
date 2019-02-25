@@ -267,6 +267,7 @@ return array(
 	"today" => "ajourd'hui",
 	"Name" => "Nom",
 	"Username" => "Nom d'utilisateur",
+	"Username cannot be changed." => "Le nom d'utilisateur ne peut etre modifié.",
 	"Street Address" => "Rue",
 	"Address" => "Adresse",
 	"Postal Code" => "Code Postal",
@@ -1529,6 +1530,45 @@ merci de renseigner votre code postal dans l'adresse de votre profil.",
 
 	"Notifications & Mails"=>"Notifications & E-mail",
 
-	"COMMUNECTER still needs your help, just by giving 1€ per month, It's the guarantee, we can continue building freely this great open, libre & societal network" => "Tu peux soutenir COMMUNECTER en donnant chaque mois, même 1€, c'est l'assurance de la pérennité d'un outils d'échange libre et gratuit. On a besoin de vous."
+	"COMMUNECTER still needs your help, just by giving 1€ per month, It's the guarantee, we can continue building freely this great open, libre & societal network" => "Tu peux soutenir COMMUNECTER en donnant chaque mois, même 1€, c'est l'assurance de la pérennité d'un outils d'échange libre et gratuit. On a besoin de vous.",
+
+
+
+
+
+	"Request sent" => "Demande envoyé",
+	"Validation of actions" => "Validation d'actions",
+	"Please choose your actions" => "Veuillez choisir vos actions",
+	"Delete my email associated with items" => "Supprimer mon mail associé à des éléments",
+	"No longer allow my email to be informed about the platform" => "Ne plus autoriser mon mail a être renseigner sur la plateforme",
+	"An e-mail has just been sent to you to validate the request" => "Un e-mail vient de vous être envoyé pour valider la demande",
+	"Your mail" => "Votre e-mail",
+
+	"You have decided to do the following actions" => "Vous avez souhaité faire les actions suivantes",
+	"Validate the actions" => "Valider les actions",
+	"If you are not the originator of this request, you can ignore it" => "Si vous n'êtes pas à l'origine de cette demande, vous pouvez l'ignorer",
+
+	"Your data" => "Votre données",
+	"Your data associated with your email address" => "Votre données associés avec votre adresse mail",
+	"If you are not the originator of this email. You can check your data and manage the sending of your email to {thisaddress}" => "Si vous n'êtes pas à l'origine de ce mail. Vous pouvez vérifier vos données et gérer l'envoie de votre mail à {thisaddress}",
+	"this address" => "cette adresse",
+	"Incorrect security code" => "Code de sécurité incorrecte",
+	"You cannot enter this email address : " => "Vous ne pouvez pas renseigner cette adresse mail : ",
+	"Your email has been deleted from all items" => "Votre email a été supprimer de tout les éléments",
+	"You will no longer receive any emails from the platform" => "Vous ne recevrez plus d'email de la plateforme",
+	"You have not made any request or the request has expired" => "Vous n'avez fais aucune demande ou la demande à été expiré",
+
+	"Hello, you have made a request to know what data we have, you will find in this email a summary and the link to all your data" => "Bonjour, vous avez fait une demande pour savoir quelles données nous disposons, vous trouverez dans ce mail un résumé et le lien vers l'ensemble de vos données",
+	"You have been invited to join Communicate" => "Vous avez été invité à rejoindre Communecter",
+	"You have an account pending validation" => "Vous avez un compte en attente de validation",
+	"You have an account." => "Vous avez un compte.",
+	"No user account is associated with your email" => "Aucun compte utilisateur n'est associé a votre e-mail",
+	"Summary of the number of times your email has been referenced in items" => "Résumé du nombre de fois où votre e-mail a été référencé dans des éléments",
+	"Your e-mail is not referenced in any element." => "Votre e-mail n'est référencé dans aucun élément.",
+	"Remove my data" => "Supprimer mes données",
+	"Get my data" => "Obtenir mes données",
+
+	"This url will be deleted after one week, remember to copy and paste your data or make a new request." => "Cette url sera supprimé au bout d'une semaine, pensez à copier coller votre donnée ou refaite une demande.",
+	"Link to your data" => "Lien vers votre donnée",
 );
 ?>
