@@ -228,5 +228,11 @@
 		"We got news for you." => "Il y a du nouveau.",
 		"You can manage your notifications {here}" => "Vous pouvez gérer vos notifications {here}",
 		"Only one notification left to discover" => "Plus qu'une notification à découvrir",
+
+		"{author} invites you to vote on the proposal : {where}" => "{author} vous invite à voter à la proposition : {where}",
+		"{author} invite you to vote on several proposals : {where}" => "{author} vous invite à voter à plusieurs propositions : {where}",
+
+		"{author} assign you on the action : {where}" => "{author} vous assigne à une action : {where}",
+		"{author} assign you on several actions : {where}" => "{author} vous assigne à plusieurs actions : {where}",
 );
 ?> 

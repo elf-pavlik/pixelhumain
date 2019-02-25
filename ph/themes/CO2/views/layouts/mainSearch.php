@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<!-- ****************************** THEME CO2 ******************************-->
+<!-- ****************************** THEME CO2 : mainSearch ******************************-->
 <?php 
 
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
@@ -114,7 +114,6 @@
         
         <?php  if( isset(Yii::app()->session["userId"]) ){
                 $this->renderPartial($layoutPath.'.rocketchat'); 
-                //$this->renderPartial($modulePath.'/news/modalShare', array());
             } 
         ?>
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
@@ -350,11 +349,13 @@
 
         <?php //$this->renderPartial($layoutPath.'initCommunexion', array()); ?>
         
-        <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); ?>
+        <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); 
+            if(isset(Yii::app()->session['userId'])) $this->renderPartial($layoutPath.'notifications'); 
 
-        <?php // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); ?>
-        <?php $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); ?>
-        <?php 
+
+            // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); 
+            $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); 
+
             if(false && (($CO2DomainName == "CO2" &&
                 !@Yii::app()->session["userId"] && 
                 !@Yii::app()->session["user"]["preferences"]) || 
@@ -372,7 +373,8 @@
             
             
             jQuery(document).ready(function() { 
-                $.blockUI({ message : themeObj.blockUi.processingMsg});                
+                $.blockUI({ message : themeObj.blockUi.processingMsg});  
+              
                 if( typeof custom != "undefined" && custom.logo ){
                     custom.init("mainSearch");
                 }

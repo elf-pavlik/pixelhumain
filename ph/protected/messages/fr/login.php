@@ -24,7 +24,6 @@ return array(
         'Select your City...' => 'Sélectionnez votre ville',
         'Login'=>'Se connecter',
         "LOG IN"=>"SE CONNECTER",
-        'Don\'t have an account yet?' => 'Vous n\'avez pas encore de compte ?',
         'Create an account' => 'Créez votre compte',
         'Create my <b>citizen</b> account' => 'Je créé mon compte <b>Citoyen</b>',
         'Forget password ?' => 'Mot de passe oublié ?',
