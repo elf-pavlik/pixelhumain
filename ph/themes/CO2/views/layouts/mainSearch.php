@@ -348,8 +348,10 @@
         <?php //$this->renderPartial($layoutPath.'initCommunexion', array()); ?>
         
         <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); 
-            if(isset(Yii::app()->session['userId'])) $this->renderPartial($layoutPath.'notifications'); 
-
+            if(isset(Yii::app()->session['userId'])){
+                $this->renderPartial('news.views.co.modalShare', array());
+                $this->renderPartial($layoutPath.'notifications'); 
+            }
 
             // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); 
             $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); 
