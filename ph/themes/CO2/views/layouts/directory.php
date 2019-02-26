@@ -60,6 +60,7 @@ echo $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layo
     '/js/scopes/scopes.js',
     '/js/default/globalsearch.js',
     '/js/co.js',
+        '/js/links.js',
     '/js/default/index.js',
     '/js/default/live.js',
     '/js/floopDrawerRight.js',

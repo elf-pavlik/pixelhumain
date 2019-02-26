@@ -87,10 +87,7 @@
         
         <?php //$this->renderPartial($layoutPath.'loginRegister', array()); ?>
 
-        <?php  if( isset(Yii::app()->session["userId"]) )
-                $this->renderPartial('../news/modalShare', array());
-        ?>
- 
+       
         <div class="main-container">
 
             <?php 
@@ -219,7 +216,10 @@
 
         <?php $this->renderPartial($layoutPath.'initCommunexion', array()); ?>
         <?php $this->renderPartial($layoutPath.'tradTerla', array()); ?>
-        
+        <?php  if( isset(Yii::app()->session["userId"]) )
+                $this->renderPartial('news.views.co.modalShare', array());
+        ?>
+ 
          
         <script>
 
