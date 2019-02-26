@@ -38,10 +38,10 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 								}
 
 
-								if(!empty($resume["elts"])){
+								if(!empty($resume["eltsReferenceEmail"])){
 									echo "<li>".Yii::t("common", "Summary of the number of times your email has been referenced in items")."</li>" ;
 									echo "<ul>";
-									foreach ($resume["elts"] as $key => $value) {
+									foreach ($resume["eltsReferenceEmail"] as $key => $value) {
 										echo "<li>".Yii::t("common", $key)." : ".$value."</li>";
 									}
 									echo "</ul>";
