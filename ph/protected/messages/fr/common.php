@@ -1570,5 +1570,6 @@ merci de renseigner votre code postal dans l'adresse de votre profil.",
 
 	"This url will be deleted after one week, remember to copy and paste your data or make a new request." => "Cette url sera supprimé au bout d'une semaine, pensez à copier coller votre donnée ou refaite une demande.",
 	"Link to your data" => "Lien vers votre donnée",
+	"You have requested to stop receiving e-mail" => "Vous avez fais la demande de ne plus recevoir d'e-mail"
 );
 ?>

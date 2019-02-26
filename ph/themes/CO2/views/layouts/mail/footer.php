@@ -7,7 +7,34 @@
 		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 15px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 				<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;">
+					
 					<tr style="padding: 0;vertical-align: top;text-align: left;">
+						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
+						  <p style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px;"><?php echo Yii::t("mail","See you soon on {what}",array("{what}"=>'<a href="'.$urlRedirect.'" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">'.$urlRedirect.'</a>')) ?>, </p>
+						  <p style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px;"><?php echo Yii::t("mail","The team of {what}", array("{what}"=>$nameTeam)) ?>.</p>
+						</th>
+					</tr>
+				</table>
+
+			</th>
+		</tr>
+
+<?php if($nameTeam== "COmmunecter"){ ?>
+	<tr style="padding: 0;vertical-align: top;text-align: left;">
+		<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 15px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
+			<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;margin-top: 10px">
+				<tr style="padding: 0;vertical-align: top;text-align: left;">
+				  <th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
+					<center style="width: 100%;min-width: 532px;">
+					<!--http://localhost:8888/ph/images/logoLTxt.jpg-->
+					<a href="https://www.helloasso.com/associations/open-atlas/collectes/communecter" target="_blank">
+					<img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true)."/images/banniere-campagne-acoeur.jpg" ?>" valign="bottom" alt="Logo Communecter" align="center" class="text-center" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;margin: 0 auto;float: none;text-align: center;">
+					</a>
+					</center>
+				  </th>
+				  <th class="expander" style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;margin: 0;text-align: left;line-height: 19px;font-size: 15px;visibility: hidden;width: 0;"></th>
+				</tr>
+				<tr style="padding: 0;vertical-align: top;text-align: left;">
 						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 							<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px; font-style: italic;">
 								<hr>
@@ -41,32 +68,6 @@
 							</p>
 						</th>
 					</tr>
-					<tr style="padding: 0;vertical-align: top;text-align: left;">
-						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-						  <p style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px;"><?php echo Yii::t("mail","See you soon on {what}",array("{what}"=>'<a href="'.$urlRedirect.'" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">'.$urlRedirect.'</a>')) ?>, </p>
-						  <p style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px;"><?php echo Yii::t("mail","The team of {what}", array("{what}"=>$nameTeam)) ?>.</p>
-						</th>
-					</tr>
-				</table>
-
-			</th>
-		</tr>
-
-<?php if($nameTeam== "COmmunecter"){ ?>
-	<tr style="padding: 0;vertical-align: top;text-align: left;">
-		<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 15px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-			<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;margin-top: 10px">
-				<tr style="padding: 0;vertical-align: top;text-align: left;">
-				  <th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-					<center style="width: 100%;min-width: 532px;">
-					<!--http://localhost:8888/ph/images/logoLTxt.jpg-->
-					<a href="https://www.helloasso.com/associations/open-atlas/collectes/communecter" target="_blank">
-					<img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true)."/images/banniere-campagne-acoeur.jpg" ?>" valign="bottom" alt="Logo Communecter" align="center" class="text-center" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;margin: 0 auto;float: none;text-align: center;">
-					</a>
-					</center>
-				  </th>
-				  <th class="expander" style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;margin: 0;text-align: left;line-height: 19px;font-size: 15px;visibility: hidden;width: 0;"></th>
-				</tr>
 			</table>
 		</td>
 	</tr>
