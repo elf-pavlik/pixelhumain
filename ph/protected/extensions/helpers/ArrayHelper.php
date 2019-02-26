@@ -246,10 +246,12 @@ class ArrayHelper {
         if($attributesElt==null)
             $attributesElt = array() ;
         $arrayPathMapping = explode(";", self::getAllPath($arrayJson));
+
         foreach ($arrayPathMapping as $keyPathMapping => $valuePathMapping){
             if(!empty($valuePathMapping) && !in_array($valuePathMapping, $attributesElt))
                 $attributesElt[] =  $valuePathMapping;
         }
+        
         return $attributesElt ;
     }
 

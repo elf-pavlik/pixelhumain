@@ -213,6 +213,7 @@ class Rest
 
 	public static function csv($res){
 		header("Content-type: text/csv");
+		header('Content-Disposition: attachment; filename="export.csv"');
 		Export::toCSV($res, ";", '"');
 	}
 }

@@ -21,8 +21,9 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 								<?php echo Yii::t("common","Hello, you have made a request to know what data we have, you will find in this email a summary and the link to all your data") ?>
 							</b>
 							<br/><br/>
+							<ul>
 							<?php 
-						
+								
 								if(!empty($resume["account"])){
 									if(!empty($resume["tobeactivated"]) && $resume["tobeactivated"] == true){
 										if(!empty($resume["invitedBy"]) && $resume["invitedBy"] == true)
@@ -37,11 +38,13 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 									echo "<li>".Yii::t("common", "No user account is associated with your email")."</li>";
 								}
 
+								echo "<li>".Yii::t("common", "You have requested to stop receiving e-mail")."</li>";
 
-								if(!empty($resume["elts"])){
+
+								if(!empty($resume["eltsReferenceEmail"])){
 									echo "<li>".Yii::t("common", "Summary of the number of times your email has been referenced in items")."</li>" ;
 									echo "<ul>";
-									foreach ($resume["elts"] as $key => $value) {
+									foreach ($resume["eltsReferenceEmail"] as $key => $value) {
 										echo "<li>".Yii::t("common", $key)." : ".$value."</li>";
 									}
 									echo "</ul>";
@@ -51,7 +54,7 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 
 								$urlData = Yii::app()->getRequest()->getBaseUrl(true).'/co2/mailmanagement/getdata/id/'.$attach;
 							?>
-
+							</ul>
 						</th>
 					</tr>
 					<tr style="padding: 0;vertical-align: top;text-align: center;">
