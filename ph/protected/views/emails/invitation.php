@@ -11,7 +11,7 @@ if(!empty($invitorUrl))
 	$invitorName='<a href="'.$invitorUrl.'" target="_blank">'.$invitorName.'</a>';
 if(@$url){
     $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
-    $keyOn=(strrpos($url, "survey") !== false) ? str_replace("/", ".", $url) : ltrim($url, '/');
+    $keyOn=(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false) ? str_replace("/", ".", $url) : ltrim($url, '/');
     $urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id."/person/validateinvitation/user/".$invitedUserId.'/validationKey/'.$validationKey.'/invitation/1/redirect/'.$keyOn;
 }
 $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));

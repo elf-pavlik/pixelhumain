@@ -128,39 +128,11 @@ footer{
 .footer-below{
 	background-color: #233140;
 }
-header, .header {
-  /*margin-top: 55px;*/
-  text-align: center;
-  /*background: rgba(0, 0, 0, 0.03);*/
-  /*background: url("../../img/background-header/contact-map.jpg") center top;*/
-  color: #365766;
-  background-color: white;
-}
-header{
-	position: relative;
-	/*min-height: 50px;*/
-}
-header .intro-text .name , 
-.header .intro-text .name {
-    font-size: 40px;
-	letter-spacing: 0px;
-	margin-bottom: -10px;
-}
 .portfolio-modal.modal .name{
     font-size: 5em;
 	letter-spacing: 2px;
 }
 
-header img,
-.header img {
-    display: block;
-    margin: 0 auto 20px;
-}
-header .container ,
-.header .container {
-    padding-top: 80px;
-	padding-bottom: 70px;
-}
 .link-submenu-header{
     text-transform: uppercase;
     font-weight: 800;
@@ -250,12 +222,13 @@ section {
 	padding-left: 5% !important;
 }
 #filter-scopes-menu{
+	position:fixed;
+	z-index: 15000;
 	background-color: white;
     padding-left: 5% !important;
     padding-top: 5px;
     padding-bottom: 5px;
-    border-top: 1px solid rgba(100,100,100,0.1);
-    margin-top: 1px;
+   /* border-top: 1px solid rgba(100,100,100,0.1);*/
     border-bottom: 1px solid rgba(100,100,100,0.1);
 }
 #filter-scopes-menu .input-group-addon{
@@ -280,7 +253,7 @@ section {
 	background-color: rgb(252, 252, 252);
 	z-index: 100000
 }
-#mainNav.borderShadow{
+#mainNav.borderShadow, .menuFilters-horizontal {
 	box-shadow: 0px 2px 3px -3px rgba(0,0,0,0.5);
     border-bottom: 1px solid #dadada;
 }
@@ -678,29 +651,31 @@ section {
         display:none;
         list-style: none;
     }
-    #vertical  #territorial-menu{
+    #menuApp.menuLeft{
         position: fixed;
         bottom: 0px;
-        top: 62px;
+        z-index: 150;
         left: 0px;
         width: 52px;
         padding: 0px !important;
         z-index: 1;
         box-shadow: 0px 1px 3px -1px rgba(0,0,0,0.5);
     }
-    #vertical  #territorial-menu .btn-menu-to-app{
+    #menuApp.menuLeft .btn-menu-to-app{
         width: 100%;
         font-size: 15px;
-    }
-    #vertical{
-        min-height: 0px;
     }
     #vertical #affix-sub-menu{
             padding-left: 52px;
             top: 62px;
             box-shadow: none;
     }
-    #vertical #filters-nav{
+    #filters-nav{
+    	z-index: 120;
+    	background-color: white;
+    	position: fixed;
+    }
+    #filters-nav.menuFilters-vertical{
         padding-left: 1% !important;
        	border-bottom: 1px solid rgba(100,100,100,0.1);
         /*box-shadow: 0px 2px 3px -3px rgba(0,0,0,0.5);*/
@@ -858,9 +833,6 @@ section {
 
 .logo-menutop{
 	margin-bottom: -10px;
-}
-header .logo-menutop{
-	height:70px;
 }
 .navbar-brand {
     padding: 0 0 0 20px;
@@ -1074,7 +1046,6 @@ a, a:hover, a:focus, a:active, a.active{
     width: 250px;
     border: 1px solid #0003;
     border-radius: 0px;
-    height: 170px;
     z-index: 1000000;
 }
 .dropdownApps-menuTop .dropdown-menu:before, .dropdownApps-menuTop .dropdown-menu:after{
@@ -2220,16 +2191,6 @@ margin-right: 5px;
 	#sectionSearchResults{
 		/*margin-left: 15px!important;*/
 	}
-	/*.name .pastille{
-		margin-top:-40px;
-		max-width: 82%;
-		font-size: 0.4em;
-	}*/
-
-	header .logo-menutop{
-		margin-bottom: 0px;
-		height:50px!important;
-	}
 	.name img{
 		max-height:40px;
 	}
@@ -2333,9 +2294,9 @@ margin-right: 5px;
 		width:30px !important;
 		height:30px !important;
 		margin-left:5px;
+		/*margin-top:5px;*/
 	}
 	#mainNav #navbar{
-		margin-top: 8px;
 		margin-right: 0px !important;
 	}
 	#container-text-action, 

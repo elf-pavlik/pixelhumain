@@ -3546,6 +3546,7 @@ var dyFObj = {
 		actived : false,
 		timeoutAddCity : null,
 		countryList : null,
+		map : null,
 		NE_insee : "",
 		NE_lat : "",
 		NE_lng : "",
@@ -3898,29 +3899,19 @@ var dyFObj = {
 					draggable: true
 				};
 
-				mapObj.init(paramsMapLocality);
+				dyFObj.formInMap.map = mapObj.init(paramsMapLocality);
 				var paramMarker = {
 					elt : elt,
 					addPopUp : false, 
 					center : true, 
 					opt : opt
 				};
-				mapObj.addMarker(paramMarker);
-
-				mapObj.addFct(0, 'dragend', function(){
-					var latLonMarker = mapObj.markerList[0].getLatLng();
+				dyFObj.formInMap.map.addMarker(paramMarker);
+				dyFObj.formInMap.map.addFct(0, 'dragend', function(){
+					var latLonMarker = dyFObj.formInMap.map.markerList[0].getLatLng();
 					dyFObj.formInMap.NE_lat = latLonMarker.lat;
 					dyFObj.formInMap.NE_lng = latLonMarker.lng;
-
-					alert(dyFObj.formInMap.NE_lat + " : " + dyFObj.formInMap.NE_lng);
-					//Sig.markerFindPlace.openPopup();
 				});
-
-				// Sig.markerFindPlace.on('dragend', function(){
-				// 	formInMap.NE_lat = Sig.markerFindPlace.getLatLng().lat;
-				// 	formInMap.NE_lng = Sig.markerFindPlace.getLatLng().lng;
-				// 	Sig.markerFindPlace.openPopup();
-				// });
 
 			}else{
 				$('.formLocality').hide();

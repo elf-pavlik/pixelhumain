@@ -2,8 +2,9 @@
 class Rest
 {
 
-	public static function json($res, $param = null, $checkLoggued = true){
-		header('Content-Type: application/json');
+	public static function json($res, $param = null, $checkLoggued = true, $content_type = "application/json"){
+		
+		header('Content-Type: '.$content_type);
 		/*if($checkLoggued){
 			$res["sessionUserId"] = Person::logguedAndValid();
 		}*/

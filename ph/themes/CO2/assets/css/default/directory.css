@@ -1089,7 +1089,7 @@
 
 @media (min-width: 768px) {
   .main-container.vertical .headerSearchContainer.affix{
-    z-index: 9999;
+    z-index: 1;
     left: 53px;
     right: 0px !important;
     width: initial !important;

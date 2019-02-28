@@ -31,8 +31,8 @@ $mailConfigTest = array(
 
 $params = array(
     //Theme 
-     'theme' => 'CO2',
-     'CO2DomainName' => 'CO2', //used by CO2 theme, param header / css / js specific for each website using CO2 theme
+    'theme' => 'CO2',
+    'CO2DomainName' => 'CO2', //used by CO2 theme, param header / css / js specific for each website using CO2 theme
     //'theme' => 'terla',
     //'CO2DomainName' => 'terla',
     "version"=> "2.1.0",
@@ -104,17 +104,6 @@ $params = array(
     //rocketchat params
     "chemin" => dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR,
 
-    /*"front" => array (
-        "organization" => true,
-        "project" => true,
-        "event" => false,
-        "person" => true,
-        "dda" => false,
-        "live" => false,
-        "search" => false, //reanme search
-        "need" => false,
-        "poi" => true
-    )*/
     'poleEmploi' => array(
         "client_id" => "PAR_communectertest_c46ea89b19688d7d3364badae07f308f722f83b0cd9bd040ecc5a468c6f1d07a",
         "client_secret" => "de3f5d98dcefef02d98c239b3973878320ec7815005dff553afc35ae067f3dc9",

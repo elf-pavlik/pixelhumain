@@ -1,4 +1,4 @@
-<div id="filters-nav" class="col-xs-12">
+<div id="filters-nav" class="menuFilters menuFilters-<?php echo $params["appRendering"] ?> col-xs-12" style="min-height:40px;">
   <ul id="filters-nav-list" class="no-padding no-margin">
       <li class="dropdown dropdown-tags">
           <a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left" data-label-xs="tags" type="button" id="dropdownTags" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 

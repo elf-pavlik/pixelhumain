@@ -1,5 +1,5 @@
 <?php $visibleClass=(@$params["numberOfApp"] && $params["numberOfApp"]<=1) ? "visible-xs": ""; ?>
-<div id="territorial-menu" class="col-md-12 col-sm-12 col-xs-12 margin-bottom-10 <?php echo $visibleClass ?>">
+<div id="menuApp" class="subMenuTop col-md-12 col-sm-12 col-xs-12 margin-bottom-10 <?php echo $visibleClass ?>">
     <button class="btn visible-xs pull-left menu-btn-scope-filter text-red elipsis"
         data-type="<?php echo @$type; ?>">
         <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>

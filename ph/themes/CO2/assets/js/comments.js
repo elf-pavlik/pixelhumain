@@ -519,7 +519,7 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
             '<span class="pull-left content-comment col-xs-12 no-padding">'+            
             ' <span class="text-black col-xs-12 comment-container-white">'+
             '   <span class="text-dark"><strong>'+userConnected.name+'</strong></span><br>'+
-            '   <span class="text-comment text-comment-'+idNewComment+'">'  + textComment + "</span>" +
+            '   <span class="text-comment text-comment-'+idNewComment+' col-xs-12 no-padding">'  + textComment + "</span>" +
             ' </span><br>'+
               '<small class="bold">' +
                 '<div class="col-xs-12 pull-left no-padding" id="footer-comments-'+idNewComment+'" style="padding-left:15px !important;"></div>'+

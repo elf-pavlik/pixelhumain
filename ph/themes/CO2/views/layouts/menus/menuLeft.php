@@ -5,7 +5,7 @@
         left:0px;
         width: 65px;
     }
-    #vertical .btn-show-filters.hidden-xs{
+    /*#vertical .btn-show-filters.hidden-xs{
         position: absolute;
         display: none;
         left: 52px;
@@ -19,7 +19,7 @@
         border-bottom: 1px solid #dadada; 
         color: #2BB0C6;
 
-    }
+    }*/
     #vertical  .btn-show-filters.hidden-xs .topbar-badge{
         padding: 2px 5px;
         font-size: 11px;
@@ -29,17 +29,8 @@
         text-decoration: underline;
     }
 </style>
-<?php if(@$useFilter && $useFilter!=false){ ?>
-<button class="btn btn-show-filters visible-xs"><?php echo Yii::t("common", "Filters") ?> <span class="topbar-badge badge animated bounceIn badge-warning bg-green"></span> <i class="fa fa-angle-down"></i></button>
-<button class="btn visible-xs pull-left menu-btn-scope-filter text-red elipsis"
-        data-type="<?php echo @$type; ?>">
-        <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>
-</button>
-
-<!--<button class="btn btn-show-filters hidden-xs"><i class="fa fa-angle-down"></i> <?php echo Yii::t("common", "Filters") ?> <span class="topbar-badge badge animated bounceIn badge-warning bg-azure"></span></button>-->
-<?php } ?>
 <?php $visibleClass=(@$params["numberOfApp"]<=1) ? "hidden": ""; ?>
-<div id="territorial-menu" class="hidden-xs">
+<div id="menuApp" class="menuLeft hidden-xs">
     <?php
         foreach ($params["pages"] as $key => $value) {
             if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
