@@ -25,11 +25,11 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 							<?php
 
 								echo "<ul>";
-								if ( !empty($removeMail) && ($removeMail == "true" || $removeMail == true ) ) {
+								if ( !empty($removeMail) && ($removeMail == "true" || $removeMail === true ) ) {
 									echo "<li>".Yii::t("common","Delete my email associated with items")."</li>";
 								}
 
-								if ( !empty($notMail) && ( $notMail == "true" || $notMail == true ) ) {
+								if ( !empty($notMail) && ( $notMail == "true" || $notMail === true ) ) {
 									echo "<li>".Yii::t("common","No longer allow my email to be informed about the platform")."</li>";
 								}
 								echo "</ul>";
