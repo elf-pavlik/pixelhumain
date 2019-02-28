@@ -217,6 +217,7 @@ var finder = {
 	selectedItems:{},
 	typeAuthorized : {},
 	callback : {},
+	invite : null,
 	set : function(){
 		finder.object={};
 		finder.typeAuthorized={};
@@ -1745,7 +1746,7 @@ var dyFObj = {
 	        		else if(typeof value != "undefined" && notNull(value) && Object.keys(value).length > 0) 
 	        			initValues=value;
 	        		
-	        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
+	        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update, fieldObj.invite);
 	            }
 	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
         	}
