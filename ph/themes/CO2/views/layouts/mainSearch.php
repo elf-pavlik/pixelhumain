@@ -74,7 +74,7 @@
     $this->renderPartial($layoutPath.'initJs', 
                                  array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
     if($this->module->id == "costum")
-        $this->renderPartial( 'costum.views.co.init'  );
+        $this->renderPartial( 'costum.views.co.init');
     else {
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
         Yii::app()->session["costum"]=null;
