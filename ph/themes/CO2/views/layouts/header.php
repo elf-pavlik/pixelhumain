@@ -165,13 +165,17 @@
             if(!$("#filters-nav").is(":visible")){
                 //$("#vertical .btn-show-filters.hidden-xs").hide(350);
                 $("#filters-nav").show(200);
-                if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1){
+                if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
                     $("#mainNav").removeClass("borderShadow");
-                 }
+                else
+                    $("#menuApp.subMenuTop").removeClass("borderShadow")
+                 
             }else{
                 $("#filters-nav").hide(200);
                 if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
                     $("#mainNav").addClass("borderShadow");
+                else
+                    $("#menuApp.subMenuTop").addClass("borderShadow");
                 //$("#vertical .btn-show-filters.hidden-xs").show(200);
             }
             setTimeout(function(){headerHeightPos(true)},250);
@@ -250,6 +254,8 @@
                         setTimeout(function(){headerHeightPos(true)},250);
                         if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
                             $("#mainNav").addClass("borderShadow");
+                        else
+                            $("#menuApp.subMenuTop").addClass("borderShadow");
                         headerScaling=false;
                         infScroll=false;
                     }
@@ -286,6 +292,10 @@
             $("#filter-scopes-menu").css("top",heightPos);
             if($("#filter-scopes-menu").is(":visible"))
                 heightPos=heightPos+$("#filter-scopes-menu").outerHeight();
+            if($("#menuApp").hasClass("subMenuTop")){
+                $("#menuApp").css("top",heightPos);    
+                heightPos=heightPos+$("#menuApp").outerHeight();
+            }
             $("#filters-nav").css("top",heightPos);
             if($("#filters-nav").is(":visible"))
                 heightPos=heightPos+$("#filters-nav").outerHeight(); 
