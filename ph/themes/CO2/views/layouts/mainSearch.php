@@ -18,7 +18,7 @@
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
     $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
-    $metaImg = (@$this->module->image) ? $this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
+    $metaImg = (@$this->module->image) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
     $keywords = ""; 
     if(@$this->module->keywords) 
         $keywords = $this->module->keywords; 
@@ -39,7 +39,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta name="title" content="<?php echo $metaTitle; ?>"> 
+        <meta name="title" content="<?php echo $metaTitle; ?>"> 
         <meta name="description" content="<?php echo $metaDesc; ?>"> 
         <meta name="author" content="pixelhumain"> 
         <meta property="og:image" content="<?php echo $metaImg; ?>"/> 
