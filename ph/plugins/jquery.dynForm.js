@@ -202,14 +202,20 @@ function slugify (value, slug) {
 	// converti les caractères accentués en leurs équivalent alpha
 	for(var i=0, len=rExps.length; i<len; i++)
 	value=value.replace(rExps[i].re, rExps[i].ch);
-	
-	// 1) met en bas de casse
-	// 2) remplace les espace par des tirets
-	// 3) enleve tout les caratères non alphanumeriques
-	// 4) enlève les doubles tirets
-	return value.replace(/\s+/g, '-')
-	.replace(/[^a-z0-9-]/g, '')
-	.replace(/\-{2,}/g,'-');
+	if(typeof slug != "undefined" && slug){
+	    return value.replace(/\s+/g, '-')
+	      .replace(/[^a-z0-9A-Z]/g, '')
+	      .replace(/\-{2,}/g,'-');
+	}
+	else{
+		// 1) met en bas de casse
+		// 2) remplace les espace par des tirets
+		// 3) enleve tout les caratères non alphanumeriques
+		// 4) enlève les doubles tirets
+		return value.replace(/\s+/g, '-')
+		.replace(/[^a-z0-9-]/g, '')
+		.replace(/\-{2,}/g,'-');
+	}
 };
 var finder = {
 	object : {},
