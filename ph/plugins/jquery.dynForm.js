@@ -223,23 +223,24 @@ var finder = {
 		finder.typeAuthorized={};
 		finder.callback={};
 	},
-	init : function(id, multiple, initType, values, update, callbackSelect){
-		finder.object[id]={};
-		finder.typeAuthorized[id]=initType;
+	//init : function(id, multiple, initType, values, update, callbackSelect){
+	init : function(params, callbackSelect){
+		finder.object[params.id]={};
+		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
-		 	finder.callback[id]=callbackSelect;
-		if(values){
-			$.each(values, function(e, v){
-				finder.addInForm(id, e, v.type, v.name, v.profilThumbImageUrl);	
+		 	finder.callback[params.id]=callbackSelect;
+		if(params.values){
+			$.each(params.values, function(e, v){
+				finder.addInForm(params.id, e, v.type, v.name, v.profilThumbImageUrl);	
 			});
 		}
-		else if(!notNull(update)){
-			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
-				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
-			else if((finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") || finder.typeAuthorized[id][0] == "organizations")  
-				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
+		else if(!notNull(params.update)){
+			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[params.id]) > -1)
+				finder.addInForm(params.id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
+			else if((finder.typeAuthorized[params.id].length != 1 && finder.typeAuthorized[params.id][0] != "events") || finder.typeAuthorized[params.id][0] == "organizations")  
+				finder.addInForm(params.id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
-        $(".finder-"+id+" .selectParent").click(function(e){
+        $(".finder-"+params.id+" .selectParent").click(function(e){
         	e.preventDefault();
         	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
     		keyForm=$(this).data("id");
@@ -1746,7 +1747,18 @@ var dyFObj = {
 	        		else if(typeof value != "undefined" && notNull(value) && Object.keys(value).length > 0) 
 	        			initValues=value;
 	        		
-	        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update, fieldObj.invite);
+	        		//finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
+	        		//(id, multiple, initType, values, update, callbackSelect)
+	        		var finderParams = {
+	        			id : field,
+	        			multiple : fieldObj.multiple,
+	        			initType : fieldObj.initType,
+	        			values : initValues,
+	        			update : update,
+	        			invite : fieldObj.invite
+	        		};
+
+	        		finder.init(finderParams);
 	            }
 	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
         	}
