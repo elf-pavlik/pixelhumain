@@ -41,6 +41,7 @@
         left: 53px;
     }
     .footer-menu-vertical .toolbar-bottom-adds a.addBtnFoot{
+        text-transform: capitalize;
         margin-bottom: 0px !important;
         border-radius: 0px;
     }
@@ -142,10 +143,13 @@
     }
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
-    <?php if(!@$themeParams["footer"] || (@$themeParams["footer"]["donate"] && !empty($themeParams["footer"]["donate"]))){ ?> 
-    <a href="https://www.helloasso.com/associations/open-atlas/collectes/communecter/don" target="_blank" id="donation-btn" class="btn btn-default donation-btn btn-menu-vertical">
+    <?php if(!@$themeParams["footer"] || (@$themeParams["footer"]["donate"] && !empty($themeParams["footer"]["donate"]))){ 
+        $label=(@$themeParams["footer"]["donate"]["label"]) ? $themeParams["footer"]["donate"]["label"] : Yii::t("common","Be aCOeur");
+        $url=(@$themeParams["footer"]["donate"]["url"]) ? $themeParams["footer"]["donate"]["url"] : "https://www.helloasso.com/associations/open-atlas/collectes/communecter/don";
+    ?> 
+    <a href="<?php echo $url ?>" target="_blank" id="donation-btn" class="btn btn-default donation-btn btn-menu-vertical">
         <i class="fa fa-heart"></i> 
-        <span class="tooltips-menu-btn"><?php echo Yii::t("common","Be aCOeur") ?></span>
+        <span class="tooltips-menu-btn"><?php echo $label ?></span>
     </a>
     <?php } ?>
     <button class="btn btn-link btn-sm letter-red tooltips font-montserrat no-padding hidden" 
@@ -163,14 +167,14 @@
 
 
     <div class="toolbar-bottom-adds toolbar-bottom-fullwidth font-montserrat hidden">
-        <?php foreach($addElement as $key => $v){ ?>
+        <?php /*foreach($addElement as $key => $v){ ?>
             <a href="<?php echo $v["href"] ?>" 
                 <?php if(@$v["formType"]) echo 'data-form-type="'.$v["formType"].'"' ?> 
                 class="addBtnFoot btn-open-form btn btn-default <?php echo $v["addClass"] ?> margin-bottom-10"> 
                 <i class="fa <?php echo $v["icon"] ?>"></i> 
                 <span><?php echo $v["label"] ?></span>
             </a>
-        <?php } ?>
+        <?php }*/ ?>
         <!--
         <?php 
         if( Yii::app()->params['rocketchatMultiEnabled'] )
@@ -185,7 +189,6 @@
 </div>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-
     $(".toolbar-bottom-adds").hide().removeClass("hidden");
     $('#show-bottom-add').off().click(function(){
         if(!$(this).hasClass("opened")){
@@ -208,7 +211,26 @@ jQuery(document).ready(function() {
 
     });
 })
-
+function initButtonAddFooter(domContain){
+    menuButtonCreate="";
+    $.each(typeObj, function(e,v){
+        if(typeof v.add != "undefined" && v.add){
+            hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
+            formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
+            subFormType= (typeof v.subFormType != "undefined") ? 'data-form-subtype="'+v.subFormType+'" ' : "";
+            addClass = (typeof v.class != "undefined") ? v.class : "";
+            nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
+            menuButtonCreate+='<a href="'+hash+'" '+ 
+                formType+
+                subFormType+ 
+                'class="addBtnFoot btn-open-form btn btn-default '+addClass+' bg-'+v.color+' margin-bottom-10">'+ 
+                    '<i class="fa fa-'+v.icon+'"></i> '+
+                    '<span>'+nameLabel+'</span>'+
+                '</a>';
+        }
+    });
+    $(domContain).html(menuButtonCreate);
+}
 function addBtnSwitch(){ 
     /*$(".addBtnFoot").addClass("hidden");
     $(".addBtnAll").removeClass("hidden");

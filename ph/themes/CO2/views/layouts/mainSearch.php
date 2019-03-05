@@ -158,7 +158,7 @@
         <div id="modal-preview-coop" class="shadow2 hidden"></div>
         <div id="modal-settings" class="shadow2"></div>
         <div id="floopDrawerDirectory" class="floopDrawer"></div>
-        <div class="portfolio-modal modal fade" id="openModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="portfolio-modal modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
                     <div class="lr">
@@ -374,6 +374,12 @@
             
             jQuery(document).ready(function() { 
                 $.blockUI({ message : themeObj.blockUi.processingMsg});                
+                $.each(modules,function(k,v) { 
+                    if(v.init){
+                        mylog.log("init.js for module : ",k);
+                        lazyLoad( v.init , null,null);
+                    }
+                });
                 if( typeof costum != "undefined" && costum.logo ){
                     costum.init("mainSearch");
                 }
@@ -390,13 +396,10 @@
                 });
 
                 themeObj.init();
+                
+   
                 //Login.init();
-                $.each(modules,function(k,v) { 
-                    if(v.init){
-                        mylog.log("init.js for module : ",k);
-                        lazyLoad( v.init , null,null);
-                    }
-                });
+                
                 
                 if(themeObj.firstLoad){
                     themeObj.firstLoad=false;

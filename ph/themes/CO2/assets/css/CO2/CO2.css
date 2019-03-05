@@ -1985,6 +1985,17 @@ margin-right: 5px;
 	width: 80%;
 	border-radius: 5px 5px 0 0;
 }
+.main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical{
+	background-color: rgba(0,0,0,0);
+	left: 53px;
+}
+
+.main-container.vertical #ajax-modal .modal-content{
+	top:0px;
+	left: 0px;
+	width: 100%;
+	border-radius: 0px;
+}
 #ajax-modal .container{
 	width: unset;
 	max-width: 1170px;

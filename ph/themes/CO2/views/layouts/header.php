@@ -270,7 +270,7 @@
         $("#mainNav").css("top",initHeight);
         heightNav=$("#mainNav").outerHeight();
         heightTopMenu=heightNav+initHeight;
-        $("#notificationPanelSearch.vertical.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search").css("top",heightTopMenu);
+        $("#notificationPanelSearch.vertical.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search, .main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical").css("top",heightTopMenu);
         $("#menuApp, #affix-sub-menu").css("top",heightTopMenu);
         $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
         headerHeightPos(false, initHeight);

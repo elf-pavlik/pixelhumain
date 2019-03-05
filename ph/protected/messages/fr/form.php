@@ -76,6 +76,7 @@
 		"Free informations / urls"=>"Informations libres / urls",
 		"Create a point of interest"=>"Créer un point d'intérêt",
 		"Create a classified"=>"Publier une annonce",
+		"Add an offer"=>"Publier une offre",
 		"Update slug"=>"Modifier l'adresse URL de votre page",
 		"Add an image"=>"Ajouter une image",
 		"Add a file"=>"Ajouter un fichier",

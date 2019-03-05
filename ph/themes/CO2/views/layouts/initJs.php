@@ -60,32 +60,79 @@
     };
     
 var typeObj = {
-    addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
-    addFile:{ titleClass : "bg-dark", color : "bg-dark" },
-    person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",   },
+    photo:{ titleClass : "bg-dark", color : "bg-dark" },
+    file:{ titleClass : "bg-dark", color : "bg-dark" },
+    person : { col : "citoyens" ,
+        ctrl : "person", titleClass : "bg-yellow",bgClass : "bgPerson", color:"yellow",icon:"user", hash : "#element.invite", 
+        class: "lbhp", 
+        add: true,
+        name: trad.people,
+        addLabel: trad.invitesomeone,
+        createLabel: trad.invitesomeone,
+        /*explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",*/
+    },
     persons : { sameAs:"person" },
     people : { sameAs:"person" },
     citoyen : { sameAs:"person" },
     citoyens : { sameAs:"person" },
     
-    poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-        subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-               "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-               "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
-    
-    
     siteurl:{ col:"siteurl",ctrl:"siteurl"},
-    organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+    organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga", 
+        add: true,
+        formType:"organization",
+        name: trad.organization, 
+        createLabel: "Create an organization",
+        explainText: "Blabla"
+    },
     organizations : {sameAs:"organization"},
     organization2 : { col:"organizations", ctrl:"organization" },
-    LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
-    NGO : {sameAs:"organization", color:"green", icon:"users"},
+    LocalBusiness : {col:"organizations",color: "azure",icon: "industry"
+    /* name:Yii::t("common","Local business"),
+            formType:"organization",
+            formSubType:Organization::TYPE_BUSINNESS,
+            textExplain:Yii::t("form", Make visible your company<br>Find new customer<br>Manage your contacts),           
+            parentAllow:[Person::COLLECTION] */},
+    NGO : {sameAs:"organization", color:"green", icon:"users"
+        /* name:Yii::t("common","NGO"),
+            formType:"organization",
+            formSubType:Organization::TYPE_NGO,
+            textExplain:Yii::t("form", "Make visible your NGO<br>Manage the community<br>Share your news"),           
+            parentAllow:[Person::COLLECTION] */
+    },
     Association : {sameAs:"organization", color:"green", icon: "group"},
-    GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
-    Group : {   col:"organizations",color: "turq",icon: "circle-o"},
-    event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent"},
+    GovernmentOrganization : {col:"organization", color: "red",icon: "university"
+        /* name:Yii::t("common","Government Organization"),
+            formType:"organization",
+            formSubType:Organization::TYPE_GOV,
+            textExplain:Yii::t("form", "Town hall, schools, etc...<br>Share your news<br>Share events"),           
+            parentAllow:[Person::COLLECTION] */
+    },
+    Group : {   col:"organizations",color: "turq",icon: "circle-o"
+        /*
+        name:Yii::t("common","Local business"),
+            formType:"organization",
+            formSubType:Organization::TYPE_BUSINESS,
+            textExplain":Yii::t("form", "Make visible your company<br>Find new customer<br>Manage your contacts"),           
+            parentAllow:[Person::COLLECTION]*/
+    },
+    event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent", 
+        add: true,
+        formType:"event",
+        name: trad.event, 
+        createLabel: "Create an event",
+        explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",
+        parentAllow:["citoyens", "organizations","projects", "events"]
+    },
+    
     events : {sameAs:"event"},
-    project : {col:"projects",ctrl:"project",   icon : "lightbulb-o",color : "purple",titleClass : "bg-purple", bgClass : "bgProject"},
+    project : {col:"projects",ctrl:"project",   icon : "lightbulb-o",color : "purple",titleClass : "bg-purple", bgClass : "bgProject",
+        add: true,
+        formType:"project",
+        name: trad.project, 
+        createLabel: "Create a project",
+        explainText: "Make visible a project<br>Find support<br>Build a community",
+        parentAllow:[ "citoyens", "organizations","projects"]
+    },
     projects : {sameAs:"project"},
     project2 : {col:"projects",ctrl:"project"},
     city : {sameAs:"cities"},
@@ -93,29 +140,23 @@ var typeObj = {
     
     entry : {   col:"surveys",  ctrl:"survey",  titleClass : "bg-dark",bgClass : "bgDDA",   icon : "gavel", color : "azure", 
         saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-    vote : {sameAs:"proposals"},
-    survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-    surveys : {sameAs:"survey"},
-    proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-    proposals : { sameAs : "proposal" },
-    proposal2 : { sameAs : "proposal" },
-    resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
-    action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-    actions : { sameAs : "action" },
-    actionRooms : {sameAs:"room"},
-    rooms : {sameAs:"room"},
-    room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-    discuss : {col:"actionRooms",ctrl:"room"},
-
-    contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
-        saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+    
     product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",  icon:"shopping-basket"},
     products : {sameAs:"product"},
     service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",    icon:"sun-o"},
     services : {sameAs:"service"},
     circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",   icon:"ravelry"},
     circuits : {sameAs:"circuit"},
-    
+    poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+        subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+               "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+               "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ], 
+        add: true,
+        name: tradCategory.poi,
+        formType: "poi",
+        explainText:"Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory",
+        parentAllow:["citoyens", "organizations","projects", "events"]
+    },
     url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",   },
     bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
     document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument", },
@@ -128,26 +169,57 @@ var typeObj = {
                 sections : {
                     network : { label: "Network Config",key:"network",icon:"map-marker"}
                 }},
+
+    classified : { col:"classifieds",ctrl:"classified",color:"azure", icon:"bullhorn", titleClass : "bg-azure", bgClass : "bgPerson", 
+        add: true,
+        formType:"classifieds",
+        name: trad.classified, 
+        createLabel: "Create a classified",
+        textExplain: "Create a classified ad<br>To share To give To sell To rent<br>Material Property Job",
+        parentAllow:[ "citoyens", "organizations","projects"]
+    },
+    classifieds : { sameAs:"classified" },
+    ressource : {  col:"classifieds",ctrl:"classified",color:"vine", icon:"cubes", titleClass : "bg-vine", bgClass : "bgPerson",
+        add: true,
+        formType:"ressources",
+        name: trad.ressource, 
+        createLabel: "add a ressource",
+        textExplain: "Echnager des ressources<br>des outils, des documents<br> des compétences et des besoins",
+        parentAllow:[ "citoyens", "organizations","projects", "events"]
+    },
+    ressources : { sameAs:"ressource" },
+    job :{  col:"classifieds",ctrl:"classified",color:"yellow-k", icon:"briefcase", titleClass : "bg-yellow-k", bgClass : "bgPerson",
+        add: true,
+        formType:"jobs",
+        name: trad.job, 
+        createLabel: "Add an offers",
+        textExplain: "Ajouter les stages, les formations ou les offres d'emploi que vous proposez",
+        parentAllow:[ "citoyens", "organizations","projects"]
+    },
+    jobs : { sameAs:"job" },
     network : { col:"network",color:"azure",icon:"map-o",titleClass : "bg-turq"},
     networks : {sameAs:"network"},
-    inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
-    addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
-                sections : {
-                    person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
-                    organization : { label: trad.organization,key:"organization",icon:"group"},
-                    event : { label: trad.event,key:"event",icon:"calendar"},
-                    project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
-                }},
-    apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
-                sections : {
-                    search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
-                    agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
-                    news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
-                    classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
-                    dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
-                    chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
-                }},
-    filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"},
+    vote : {sameAs:"proposals"},
+    survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+    surveys : {sameAs:"survey"},
+    proposal : { col:"proposals", ctrl:"proposal", color:"turq",icon:"gavel", titleClass : "bg-turq", 
+        add: true,
+        name: trad.survey,
+        formType:"proposal",
+        createLabel: "Create a survey",
+        explainText: "Make a survey<br>add a referendum<br>construct a collective opinion",
+    }, 
+    proposals : { sameAs : "proposal" },
+    proposal2 : { sameAs : "proposal" },
+    resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
+    action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+    actions : { sameAs : "action" },
+    actionRooms : {sameAs:"room"},
+    rooms : {sameAs:"room"},
+    room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+    discuss : {col:"actionRooms",ctrl:"room"},
+    contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+        saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
     curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
     badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"}
 };
@@ -213,7 +285,7 @@ var typeObj = {
         "video": "fa-video-camera",
         "classified" : "fa-bullhorn"
     };
-    var headerParams = {
+   /* var headerParams = {
         "persons"       : { color: "yellow",  icon: "user",         name: trad.people },
         "organizations" : { color: "green",   icon: "group",        name: trad.organizations },
         "NGO"           : { color: "green-k",   icon: "group",      name: trad.NGOs },
@@ -239,7 +311,7 @@ var typeObj = {
         "products"    : { color: "orange",   icon: "shopping-basket",   name: trad.products },
         "services"    : { color: "orange",   icon: "sun-o",   name: trad.services },
         "circuits"    : { color: "orange",   icon: "ravelry",   name: trad.circuits },
-    }
+    }*/
     var mapColorIconTop = {
         "default" : "dark",
         "citoyen":"yellow", 
@@ -308,6 +380,7 @@ var typeObj = {
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
             };
+            if(typeof initButtonAddFooter!= "undefined") initButtonAddFooter(".toolbar-bottom-adds");
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
             if(typeof resizeInterface != "undefined") resizeInterface();
             initMyScopes();

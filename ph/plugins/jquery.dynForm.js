@@ -1031,7 +1031,7 @@ var dyFObj = {
 		$(dyFObj.activeModal+" #ajax-modal-modal-title").removeClass("text-dark text-green text-azure text-purple text-orange text-blue text-turq");
 		
 	  	$(dyFObj.activeModal+" #ajax-modal-modal-body").html( "<div class='row bg-white'>"+
-	  										"<div class='col-sm-10 col-sm-offset-1'>"+
+	  										"<div class='col-md-10 col-md-offset-1 col-xs-12'>"+
 							              	"<div class='space20'></div>"+
 							              	//"<h1 id='proposerloiFormLabel' >Faire une proposition</h1>"+
 							              	"<form id='ajaxFormModal' enctype='multipart/form-data'></form>"+
@@ -1083,6 +1083,11 @@ var dyFObj = {
 				    		v();
 				    	});
 				    }
+
+				    colorHeader= (typeof dyFObj[dyFObj.activeElem].color != "undefined") ? dyFObj[dyFObj.activeElem].color : "dark"; 
+				    dyFInputs.setHeader("bg-"+colorHeader);
+				    if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined")
+				    	dyFCustom.init(dyFObj[dyFObj.activeElem].dynFormCostum);
 				    if( typeof bindLBHLinks != "undefined")
 			        	bindLBHLinks();
 			    },
@@ -6112,7 +6117,7 @@ var dyFInputs = {
     	return obj;
     },
     setHeader : function(subClass) { 
-    	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-blue bg-turq bg-url")
+    	$("#ajax-modal .modal-header").removeClass("bg-dark bg-purple bg-red bg-azure bg-green bg-green-poi bg-orange bg-yellow bg-yellow-k bg-blue bg-turq bg-url")
 						  			  .addClass(subClass);
 	},
     setSub : function(subClass) { 
@@ -6140,10 +6145,10 @@ var dyFInputs = {
     }
 }
 var dyFCustom = {
-	init : function (type) { 
-		if( typeof custom.dynForm[type].onload != "undefined" 
-			&& typeof custom.dynForm[type].onload.actions != "undefined"){
-			$.each(custom.dynForm[type].onload.actions,function(f,p) {
+	init : function (obj) {
+		if( typeof obj.onload != "undefined" 
+			&& typeof obj.onload.actions != "undefined"){
+			$.each(obj.onload.actions,function(f,p) {
 				if(typeof dyFCustom[f] == "function")
 					f = dyFCustom[f];
 				else if(typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
@@ -6154,16 +6159,21 @@ var dyFCustom = {
 						f();
 					else if(typeof p == "object")
 						f(p);
+					else if(typeof p == "string")
+						f(p);
 				}
 		 	})
 		}
 	},
+	setTitle:function(p){
+		$("#ajax-modal-modal-title").html(p);
+	},
     adminOnly : function(p) {
-		if(  typeof custom != "undefined" 
-			&& typeof custom.admins != "undefined" 
-			&& typeof custom.admins[userId] != "undefined" 
-			&& typeof custom.admins[userId].isAdmin != "undefined" 
-			&& custom.admins[userId].isAdmin == true ){
+		if(  typeof costum != "undefined" 
+			&& typeof costum.admins != "undefined" 
+			&& typeof costum.admins[userId] != "undefined" 
+			&& typeof costum.admins[userId].isAdmin != "undefined" 
+			&& costum.admins[userId].isAdmin == true ){
 				
 			$.each(p,function(el,v) {
 				$("."+el).show();
@@ -6185,6 +6195,11 @@ var dyFCustom = {
 		$.each(p,function(k,v) {
 			$("."+k).hide();
 	 	});	    		
+	},
+	required : function(p) { 
+		/*$.each(p,function(k,v) {
+			$("."+k).hide();
+	 	});*/	    		
 	}
 };
 
