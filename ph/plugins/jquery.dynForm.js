@@ -219,12 +219,14 @@ var finder = {
 	callback : {},
 	invite : null,
 	set : function(){
+		mylog.log("finder set");
 		finder.object={};
 		finder.typeAuthorized={};
 		finder.callback={};
 	},
 	//init : function(id, multiple, initType, values, update, callbackSelect){
 	init : function(params, callbackSelect){
+		mylog.log("finder init", params, callbackSelect);
 		finder.object[params.id]={};
 		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
@@ -254,6 +256,7 @@ var finder = {
         });
 	},
 	addInForm : function(keyForm, id, type, name, img){
+		mylog.log("finder addInForm", keyForm, id, type, name, img);
 		img= (img != "") ? baseUrl + img : assetPath + "/images/thumb/default_"+type+".png";
 		var str="";
 		str="<div class='col-xs-12 element-finder element-finder-"+id+" shadow2 padding-10'>"+
@@ -269,10 +272,12 @@ var finder = {
 		finder.object[keyForm][id]={"type" : type};
 	},
 	removeFromForm : function(keyForm, id){
+		mylog.log("finder removeFromForm", keyForm, id);
 		$(".finder-"+keyForm+" .form-list-finder .element-finder-"+id).remove();
 		delete finder.object[keyForm][id];	
 	},
 	showPanel: function(keyForm, typeSearch, open, multiple){
+		mylog.log("finder showPanel", keyForm, typeSearch, open, multiple);
 		finder.selectedItems={};
 		titleForm="Sélectionner dans la liste";
 		if(!notNull(multiple) && !multiple)
@@ -340,6 +345,7 @@ var finder = {
 		});
 	},
 	filterPopulation : function(searchVal){
+		mylog.log("finder filterPopulation", searchVal);
 		//recherche la valeur recherché dans les 3 champs "name", "cp", et "city"
 		if(searchVal != "")	$("#list-finder-selection .population-elt-finder").hide();
 		else $("#list-finder-selection .population-elt-finder").show();
@@ -353,6 +359,7 @@ var finder = {
 		});
 	},
 	populateFinder : function(keyForm, obj, multiple, first){
+		mylog.log("finder populateFinder", keyForm, obj, multiple, first);
 		str="";
 		if(first && typeof finder.object[keyForm][userId] == "undefined"){
 			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : assetPath + "/images/thumb/default_citoyens.png";
@@ -414,6 +421,7 @@ var finder = {
 		finder.bindSelectItems(multiple);
 	},
 	bindSelectItems : function(multiple){
+		mylog.log("finder bindSelectItems", multiple);
 		$(".population-elt-finder").off().on("click", function(e){
 			if(e.target.className!="cr-icon fa fa-check" && e.target.className!="check-population-finder checkbox-info")
 				$(".check-population-finder[data-value='"+$(this).data("value")+"'").trigger("click");
@@ -433,6 +441,7 @@ var finder = {
 		});
 	},
 	addSelectedToForm: function(keyForm, multiple){
+		mylog.log("finder addSelectedToForm", keyForm, multiple);
 		if(Object.keys(finder.selectedItems).length > 0){
 			if(!multiple){
 				finder.object[keyForm]={};
@@ -445,6 +454,7 @@ var finder = {
 		}
 	},
 	searchAndPopulateFinder : function(keyForm, text, typeSearch, multiple){
+		mylog.log("finder searchAndPopulateFinder", keyForm, text, typeSearch, multiple);
 		//finder.isSearching=true;
   		$.ajax({
 			type: "POST",
@@ -1755,7 +1765,7 @@ var dyFObj = {
 	        			initType : fieldObj.initType,
 	        			values : initValues,
 	        			update : update,
-	        			invite : fieldObj.invite
+	        			status : fieldObj.invite
 	        		};
 
 	        		finder.init(finderParams);
