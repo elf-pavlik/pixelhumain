@@ -165,7 +165,9 @@
 	padding-top:100px !important;
 }
 
-
+.position-absolute{
+	position: absolute !important;
+}
 .btn-circle-1{
 	border-radius: 50%;
 	height:40px;

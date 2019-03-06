@@ -18,7 +18,7 @@
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
     $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
-    $metaImg = (@$this->module->image) ? $this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
+    $metaImg = (@$this->module->image) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
     $keywords = ""; 
     if(@$this->module->keywords) 
         $keywords = $this->module->keywords; 
@@ -39,7 +39,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta name="title" content="<?php echo $metaTitle; ?>"> 
+        <meta name="title" content="<?php echo $metaTitle; ?>"> 
         <meta name="description" content="<?php echo $metaDesc; ?>"> 
         <meta name="author" content="pixelhumain"> 
         <meta property="og:image" content="<?php echo $metaImg; ?>"/> 
@@ -74,7 +74,7 @@
     $this->renderPartial($layoutPath.'initJs', 
                                  array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
     if($this->module->id == "costum")
-        $this->renderPartial( 'costum.views.co.init'  );
+        $this->renderPartial( 'costum.views.co.init');
     else {
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
         Yii::app()->session["costum"]=null;
@@ -158,7 +158,7 @@
         <div id="modal-preview-coop" class="shadow2 hidden"></div>
         <div id="modal-settings" class="shadow2"></div>
         <div id="floopDrawerDirectory" class="floopDrawer"></div>
-        <div class="portfolio-modal modal fade" id="openModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="portfolio-modal modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-content">
                 <div class="close-modal" data-dismiss="modal">
                     <div class="lr">
@@ -374,6 +374,12 @@
             
             jQuery(document).ready(function() { 
                 $.blockUI({ message : themeObj.blockUi.processingMsg});                
+                $.each(modules,function(k,v) { 
+                    if(v.init){
+                        mylog.log("init.js for module : ",k);
+                        lazyLoad( v.init , null,null);
+                    }
+                });
                 if( typeof costum != "undefined" && costum.logo ){
                     costum.init("mainSearch");
                 }
@@ -390,13 +396,10 @@
                 });
 
                 themeObj.init();
+                
+   
                 //Login.init();
-                $.each(modules,function(k,v) { 
-                    if(v.init){
-                        mylog.log("init.js for module : ",k);
-                        lazyLoad( v.init , null,null);
-                    }
-                });
+                
                 
                 if(themeObj.firstLoad){
                     themeObj.firstLoad=false;

@@ -60,11 +60,21 @@
         box-shadow: 0px 2px 3px -3px rgba(0,0,0,0.5);
         border-bottom: 1px solid #dadada;
         z-index: 100000;
+        position: fixed;
+        left: 0;
+    }
+    #header-banner{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
     }
 </style>
 <!-- Navigation -->
-<nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom <?php echo @$menuApp ?>">
-    <!-- Brand and toggle get grouped for better mobile display -->
+<nav id="mainNav" class="navbar navbar-default col-xs-12 navbar-custom menuTop <?php echo @$menuApp ?>">
+<?php if(@$themeParams["header"]["menuTop"] && is_string($themeParams["header"]["menuTop"])){
+    $this->renderPartial( $themeParams["header"]["menuTop"]  ); 
+}else{ ?>
     <div>
     <!-- //////////////// CONSTRUCTION OF LEFT NAV //////////////////// --> 
     <?php if(@$themeParams["header"]["menuTop"] && @$themeParams["header"]["menuTop"]["navLeft"]){ ?>
@@ -79,21 +89,14 @@
             $height = (@$value["height"]) ? $value["height"] : 30;
             ?>
             <img src="<?php echo $logo;?>" class="logo-menutop pull-left hidden-xs" height="<?php echo $height ?>">
-            <img src="<?php echo $logoMin;?>" class="logo-menutop pull-left visible-xs" height="45">
+            <img src="<?php echo $logoMin;?>" class="logo-menutop pull-left visible-xs" height="40">
         </a>
         <?php }
         // END LOGO HTML NAV BAR
-        else if($key=="searchBar"){
-            $searchBar=(@$useFilter && $useFilter) ? $value["useFilter"] : $value["noUseFilter"];
-            $showScopeFilter=(@$searchBar["scopeFilter"] && @$useFilter && (!isset($useFilter["scope"]) || !empty($useFilter["scope"]) )) ? true : false;
-            $showFilters=(@$searchBar["showFilter"] 
-                && @$useFilter 
-                && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) )
-                && (@$menuApp=="vertical" || @Yii::app()->session['paramsConfig']["numberOfApp"]<=1)
-                ) ? true : false;
-            // INPUT SEARCH BAR IN NAV
-            ?>
-            <div class="hidden-xs <?php echo $searchBar["classes"]["container"] ?> navbar-item-left">
+        else if($key=="searchBar" && $value){ 
+            $searchBar=(@$useFilter && $useFilter) ? $value["useFilter"] : $value["noUseFilter"]; ?>
+            <!-- INPUT SEARCH BAR IN NAV -->
+             <div class="hidden-xs <?php echo $searchBar["classes"]["container"] ?> navbar-item-left">
                 <input type="text" class="form-control pull-left <?php echo $searchBar["classes"]["input"] ?>" id="<?php echo $searchBar["ids"]["input"] ?>" placeholder="<?php echo Yii::t("common", $placeholderMainSearch) ?>">
                 <span class="text-white input-group-addon pull-left <?php echo $searchBar["classes"]["spanAddon"] ?>" id="<?php echo $searchBar["ids"]["spanAddon"] ?>">
                     <i class="fa fa-arrow-circle-right"></i>
@@ -102,17 +105,6 @@
                  <div class="dropdown-result-global-search hidden-xs col-sm-6 col-md-5 col-lg-5 no-padding"></div> 
                 <?php } ?>
             </div>
-            <?php 
-            // END INPUT SEARCH BAR IN NAV
-            if($showScopeFilter){ ?> 
-            <button class="btn hidden-xs pull-left menu-btn-scope-filter text-red elipsis margin-right-10 navbar-item-left"
-                    data-type="<?php echo @$type; ?>">
-                    <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>
-            </button>
-            <?php } ?>
-            <?php if($showFilters){ ?>
-             <button class="btn btn-show-filters pull-left hidden-xs navbar-item-left"> <i class="fa fa-filter visible-sm pull-left" style="font-size:18px;"></i><span class="hidden-sm"><?php echo Yii::t("common", "Filters") ?></span> <span class="topbar-badge badge animated bounceIn badge-warning"></span> <i class="fa fa-angle-down"></i></button>
-            <?php } ?>
             <?php if(@$searchBar["dropdownApp"]
                 && !empty($menuApp) && $menuApp!="vertical" 
                 && @$themeParams["numberOfApp"]==1 
@@ -127,7 +119,23 @@
                     </a>  
             <?php   }
                 } 
-            } 
+            } ?>
+            <!-- END INPUT SEARCH BAR IN NAV -->
+        <?php }else if($key=="useFilter" && @$useFilter && $useFilter){   
+            $showScopeFilter=(@$value["scopeFilter"] && $value["scopeFilter"]) ? true : false;
+            $showFilters=(@$value["showFilter"] && $value["showFilter"]) ? true : false;
+            ?>
+           
+            <?php if($showScopeFilter){ ?> 
+            <button class="btn hidden-xs pull-left menu-btn-scope-filter text-red elipsis margin-right-10 navbar-item-left"
+                    data-type="<?php echo @$type; ?>">
+                    <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>
+            </button>
+            <?php } ?>
+            <?php if($showFilters){ ?>
+             <button class="btn btn-show-filters pull-left hidden-xs navbar-item-left"> <i class="fa fa-filter visible-sm pull-left" style="font-size:18px;"></i><span class="hidden-sm"><?php echo Yii::t("common", "Filters") ?></span> <span class="topbar-badge badge animated bounceIn badge-warning"></span> <i class="fa fa-angle-down"></i></button>
+            <?php }
+            
         } 
     } ?>
     </div> 
@@ -294,6 +302,7 @@
         </div>
     <?php } ?>
     </div>
+    <?php } ?>
 </nav>
 <!-- DROPDOWNS OF MENUTOP -->
 <div class="dropdown dropdownApps-menuTop" aria-labelledby="dropdownApps">

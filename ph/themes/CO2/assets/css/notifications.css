@@ -200,7 +200,7 @@
 	z-index: 100000;
 }
 
-@media (min-width: 993px) {
+@media (min-width: 767px) {
 	#notificationPanelSearch.vertical.arrow_box{
 		right: 0px !important;
 		width: 450px !important;
@@ -211,7 +211,7 @@
 	    border-width: 0px;
 	}
 }
- @media (min-width: 767px) and (max-width: 992px) {
+ /*@media (min-width: 767px) and (max-width: 992px) {
  	#notificationPanelSearch.arrow_box::before,
 	#notificationPanelSearch.arrow_box::after{
 		left:216px;
@@ -225,7 +225,7 @@
 	    font-size: 12px;
 		margin-right: -5px !important;
 	}
- }
+ }*/
 
 
 

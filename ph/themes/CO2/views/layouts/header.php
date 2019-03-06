@@ -15,57 +15,40 @@
     $placeholderMainSearch  = $themeParams["pages"]["#".$page]["placeholderMainSearch"];
     $type = @$themeParams["pages"]["#".$page]["type"];
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
+    //$menuFilters=(@$themeParams[["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
     $CO2DomainName = Yii::app()->params["CO2DomainName"];
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
-    $this->renderPartial($layoutPath.'menus/'.$CO2DomainName, 
-            array( "layoutPath"=>$layoutPath , 
-                    "subdomain"=>$subdomain,
-                    "subdomainName"=>$subdomainName,
-                    "mainTitle"=>$mainTitle,
-                    "placeholderMainSearch"=>$placeholderMainSearch,
-                    "menuApp"=>$menuApp,
-                    "useFilter"=>$useFilter,
-                    "type"=>@$type,
-                    "me" => $me) );
-    $cities = [];
-
-   
-?>
-
-<!-- Header -->
-
+    $cities = []; ?>
 <?php if(@$useHeader != false){ ?>
-<header id="<?php echo $menuApp; ?>">
-    <div id="affix-sub-menu" class="affix">
-        <div id="text-search-menu" class="col-md-12 col-sm-12 col-xs-12 no-padding">
-            <?php $addonXs="main-search-xs-bar-addon";
-                $searchXs="main-search-xs-bar";
-                $appPadding="";
-            if( in_array($subdomain, ["welcome", "page", "home"])){ 
-                $addonXs="second-search-xs-bar-addon";
-                $searchXs="second-search-xs-bar"; 
-                $appPadding="padding";
-            } ?>
-            <span class="dropdown dropdownApps <?php echo $appPadding ?>" id="dropdown-apps">
-                <button class="dropdown-toggle" type="button" id="dropdownApps" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="bottom" title="Applications" alt="Applications">
-                      <i class="fa fa-th"></i>
-                </button>
-            </span>
-            <input type="text" class="form-control main-search-bar pull-left" id="<?php echo $searchXs ?>" placeholder="<?php echo Yii::t("common", "What are you looking for")." ?"; ?>">
-            <span class="text-white input-group-addon input-group-addon-xs pull-left main-search-bar-addon" id="<?php echo $addonXs ?>" style="border-radius:0px !important;">
-                <i class="fa fa-arrow-circle-right"></i>
-            </span>
-            <?php if( in_array($subdomain, ["welcome", "page", "home", "info"])){ ?>
-                <div class="dropdown-result-global-search col-xs-12 no-padding"></div>
-            <?php } ?>
+<!-- Header -->
+<header id="<?php echo $menuApp; ?>">   
+    <?php if(isset($themeParams["header"]["banner"]) && is_string($themeParams["header"]["banner"])){ ?>
+        <div id="header-banner" class="banner-<?php echo $menuApp ?>">
+            <?php $this->renderPartial( $themeParams["header"]["banner"]  ); ?>
         </div>
-        <?php if(isset($useFilter) && !empty($useFilter) 
-                && (!isset($useFilter["scope"]) || !empty($useFilter["scope"]) ) ){ ?>
+    <?php }   
+    $this->renderPartial($layoutPath.'menus/menuTop', 
+        array( "layoutPath"=>$layoutPath , 
+            "subdomain"=>$subdomain,
+            "subdomainName"=>$subdomainName,
+            "mainTitle"=>$mainTitle,
+            "placeholderMainSearch"=>$placeholderMainSearch,
+            "menuApp"=>$menuApp,
+            "useFilter"=>$useFilter,
+            "type"=>@$type,
+            "me" => $me) ); 
+    ?>
+</header>
+ <?php 
+    // Menu of scope filtering
+    if(isset($useFilter) 
+        && !empty($useFilter) 
+        && (!isset($useFilter["scope"]) || !empty($useFilter["scope"]) ) ){ ?>
         <div id="filter-scopes-menu" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="display: none;">
             <div id="scope-container" class="scope-menu no-padding">
                 <div id="input-sec-search" class="col-xs-8 col-md-6 col-sm-6 col-lg-6">
                     <div class="input-group shadow-input-header">
-                          <span class="input-group-addon">
+                          <span class="input-group-addon scope-search-trigger">
                             <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>
                           </span>
                           <input type="text" class="form-control input-global-search" autocomplete="off"
@@ -96,18 +79,54 @@
                 </div>
             </div>
         </div>
-        <?php } ?>
-        <?php 
-            
-            $this->renderPartial($layoutPath.'menus/'.$menuApp, array("params"=>$themeParams, "subdomainName"=>$subdomainName, "useFilter"=>@$useFilter )); 
-            if(@$useFilter != false
-                && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) ))
-                $this->renderPartial($layoutPath.'menus/filtersApp', array("params"=>$themeParams)); 
-        ?>
-        
-    </div>      
+    <?php } 
+    // Menu Left Or Menu top (container of applications and other)
+    $subMenu=($menuApp == "vertical") ? "menuLeft" : "subMenuTop";
+    $this->renderPartial($layoutPath.'menus/'.$subMenu, array("params"=>$themeParams, "subdomainName"=>$subdomainName, "useFilter"=>@$useFilter )); 
+    // FIlter toolBar subMenu
+    if(@$useFilter != false
+        && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) ))
+        $this->renderPartial($layoutPath.'menus/menuFilters', array("params"=>$themeParams)); 
+?>
+    <!-- View xs bar with search and button app -->
+    <div id="affix-sub-menu" class="affix menu-xs-accessibility">
+        <div id="text-search-menu" class="col-md-12 col-sm-12 col-xs-12 no-padding">
+            <?php $addonXs="main-search-xs-bar-addon";
+                $searchXs="main-search-xs-bar";
+                $appPadding="";
+            if( in_array($subdomain, ["welcome", "page", "home"])){ 
+                $addonXs="second-search-xs-bar-addon";
+                $searchXs="second-search-xs-bar"; 
+                $appPadding="padding";
+            } ?>
+            <span class="dropdown dropdownApps text-center <?php echo $appPadding ?>" id="dropdown-apps">
+                <button class="dropdown-toggle" type="button" id="dropdownApps" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-placement="bottom" title="Applications" alt="Applications">
+                      <i class="fa fa-th"></i>
+                </button>
+            </span>
+            <input type="text" class="form-control main-search-bar pull-left" id="<?php echo $searchXs ?>" placeholder="<?php echo Yii::t("common", "What are you looking for")." ?"; ?>">
+            <span class="text-white input-group-addon input-group-addon-xs pull-left main-search-bar-addon" id="<?php echo $addonXs ?>" style="border-radius:0px !important;">
+                <i class="fa fa-arrow-circle-right"></i>
+            </span>
+            <?php if( in_array($subdomain, ["welcome", "page", "home", "info"])){ ?>
+                <div class="dropdown-result-global-search col-xs-12 no-padding"></div>
+            <?php } ?>
+        </div>
+        <?php if(@$useFilter && $useFilter!=false){ 
+            if(!isset($useFilter["filters"]) || !empty($useFilter["filters"])){ ?>
+                <button class="btn btn-show-filters visible-xs">
+                    <?php echo Yii::t("common", "Filters") ?> 
+                    <span class="topbar-badge badge animated bounceIn badge-warning bg-green"></span> 
+                    <i class="fa fa-angle-down"></i>
+                </button>
+            <?php } ?>
+            <button class="btn visible-xs pull-left menu-btn-scope-filter text-red elipsis"
+                    data-type="<?php echo @$type; ?>">
+                    <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>
+            </button>
 
-</header>
+        <?php } ?>
+    </div>      
   
 <?php } ?>
      
@@ -116,7 +135,7 @@
     var page="<?php echo $page ?>";
     var headerScaling=false;
     var titlePage = "<?php echo Yii::t("common",@$themeParams["pages"]["#".$page]["subdomainName"]); ?>";
-
+    var infScroll=true;
     jQuery(document).ready(function() {
         setTitle(titlePage, "", titlePage);
         initScopeMenu();
@@ -144,31 +163,42 @@
         $(".tooltips").tooltip();
         $(".btn-show-filters").click(function(){
             if(!$("#filters-nav").is(":visible")){
-                $("#vertical .btn-show-filters.hidden-xs").hide(350);
+                //$("#vertical .btn-show-filters.hidden-xs").hide(350);
                 $("#filters-nav").show(200);
                 if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
                     $("#mainNav").removeClass("borderShadow");
+                else
+                    $("#menuApp.subMenuTop").removeClass("borderShadow")
+                 
             }else{
-                $("#filters-nav").hide(350);
+                $("#filters-nav").hide(200);
                 if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
                     $("#mainNav").addClass("borderShadow");
-                $("#vertical .btn-show-filters.hidden-xs").show(200);
+                else
+                    $("#menuApp.subMenuTop").addClass("borderShadow");
+                //$("#vertical .btn-show-filters.hidden-xs").show(200);
             }
-            headerHeightPos(true);
+            setTimeout(function(){headerHeightPos(true)},250);
         });
         $(".menu-btn-scope-filter").click(function(){
             if($("#filter-scopes-menu").is(":visible")){
-                showWhere(false);
+                $(".menu-btn-scope-filter").removeClass("visible");
+                $("#filter-scopes-menu").hide(200);
+              //  headerHeightPos(true);
             }else{
-                showWhere(true);
+                 $(".menu-btn-scope-filter").addClass("visible");
+                $("#filter-scopes-menu").show(200);
+                
+               // showWhere(true);
             }
+            setTimeout(function(){headerHeightPos(true)},250);
         });
 
-        headerHeightPos(true);
+        //headerHeightPos(true);
     });
 
 
-    function showWhere(show){
+    /*function showWhere(show){
         mylog.log("showWhere", show);
         if(show == false){
             $(".menu-btn-scope-filter").removeClass("visible");
@@ -179,28 +209,108 @@
             $("#filter-scopes-menu").show(400);
             headerHeightPos(true);
         }
-    }
+    }*/
 
     function initPositionInterface(){
+        $(window).off();
         setTimeout(function(){
-            heightTopMenu=$("#mainNav").outerHeight();
-            $(".main-container").css("padding-top",heightTopMenu);
-            $("#notificationPanelSearch.vertical.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search").css("top",heightTopMenu);
-            $("header, #affix-sub-menu, #vertical #territorial-menu").css("top",heightTopMenu);
-            $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
+            //setDomHtmlPosition(intiHeight);
+          /*  $(".main-container.vertical .headerSearchContainer").affix({
+          offset: {
+              top: 10
+          }
+    });*/
+            if($("#header-banner").length > 0){
+                $("#affix-sub-menu, #mainNav, #filters-nav, #menuApp").addClass("position-absolute");
+                setDomHtmlPosition($("#header-banner").outerHeight());
 
-            if(heightTopMenu > 70){
-                marginTop=(heightTopMenu-55);
-                $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
-            }
+            }else
+               setDomHtmlPosition(0); heightTopMenu=$("#mainNav").outerHeight();
+            $(window).bind("scroll",function(){ 
+                if($("#header-banner").length > 0){
+                    console.log($(this).scrollTop(), $("#header-banner").outerHeight(), infScroll);
+                    if($(this).scrollTop() > $("#header-banner").outerHeight() && infScroll){
+                        $(".main-container.vertical .headerSearchContainer").addClass("affix");
+                        $("#affix-sub-menu, #mainNav, #menuApp, #filters-nav").removeClass("position-absolute");
+                        setDomHtmlPosition(0);
+                        infScroll=false;
+                    }else if($(this).scrollTop()<=$("#header-banner").outerHeight() && !infScroll){
+                        $(".main-container.vertical .headerSearchContainer").removeClass("affix");
+                        $("#affix-sub-menu, #mainNav, #filters-nav, #menuApp").addClass("position-absolute");
+                        infScroll=true;
+                        setDomHtmlPosition($("#header-banner").outerHeight());
+                    }
+                }else{
+                    if($(this).scrollTop()<=10){
+                        infScroll=true;
+                        $(".main-container.vertical .headerSearchContainer").removeClass("affix");
+                        headerHeightPos(true);
+                    }
+                    if( $(this).scrollTop() > 10 && !headerScaling && typeof infScroll != "undefined" && infScroll && (typeof networkJson == "undefined" || networkJson == null) ) {
+                        $(".main-container.vertical .headerSearchContainer").addClass("affix");
+                        $("#filter-scopes-menu, #filters-nav").hide(200);
+                        $(".menu-btn-scope-filter").removeClass("active");
+                        //$("#vertical .btn-show-filters.hidden-xs").show(200);
+                        setTimeout(function(){headerHeightPos(true)},250);
+                        if(typeof themeParams.numberOfApp != "undefined" && themeParams.numberOfApp<=1)
+                            $("#mainNav").addClass("borderShadow");
+                        else
+                            $("#menuApp.subMenuTop").addClass("borderShadow");
+                        headerScaling=false;
+                        infScroll=false;
+                    }
+                }
+                //else
+                //  $("#filter-scopes-menu, #filters-nav").show();
+
+            });
         }, 400);
     }
-    function headerHeightPos(bool){
-        setTimeout(function(){     
+    function setDomHtmlPosition(initHeight){
+        $("#mainNav").css("top",initHeight);
+        heightNav=$("#mainNav").outerHeight();
+        heightTopMenu=heightNav+initHeight;
+        $("#notificationPanelSearch.vertical.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search, .main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical").css("top",heightTopMenu);
+        $("#menuApp, #affix-sub-menu").css("top",heightTopMenu);
+        $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
+        headerHeightPos(false, initHeight);
+        if(heightNav > 70){
+            marginTop=(heightNav-55);
+            $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
+          //  heightTopMenu=$("#mainNav").outerHeight()+initHeight;
+        }
+            
+    }
+    function headerHeightPos(bool,initHeight){
+        //setTimeout(function(){     
             headerScaling=bool; 
-            $("header").height($("#affix-sub-menu").height());
+            heightPos=$("#mainNav").outerHeight();
+            if(notNull(initHeight))
+                heightPos=heightPos+initHeight;
+            if($("#affix-sub-menu").is(":visible"))
+                heightPos=heightPos+$("#affix-sub-menu").outerHeight();
+            $("#filter-scopes-menu").css("top",heightPos);
+            if($("#filter-scopes-menu").is(":visible"))
+                heightPos=heightPos+$("#filter-scopes-menu").outerHeight();
+            if($("#menuApp").hasClass("subMenuTop")){
+                $("#menuApp").css("top",heightPos);    
+                heightPos=heightPos+$("#menuApp").outerHeight();
+            }
+            $("#filters-nav").css("top",heightPos);
+            if($("#filters-nav").is(":visible"))
+                heightPos=heightPos+$("#filters-nav").outerHeight(); 
+            if($(".main-container.vertical .headerSearchContainer").hasClass("affix")){
+                $(".main-container.vertical .headerSearchContainer").css("top",heightPos);
+                heightPos=heightPos+$(".main-container.vertical .headerSearchContainer").outerHeight(); 
+            }else{
+                $(".main-container.vertical .headerSearchContainer").css("top","inherit");
+            }
+            if($("#header-banner").length > 0 && initHeight==0)
+                heightPos=heightPos+$("#header-banner").outerHeight();
+            $(".main-container").css("padding-top",heightPos);
+            //$("header").height($("#affix-sub-menu").height());
             setTimeout(function(){headerScaling=false;},300);
-        }, 350);
+        //}, 50);
     }
     function initScopeMenu(type){   
         bindSearchCity();
