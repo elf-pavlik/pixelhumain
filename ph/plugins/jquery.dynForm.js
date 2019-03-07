@@ -248,6 +248,19 @@ var finder = {
 			else if((finder.typeAuthorized[params.id].length != 1 && finder.typeAuthorized[params.id][0] != "events") || finder.typeAuthorized[params.id][0] == "organizations")  
 				finder.addInForm(params.id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
+
+		if(typeof params.invite != "undefined" && params.invite != null && params.invite === true){
+			finder.invite = params.invite;
+			lazyLoad( assetPath+'/js/invite.js', 
+					null,
+					function(){
+						return true ;
+					});
+			
+		}
+		else
+			finder.invite = null ;
+
         $(".finder-"+params.id+" .selectParent").click(function(e){
         	e.preventDefault();
         	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
@@ -260,6 +273,18 @@ var finder = {
         	//	$(this).parent().find(".error").show(700).text("Vous ne pouvez ajouter qu'un élément");
         	//}
         });
+
+        finder.onLoad();
+	},
+	onLoad : function (){
+		// mylog.log("here");
+		// if( typeof finder.invite != "undefined" && finder.invite != null &&
+		// 	finder.invite === true){
+		// 	mylog.log("finder onLaod");
+			
+		// }
+
+		
 	},
 	addInForm : function(keyForm, id, type, name, img){
 		mylog.log("finder addInForm", keyForm, id, type, name, img);
@@ -275,7 +300,7 @@ var finder = {
 					'<button class="bg-red text-white pull-right" style="border: none;font-size: 15px;border-radius: 6px;padding: 5px 10px !important;" onclick="finder.removeFromForm(\''+keyForm+'\', \''+id+'\')"><i class="fa fa-times"></i></button>'+
 			"</div>";
 		$(".finder-"+keyForm+" .form-list-finder").append(str);
-		finder.object[keyForm][id]={"type" : type};
+		finder.object[keyForm][id]={"type" : type, "name" : name};
 	},
 	removeFromForm : function(keyForm, id){
 		mylog.log("finder removeFromForm", keyForm, id);
@@ -294,6 +319,36 @@ var finder = {
 		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
 						'<div id="list-finder-selected"></div>'+
 		    			'<hr/><div id="list-finder-selection" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
+		    			"<div id='form-invite' class='hidden'>"+
+    						'<div class="row margin-bottom-10">'+
+								'<div class="col-md-1 col-md-offset-1" id="iconUser">'+    
+									'<i class="fa fa-user fa-2x"></i>'+
+								'</div>'+
+								'<div class="col-md-9">'+
+									'<input class="invite-name form-control" placeholder="Name" id="inviteName" name="inviteName" value="" />'+
+								'</div>'+
+							'</div>'+
+							'<div class="row margin-bottom-10">'+
+								'<div class="col-md-1 col-md-offset-1">'+  
+									'<i class="fa fa-envelope-o fa-2x"></i>'+
+								'</div>'+
+								'<div class="col-md-9">'+
+									'<input class="invite-email form-control" placeholder="Email" id="inviteEmail" name="inviteEmail" value="" />'+
+								'</div>'+
+							'</div>'+
+							'<div class="row margin-bottom-10">'+
+								'<div class="col-md-1 col-md-offset-1">'+  
+									'<i class="fa fa-align-justify fa-2x"></i>'+
+								'</div>'+
+								'<div class="col-md-9">'+
+									'<textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4" placeholder="Custom message"></textarea>'+
+								'</div>'+
+							'</div>'+
+							'<div class="errorHandler alert alert-danger hidden"></div>'+
+							'<div class="col-md-12 col-sm-12 col-xs-12 text-center">'+
+								'<button class="btn btn-success" id="btnInviteNew" ><i class="fa fa-add"></i> Add to the list</button>'+
+							'</div>'+
+						'</div>'+
 		    		'</div>',
 		    closeButton:false,
 		    buttons: {
@@ -348,6 +403,18 @@ var finder = {
 		    		}
 		    	}
 		    });
+
+		    
+		});
+
+		dialog.on('shown.bs.modal', function(e){
+		    if(typeof finder.invite != "undefined" && finder.invite != null && finder.invite === true){
+			    mylog.log("finder invite load ", $('#finderSelectHtml #form-invite #btnInviteNew').length, $("#finderSelectHtml #form-invite #btnInviteNew").length);
+				inviteObj.formInvite("#finderSelectHtml #form-invite", function(){
+					alert("here");
+					return true;
+				});
+			}
 		});
 	},
 	filterPopulation : function(searchVal){
@@ -468,11 +535,19 @@ var finder = {
 	        data: {"searchType" : typeSearch, "name": text},
 	        dataType: "json",
 	        success: function(retdata){
+	        	
 	        	if(!retdata){
 	        		toastr.error(retdata.content);
-	        	}else{
+	        	} else {
 		        	mylog.log(retdata);
-		        	finder.populateFinder(keyForm, retdata.results, multiple);
+		        	if(retdata.results.length == 0 && finder.invite === true){
+		        		$("#form-invite").removeClass("hidden");
+		        		$("#list-finder-selection").addClass("hidden");
+	        		} else{
+	        			$("#form-invite").addClass("hidden");
+	        			$("#list-finder-selection").removeClass("hidden");
+		        		finder.populateFinder(keyForm, retdata.results, multiple);
+	        		}
 	  			}
 			}	
 		});
@@ -1068,10 +1143,20 @@ var dyFObj = {
 			    beforeBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
 				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
+					if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined"){
+						mylog.log("dyFCustom start init", dyFObj.activeElem, dyFObj[dyFObj.activeElem].dynFormCostum);
+						dyFCustom.init(dyFObj[dyFObj.activeElem].dynFormCostum);
+					}
 				},
 			    afterBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.afterBuild","function") )
-				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterBuild(data);
+						dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterBuild(data);
+
+					// mylog.log("finder afterBuild", finder);
+				 //    if( typeof finder != "undefined" && finder != null ){
+				 //    	mylog.log("finder afterBuild 2", finder);
+				 //    	finder.onLoad();
+				 //    }
 			    },
 			    onLoad : function  () {
 
@@ -1096,17 +1181,21 @@ var dyFObj = {
 				    	});
 				    }
 
+				    
+
+					
+
 				    colorHeader= (typeof dyFObj[dyFObj.activeElem].color != "undefined") ? dyFObj[dyFObj.activeElem].color : "dark"; 
 				    dyFInputs.setHeader("bg-"+colorHeader);
-				    if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined")
-				    	dyFCustom.init(dyFObj[dyFObj.activeElem].dynFormCostum);
+				    // if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined")
+				    // 	dyFCustom.init(dyFObj[dyFObj.activeElem].dynFormCostum);
 				    if( typeof bindLBHLinks != "undefined")
 			        	bindLBHLinks();
 			    },
 			    onSave : function()
 			    {
 
-			      	mylog.log("onSave")
+			      	mylog.log("onSave");
 
 			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
 			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
@@ -1758,6 +1847,7 @@ var dyFObj = {
         					"<span class='error bg-warning' style='display:none'></span>"+
         					"<div class='form-list-finder'>"+
         					"</div>"+
+        					//"</div>"+
         				"</div>";
         	if(typeof fieldObj.init == "undefined"){
         		var initFinderFunction=function(){
@@ -1776,7 +1866,7 @@ var dyFObj = {
 	        			initType : fieldObj.initType,
 	        			values : initValues,
 	        			update : update,
-	        			status : fieldObj.invite
+	        			invite : fieldObj.invite
 	        		};
 
 	        		finder.init(finderParams);
@@ -5407,7 +5497,6 @@ var dyFInputs = {
 								str += "</a>";
 							}else{
 								o.input = input;
-			         	 		mylog.log("Here",o, typeof o.postalCode);
 
 			         	 		
 								if(type == "city"){
@@ -6169,6 +6258,7 @@ var dyFInputs = {
 }
 var dyFCustom = {
 	init : function (obj) {
+		mylog.log("dyFCustom init", obj);
 		if( typeof obj.onload != "undefined" 
 			&& typeof obj.onload.actions != "undefined"){
 			$.each(obj.onload.actions,function(f,p) {
@@ -6220,6 +6310,10 @@ var dyFCustom = {
 	 	});	    		
 	},
 	required : function(p) { 
+		/*$.each(p,function(k,v) {
+			$("."+k).hide();
+	 	});*/	    		
+	},required : function(p) { 
 		/*$.each(p,function(k,v) {
 			$("."+k).hide();
 	 	});*/	    		
