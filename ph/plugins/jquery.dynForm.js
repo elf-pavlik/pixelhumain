@@ -1143,6 +1143,7 @@ var dyFObj = {
 			    beforeBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
 				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
+					mylog.log("dyFCustom beforeBuild", dyFObj);
 					if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined"){
 						mylog.log("dyFCustom start init", dyFObj.activeElem, dyFObj[dyFObj.activeElem].dynFormCostum);
 						dyFCustom.init(dyFObj[dyFObj.activeElem].dynFormCostum);
