@@ -223,28 +223,54 @@ var finder = {
 	selectedItems:{},
 	typeAuthorized : {},
 	callback : {},
+	invite : null,
 	set : function(){
+		mylog.log("finder set");
 		finder.object={};
 		finder.typeAuthorized={};
 		finder.callback={};
 	},
-	init : function(id, multiple, initType, values, update, callbackSelect){
-		finder.object[id]={};
-		finder.typeAuthorized[id]=initType;
+	//init : function(id, multiple, initType, values, update, callbackSelect){
+	init : function(params, callbackSelect){
+		mylog.log("finder init", params, callbackSelect);
+		finder.object[params.id]={};
+		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
-		 	finder.callback[id]=callbackSelect;
-		if(values){
-			$.each(values, function(e, v){
-				finder.addInForm(id, e, v.type, v.name, v.profilThumbImageUrl);	
+		 	finder.callback[params.id]=callbackSelect;
+		if(params.values){
+			$.each(params.values, function(e, v){
+				finder.addInForm(params.id, e, v.type, v.name, v.profilThumbImageUrl);	
 			});
 		}
-		else if(!notNull(update)){
-			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[id]) > -1)
-				finder.addInForm(id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
-			else if((finder.typeAuthorized[id].length != 1 && finder.typeAuthorized[id][0] != "events") || finder.typeAuthorized[id][0] == "organizations")  
-				finder.addInForm(id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
+		else if(!notNull(params.update)){
+			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[params.id]) > -1)
+				finder.addInForm(params.id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
+			else if((finder.typeAuthorized[params.id].length != 1 && finder.typeAuthorized[params.id][0] != "events") || finder.typeAuthorized[params.id][0] == "organizations")  
+				finder.addInForm(params.id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
-        $(".finder-"+id+" .selectParent").click(function(e){
+
+		if(typeof params.invite != "undefined" && params.invite != null && params.invite === true){
+			finder.invite = params.invite;
+			lazyLoad( modules.co2.url+'/js/invite.js', 
+					null,
+					function(){
+						// mylog.log("finder #finderSelectHtml", $("#finderSelectHtml").length);
+						// $("#finderSelectHtml").on('shown.bs.modal', function(e){
+						// 	mylog.log("finder #finderSelectHtml HERE", $("#finderSelectHtml").length);
+						//    	inviteObj.formInvite("#finderSelectHtml #form-invite", function(){
+						// 		alert("here");
+						// 		return true;
+						// 	});
+						// });
+						return true ;
+					});
+			
+
+		}
+		else
+			finder.invite = null ;
+
+        $(".finder-"+params.id+" .selectParent").click(function(e){
         	e.preventDefault();
         	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
     		keyForm=$(this).data("id");
@@ -256,8 +282,21 @@ var finder = {
         	//	$(this).parent().find(".error").show(700).text("Vous ne pouvez ajouter qu'un élément");
         	//}
         });
+
+        finder.onLoad();
+	},
+	onLoad : function (){
+		// mylog.log("here");
+		// if( typeof finder.invite != "undefined" && finder.invite != null &&
+		// 	finder.invite === true){
+		// 	mylog.log("finder onLaod");
+			
+		// }
+
+		
 	},
 	addInForm : function(keyForm, id, type, name, img){
+		//mylog.log("finder addInForm", keyForm, id, type, name, img);
 		img= (img != "") ? baseUrl + img : assetPath + "/images/thumb/default_"+type+".png";
 		var str="";
 		str="<div class='col-xs-12 element-finder element-finder-"+id+" shadow2 padding-10'>"+
@@ -270,13 +309,15 @@ var finder = {
 					'<button class="bg-red text-white pull-right" style="border: none;font-size: 15px;border-radius: 6px;padding: 5px 10px !important;" onclick="finder.removeFromForm(\''+keyForm+'\', \''+id+'\')"><i class="fa fa-times"></i></button>'+
 			"</div>";
 		$(".finder-"+keyForm+" .form-list-finder").append(str);
-		finder.object[keyForm][id]={"type" : type};
+		finder.object[keyForm][id]={"type" : type, "name" : name};
 	},
 	removeFromForm : function(keyForm, id){
+		//mylog.log("finder removeFromForm", keyForm, id);
 		$(".finder-"+keyForm+" .form-list-finder .element-finder-"+id).remove();
 		delete finder.object[keyForm][id];	
 	},
 	showPanel: function(keyForm, typeSearch, open, multiple){
+		mylog.log("finder showPanel", keyForm, typeSearch, open, multiple);
 		finder.selectedItems={};
 		titleForm="Sélectionner dans la liste";
 		if(!notNull(multiple) && !multiple)
@@ -287,6 +328,37 @@ var finder = {
 		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
 						'<div id="list-finder-selected"></div>'+
 		    			'<hr/><div id="list-finder-selection" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
+		    			"<div id='form-invite' class='hidden'>"+
+    						'<div class="row margin-bottom-10">'+
+								'<div class="col-md-1 col-md-offset-1" id="iconUser">'+    
+									'<i class="fa fa-user fa-2x"></i>'+
+								'</div>'+
+								'<div class="col-md-9">'+
+									'<input class="invite-name form-control" placeholder="Name" id="inviteName" name="inviteName" value="" />'+
+								'</div>'+
+							'</div>'+
+							'<div class="row margin-bottom-10">'+
+								'<div class="col-md-1 col-md-offset-1">'+  
+									'<i class="fa fa-envelope-o fa-2x"></i>'+
+								'</div>'+
+								'<div class="col-md-9">'+
+									'<input class="invite-email form-control" placeholder="Email" id="inviteEmail" name="inviteEmail" value="" />'+
+								'</div>'+
+							'</div>'+
+							'<div class="row margin-bottom-10">'+
+								'<div class="col-md-1 col-md-offset-1">'+  
+									'<i class="fa fa-align-justify fa-2x"></i>'+
+								'</div>'+
+								'<div class="col-md-9">'+
+									'<textarea class="invite-text form-control" id="inviteText" name="inviteText" rows="4" placeholder="Custom message"></textarea>'+
+								'</div>'+
+							'</div>'+
+							'<div class="errorHandler alert alert-danger hidden"></div>'+
+							'<div class="col-md-12 col-sm-12 col-xs-12 text-center">'+
+								// '<input class="submit" type="submit" value="Submit">'+
+								'<button class="btn btn-success" id="btnInviteNew" ><i class="fa fa-add"></i> Add to the list</button>'+
+							'</div>'+
+						'</div>'+
 		    		'</div>',
 		    closeButton:false,
 		    buttons: {
@@ -342,8 +414,22 @@ var finder = {
 		    	}
 		    });
 		});
+
+		if(typeof finder.invite != "undefined" && finder.invite != null && finder.invite === true){
+			mylog.log("finder #finderSelectHtml", $("#finderSelectHtml").length);
+			dialog.on('shown.bs.modal', function(e){
+				mylog.log("finder #finderSelectHtml HERE", $("#finderSelectHtml").length);
+				inviteObj.formInvite("#finderSelectHtml #form-invite", "#finderSelectHtml #populateFinder", function(){
+					alert("here");
+					return true;
+				});
+			});
+		}
+
+		
 	},
 	filterPopulation : function(searchVal){
+		//mylog.log("finder filterPopulation", searchVal);
 		//recherche la valeur recherché dans les 3 champs "name", "cp", et "city"
 		if(searchVal != "")	$("#list-finder-selection .population-elt-finder").hide();
 		else $("#list-finder-selection .population-elt-finder").show();
@@ -357,6 +443,7 @@ var finder = {
 		});
 	},
 	populateFinder : function(keyForm, obj, multiple, first){
+		//mylog.log("finder populateFinder", keyForm, obj, multiple, first);
 		str="";
 		if(first && typeof finder.object[keyForm][userId] == "undefined"){
 			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : assetPath + "/images/thumb/default_citoyens.png";
@@ -418,6 +505,7 @@ var finder = {
 		finder.bindSelectItems(multiple);
 	},
 	bindSelectItems : function(multiple){
+		//mylog.log("finder bindSelectItems", multiple);
 		$(".population-elt-finder").off().on("click", function(e){
 			if(e.target.className!="cr-icon fa fa-check" && e.target.className!="check-population-finder checkbox-info")
 				$(".check-population-finder[data-value='"+$(this).data("value")+"'").trigger("click");
@@ -437,6 +525,7 @@ var finder = {
 		});
 	},
 	addSelectedToForm: function(keyForm, multiple){
+		//mylog.log("finder addSelectedToForm", keyForm, multiple);
 		if(Object.keys(finder.selectedItems).length > 0){
 			if(!multiple){
 				finder.object[keyForm]={};
@@ -449,6 +538,7 @@ var finder = {
 		}
 	},
 	searchAndPopulateFinder : function(keyForm, text, typeSearch, multiple){
+		//mylog.log("finder searchAndPopulateFinder", keyForm, text, typeSearch, multiple);
 		//finder.isSearching=true;
   		$.ajax({
 			type: "POST",
@@ -456,11 +546,32 @@ var finder = {
 	        data: {"searchType" : typeSearch, "name": text},
 	        dataType: "json",
 	        success: function(retdata){
+	        	
 	        	if(!retdata){
 	        		toastr.error(retdata.content);
-	        	}else{
+	        	} else {
 		        	mylog.log(retdata);
-		        	finder.populateFinder(keyForm, retdata.results, multiple);
+		        	if(retdata.results.length == 0 && finder.invite === true){
+		        		$("#form-invite").removeClass("hidden");
+		        		$("#list-finder-selection").addClass("hidden");
+
+		        		var search =  "#finderSelectHtml #populateFinder" ;
+		        		var id = "#finderSelectHtml #form-invite" ; 
+		        		var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+						if(emailReg.test( $(search).val() )){
+							$(id+' #inviteEmail').val( $(search).val());
+							var nameEmail = $(search).val().split("@");
+							$(id+" #inviteName").val(nameEmail[0]);
+						}else{
+							$(id+" #inviteName").val($(search).val());
+							$(id+" #inviteEmail").val("");
+						}
+
+	        		} else{
+	        			$("#form-invite").addClass("hidden");
+	        			$("#list-finder-selection").removeClass("hidden");
+		        		finder.populateFinder(keyForm, retdata.results, multiple);
+	        		}
 	  			}
 			}	
 		});
@@ -1056,10 +1167,21 @@ var dyFObj = {
 			    beforeBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
 				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
+					mylog.log("dyFCustom beforeBuild", dyFObj);
+					if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined"){
+						mylog.log("dyFCustom start init", dyFObj.activeElem, dyFObj[dyFObj.activeElem].dynFormCostum);
+						dyFCustom.beforeBuild(dyFObj[dyFObj.activeElem].dynFormCostum);
+					}
 				},
 			    afterBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.afterBuild","function") )
-				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterBuild(data);
+						dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterBuild(data);
+
+					// mylog.log("finder afterBuild", finder);
+				 //    if( typeof finder != "undefined" && finder != null ){
+				 //    	mylog.log("finder afterBuild 2", finder);
+				 //    	finder.onLoad();
+				 //    }
 			    },
 			    onLoad : function  () {
 
@@ -1084,6 +1206,10 @@ var dyFObj = {
 				    	});
 				    }
 
+				    
+
+					
+
 				    colorHeader= (typeof dyFObj[dyFObj.activeElem].color != "undefined") ? dyFObj[dyFObj.activeElem].color : "dark"; 
 				    dyFInputs.setHeader("bg-"+colorHeader);
 				    if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined")
@@ -1094,7 +1220,7 @@ var dyFObj = {
 			    onSave : function()
 			    {
 
-			      	mylog.log("onSave")
+			      	mylog.log("onSave");
 
 			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
 			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
@@ -1746,6 +1872,7 @@ var dyFObj = {
         					"<span class='error bg-warning' style='display:none'></span>"+
         					"<div class='form-list-finder'>"+
         					"</div>"+
+        					//"</div>"+
         				"</div>";
         	if(typeof fieldObj.init == "undefined"){
         		var initFinderFunction=function(){
@@ -1756,7 +1883,18 @@ var dyFObj = {
 	        		else if(typeof value != "undefined" && notNull(value) && Object.keys(value).length > 0) 
 	        			initValues=value;
 	        		
-	        		finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
+	        		//finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
+	        		//(id, multiple, initType, values, update, callbackSelect)
+	        		var finderParams = {
+	        			id : field,
+	        			multiple : fieldObj.multiple,
+	        			initType : fieldObj.initType,
+	        			values : initValues,
+	        			update : update,
+	        			invite : fieldObj.invite
+	        		};
+
+	        		finder.init(finderParams);
 	            }
 	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
         	}
@@ -5384,7 +5522,6 @@ var dyFInputs = {
 								str += "</a>";
 							}else{
 								o.input = input;
-			         	 		mylog.log("Here",o, typeof o.postalCode);
 
 			         	 		
 								if(type == "city"){
@@ -6142,18 +6279,50 @@ var dyFInputs = {
 		 	$("#ajax-modal-modal-title").html()+
 		 		" <br><small class='text-white'>"+tradDynForm.speakingas+" : <span class='text-dark'>"+cName+"</span></small>" );*/
 		
+    },
+    links: function(params){
+    	var inputObj = {
+			inputType : "finder",
+			label : ( notEmpty(params.label) ? params.label : tradDynForm.whoiscarrytheproject ),
+			multiple : ( notEmpty(params.multiple) ? params.multiple : true ),
+			invite :  ( notEmpty(params.invite) ? params.invite : true ),
+			rules : { required : true, lengthMin:[ ( notEmpty(params.lengthMin) ? params.lengthMin : 3 ), "invite"] },
+			initType: ( notEmpty(params.type) ? params.type : ["persons"] ),
+			openSearch :( notEmpty(params.openSearch) ? params.openSearch : true )
+		}
+    	return inputObj;
     }
 }
 var dyFCustom = {
+	beforeBuild : function (obj) {
+		mylog.log("dyFCustom properties", obj);
+		if( typeof obj.onload != "undefined" 
+			&& typeof obj.onload.actions != "undefined"
+			&& typeof obj.onload.actions.properties != "undefined"){
+			mylog.log("dyFCustom properties obj.onload.actions.properties", obj.onload.actions.properties);
+			$.each(obj.onload.actions.properties,function(f,p) {
+				mylog.log("dyFCustom properties f,p", f,p);
+
+				if( typeof dyFInputs != "undefined" && 
+					typeof dyFInputs[f] != "undefined" ){
+					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = dyFInputs[f](p);
+				}
+				//dyFObj.elementObj.dynForm.jsonSchema.properties;
+		 	});
+		}
+	},
 	init : function (obj) {
+		mylog.log("dyFCustom init", obj);
 		if( typeof obj.onload != "undefined" 
 			&& typeof obj.onload.actions != "undefined"){
+			mylog.log("dyFCustom obj.onload.actions", obj.onload.actions);
 			$.each(obj.onload.actions,function(f,p) {
+				mylog.log("dyFCustom f,p", f,p);
 				if(typeof dyFCustom[f] == "function")
 					f = dyFCustom[f];
-				else if(typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
-					f = dyFObj.elementObj.dynForm.jsonSchema.actions[f]
-				
+				else if(	typeof dyFObj.elementObj.dynForm.jsonSchema.actions == "function" && 
+							typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
+					f = dyFObj.elementObj.dynForm.jsonSchema.actions[f];				
 				if(typeof f == "function"){
 					if(p==1)
 						f();
@@ -6162,13 +6331,15 @@ var dyFCustom = {
 					else if(typeof p == "string")
 						f(p);
 				}
-		 	})
+		 	});
 		}
 	},
 	setTitle:function(p){
+		mylog.log("dyFCustom setTitle", p);
 		$("#ajax-modal-modal-title").html(p);
 	},
     adminOnly : function(p) {
+    	mylog.log("dyFCustom adminOnly", p);
 		if(  typeof costum != "undefined" 
 			&& typeof costum.admins != "undefined" 
 			&& typeof costum.admins[userId] != "undefined" 
@@ -6181,23 +6352,29 @@ var dyFCustom = {
 				
 		}
 	},
-	presetValue : function(p) { 
+	presetValue : function(p) {
+		mylog.log("dyFCustom presetValue", p);
 		$.each(p,function(k,v) {
-			$("#"+k).val(v)
+			$("#"+k).val(v);
 	 	});	    		
 	},
-	html : function(p) { 
+	html : function(p) {
+		mylog.log("dyFCustom html", p);
 		$.each(p,function(k,v) {
-			$("."+k).html(v)
+			$("."+k).html(v);
 	 	});	    		
 	},
-	hide : function(p) { 
+	hide : function(p) {
+		mylog.log("dyFCustom hide", p);
 		$.each(p,function(k,v) {
 			$("."+k).hide();
 	 	});	    		
 	},
-	required : function(p) { 
-			
+	required : function(p) {
+		mylog.log("dyFCustom required", p);
+		/*$.each(p,function(k,v) {
+			$("."+k).hide();
+	 	});*/	    		
 	}
 };
 

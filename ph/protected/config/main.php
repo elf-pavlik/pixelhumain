@@ -107,6 +107,7 @@ return array(
         /*'themeManager' => array(
             'basePath' => realpath(__DIR__ . $modulesDir)."/granddir/themes"
         ),*/
+        
 		'communecter' => array(
             'class'=>'CPhpMessageSource',
             'basePath'=>realpath(__DIR__ .$modulesDir.'communecter/messages')
