@@ -586,6 +586,7 @@ var uploadObj = {
 	docListIds : [],
 	initList : [],
 	callBackData : null,
+	startAfterLoadUploader:true,
 	folder : "communecter", //on force pour pas casser toutes les vielles images
 	contentKey : "profil",
 	afterLoadUploader : false,
@@ -620,7 +621,7 @@ var uploadObj = {
 				uploadObj.path += "/contentKey/profil";
 			if(notNull(foldKey) && foldKey != "")
 				uploadObj.path += "/folderId/"+foldKey;
-			if(notNull(extraUrl) && extraUrl != "")
+			if(notNull(extraUrl) && extraUrl != "" && extraUrl !== true)
 				uploadObj.path += extraUrl;
 				
 			if(typeof uploadObj.domTarget !="undefined")
@@ -811,7 +812,6 @@ var dyFObj = {
 	},
 
 	saveElement : function  ( formId,collection,ctrl,saveUrl,afterSave ) { 
-		//alert("saveElement");
 		mylog.warn("---------------- saveElement",formId,collection,ctrl,saveUrl,afterSave );
 		if( typeof formId == "object" )
 			formData = formId;
@@ -1165,13 +1165,16 @@ var dyFObj = {
 			    formObj : dyFObj[dyFObj.activeElem].dynForm,
 			    formValues : data,
 			    beforeBuild : function  () {
-			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") )
+			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") ){
+
 				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
-					mylog.log("dyFCustom beforeBuild", dyFObj);
-					if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined"){
-						mylog.log("dyFCustom start init", dyFObj.activeElem, dyFObj[dyFObj.activeElem].dynFormCostum);
-						dyFCustom.beforeBuild(dyFObj[dyFObj.activeElem].dynFormCostum);
+				        }
+
+			      	if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined" && typeof dyFObj[dyFObj.activeElem].dynFormCostum.beforeBuild != "undefined"){
+						dyFCustom.beforeBuild(dyFObj[dyFObj.activeElem].dynFormCostum.beforeBuild);
 					}
+					mylog.log("dyFCustom beforeBuild", dyFObj);
+					
 				},
 			    afterBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.afterBuild","function") )
@@ -1221,7 +1224,7 @@ var dyFObj = {
 			    {
 
 			      	mylog.log("onSave");
-
+		
 			      	if( typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave == "function")
 			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeSave();
 			        uploadObj.afterLoadUploader=true;
@@ -1245,30 +1248,55 @@ var dyFObj = {
 		}
 	},
 	commonAfterSave : function(){
-		listObject=$(uploadObj.domTarget).fineUploader('getUploads');
-    	goToUpload=false;
-    	if(listObject.length > 0){
-    		$.each(listObject, function(e,v){
-    			if(v.status == "submitted")
-    				goToUpload=true;
-    		});
-    	}
-		if( goToUpload ){
-    		$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
-	    	//principalement pour les surveys
-	    	if(typeof callB == "function")
-    			callB();
-    	}
-	    else { 
-	    	mylog.log("here", isMapEnd);
-	    	if(typeof networkJson != "undefined")
-				isMapEnd = true;
-			dyFObj.closeForm();
-			/*if(activeModuleId == "survey")//use case for answerList forms updating
-        		window.location.reload();
-        	else 
-				urlCtrl.loadByHash( uploadObj.gotoUrl );*/
-        }
+		if($(".fine-uploader-manual-trigger").length>1){
+			uploadObj.startAfterLoadUploader=false;
+			uploadCount=$(".fine-uploader-manual-trigger").length;
+			i=1;
+			$(".fine-uploader-manual-trigger").each(function(){
+				if(i==uploadCount)
+					uploadObj.startAfterLoadUploader=true;
+				listObject=$(this).fineUploader('getUploads');
+		    	goToUpload=false;
+		    	if(listObject.length > 0){
+		    		$.each(listObject, function(e,v){
+		    			if(v.status == "submitted")
+		    				goToUpload=true;
+		    		});
+		    	}
+				if( goToUpload ){
+		    		$(this).fineUploader('uploadStoredFiles');
+			    	//principalement pour les surveys
+			    	if(typeof callB == "function")
+		    			callB();
+		    	}
+		    	i++;
+			});
+		}else{
+			listObject=$(uploadObj.domTarget).fineUploader('getUploads');
+	    	goToUpload=false;
+	    	if(listObject.length > 0){
+	    		$.each(listObject, function(e,v){
+	    			if(v.status == "submitted")
+	    				goToUpload=true;
+	    		});
+	    	}
+			if( goToUpload ){
+	    		$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
+		    	//principalement pour les surveys
+		    	if(typeof callB == "function")
+	    			callB();
+	    	}
+		    else { 
+		    	mylog.log("here", isMapEnd);
+		    	if(typeof networkJson != "undefined")
+					isMapEnd = true;
+				dyFObj.closeForm();
+				/*if(activeModuleId == "survey")//use case for answerList forms updating
+	        		window.location.reload();
+	        	else 
+					urlCtrl.loadByHash( uploadObj.gotoUrl );*/
+	        }
+	    }
 	},
 	coopAfterSave : function(data){
 		dyFObj.closeForm(); 
@@ -1564,15 +1592,34 @@ var dyFObj = {
         	mylog.log("build field "+field+">>>>>> textarea, wysiwyg");
         	fieldHTML += '<textarea id="'+field+'" maxlength="'+maxlength+'"  class="form-control textarea '+fieldClass+'" name="'+field+'" placeholder="'+placeholder+'">'+value+'</textarea>';
         	
-        	if(maxlength > 0)
-        		fieldHTML += '<span><span id="maxlength'+field+'" name="maxlength'+field+'">'+minlength+'</span> / '+maxlength+' '+trad["character(s)"]+' </span> '
-
-
+        	if(maxlength > 0){
+        		fieldHTML += '<span><span id="maxlength'+field+'" name="maxlength'+field+'">'+minlength+'</span> / '+maxlength+' '+trad["character(s)"]+' </span> ';
+	        	initField = function(){
+		    		mylog.log("textarea init");
+		    		if($(".maxlengthTextarea").length){
+		    			mylog.log("textarea init2");
+		    			$(".maxlengthTextarea").off().keyup(function(){
+							//var name = "#" + $(this).attr("id") ;
+							var name = $(this).attr("id") ;
+							mylog.log(".maxlengthTextarea", "#ajaxFormModal #"+name, $(this).attr("id"));
+							mylog.log(".maxlengthTextarea", $("#ajaxFormModal #"+name).val().length, $(this).val().length);
+							$("#ajaxFormModal #maxlength"+name).html($("#ajaxFormModal  #"+name).val().length);
+						});
+		    		}
+		    		
+		        };
+			}
+			if(typeof fieldObj.markdown != "undefined" && fieldObj.markdown){
+				initField = function(){
+					dataHelper.activateMarkdown("#ajaxFormModal #"+field);
+				};
+			}
 		}else if ( fieldObj.inputType == "markdown"){ 
 			mylog.log("build field "+field+">>>>>> textarea, markdown");
 			fieldClass += " markdownInput";
 			//fieldHTML +='<textarea id="'+field+'" name="'+field+'" class="form-control textarea '+fieldClass+'" placeholder="'+placeholder+'" data-provide="markdown" data-savable="true" rows="10"></textarea>';
 			fieldHTML +='<textarea name="target-editor" id="'+field+'" data-provide="markdown" data-savable="true" class="form-control textarea '+fieldClass+'" placeholder="'+placeholder+'" rows="10"></textarea>';
+		
 		}
 		/* **************************************
 		* CHECKBOX SIMPLE
@@ -1812,8 +1859,9 @@ var dyFObj = {
         		uploadObject.template = fieldObj.template;
 			if( fieldObj.itemLimit )
         		uploadObject.itemLimit = fieldObj.itemLimit;
-			if(fieldObj.endPoint)
-				uploadObject.endPoint=uploadObj.get("citoyens", userId, fieldObj.docType, null, null, fieldObj.endPoint);
+			if(fieldObj.endPoint){
+				uploadObject.endPoint=uploadObj.get(uploadObj.type, uploadObj.id, fieldObj.docType, null, null, fieldObj.endPoint);
+			}
 			if(typeof dySObj == "undefined" && $.isFunction( fieldObj.afterUploadComplete ))
         		uploadObject.afterUploadComplete = fieldObj.afterUploadComplete;
         	else if(typeof dySObj != "undefined" && Object.keys(dySObj.surveys).length != 0 && typeof fieldObj.afterUploadComplete == "string"){
@@ -2567,11 +2615,11 @@ var dyFObj = {
 				errorHandler.hide();
 				mylog.info("form submitted "+params.formId);
 				
-				if(params.beforeSave && jQuery.isFunction( params.beforeSave ) )
+				if(params.beforeSave && jQuery.isFunction( params.beforeSave ) ){
 					params.beforeSave();
+				}
 
 				if(params.onSave && jQuery.isFunction( params.onSave ) ){
-					//	alert("onSave")
 					params.onSave();
 					return false;
 		        } 
@@ -2989,13 +3037,15 @@ var dyFObj = {
 								    });
 								}
 						    	if(uploadObj.afterLoadUploader){
-						    		//toastr.info( "Fichiers bien chargés !!");
-						    		if(notNull(uploadObj.type) && uploadObj.type=="proposals"){
-						    			dyFObj.coopAfterSave(uploadObj.callBackData);
-						    		}else if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
-						    			v.afterUploadComplete();
-						    		}
-						     		uploadObj.gotoUrl = null;
+						    		if(uploadObj.startAfterLoadUploader){
+							    		//toastr.info( "Fichiers bien chargés !!");
+							    		if(notNull(uploadObj.type) && uploadObj.type=="proposals"){
+							    			dyFObj.coopAfterSave(uploadObj.callBackData);
+							    		}else if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
+							    			v.afterUploadComplete();
+							    		}
+							     		uploadObj.gotoUrl = null;
+							     	}
 						     	}
 						    },
 						    onError: function(id) {
@@ -6295,21 +6345,23 @@ var dyFInputs = {
 }
 var dyFCustom = {
 	beforeBuild : function (obj) {
-		mylog.log("dyFCustom properties", obj);
-		if( typeof obj.onload != "undefined" 
-			&& typeof obj.onload.actions != "undefined"
-			&& typeof obj.onload.actions.properties != "undefined"){
-			mylog.log("dyFCustom properties obj.onload.actions.properties", obj.onload.actions.properties);
-			$.each(obj.onload.actions.properties,function(f,p) {
-				mylog.log("dyFCustom properties f,p", f,p);
-
-				if( typeof dyFInputs != "undefined" && 
-					typeof dyFInputs[f] != "undefined" ){
-					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = dyFInputs[f](p);
-				}
-				//dyFObj.elementObj.dynForm.jsonSchema.properties;
-		 	});
-		}
+		$.each(obj,function(f,p) {
+			mylog.log("beforeBuild", f,p);
+			if(typeof dyFCustom[f] == "function")
+				f = dyFCustom[f];
+			/*else if(	typeof dyFObj.elementObj.dynForm.jsonSchema.actions == "function" && 
+						typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
+				f = dyFObj.elementObj.dynForm.jsonSchema.actions[f];*/				
+			
+			if(typeof f == "function"){
+				if(p==1)
+					f();
+				else if(typeof p == "object")
+					f(p);
+				else if(typeof p == "string")
+					f(p);
+			}
+		});
 	},
 	init : function (obj) {
 		mylog.log("dyFCustom init", obj);
@@ -6356,6 +6408,10 @@ var dyFCustom = {
 		mylog.log("dyFCustom presetValue", p);
 		$.each(p,function(k,v) {
 			$("#"+k).val(v);
+			if(k=="type" && dyFObj.elementObj.col=="poi"){
+				$(".sectionBtn[data-key='"+v+"']").trigger("click");
+			//	dyFObj.canSubmitIf();
+			}
 	 	});	    		
 	},
 	html : function(p) {
@@ -6369,6 +6425,18 @@ var dyFCustom = {
 		$.each(p,function(k,v) {
 			$("."+k).hide();
 	 	});	    		
+	},
+	properties : function(p){
+		$.each(p,function(f,k) {
+			mylog.log("dyFCustom properties add f,p", f,k);
+
+			if( typeof dyFInputs != "undefined" && 
+				typeof dyFInputs[f] != "undefined" ){
+				dyFObj.elementObj.dynForm.jsonSchema.properties[f] = dyFInputs[f](k);
+			}else
+				dyFObj.elementObj.dynForm.jsonSchema.properties[f] = k;
+			//dyFObj.elementObj.dynForm.jsonSchema.properties;
+	 	});
 	},
 	required : function(p) {
 		mylog.log("dyFCustom required", p);
