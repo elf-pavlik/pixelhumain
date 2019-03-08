@@ -76,14 +76,14 @@ $session = (!empty($_GET["session"]) ? $_GET["session"] : "1");
 
         <?php if( isset( Yii::app()->session['userId']) ){ ?>
             <button class="btn-show-mainmenu btn btn-link" 
-                    data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","Menu") ?>">
+                    data-toggle="tooltip" data-placement="top" title="<?php echo Yii::t("common","Menu") ?>" style="margin-top: 8px;font-size: 21px;">
                 <i class="fa fa-bars tooltips" ></i>
             </button>
 
         <?php } ?>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="pull-right navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="pull-right navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 5px;">
             <ul class="nav navbar-nav">
                 <?php 
                     if( isset( Yii::app()->session['userId']) ){
@@ -129,7 +129,7 @@ $session = (!empty($_GET["session"]) ? $_GET["session"] : "1");
 
 <?php if(@Yii::app()->session["userId"]){ ?>
  <div class="dropdown pull-right" id="dropdown-user">
-    <div class="dropdown-main-menu">
+    <div class="dropdown-main-menu" style="top: 21px;right: 70px;">
         <ul class="dropdown-menu arrow_box">
             
             <li class="text-admin">
