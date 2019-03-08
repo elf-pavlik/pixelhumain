@@ -86,34 +86,34 @@ var typeObj = {
     },
     organizations : {sameAs:"organization"},
     organization2 : { col:"organizations", ctrl:"organization" },
-    LocalBusiness : {col:"organizations",color: "azure",icon: "industry"
-    /* name:Yii::t("common","Local business"),
+    LocalBusiness : {col:"organizations",color: "azure",icon: "industry",
+        name:trad.LocalBusiness,
             formType:"organization",
-            formSubType:Organization::TYPE_BUSINNESS,
-            textExplain:Yii::t("form", Make visible your company<br>Find new customer<br>Manage your contacts),           
-            parentAllow:[Person::COLLECTION] */},
-    NGO : {sameAs:"organization", color:"green", icon:"users"
-        /* name:Yii::t("common","NGO"),
-            formType:"organization",
-            formSubType:Organization::TYPE_NGO,
-            textExplain:Yii::t("form", "Make visible your NGO<br>Manage the community<br>Share your news"),           
-            parentAllow:[Person::COLLECTION] */
+            formSubType:"Localbusiness",
+            textExplain:"Make visible your company<br>Find new customer<br>Manage your contacts",           
+            parentAllow:["citoyens"]
+        },
+    NGO : {sameAs:"organization", color:"green", icon:"users",
+        name : trad.NGO,
+        formType:"organization",
+        formSubType:"NGO",
+        textExplain:"Make visible your NGO<br>Manage the community<br>Share your news",           
+        parentAllow:["citoyens"]
     },
     Association : {sameAs:"organization", color:"green", icon: "group"},
-    GovernmentOrganization : {col:"organization", color: "red",icon: "university"
-        /* name:Yii::t("common","Government Organization"),
-            formType:"organization",
-            formSubType:Organization::TYPE_GOV,
-            textExplain:Yii::t("form", "Town hall, schools, etc...<br>Share your news<br>Share events"),           
-            parentAllow:[Person::COLLECTION] */
+    GovernmentOrganization : {col:"organization", color: "red",icon: "university",
+        name:trad.GovernmentOrganization,
+        formType:"organization",
+        formSubType:"GovernmentOrganization",
+        textExplain:"Town hall, schools, etc...<br>Share your news<br>Share events",           
+        parentAllow:["citoyens"]
     },
-    Group : {   col:"organizations",color: "turq",icon: "circle-o"
-        /*
-        name:Yii::t("common","Local business"),
-            formType:"organization",
-            formSubType:Organization::TYPE_BUSINESS,
-            textExplain":Yii::t("form", "Make visible your company<br>Find new customer<br>Manage your contacts"),           
-            parentAllow:[Person::COLLECTION]*/
+    Group : {   col:"organizations",color: "turq",icon: "circle-o",
+        name:trad.Group,
+        formType:"organization",
+        formSubType:"Group",
+        textExplain:"Make visible your collectif group<br><br>",           
+        parentAllow:["citoyens"]
     },
     event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent", 
         add: true,

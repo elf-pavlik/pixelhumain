@@ -6197,9 +6197,7 @@ var dyFCustom = {
 	 	});	    		
 	},
 	required : function(p) { 
-		/*$.each(p,function(k,v) {
-			$("."+k).hide();
-	 	});*/	    		
+			
 	}
 };
 

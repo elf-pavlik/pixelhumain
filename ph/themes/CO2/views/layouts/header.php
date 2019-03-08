@@ -8,10 +8,10 @@
     //var_dump($page); exit;
     $useHeader              = $themeParams["pages"]["#".$page]["useHeader"];
     $useFilter              = $themeParams["pages"]["#".$page]["useFilter"];
-    $subdomain              = $themeParams["pages"]["#".$page]["subdomain"];
+    $subdomain              = @$themeParams["pages"]["#".$page]["subdomain"];
     $subdomainName          = $themeParams["pages"]["#".$page]["subdomainName"];
     $icon                   = $themeParams["pages"]["#".$page]["icon"];
-    $mainTitle              = $themeParams["pages"]["#".$page]["mainTitle"];
+    $mainTitle              = @$themeParams["pages"]["#".$page]["mainTitle"];
     $placeholderMainSearch  = $themeParams["pages"]["#".$page]["placeholderMainSearch"];
     $type = @$themeParams["pages"]["#".$page]["type"];
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
