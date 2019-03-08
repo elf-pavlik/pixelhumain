@@ -84,6 +84,7 @@
   $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
   $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
   $CO2DomainName = Yii::app()->params["CO2DomainName"];
+  $CO2DomainName="menuTop";
   $parentModuleId = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->params["module"]["parent"] : $this->module->id;
 
   $this->renderPartial($layoutPath.'initJs', 
@@ -161,7 +162,7 @@
 <body class="body">
   <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
     <?php
-    $this->renderPartial( $layoutPath.'menus.menuTop', 
+    $this->renderPartial( $layoutPath.'menus.'.$CO2DomainName, 
                             array( "layoutPath"=>$layoutPath , 
                                     "subdomain"=>"", //$subdomain,
                                     "subdomainName"=>"", //$subdomainName,
