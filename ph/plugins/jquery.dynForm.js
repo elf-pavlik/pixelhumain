@@ -4435,8 +4435,8 @@ var dyFInputs = {
 	    // Forced dynForm in network or cOstum
 	    if(typeof networkJson != 'undefined' && notNull(networkJson))
 	    	dyFInputs.initializeTypeObjForm(networkJson);
-	    if(typeof custom != 'undefined' && notNull(custom))
-	    	dyFInputs.initializeTypeObjForm(custom);
+	    if(typeof costum != 'undefined' && notNull(costum))
+	    	dyFInputs.initializeTypeObjForm(costum);
 	},
 	initializeTypeObjForm : function(object){
 		// Initialize tags list for network in form of element
@@ -4481,11 +4481,11 @@ var dyFInputs = {
 				networkTagsCategory[category].push(optgroupObject);
 			});
 		}
-		mylog.log("object.add", object.add, typeObj);
-		if(	typeof object.add != "undefined"  && 
+		mylog.log("object.add", object.typeObj, typeObj);
+		if(	typeof object.typeObj != "undefined"  && 
 			typeof typeObj != "undefined" ){
 
-			$.each(object.add, function(key, v) {
+			$.each(object.typeObj, function(key, v) {
 				mylog.log("key", key);
 				//key=(key=="jobs" || key=="ressources") ? "classifieds" : key;
 				key=(typeof typeObj[key].sameAs != "undefined") ? typeObj[key].sameAs : key; 
