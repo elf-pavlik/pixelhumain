@@ -90,12 +90,14 @@ var typeObj = {
         name:trad.LocalBusiness,
             formType:"organization",
             formSubType:"Localbusiness",
+            createLabel:"Create a local business",
             textExplain:"Make visible your company<br>Find new customer<br>Manage your contacts",           
             parentAllow:["citoyens"]
         },
     NGO : {sameAs:"organization", color:"green", icon:"users",
         name : trad.NGO,
         formType:"organization",
+        createLabel:"Create an NGO",
         formSubType:"NGO",
         textExplain:"Make visible your NGO<br>Manage the community<br>Share your news",           
         parentAllow:["citoyens"]
@@ -105,6 +107,7 @@ var typeObj = {
         name:trad.GovernmentOrganization,
         formType:"organization",
         formSubType:"GovernmentOrganization",
+        createLabel:"Create a public sevrice",
         textExplain:"Town hall, schools, etc...<br>Share your news<br>Share events",           
         parentAllow:["citoyens"]
     },
@@ -112,6 +115,7 @@ var typeObj = {
         name:trad.Group,
         formType:"organization",
         formSubType:"Group",
+        createLabel:"Create a group",
         textExplain:"Make visible your collectif group<br><br>",           
         parentAllow:["citoyens"]
     },
