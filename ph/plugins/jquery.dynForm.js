@@ -404,10 +404,6 @@ var finder = {
 		    	}
 		    });
 
-		    
-		});
-
-		dialog.on('shown.bs.modal', function(e){
 		    if(typeof finder.invite != "undefined" && finder.invite != null && finder.invite === true){
 			    mylog.log("finder invite load ", $('#finderSelectHtml #form-invite #btnInviteNew').length, $("#finderSelectHtml #form-invite #btnInviteNew").length);
 				inviteObj.formInvite("#finderSelectHtml #form-invite", function(){
@@ -415,6 +411,12 @@ var finder = {
 					return true;
 				});
 			}
+
+			
+		});
+
+		dialog.on('shown.bs.modal', function(e){
+		    
 		});
 	},
 	filterPopulation : function(searchVal){
