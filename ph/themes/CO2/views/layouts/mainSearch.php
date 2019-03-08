@@ -380,7 +380,7 @@
                         lazyLoad( v.init , null,null);
                     }
                 });
-                if( typeof costum != "undefined" && costum.logo ){
+                if( typeof costum != "undefined" ){
                     costum.init("mainSearch");
                 }
 
