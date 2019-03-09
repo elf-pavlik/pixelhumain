@@ -2174,6 +2174,9 @@ margin-right: 5px;
 	  padding: 3px 0 5px 0;
 	}
 
+.main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical{
+	left: 0px;
+}
 	#ajax-modal .form-group, #ajax-modal .form-actions{
 		min-width:unset !important;
 		width:unset !important;
