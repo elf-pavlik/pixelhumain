@@ -133,7 +133,9 @@ a.text-white:hover{
 .text-yellow-PH{
     color:#fffc00!important;
 }
-
+.text-yellow-k{
+    color:#fbbc05;
+}
 .text-light, a.text-light{
     color:#5F7C92 !important;
 }

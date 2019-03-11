@@ -921,6 +921,9 @@
 .btn-directory-type.text-yellow.active, .btn-directory-type.text-yellow:hover{
   background-color: #FFC600 !important;
 }
+.btn-directory-type.text-green.active, .btn-directory-type.text-green:hover{
+  background-color: #93C020 !important;
+}
 .btn-directory-type.text-green-k.active, .btn-directory-type.text-green-k:hover{
   background-color: #34a853 !important;
 }

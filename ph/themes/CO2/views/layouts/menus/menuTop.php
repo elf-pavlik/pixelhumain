@@ -198,13 +198,7 @@
                             $href=($k=="logout") ? Yii::app()->createUrl($v["href"]) : $v["href"];
                             $blank=(@$blank) ? "target='_blank'" : "";
                             if($k=="admin"){ 
-                                if(Yii::app()->session["userIsAdmin"] || Yii::app()->session[ "userIsAdminPublic" ]){
-                                    $show=true;
-                                    $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
-                                }else if(@Yii::app()->session["userId"] 
-                                    && @Yii::app()->session["costum"]
-                                    && @Yii::app()->session["costum"]["admins"]
-                                    && @Yii::app()->session["costum"]["admins"][Yii::app()->session["userId"]]){
+                                if(Yii::app()->session["userIsAdmin"] || Yii::app()->session[ "userIsAdminPublic" ] || Yii::app()->session["isCostumAdmin"]){
                                     $show=true;
                                     $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
                                 }else
@@ -325,7 +319,7 @@
     </div>
 </div>
 <?php 
-$this->renderPartial($layoutPath.'loginRegister', array("subdomain" => $subdomain)); 
+$this->renderPartial($layoutPath.'loginRegister', array("subdomain" => @$subdomain)); 
 
 $this->renderPartial($layoutPath.'formCreateElement'); ?>
 

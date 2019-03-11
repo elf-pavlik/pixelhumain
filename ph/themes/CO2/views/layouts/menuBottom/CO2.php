@@ -63,8 +63,13 @@
     }
 </style>
 <?php 
+    $canCreate=false;
+    if(Yii::app()->session["userIsAdmin"] || Yii::app()->session[ "userIsAdminPublic" ] || Yii::app()->session["isCostumAdmin"]){
+        $canCreate=true;
+        $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
+    }
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal"; 
-    $addElement=array(
+    /*$addElement=array(
         Person::COLLECTION => array(
             "label"=>Yii::t("common","Invite someone"),
             "icon"=>Person::ICON,
@@ -140,7 +145,7 @@
     if(@$themeParams["add"]){
         foreach($addElement as $key=>$v)
             if(!@$themeParams["add"][$key]) unset($addElement[$key]);
-    }
+    }*/
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
     <?php if(!@$themeParams["footer"] || (@$themeParams["footer"]["donate"] && !empty($themeParams["footer"]["donate"]))){ 
@@ -152,11 +157,11 @@
         <span class="tooltips-menu-btn"><?php echo $label ?></span>
     </a>
     <?php } ?>
-    <button class="btn btn-link btn-sm letter-red tooltips font-montserrat no-padding hidden" 
+   <!-- <button class="btn btn-link btn-sm letter-red tooltips font-montserrat no-padding hidden" 
         id="btn-open-radio" 
         data-placement="top" title="Radio-Pixel-Humain is on air, listen now !">
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
-    </button>
+    </button>-->
     <?php if(@Yii::app()->session["userId"] && (!@$themeParams["footer"] || (@$themeParams["footer"]["add"] && !empty($themeParams["footer"]["add"])))) { ?>
         <button class="btn btn-default no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
@@ -188,6 +193,7 @@
     </div>
 </div>
 <script type="text/javascript">
+var canCreate=<?php echo json_encode($canCreate) ?>;
 jQuery(document).ready(function() {
     $(".toolbar-bottom-adds").hide().removeClass("hidden");
     $('#show-bottom-add').off().click(function(){
@@ -210,23 +216,25 @@ jQuery(document).ready(function() {
         $(".toolbar-bottom-adds").hide(200);
 
     });
-})
+});
 function initButtonAddFooter(domContain){
     menuButtonCreate="";
     $.each(typeObj, function(e,v){
         if(typeof v.add != "undefined" && v.add){
-            hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
-            formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
-            subFormType= (typeof v.subFormType != "undefined") ? 'data-form-subtype="'+v.subFormType+'" ' : "";
-            addClass = (typeof v.class != "undefined") ? v.class : "";
-            nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
-            menuButtonCreate+='<a href="'+hash+'" '+ 
-                formType+
-                subFormType+ 
-                'class="addBtnFoot btn-open-form btn btn-default '+addClass+' bg-'+v.color+' margin-bottom-10">'+ 
-                    '<i class="fa fa-'+v.icon+'"></i> '+
-                    '<span>'+nameLabel+'</span>'+
-                '</a>';
+            if(v.add!="onlyAdmin" || canCreate ){
+                hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
+                formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
+                subFormType= (typeof v.subFormType != "undefined") ? 'data-form-subtype="'+v.subFormType+'" ' : "";
+                addClass = (typeof v.class != "undefined") ? v.class : "";
+                nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
+                menuButtonCreate+='<a href="'+hash+'" '+ 
+                    formType+
+                    subFormType+ 
+                    'class="addBtnFoot btn-open-form btn btn-default '+addClass+' bg-'+v.color+' margin-bottom-10">'+ 
+                        '<i class="fa fa-'+v.icon+'"></i> '+
+                        '<span>'+nameLabel+'</span>'+
+                    '</a>';
+            }
         }
     });
     $(domContain).html(menuButtonCreate);
