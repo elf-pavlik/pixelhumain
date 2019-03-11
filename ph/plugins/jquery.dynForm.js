@@ -245,7 +245,8 @@ var finder = {
 		else if(!notNull(params.update)){
 			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[params.id]) > -1)
 				finder.addInForm(params.id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
-			else if((finder.typeAuthorized[params.id].length != 1 && finder.typeAuthorized[params.id][0] != "events") || finder.typeAuthorized[params.id][0] == "organizations")  
+			else if(typeof finder.typeAuthorized[params.id] != "undefined" && 
+				((finder.typeAuthorized[params.id].length != 1 && finder.typeAuthorized[params.id][0] != "events") || finder.typeAuthorized[params.id][0] == "organizations"))  
 				finder.addInForm(params.id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
 
@@ -583,6 +584,7 @@ var uploadObj = {
 	gotoUrl : null,
 	isSub : false,
 	update  : false,
+	docType  : "image",
 	docListIds : [],
 	initList : [],
 	callBackData : null,
@@ -602,7 +604,7 @@ var uploadObj = {
 			path += "/contentKey/profil";
 		if(notNull(foldKey) && foldKey != "")
 			path += "/folderId/"+foldKey;
-		if(notNull(extraUrl) && extraUrl != "")
+		if(notNull(extraUrl) && extraUrl != "" && extraUrl !== true)
 			path += extraUrl;
 		return path;
 	},
@@ -614,7 +616,6 @@ var uploadObj = {
 			uploadObj.id = id;
 			docT=(notNull(docT) && docT) ? docT : "image";
 			uploadObj.path = baseUrl+"/"+moduleId+"/document/uploadSave/dir/"+uploadObj.folder+"/folder/"+typeForUpload+"/ownerId/"+id+"/input/qqfile/docType/"+docT;
-			
 			if(notNull(contentK) && contentK != "")
 				uploadObj.path += "/contentKey/"+contentK;
 			else if(docT == "image")
@@ -623,9 +624,9 @@ var uploadObj = {
 				uploadObj.path += "/folderId/"+foldKey;
 			if(notNull(extraUrl) && extraUrl != "" && extraUrl !== true)
 				uploadObj.path += extraUrl;
-				
-			if(typeof uploadObj.domTarget !="undefined")
-				$(uploadObj.domTarget).fineUploader('setEndpoint', uploadObj.path);
+			
+			//if(typeof uploadObj.domTarget !="undefined")
+			//	$(uploadObj.domTarget).fineUploader('setEndpoint', uploadObj.path);
 		}else {
 			uploadObj.type = null;
 			uploadObj.id = null;
@@ -939,6 +940,7 @@ var dyFObj = {
 	editElement : function (type,id, subType){
 		mylog.warn("--------------- editElement ",type,id,subType);
 		//get ajax of the elemetn content
+
 		uploadObj.set(type, id);
 		uploadObj.update = true;
 		$.ajax({
@@ -967,7 +969,9 @@ var dyFObj = {
 					typeForm = dyFInputs.get(typeModules).ctrl;
 
 				mylog.log("editElement typeForm", typeForm);
-				dyFObj.openForm( typeForm ,null, data.map);
+				dyFObj.openForm(typeForm,null, data.map);
+				//console(dyFObj.init.uploader, "editiiiiiii");
+				
 	        } else 
 	           toastr.error("something went wrong!! please try again.");
 	    });
@@ -1036,9 +1040,9 @@ var dyFObj = {
 		uploadObj.contentKey="profil"; 
 		if(notNull(data)){
 			if(typeof data.images != "undefined")
-				uploadObj.initList=data.images;
+				uploadObj.initList.image=data.images;
 			if(typeof data.files != "undefined" )
-				uploadObj.initList=data.files;
+				uploadObj.initList.file=data.files;
 
 			data = dyFObj.prepData(data);
 
@@ -1047,7 +1051,6 @@ var dyFObj = {
 		}
 		dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
 		dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
-
 		if(userId)
 		{
 			if(typeof formInMap != 'undefined')
@@ -1150,7 +1153,8 @@ var dyFObj = {
 							              "</div>");
 	  	$(dyFObj.activeModal+' .modal-footer').hide();
 	  	$(dyFObj.activeModal).modal("show");
-
+	  	leftPosModal=($("#modalCoop").is(":visible")) ? $("#menuCoop").outerWidth() : $("#menuApp.menuLeft").outerWidth();
+		$(".main-container.vertical .portfolio-modal.modal").css("left",leftPosModal);
 	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
@@ -1209,14 +1213,18 @@ var dyFObj = {
 				    	});
 				    }
 
-				    
-
 					
 
 				    colorHeader= (typeof dyFObj[dyFObj.activeElem].color != "undefined") ? dyFObj[dyFObj.activeElem].color : "dark"; 
 				    dyFInputs.setHeader("bg-"+colorHeader);
 				    if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined")
 				    	dyFCustom.init(dyFObj[dyFObj.activeElem].dynFormCostum);
+				   	if(typeof dyFObj.init.uploader != "undefined" && Object.keys(dyFObj.init.uploader).length>0){
+					   	$.each(dyFObj.init.uploader, function(e, v){
+							endPoint=uploadObj.get(uploadObj.type, uploadObj.id, v.docType);
+							$("#"+e).fineUploader('setEndpoint', endPoint);
+						});
+				   	}
 				    if( typeof bindLBHLinks != "undefined")
 			        	bindLBHLinks();
 			    },
@@ -1322,7 +1330,12 @@ var dyFObj = {
 		if(  !$("#ajaxFormModal #id").val() && !uploadObj.update )
 		{
 			getAjax( null , baseUrl+"/api/tool/get/what/mongoId" , function(data){
-				//alert("setMongoId uploadObj.id", data.id);
+				if(typeof dyFObj.init.uploader != "undefined" && Object.keys(dyFObj.init.uploader).length>0){
+					$.each(dyFObj.init.uploader, function(e, v){
+						endPoint=uploadObj.get(type,data.id, v.docType);
+						$("#"+e).fineUploader('setEndpoint', endPoint);
+					});
+				}				
 				uploadObj.set(type,data.id);
 				$("#ajaxFormModal #id").val(data.id);
 				if( typeof callback === "function" )
@@ -1859,6 +1872,10 @@ var dyFObj = {
         		uploadObject.template = fieldObj.template;
 			if( fieldObj.itemLimit )
         		uploadObject.itemLimit = fieldObj.itemLimit;
+		
+
+			uploadObject.docType=(fieldObj.docType) ? fieldObj.docType : "image"; 
+
 			if(fieldObj.endPoint){
 				uploadObject.endPoint=uploadObj.get(uploadObj.type, uploadObj.id, fieldObj.docType, null, null, fieldObj.endPoint);
 			}
@@ -1880,8 +1897,8 @@ var dyFObj = {
         		};
         	}
 
-        	if(typeof uploadObj.initList != "undefined" && Object.keys(uploadObj.initList).length > 0){
-        		uploadObject.initList=uploadObj.prepareInit(uploadObj.initList);
+        	if(typeof uploadObj.initList != "undefined" && typeof uploadObj.initList[uploadObject.docType] != "undefined" && Object.keys(uploadObj.initList[uploadObject.docType]).length > 0){
+        		uploadObject.initList=uploadObj.prepareInit(uploadObj.initList[uploadObject.docType]);
         	} 
         	dyFObj.init.uploader[uploaderId]=new Object;
         	dyFObj.init.uploader[uploaderId]=uploadObject;
@@ -2771,7 +2788,6 @@ var dyFObj = {
 		}
 		var initTime = function(){
 			mylog.log("init dateInput");
-			//alert();
 			//$('.timeInput').timepicker(
                // minuteStep: 1,
               //  appendWidgetTo: 'body',
@@ -2869,8 +2885,8 @@ var dyFObj = {
 			$.each(dyFObj.init.uploader, function(e,v){
 				var domElement="#"+e;
 				//var FineUploader = function(){
-					if(typeof v.endPoint == "undefined")
-						uploadObj.domTarget=domElement;
+					//if(typeof v.endPoint == "undefined")
+					uploadObj.domTarget=domElement;
 					mylog.log("init fineUploader");
 					var endPointUploader=(typeof v.endPoint != "undefined") ? v.endPoint : uploadObj.path;
 					$(domElement).fineUploader({

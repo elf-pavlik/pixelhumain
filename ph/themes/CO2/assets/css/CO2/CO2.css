@@ -663,6 +663,7 @@ section {
     #menuApp.menuLeft{
         position: fixed;
         bottom: 0px;
+        border-right: 1px solid rgba(150,150,150,0.3);
         z-index: 150;
         left: 0px;
         width: 52px;
@@ -1988,7 +1989,6 @@ margin-right: 5px;
 }
 .main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical{
 	background-color: rgba(0,0,0,0);
-	left: 53px;
 }
 
 .main-container.vertical #ajax-modal .modal-content{
@@ -2174,9 +2174,9 @@ margin-right: 5px;
 	  padding: 3px 0 5px 0;
 	}
 
-.main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical{
-	left: 0px;
-}
+	.main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical{
+		left: 0px;
+	}
 	#ajax-modal .form-group, #ajax-modal .form-actions{
 		min-width:unset !important;
 		width:unset !important;
