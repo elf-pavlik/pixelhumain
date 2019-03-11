@@ -70,13 +70,8 @@ onSave: (optional) overloads the generic saveProcess
 
 			$.each(settings.formObj.jsonSchema.properties,function(field,fieldObj) { 
 				//mylog.log("??????????????????????????",field,fieldObj);
-				if(fieldObj.rules){
-					if( field == "formLocality" ){
-						form.rules["locality"] = fieldObj.rules;//{required:true}
-					}else
-						form.rules[field] = fieldObj.rules;//{required:true}
-					
-				}
+				if(fieldObj.rules)
+					form.rules[field] = fieldObj.rules;//{required:true}
 				
 				var fieldTooltip = null;
 				//alert("dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.tooltips."+field );
@@ -708,6 +703,8 @@ var dyFObj = {
 				});
 				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
+
+			delete formData.newElement_country; 
 		}
 
 		if(notNull(dyFInputs.scopeObj.selected)){
@@ -1872,6 +1869,7 @@ var dyFObj = {
         	labelStr=(typeof fieldObj.multiple != "undefined" && fieldObj.multiple) ? tradDynForm.addtothelist: tradDynForm.changetheelement;
         	initType=fieldObj.initType;
         	fieldHTML += '<div class="finder-'+field+'">'+
+        					"<div class='col-xs-12'><span  class='col-xs-12 hidden text-red errorForm'></span></div>"+
         					'<input type="hidden" id="'+field+'" name="'+field+'"/>'+
         					'<button class="form-control col-xs-6 selectParent btn-success margin-bottom-10" data-id="'+field+'" data-types="'+initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
         					"<span class='error bg-warning' style='display:none'></span>"+
@@ -2454,12 +2452,11 @@ var dyFObj = {
 					
         } else if ( fieldObj.inputType == "formLocality") {
         	mylog.log("build field "+field+">>>>>> formLocality", fieldObj);
-       		fieldHTML +="<input type='hidden' id='locality' name='locality' value=''>";
         	fieldHTML += "<div class='col-md-6 col-xs-12 inline-block padding-15 form-in-map formLocality col-md-6'>"+
         					'<label style="font-size: 13px;" class="col-xs-12 text-left control-label no-padding" for="newElement_country">'+
 								'<i class="fa fa-chevron-down"></i> '+tradDynForm.country+
 				            '</label>'+
-							"<select class='col-md-10 col-xs-12' name='newElement_country' id='newElement_country'>"+
+							"<select class='col-md-10 col-xs-12' name='newElement_country' >"+
 								"<option value=''>"+trad.chooseCountry+"</option>";
 								$.each(dyFObj.formInMap.countryList, function(key, v){
 									fieldHTML += "<option value='"+v.countryCode+"'>"+v.name+"</option>";
@@ -2490,7 +2487,7 @@ var dyFObj = {
 							  "<strong>Warning!</strong> "+tradDynForm.doNotForgetToGeolocateYourAddress+
 							"</div>"+
 						"</div>"+
-							"<div id='sumery' class='hidden text-dark col-md-6 col-xs-12 no-padding'>"+
+							"<div id='sumery' class='text-dark col-md-6 col-xs-12 no-padding'>"+
 								"<h4 class='text-center'>"+tradDynForm.addressSummary +" : </h4>"+
 								"<div id='street_sumery' class='col-xs-12'>"+
 									"<span>"+trad.streetFormInMap +" : </span>"+
@@ -2513,7 +2510,8 @@ var dyFObj = {
 									tradDynForm.confirmAddress+
 								"</a>"+
 							"</div>";
-				fieldHTML +="<div id='divMapLocality' class='col-xs-12' style='height: 300px;'></div>";
+				//fieldHTML +="<div id='divMapLocality' class='col-xs-12' style='height: 300px;'></div>";
+				fieldHTML +="<div class='col-xs-12'><span class='col-xs-12 hidden text-red errorForm'></span></div>";
 				fieldHTML +="<div id='divNewAddress' class='text-dark col-xs-12 no-padding '>"+
 								"<a href='javascript:;' class='btn btn-success' style='margin-bottom: 10px;' type='text' id='newAddress'>"+
 									'<i class="fa fa-plus"></i> '+tradDynForm.addANewAddress +
@@ -2569,6 +2567,22 @@ var dyFObj = {
 			rules : formRules,
 
 			submitHandler : function(form) {
+				
+				mylog.log("formRules", formRules);
+
+				var validRules = dyFObj.checkRules(formRules, params);
+				if(validRules === false){
+					errorHandler.show();
+					return false;
+				}
+				// if(typeof formRules.formLocality != "undefined"){
+				// 	if(!dyFInputs.locationObj.centerLocation){
+				// 		errorHandler.show();
+				// 		$("#errorFormLocality").html(tradDynForm["This field is required."]);
+				// 		$("#errorFormLocality").removeClass("hidden");
+				// 		return false;
+				// 	}
+				// }
 				//alert(dyFObj.activeModal+" #btn-submit-form");
 				$(dyFObj.activeModal+" #btn-submit-form").html( '<i class="fa  fa-spinner fa-spin fa-"></i>' ).prop("disabled",true);
 				errorHandler.hide();
@@ -2578,11 +2592,9 @@ var dyFObj = {
 					params.beforeSave();
 
 				if(params.onSave && jQuery.isFunction( params.onSave ) ){
-					//	alert("onSave")
 					params.onSave();
 					return false;
-		        } 
-		        else {
+		        } else {
 		        	//TODO SBAR - Remove notPost form element
 		        	/*$.each($(params.formId).serializeArray()).function() {
 		        		if ($this.)
@@ -4193,7 +4205,7 @@ var dyFObj = {
 				// 	Sig.map.setZoom(16);
 				// }
 
-				mapObj.setLatLng([$(this).data("lat"), $(this).data("lng")], 0);
+				//mapObj.setLatLng([$(this).data("lat"), $(this).data("lng")], 0);
 
 				mylog.log("lat lon", $(this).data("lat"), $(this).data("lng"));
 				$("#ajaxFormModal #dropdown-newElement_streetAddress-found").hide();
@@ -4404,7 +4416,7 @@ var dyFObj = {
 			dyFObj.formInMap.resumeLocality();
 
 
-			mapObj.setLatLng([data.data("lat"), data.data("lng")], 0);
+			//mapObj.setLatLng([data.data("lat"), data.data("lng")], 0);
 
 
 		},
@@ -4442,6 +4454,53 @@ var dyFObj = {
 			}
 		}
 	},
+	checkRules : function(rules, params) {
+		$(".errorForm").addClass("hidden");
+		$(".errorForm").html("");
+		mylog.log("checkRules", rules, params.formObj.jsonSchema.properties);
+		var notError = true ;
+		$.each(params.formObj.jsonSchema.properties, function(kProp, valProp) {
+			mylog.log("checkRules kProp, valProp", kProp, valProp);
+			if(valProp.inputType == "formLocality" && typeof valProp.rules != "undefined"){
+				mylog.log("checkRules formLocality", valProp.rules);
+				if( typeof valProp.rules.required != "undefined" &&
+					valProp.rules.required == true &&
+					!dyFInputs.locationObj.centerLocation){
+					dyFObj.showError(kProp+valProp.inputType, tradDynForm["This field is required."]);
+					notError = false;
+				}
+			}
+
+			if(valProp.inputType == "finder" && typeof valProp.rules != "undefined"){
+				mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm", valProp.rules, Object.keys(finder.object[kProp]).length);
+				if( typeof valProp.rules.required != "undefined" &&
+					valProp.rules.required == true &&
+					Object.keys(finder.object[kProp]).length == 0 ){
+					mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm");
+					dyFObj.showError(kProp+valProp.inputType, tradDynForm["This field is required."]);
+					notError = false;
+				}
+
+				if( typeof valProp.rules.lengthMin != "undefined" &&
+					valProp.rules.lengthMin != null &&
+					Object.keys(finder.object[kProp]).length < valProp.rules.lengthMin ){
+					mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm");
+					dyFObj.showError(kProp+valProp.inputType, "quandtitté minumun : "+valProp.rules.lengthMin);
+					notError = false;
+				}
+			}
+		});
+		mylog.log("checkRules notError", notError);
+		return notError ;
+		
+	},
+	showError : function(key, msg) {
+		$("."+key+" .errorForm").append(msg);
+		$("."+key+" .errorForm").append("<br/>");
+		$("."+key+" .errorForm").removeClass("hidden");
+
+		
+	}
 	
 
 }
@@ -6311,7 +6370,7 @@ var dyFInputs = {
 			label : ( notEmpty(params.label) ? params.label : tradDynForm.whoiscarrytheproject ),
 			multiple : ( notEmpty(params.multiple) ? params.multiple : true ),
 			invite :  ( notEmpty(params.invite) ? params.invite : true ),
-			rules : { required : true, lengthMin:[ ( notEmpty(params.lengthMin) ? params.lengthMin : 3 ), "invite"] },
+			rules : { required : true, lengthMin:( notEmpty(params.lengthMin) ? params.lengthMin : 3 ) },
 			initType: ( notEmpty(params.type) ? params.type : ["persons"] ),
 			openSearch :( notEmpty(params.openSearch) ? params.openSearch : true )
 		}
@@ -6415,22 +6474,6 @@ var dyFCustom = {
 				dyFObj.elementObj.dynForm.jsonSchema.properties[f].rules = { required : true };
 			}
 		}
-
-		// if( f == "locality" ){
-		// 	// dyFObj.elementObj.dynForm.jsonSchema.properties[f].rules = { required : function(element) {
-		// 	// 		mylog.log("formLocality element", element);
-		// 	// 		if(dyFInputs.locationObj.centerLocation){
-		// 	// 			return false;
-		// 	// 		} else {
-		// 	// 			return true;
-		// 	// 		}
-		// 	// 	} 
-		// 	// };
-		// 	dyFObj.elementObj.dynForm.jsonSchema.properties["locality"] = { rules : { required : true } };
-
-		// }
-		
-
 	}
 };
 
