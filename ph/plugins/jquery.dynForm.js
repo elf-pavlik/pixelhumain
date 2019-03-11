@@ -705,6 +705,8 @@ var dyFObj = {
 				});
 				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
+
+			delete formData.newElement_country; 
 		}
 
 		if(notNull(dyFInputs.scopeObj.selected)){
@@ -1932,6 +1934,7 @@ var dyFObj = {
         	labelStr=(typeof fieldObj.multiple != "undefined" && fieldObj.multiple) ? tradDynForm.addtothelist: tradDynForm.changetheelement;
         	initType=fieldObj.initType;
         	fieldHTML += '<div class="finder-'+field+'">'+
+        					"<div class='col-xs-12'><span  class='col-xs-12 hidden text-red errorForm'></span></div>"+
         					'<input type="hidden" id="'+field+'" name="'+field+'"/>'+
         					'<button class="form-control col-xs-6 selectParent btn-success margin-bottom-10" data-id="'+field+'" data-types="'+initType.join(",")+'" data-multiple="'+fieldObj.multiple+'" data-open="'+fieldObj.openSearch+'">'+labelStr+'</button>'+
         					"<span class='error bg-warning' style='display:none'></span>"+
@@ -2513,13 +2516,12 @@ var dyFObj = {
 
 					
         } else if ( fieldObj.inputType == "formLocality") {
-        	mylog.log("build field "+field+">>>>>> formLocality");
-       		
+        	mylog.log("build field "+field+">>>>>> formLocality", fieldObj);
         	fieldHTML += "<div class='col-md-6 col-xs-12 inline-block padding-15 form-in-map formLocality col-md-6'>"+
         					'<label style="font-size: 13px;" class="col-xs-12 text-left control-label no-padding" for="newElement_country">'+
 								'<i class="fa fa-chevron-down"></i> '+tradDynForm.country+
 				            '</label>'+
-							"<select class='col-md-10 col-xs-12' name='newElement_country' id='newElement_country'>"+
+							"<select class='col-md-10 col-xs-12' name='newElement_country' >"+
 								"<option value=''>"+trad.chooseCountry+"</option>";
 								$.each(dyFObj.formInMap.countryList, function(key, v){
 									fieldHTML += "<option value='"+v.countryCode+"'>"+v.name+"</option>";
@@ -2573,12 +2575,15 @@ var dyFObj = {
 									tradDynForm.confirmAddress+
 								"</a>"+
 							"</div>";
-				fieldHTML +="<div id='divMapLocality' class='col-xs-12' style='height: 300px;'></div>";
+				//fieldHTML +="<div id='divMapLocality' class='col-xs-12' style='height: 300px;'></div>";
+				fieldHTML +="<div class='col-xs-12'><span class='col-xs-12 hidden text-red errorForm'></span></div>";
 				fieldHTML +="<div id='divNewAddress' class='text-dark col-xs-12 no-padding '>"+
 								"<a href='javascript:;' class='btn btn-success' style='margin-bottom: 10px;' type='text' id='newAddress'>"+
 									'<i class="fa fa-plus"></i> '+tradDynForm.addANewAddress +
 								"</a>"+
 							"</div>";
+
+				//dyFObj.formInMap.initParams(fieldObj.params);
         } else if ( fieldObj.inputType == "password" ) {
         	mylog.log("build field "+field+">>>>>> password");
         	fieldHTML += '<input id="'+field+'" name="'+field+'" class="form-control" type="password"/>';
@@ -2609,7 +2614,7 @@ var dyFObj = {
 		/* **************************************
 		* FORM VALIDATION and save process binding
 		***************************************** */
-		mylog.info("bindForm :: connecting submit btn to $.validate pluggin");
+		mylog.info("bindForm :: connecting submit btn to $.validate pluggin", formRules);
 		mylog.dir(formRules);
 		var errorHandler = $('.errorHandler', $(params.formId));
 
@@ -2627,7 +2632,15 @@ var dyFObj = {
 			rules : formRules,
 
 			submitHandler : function(form) {
-				//alert(dyFObj.activeModal+" #btn-submit-form");
+				
+				mylog.log("formRules", formRules, params);
+
+				var validRules = dyFObj.checkRules(formRules, params);
+				if(validRules === false){
+					errorHandler.show();
+					return false;
+				}
+				return false;
 				$(dyFObj.activeModal+" #btn-submit-form").html( '<i class="fa  fa-spinner fa-spin fa-"></i>' ).prop("disabled",true);
 				errorHandler.hide();
 				mylog.info("form submitted "+params.formId);
@@ -2639,8 +2652,7 @@ var dyFObj = {
 				if(params.onSave && jQuery.isFunction( params.onSave ) ){
 					params.onSave();
 					return false;
-		        } 
-		        else {
+		        } else {
 		        	//TODO SBAR - Remove notPost form element
 		        	/*$.each($(params.formId).serializeArray()).function() {
 		        		if ($this.)
@@ -2678,7 +2690,7 @@ var dyFObj = {
 	},
 	
 	bindDynFormEvents : function (params, formRules) {  
-
+		mylog.log("formLocality bindDynFormEvents", params, formRules);
 		if(params.surveyId)
 			dySObj.bindSurvey(params, formRules);
 		else 
@@ -3786,6 +3798,23 @@ var dyFObj = {
 		addressesIndex : false,
 		saveCities : {},
 		bindActived : false,
+		rules : {
+			required : false,
+			country : false,
+			level4 : false,
+			level3 : false,
+			level2 : false,
+			level1 : false,
+		},
+		initRules : function(rules){
+
+			if(typeof rules != "undefined" && rules != null){
+
+				if(notNull(params.required))
+					dyFObj.formInMap.rules.required = rules.required;
+			}
+			
+		},
 		initMap : function(){
 			mylog.log("initMap");
 			
@@ -3840,28 +3869,28 @@ var dyFObj = {
 			
 			dyFObj.formInMap.initCountry();
 
-			$('[name="newElement_country"]').val(dyFObj.formInMap.NE_country);
-
+			$('#ajaxFormModal [name="newElement_country"]').val(dyFObj.formInMap.NE_country);
+			mylog.log("dyFObj.formInMap.NE_country ", dyFObj.formInMap.NE_country);
 			if(dyFObj.formInMap.NE_country != ""){
-				$("#divPostalCode").removeClass("hidden");
-				$("#divCity").removeClass("hidden");
+				$("#ajaxFormModal #divPostalCode").removeClass("hidden");
+				$("#ajaxFormModal #divCity").removeClass("hidden");
 			}
 			mylog.log("dyFObj.formInMap.bindActived", dyFObj.formInMap.bindActived);
 			if(dyFObj.formInMap.bindActived == false)
 				dyFObj.formInMap.bindFormInMap();
 
 			if(userId == "" || dyFObj.formInMap.NE_insee == "")
-				$("#divStreetAddress").addClass("hidden");
+				$("#ajaxFormModal #divStreetAddress").addClass("hidden");
 			else
-				$("#divStreetAddress").removeClass("hidden");
+				$("#ajaxFormModal #divStreetAddress").removeClass("hidden");
 
 			dyFObj.formInMap.resumeLocality();
 
 			if(typeof networkJson == "undefined" || networkJson == null)
-				$("#mapLegende").addClass("hidden");
+				$("#ajaxFormModal #mapLegende").addClass("hidden");
 
 			dyFObj.formInMap.newAddress(false);
-			dyFObj.formInMap.initMap();
+			//dyFObj.formInMap.initMap();
 
 			mylog.log("forminmap showMarkerNewElement END!");
 
@@ -3909,49 +3938,49 @@ var dyFObj = {
 		},
 		initHtml : function(){
 			dyFObj.formInMap.initCountry();	
-			//$('[name="newElement_country"]').val(dyFObj.formInMap.NE_country);
-			$('[name="newElement_city"]').val("");
-			$('[name="newElement_street"]').val("");
+			//$('#ajaxFormModal [name="newElement_country"]').val(dyFObj.formInMap.NE_country);
+			$('#ajaxFormModal [name="newElement_city"]').val("");
+			$('#ajaxFormModal [name="newElement_street"]').val("");
 
-			$("#divStreetAddress").addClass("hidden");
+			$("#ajaxFormModal #divStreetAddress").addClass("hidden");
 
 			if(dyFObj.formInMap.NE_country == ""){
-				$("#divCity").addClass("hidden");
+				$("#ajaxFormModal #divCity").addClass("hidden");
 			}
 			dyFObj.formInMap.showWarningGeo(false);
 		},
 		resumeLocality : function(cancel){
 			if(dyFObj.formInMap.NE_street != ""){
-				$('#street_sumery_value').html(dyFObj.formInMap.NE_street );
-				$('#street_sumery').removeClass("hidden");
+				$('#ajaxFormModal #street_sumery_value').html(dyFObj.formInMap.NE_street );
+				$('#ajaxFormModal #street_sumery').removeClass("hidden");
 			}else
-				$('#street_sumery').addClass("hidden");
+				$('#ajaxFormModal #street_sumery').addClass("hidden");
 
 			if(dyFObj.formInMap.NE_cp != ""){
-				$('#cp_sumery_value').html(dyFObj.formInMap.NE_cp );
-				$('#cp_sumery').removeClass("hidden");
+				$('#ajaxFormModal #cp_sumery_value').html(dyFObj.formInMap.NE_cp );
+				$('#ajaxFormModal #cp_sumery').removeClass("hidden");
 			}else
-				$('#cp_sumery').addClass("hidden");
+				$('#ajaxFormModal #cp_sumery').addClass("hidden");
 
 			if(dyFObj.formInMap.NE_city != ""){
-				$('#city_sumery_value').html(dyFObj.formInMap.NE_city);
-				$('#city_sumery').removeClass("hidden");
+				$('#ajaxFormModal #city_sumery_value').html(dyFObj.formInMap.NE_city);
+				$('#ajaxFormModal #city_sumery').removeClass("hidden");
 			}else
-				$('#city_sumery').addClass("hidden");
+				$('#ajaxFormModal #city_sumery').addClass("hidden");
 
 			if(dyFObj.formInMap.NE_country != ""){
-				$('#country_sumery_value').html(dyFObj.formInMap.NE_country);
-				$('#country_sumery').removeClass("hidden");
+				$('#ajaxFormModal #country_sumery_value').html(dyFObj.formInMap.NE_country);
+				$('#ajaxFormModal #country_sumery').removeClass("hidden");
 			}else
-				$('#country_sumery').addClass("hidden");
+				$('#ajaxFormModal #country_sumery').addClass("hidden");
 
 
 			if(dyFObj.formInMap.NE_country != "" && dyFObj.formInMap.NE_city != ""){
 				//$("#btnValideAddress").prop('disabled', false);
-				$("#btnValideAddress").show();
+				$("#ajaxFormModal #btnValideAddress").show();
 			}else{
 				//$("#btnValideAddress").prop('disabled', true);
-				$("#btnValideAddress").hide();
+				$("#ajaxFormModal #btnValideAddress").hide();
 			}
 		},
 		bindFormInMap : function(){
@@ -3964,68 +3993,68 @@ var dyFObj = {
 				mylog.log("formInMap.NE_country M", dyFObj.formInMap.NE_country );
 				dyFObj.formInMap.resumeLocality();
 				//dyFObj.formInMap.initHtml();
-				// $("#country_sumery_value").html($('[name="newElement_country"]').val());
-				// $('[name="newElement_city"]').val("");
-				// $("#country_sumery_value").html($('[name="newElement_country"]').val());
+				// $("#country_sumery_value").html($('#ajaxFormModal [name="newElement_country"]').val());
+				// $('#ajaxFormModal [name="newElement_city"]').val("");
+				// $("#country_sumery_value").html($('#ajaxFormModal [name="newElement_country"]').val());
 				// $("#btnValideAddress").prop('disabled', true);
-				$("#btnValideAddress").hide();
-				$("#divStreetAddress").addClass("hidden");
+				$("#ajaxFormModal #btnValideAddress").hide();
+				$("#ajaxFormModal #divStreetAddress").addClass("hidden");
 
 				dyFObj.formInMap.initDropdown();
 				mylog.log("formInMap.NE_country F", dyFObj.formInMap.NE_country, typeof dyFObj.formInMap.NE_country, dyFObj.formInMap.NE_country.length);
 				if(dyFObj.formInMap.NE_country != ""){
-					$("#divCP").addClass("hidden");
-					$("#divCity").removeClass("hidden");
+					$("#ajaxFormModal #divCP").addClass("hidden");
+					$("#ajaxFormModal #divCity").removeClass("hidden");
 				}else{
-					$("#divCity").addClass("hidden");
+					$("#ajaxFormModal #divCity").addClass("hidden");
 				}
 					
 			});
 
 				// ---------------- newElement_city
-			$('[name="newElement_city"]').keyup(function(){ 
+			$('#ajaxFormModal [name="newElement_city"]').keyup(function(){ 
 				$("#dropdown-city-found").show();
-				mylog.log("newElement_city", $('[name="newElement_city"]').val().trim().length);
-				if($('[name="newElement_city"]').val().trim().length > 1){
-					dyFObj.formInMap.NE_city = $('[name="newElement_city"]').val();
+				mylog.log("newElement_city", $('#ajaxFormModal [name="newElement_city"]').val().trim().length);
+				if($('#ajaxFormModal [name="newElement_city"]').val().trim().length > 1){
+					dyFObj.formInMap.NE_city = $('#ajaxFormModal [name="newElement_city"]').val();
 					dyFObj.formInMap.changeSelectCountrytim();
 
 					if(notNull(dyFObj.formInMap.timeoutAddCity)) 
 						clearTimeout(dyFObj.formInMap.timeoutAddCity);
 
 					dyFObj.formInMap.timeoutAddCity = setTimeout(function(){ 
-						dyFObj.formInMap.autocompleteFormAddress("locality", $('[name="newElement_city"]').val()); 
+						dyFObj.formInMap.autocompleteFormAddress("locality", $('#ajaxFormModal [name="newElement_city"]').val()); 
 					}, 500);
 
 				}
 			});
 			// ---------------- newElement_cp
-			$('[name="newElement_cp"]').keyup(function(){ 
-				mylog.log("newElement_cp", $('[name="newElement_cp"]').val().trim());
-				dyFObj.formInMap.NE_cp = $('[name="newElement_cp"]').val().trim();
-				dyFObj.formInMap.btnValideDisable( ($('[name="newElement_cp"]').val().trim().length == 0 ? true : false) );
+			$('#ajaxFormModal [name="newElement_cp"]').keyup(function(){ 
+				mylog.log("newElement_cp", $('#ajaxFormModal [name="newElement_cp"]').val().trim());
+				dyFObj.formInMap.NE_cp = $('#ajaxFormModal [name="newElement_cp"]').val().trim();
+				dyFObj.formInMap.btnValideDisable( ($('#ajaxFormModal [name="newElement_cp"]').val().trim().length == 0 ? true : false) );
 
 			});
 
 			// ---------------- newElement_streetAddress
-			$("#newElement_btnSearchAddress").click(function(){
+			$("#ajaxFormModal #newElement_btnSearchAddress").click(function(){
 				$(".dropdown-menu").hide();
 				dyFObj.formInMap.searchAdressNewElement();
 			});
 
-			$('[name="newElement_street"]').keyup(function(){ 
-				dyFObj.formInMap.showWarningGeo( ( ( $('[name="newElement_street"]').val().length > 0 ) ? true : false ) );
-				dyFObj.formInMap.NE_street = $('[name="newElement_street"]').val().trim();
+			$('#ajaxFormModal [name="newElement_street"]').keyup(function(){ 
+				dyFObj.formInMap.showWarningGeo( ( ( $('#ajaxFormModal [name="newElement_street"]').val().length > 0 ) ? true : false ) );
+				dyFObj.formInMap.NE_street = $('#ajaxFormModal [name="newElement_street"]').val().trim();
 				dyFObj.formInMap.resumeLocality();
 			});
 
 			// ---------------- newElement_streetAddress
-			$("#btnValideAddress").click(function(){
+			$("#ajaxFormModal #btnValideAddress").click(function(){
 				dyFObj.formInMap.valideLocality();
 			});
 
 
-			$("#newAddress").click(function(){
+			$("#ajaxFormModal #newAddress").click(function(){
 				dyFObj.formInMap.newAddress(true);
 			});
 
@@ -4033,13 +4062,13 @@ var dyFObj = {
 		showWarningGeo : function(bool){
 			mylog.log("showWarningGeo");
 			if(bool == true){
-				$("#alertGeo").removeClass("hidden");
-				$("#newElement_btnSearchAddress").removeClass("btn-default");
-				$("#newElement_btnSearchAddress").addClass("btn-warning");
+				$("#ajaxFormModal #alertGeo").removeClass("hidden");
+				$("#ajaxFormModal #newElement_btnSearchAddress").removeClass("btn-default");
+				$("#ajaxFormModal #newElement_btnSearchAddress").addClass("btn-warning");
 			}else{
-				$("#alertGeo").addClass("hidden");
-				$("#newElement_btnSearchAddress").removeClass("btn-warning");
-				$("#newElement_btnSearchAddress").addClass("btn-default");
+				$("#ajaxFormModal #alertGeo").addClass("hidden");
+				$("#ajaxFormModal #newElement_btnSearchAddress").removeClass("btn-warning");
+				$("#ajaxFormModal #newElement_btnSearchAddress").addClass("btn-default");
 			}
 		},
 		createLocalityObj : function(withUnikey){
@@ -4092,10 +4121,10 @@ var dyFObj = {
 		newAddress : function(newA){
 			mylog.log("newAddress ", newA);
 			if(notEmpty(newA) && newA == true ){
-				$('.formLocality').show();
-				$('#sumery').show();
-				$('#divMapLocality').show();
-				$('#divNewAddress').hide();
+				$('#ajaxFormModal .formLocality').show();
+				$('#ajaxFormModal #sumery').show();
+				$('#ajaxFormModal #divMapLocality').show();
+				$('#ajaxFormModal #divNewAddress').hide();
 
 				var paramsMapLocality = {
 					container : "divMapLocality",
@@ -4114,25 +4143,25 @@ var dyFObj = {
 					draggable: true
 				};
 
-				dyFObj.formInMap.map = mapObj.init(paramsMapLocality);
-				var paramMarker = {
-					elt : elt,
-					addPopUp : false, 
-					center : true, 
-					opt : opt
-				};
-				dyFObj.formInMap.map.addMarker(paramMarker);
-				dyFObj.formInMap.map.addFct(0, 'dragend', function(){
-					var latLonMarker = dyFObj.formInMap.map.markerList[0].getLatLng();
-					dyFObj.formInMap.NE_lat = latLonMarker.lat;
-					dyFObj.formInMap.NE_lng = latLonMarker.lng;
-				});
+				// dyFObj.formInMap.map = mapObj.init(paramsMapLocality);
+				// var paramMarker = {
+				// 	elt : elt,
+				// 	addPopUp : false, 
+				// 	center : true, 
+				// 	opt : opt
+				// };
+				// dyFObj.formInMap.map.addMarker(paramMarker);
+				// dyFObj.formInMap.map.addFct(0, 'dragend', function(){
+				// 	var latLonMarker = dyFObj.formInMap.map.markerList[0].getLatLng();
+				// 	dyFObj.formInMap.NE_lat = latLonMarker.lat;
+				// 	dyFObj.formInMap.NE_lng = latLonMarker.lng;
+				// });
 
 			}else{
-				$('.formLocality').hide();
-				$('#sumery').hide();
-				$('#divMapLocality').hide();
-				$('#divNewAddress').show();
+				$('#ajaxFormModal .formLocality').hide();
+				$('#ajaxFormModal #sumery').hide();
+				$('#ajaxFormModal #divMapLocality').hide();
+				$('#ajaxFormModal #divNewAddress').show();
 			}
 		},
 		valideLocality : function(country){
@@ -4167,13 +4196,13 @@ var dyFObj = {
 			var providerName = "";
 			var requestPart = "";
 
-			var street 	= ($('[name="newElement_street"]').val()  != "") ? $('[name="newElement_street"]').val() : "";
+			var street 	= ($('#ajaxFormModal [name="newElement_street"]').val()  != "") ? $('#ajaxFormModal [name="newElement_street"]').val() : "";
 			var city 	= dyFObj.formInMap.NE_city;
 			var cp 		= dyFObj.formInMap.NE_cp;
 			var countryCode = dyFObj.formInMap.NE_country;
 
 
-			if($('[name="newElement_street"]').val() != ""){
+			if($('#ajaxFormModal [name="newElement_street"]').val() != ""){
 				providerName = "nominatim";
 				dyFObj.formInMap.typeSearchInternational = "address";
 				//construction de la requete
@@ -4189,10 +4218,10 @@ var dyFObj = {
 				}
 			}
 
-			dyFObj.formInMap.NE_street = $('[name="newElement_street"]').val();
+			dyFObj.formInMap.NE_street = $('#ajaxFormModal [name="newElement_street"]').val();
 
-			$("#dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</a></li>");
-			$("#dropdown-newElement_streetAddress-found").show();
+			$("#ajaxFormModal #dropdown-newElement_streetAddress-found").html("<li><a href='javascript:'><i class='fa fa-spin fa-refresh'></i> "+trad.currentlyresearching+"</a></li>");
+			$("#ajaxFormModal #dropdown-newElement_streetAddress-found").show();
 			mylog.log("countryCode", countryCode);
 			
 			var countryDataGouv = ["FR","GP","MQ","GF","RE","PM","YT"];
@@ -4225,22 +4254,22 @@ var dyFObj = {
 				}
 			});
 			if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
-			$("#dropdown-newElement_streetAddress-found").html(html);
-			$("#dropdown-newElement_streetAddress-found").show();
+			$("#ajaxFormModal #dropdown-newElement_streetAddress-found").html(html);
+			$("#ajaxFormModal #dropdown-newElement_streetAddress-found").show();
 
-			$(".item-street-found").click(function(){
+			$("#ajaxFormModal .item-street-found").click(function(){
 				// if(typeof Sig != "undefined"){
 				// 	Sig.markerFindPlace.setLatLng([$(this).data("lat"), $(this).data("lng")]);
 				// 	Sig.map.panTo([$(this).data("lat"), $(this).data("lng")]);
 				// 	Sig.map.setZoom(16);
 				// }
 
-				mapObj.setLatLng([$(this).data("lat"), $(this).data("lng")], 0);
+				//mapObj.setLatLng([$(this).data("lat"), $(this).data("lng")], 0);
 
 				mylog.log("lat lon", $(this).data("lat"), $(this).data("lng"));
-				$("#dropdown-newElement_streetAddress-found").hide();
-				$('[name="newElement_lat"]').val($(this).data("lat"));
-				$('[name="newElement_lng"]').val($(this).data("lng"));
+				$("#ajaxFormModal #dropdown-newElement_streetAddress-found").hide();
+				$('#ajaxFormModal [name="newElement_lat"]').val($(this).data("lat"));
+				$('#ajaxFormModal [name="newElement_lng"]').val($(this).data("lng"));
 				
 				
 				dyFObj.formInMap.NE_lat = $(this).data("lat");
@@ -4301,8 +4330,8 @@ var dyFObj = {
 		},
 		autocompleteFormAddress : function(currentScopeType, scopeValue){
 			mylog.log("autocompleteFormAddress", currentScopeType, scopeValue);
-			$("#dropdown-newElement_"+currentScopeType+"-found").html("<li><a href='javascript:'><i class='fa fa-refresh fa-spin'></i></a></li>");
-			$("#dropdown-newElement_"+currentScopeType+"-found").show();
+			$("#ajaxFormModal #dropdown-newElement_"+currentScopeType+"-found").html("<li><a href='javascript:'><i class='fa fa-refresh fa-spin'></i></a></li>");
+			$("#ajaxFormModal #dropdown-newElement_"+currentScopeType+"-found").show();
 			$.ajax({
 				type: "POST",
 				url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
@@ -4311,7 +4340,7 @@ var dyFObj = {
 						scopeValue: scopeValue,
 						geoShape: true,
 						formInMap: true,
-						countryCode : $('[name="newElement_country"]').val()
+						countryCode : $('#ajaxFormModal [name="newElement_country"]').val()
 				},
 				dataType: "json",
 				success: function(data){
@@ -4390,19 +4419,19 @@ var dyFObj = {
 					});
 
 					if(html == "") html = "<i class='fa fa-ban'></i> "+trad.noresult;
-					$("#dropdown-newElement_"+currentScopeType+"-found").html(html);
-					$("#dropdown-newElement_"+currentScopeType+"-found").show();
+					$("#ajaxFormModal #dropdown-newElement_"+currentScopeType+"-found").html(html);
+					$("#ajaxFormModal #dropdown-newElement_"+currentScopeType+"-found").show();
 
-					$(".item-city-found, .item-cp-found").click(function(){
+					$("#ajaxFormModal .item-city-found, .item-cp-found").click(function(){
 						dyFObj.formInMap.add(true, $(this), inseeGeoSHapes);
 					});
 
-					$(".item-city-found-uncomplete").click(function(){
+					$("#ajaxFormModal .item-city-found-uncomplete").click(function(){
 						dyFObj.formInMap.add(false, $(this), inseeGeoSHapes);
 					});
 				},
 				error: function(error){
-					$("#dropdown-newElement_"+currentScopeType+"-found").html("error");
+					$("#ajaxFormModal #dropdown-newElement_"+currentScopeType+"-found").html("error");
 					mylog.log("Une erreur est survenue pendant autocompleteMultiScope", error);
 				}
 			});
@@ -4433,20 +4462,20 @@ var dyFObj = {
 						)
 				dyFObj.formInMap.NE_betweenCP = dyFObj.formInMap.saveCities[dyFObj.formInMap.NE_insee].betweenCP ;
 
-			$("#dropdown-newElement_cp-found, #dropdown-newElement_city-found, #dropdown-newElement_streetAddress-found, #dropdown-newElement_locality-found").hide();
+			$("#ajaxFormModal #dropdown-newElement_cp-found, #dropdown-newElement_city-found, #dropdown-newElement_streetAddress-found, #dropdown-newElement_locality-found").hide();
 			//dyFObj.formInMap.updateSummeryLocality(data);
 			mylog.log("dyFObj.formInMap.NE_betweenCP ", dyFObj.formInMap.NE_betweenCP );
 			dyFObj.formInMap.btnValideDisable( (dyFObj.formInMap.NE_betweenCP == false ? false : true) );
 			
 			if(userId == "")
-				$("#divStreetAddress").addClass("hidden");
+				$("#ajaxFormModal #divStreetAddress").addClass("hidden");
 			else
-				$("#divStreetAddress").removeClass("hidden");
-			$('[name="newElement_city"]').val(dyFObj.formInMap.NE_city);
+				$("#ajaxFormModal #divStreetAddress").removeClass("hidden");
+			$('#ajaxFormModal [name="newElement_city"]').val(dyFObj.formInMap.NE_city);
 			dyFObj.formInMap.resumeLocality();
 
 
-			mapObj.setLatLng([data.data("lat"), data.data("lng")], 0);
+			//mapObj.setLatLng([data.data("lat"), data.data("lng")], 0);
 
 
 		},
@@ -4456,21 +4485,21 @@ var dyFObj = {
 			var countryFR = ["FR","GP","MQ","GF","RE","PM","YT"];
 			var regexNumber = new RegExp("[1-9]+") ;
 			if(countryFR.indexOf(dyFObj.formInMap.NE_country) != -1 && regexNumber.test(dyFObj.formInMap.NE_country) ) {
-				var name = $('[name="newElement_city"]').val();
+				var name = $('#ajaxFormModal [name="newElement_city"]').val();
 				if(name.substring(0, 3) == "971")
-					$('[name="newElement_country"]').val("GP");
+					$('#ajaxFormModal [name="newElement_country"]').val("GP");
 				else if(name.substring(0, 3) == "972")
-					$('[name="newElement_country"]').val("MQ");
+					$('#ajaxFormModal [name="newElement_country"]').val("MQ");
 				else if(name.substring(0, 3) == "973")
-					$('[name="newElement_country"]').val("GF");
+					$('#ajaxFormModal [name="newElement_country"]').val("GF");
 				else if(name.substring(0, 3) == "974")
-					$('[name="newElement_country"]').val("RE");
+					$('#ajaxFormModal [name="newElement_country"]').val("RE");
 				else if(name.substring(0, 3) == "975")
-					$('[name="newElement_country"]').val("PM");
+					$('#ajaxFormModal [name="newElement_country"]').val("PM");
 				else if(name.substring(0, 3) == "976")
-					$('[name="newElement_country"]').val("YT");
+					$('#ajaxFormModal [name="newElement_country"]').val("YT");
 				else
-					$('[name="newElement_country"]').val("FR");
+					$('#ajaxFormModal [name="newElement_country"]').val("FR");
 			}
 		},
 		btnValideDisable : function(bool){
@@ -4478,12 +4507,64 @@ var dyFObj = {
 			//$("#btnValideAddress").prop('disabled', bool);
 
 			if(bool == true){
-				$("#btnValideAddress").show();
+				$("#ajaxFormModal #btnValideAddress").show();
 			}else{
-				$("#btnValideAddress").hide();
+				$("#ajaxFormModal #btnValideAddress").hide();
 			}
 		}
 	},
+	checkRules : function(rules, params) {
+		$(".errorForm").addClass("hidden");
+		$(".errorForm").html("");
+		mylog.log("checkRules", rules, params.formObj.jsonSchema.properties);
+		var notError = true ;
+		$.each(params.formObj.jsonSchema.properties, function(kProp, valProp) {
+			mylog.log("checkRules kProp, valProp", kProp, valProp);
+
+			if(typeof valProp.rules != "undefined" && 
+				valProp.rules != null) {
+				if( valProp.inputType == "formLocality" ){
+					mylog.log("checkRules formLocality", valProp.rules);
+					if( typeof valProp.rules.required != "undefined" &&
+						valProp.rules.required == true &&
+						!dyFInputs.locationObj.centerLocation){
+						dyFObj.showError(kProp+valProp.inputType, tradDynForm["This field is required."]);
+						notError = false;
+					}
+				}
+
+				if(valProp.inputType == "finder" ){
+					mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm", valProp.rules, Object.keys(finder.object[kProp]).length);
+					if( typeof valProp.rules.required != "undefined" &&
+						valProp.rules.required == true &&
+						Object.keys(finder.object[kProp]).length == 0 ){
+						mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm");
+						dyFObj.showError(kProp+valProp.inputType, tradDynForm["This field is required."]);
+						notError = false;
+					}
+
+					if( typeof valProp.rules.lengthMin != "undefined" &&
+						valProp.rules.lengthMin != null &&
+						Object.keys(finder.object[kProp]).length < valProp.rules.lengthMin ){
+						mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm");
+						dyFObj.showError(kProp+valProp.inputType, "quandtitté minumun : "+valProp.rules.lengthMin);
+						notError = false;
+					}
+				}
+			}
+			
+		});
+		mylog.log("checkRules notError", notError);
+		return notError ;
+		
+	},
+	showError : function(key, msg) {
+		$("."+key+" .errorForm").append(msg);
+		$("."+key+" .errorForm").append("<br/>");
+		$("."+key+" .errorForm").removeClass("hidden");
+
+		
+	}
 	
 
 }
@@ -4627,12 +4708,13 @@ var dyFInputs = {
 
 
 	},
-	formLocality :function(label, placeholder) {
+	formLocality :function(label, placeholder, rules) {
 		mylog.log("inputText ", inputObj);
 		var inputObj = {
 			label : label,
 	    	placeholder : ( notEmpty(placeholder) ? placeholder : "... " ),
-	        inputType : "formLocality"
+	        inputType : "formLocality",
+	        rules : ( notEmpty(rules) ? rules : null ),
 	    };
 
 		if(dyFObj.formInMap.countryList == null){
@@ -6352,7 +6434,7 @@ var dyFInputs = {
 			label : ( notEmpty(params.label) ? params.label : tradDynForm.whoiscarrytheproject ),
 			multiple : ( notEmpty(params.multiple) ? params.multiple : true ),
 			invite :  ( notEmpty(params.invite) ? params.invite : true ),
-			rules : { required : true, lengthMin:[ ( notEmpty(params.lengthMin) ? params.lengthMin : 3 ), "invite"] },
+			rules : { required : true, lengthMin:( notEmpty(params.lengthMin) ? params.lengthMin : 3 ) },
 			initType: ( notEmpty(params.type) ? params.type : ["persons"] ),
 			openSearch :( notEmpty(params.openSearch) ? params.openSearch : true )
 		}
@@ -6361,6 +6443,32 @@ var dyFInputs = {
 }
 var dyFCustom = {
 	beforeBuild : function (obj) {
+// <<<<<<< HEAD
+// 		mylog.log("dyFCustom properties", obj);
+// 		if( typeof obj.onload != "undefined" 
+// 			&& typeof obj.onload.actions != "undefined"
+// 			&& typeof obj.onload.actions.properties != "undefined"){
+// 			mylog.log("dyFCustom properties obj.onload.actions.properties", obj.onload.actions.properties);
+// 			$.each(obj.onload.actions.properties,function(f,p) {
+// 				mylog.log("dyFCustom properties f,p", f,p);
+
+// 				if( typeof dyFInputs != "undefined" && 
+// 					typeof dyFInputs[f] != "undefined" ){
+// 					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = dyFInputs[f](p);
+// 				}
+// 		 	});
+// 		}
+
+// 		if( typeof obj.onload != "undefined" 
+// 			&& typeof obj.onload.actions != "undefined"
+// 			&& typeof obj.onload.actions.required != "undefined"){
+// 			mylog.log("dyFCustom required obj.onload.actions.properties", obj.onload.actions.required);
+// 			$.each(obj.onload.actions.required,function(f,p) {
+// 				mylog.log("dyFCustom required f,p",f,p, dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
+// 				dyFCustom.required(f) ;
+// 		 	});
+// 		}
+// =======
 		$.each(obj,function(f,p) {
 			mylog.log("beforeBuild", f,p);
 			if(typeof dyFCustom[f] == "function")
@@ -6378,6 +6486,7 @@ var dyFCustom = {
 					f(p);
 			}
 		});
+//>>>>>>> 87adf12e16b945541db79bc50518292ca08764df
 	},
 	init : function (obj) {
 		mylog.log("dyFCustom init", obj);
@@ -6442,6 +6551,17 @@ var dyFCustom = {
 			$("."+k).hide();
 	 	});	    		
 	},
+	required : function(f) {
+		mylog.log("dyFCustom required", f);
+		if( typeof dyFObj.elementObj.dynForm.jsonSchema.properties[f] != "undefined" ){
+			if( typeof dyFObj.elementObj.dynForm.jsonSchema.properties[f].rules != "undefined" && 
+				dyFObj.elementObj.dynForm.jsonSchema.properties[f].rules != null){
+				dyFObj.elementObj.dynForm.jsonSchema.properties[f].rules.required = true;
+			} else {
+				dyFObj.elementObj.dynForm.jsonSchema.properties[f].rules = { required : true };
+			}
+		}
+	},
 	properties : function(p){
 		$.each(p,function(f,k) {
 			mylog.log("dyFCustom properties add f,p", f,k);
@@ -6454,12 +6574,6 @@ var dyFCustom = {
 			//dyFObj.elementObj.dynForm.jsonSchema.properties;
 	 	});
 	},
-	required : function(p) {
-		mylog.log("dyFCustom required", p);
-		/*$.each(p,function(k,v) {
-			$("."+k).hide();
-	 	});*/	    		
-	}
 };
 
 /* ***********************************
