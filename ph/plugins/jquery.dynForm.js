@@ -1932,7 +1932,7 @@ var dyFObj = {
 	        			invite : fieldObj.invite
 	        		};
 
-	        		finder.init(finderParams, callbackSelect);
+	        		finder.init(finderParams);
 	            }
 	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
         	}
