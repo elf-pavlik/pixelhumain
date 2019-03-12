@@ -255,18 +255,8 @@ var finder = {
 			lazyLoad( modules.co2.url+'/js/invite.js', 
 					null,
 					function(){
-						// mylog.log("finder #finderSelectHtml", $("#finderSelectHtml").length);
-						// $("#finderSelectHtml").on('shown.bs.modal', function(e){
-						// 	mylog.log("finder #finderSelectHtml HERE", $("#finderSelectHtml").length);
-						//    	inviteObj.formInvite("#finderSelectHtml #form-invite", function(){
-						// 		alert("here");
-						// 		return true;
-						// 	});
-						// });
 						return true ;
 					});
-			
-
 		}
 		else
 			finder.invite = null ;
@@ -283,18 +273,6 @@ var finder = {
         	//	$(this).parent().find(".error").show(700).text("Vous ne pouvez ajouter qu'un élément");
         	//}
         });
-
-        finder.onLoad();
-	},
-	onLoad : function (){
-		// mylog.log("here");
-		// if( typeof finder.invite != "undefined" && finder.invite != null &&
-		// 	finder.invite === true){
-		// 	mylog.log("finder onLaod");
-			
-		// }
-
-		
 	},
 	addInForm : function(keyForm, id, type, name, img){
 		//mylog.log("finder addInForm", keyForm, id, type, name, img);
@@ -1172,25 +1150,17 @@ var dyFObj = {
 			    formValues : data,
 			    beforeBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.beforeBuild","function") ){
-
-				        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
-				        }
+						dyFObj[dyFObj.activeElem].dynForm.jsonSchema.beforeBuild();
+					}
 
 			      	if(typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined" && typeof dyFObj[dyFObj.activeElem].dynFormCostum.beforeBuild != "undefined"){
 						dyFCustom.beforeBuild(dyFObj[dyFObj.activeElem].dynFormCostum.beforeBuild);
 					}
-					mylog.log("dyFCustom beforeBuild", dyFObj);
 					
 				},
 			    afterBuild : function  () {
 			      	if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.afterBuild","function") )
 						dyFObj[dyFObj.activeElem].dynForm.jsonSchema.afterBuild(data);
-
-					// mylog.log("finder afterBuild", finder);
-				 //    if( typeof finder != "undefined" && finder != null ){
-				 //    	mylog.log("finder afterBuild 2", finder);
-				 //    	finder.onLoad();
-				 //    }
 			    },
 			    onLoad : function  () {
 
@@ -1200,7 +1170,7 @@ var dyFObj = {
 				        $("#ajax-modal-modal-title").html("<i class='fa fa-"+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.icon+"'></i> "+dyFObj[dyFObj.activeElem].dynForm.jsonSchema.title);
 				        //alert(afterLoad+"|"+typeof dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads[afterLoad]);
 			    	}
-			        
+
 			        //incase we need a second global post process
 			        if( jsonHelper.notNull( "dyFObj."+dyFObj.activeElem+".dynForm.jsonSchema.onLoads.onload", "function") )
 			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.onLoads.onload(data);
@@ -1214,8 +1184,6 @@ var dyFObj = {
 				    		v();
 				    	});
 				    }
-
-					
 
 				    colorHeader= (typeof dyFObj[dyFObj.activeElem].color != "undefined") ? dyFObj[dyFObj.activeElem].color : "dark"; 
 				    dyFInputs.setHeader("bg-"+colorHeader);
@@ -1931,6 +1899,7 @@ var dyFObj = {
 		***************************************** */
         else if ( fieldObj.inputType == "finder" ) {
         	//finder.set();
+        	mylog.log("build field finder", fieldObj);
         	labelStr=(typeof fieldObj.multiple != "undefined" && fieldObj.multiple) ? tradDynForm.addtothelist: tradDynForm.changetheelement;
         	initType=fieldObj.initType;
         	fieldHTML += '<div class="finder-'+field+'">'+
@@ -1943,6 +1912,7 @@ var dyFObj = {
         					//"</div>"+
         				"</div>";
         	if(typeof fieldObj.init == "undefined"){
+        		mylog.log("build field finder", fieldObj);
         		var initFinderFunction=function(){
 	        		update=(typeof fieldObj.update != "undefined") ? true : null;
 	        		initValues=null;
@@ -1952,7 +1922,7 @@ var dyFObj = {
 	        			initValues=value;
 	        		
 	        		//finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
-	        		//(id, multiple, initType, values, update, callbackSelect)
+	        		//       init : id, multiple, initType, values, update, callbackSelect){
 	        		var finderParams = {
 	        			id : field,
 	        			multiple : fieldObj.multiple,
@@ -1962,7 +1932,7 @@ var dyFObj = {
 	        			invite : fieldObj.invite
 	        		};
 
-	        		finder.init(finderParams);
+	        		finder.init(finderParams, callbackSelect);
 	            }
 	        	dyFObj.initFieldOnload[field+"Finder"]=initFinderFunction; 
         	}
@@ -2633,14 +2603,11 @@ var dyFObj = {
 
 			submitHandler : function(form) {
 				
-				mylog.log("formRules", formRules, params);
-
 				var validRules = dyFObj.checkRules(formRules, params);
 				if(validRules === false){
 					errorHandler.show();
 					return false;
 				}
-				return false;
 				$(dyFObj.activeModal+" #btn-submit-form").html( '<i class="fa  fa-spinner fa-spin fa-"></i>' ).prop("disabled",true);
 				errorHandler.hide();
 				mylog.info("form submitted "+params.formId);
@@ -4516,15 +4483,12 @@ var dyFObj = {
 	checkRules : function(rules, params) {
 		$(".errorForm").addClass("hidden");
 		$(".errorForm").html("");
-		mylog.log("checkRules", rules, params.formObj.jsonSchema.properties);
+		//mylog.log("checkRules", rules, params.formObj.jsonSchema.properties);
 		var notError = true ;
 		$.each(params.formObj.jsonSchema.properties, function(kProp, valProp) {
-			mylog.log("checkRules kProp, valProp", kProp, valProp);
-
 			if(typeof valProp.rules != "undefined" && 
 				valProp.rules != null) {
 				if( valProp.inputType == "formLocality" ){
-					mylog.log("checkRules formLocality", valProp.rules);
 					if( typeof valProp.rules.required != "undefined" &&
 						valProp.rules.required == true &&
 						!dyFInputs.locationObj.centerLocation){
@@ -4534,11 +4498,9 @@ var dyFObj = {
 				}
 
 				if(valProp.inputType == "finder" ){
-					mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm", valProp.rules, Object.keys(finder.object[kProp]).length);
 					if( typeof valProp.rules.required != "undefined" &&
 						valProp.rules.required == true &&
 						Object.keys(finder.object[kProp]).length == 0 ){
-						mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm");
 						dyFObj.showError(kProp+valProp.inputType, tradDynForm["This field is required."]);
 						notError = false;
 					}
@@ -4546,7 +4508,6 @@ var dyFObj = {
 					if( typeof valProp.rules.lengthMin != "undefined" &&
 						valProp.rules.lengthMin != null &&
 						Object.keys(finder.object[kProp]).length < valProp.rules.lengthMin ){
-						mylog.log("checkRules formLocality ", "#"+kProp+valProp.inputType+" .errorForm");
 						dyFObj.showError(kProp+valProp.inputType, "quandtitté minumun : "+valProp.rules.lengthMin);
 						notError = false;
 					}
@@ -4554,7 +4515,6 @@ var dyFObj = {
 			}
 			
 		});
-		mylog.log("checkRules notError", notError);
 		return notError ;
 		
 	},
