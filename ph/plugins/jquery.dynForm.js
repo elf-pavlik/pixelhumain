@@ -2171,22 +2171,36 @@ var dyFObj = {
         else if ( fieldObj.inputType == "properties" ) {
         	mylog.log("build field "+field+">>>>>> properties list", fieldObj.values);
 
+        	var classInput =  "";
         	if(fieldObj.values){
-    			if(!dyFObj.init.initValues["tags"+field+"0"])
-    				dyFObj.init.initValues["tags"+field+"0"] = {};
-    			dyFObj.init.initValues["tags"+field+"0"]["tags"] = fieldObj.values;
+
+        		if($.isArray(fieldObj.values)){
+        			classInput = "select2TagsInput";
+
+        			if(!dyFObj.init.initValues["tags"+field+"0"])
+    					dyFObj.init.initValues["tags"+field+"0"] = {};
+    				dyFObj.init.initValues["tags"+field+"0"]["tags"] = fieldObj.values;
+    				mylog.log("build field "+field+">>>>>> properties dyFObj.init.initValues", dyFObj.init.initValues);
+    				mylog.log("fieldObj.data", fieldObj.data, fieldObj);
+		    		if(typeof fieldObj.data != "undefined"){
+		    			var value = fieldObj.data;
+		        		//dyFObj.init.initSelectNetwork[field]=fieldObj.data;
+		        	}
+
+		        	if(fieldObj.maximumSelectionLength)
+		    			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
+
+		    		if(typeof fieldObj.mainTag != "undefined")
+						mainTag=fieldObj.mainTag;
+        		}else{
+        			var value = fieldObj.values;
+        		}
+
+    			
     		}
     		
-    		mylog.log("build field "+field+">>>>>> properties dyFObj.init.initValues", dyFObj.init.initValues);
-    		if(fieldObj.maximumSelectionLength)
-    			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
-    		mylog.log("fieldObj.data", fieldObj.data, fieldObj);
-    		if(typeof fieldObj.data != "undefined"){
-    			value = fieldObj.data;
-        		//dyFObj.init.initSelectNetwork[field]=fieldObj.data;
-        	}
-    		if(typeof fieldObj.mainTag != "undefined")
-				mainTag=fieldObj.mainTag;
+    		
+    		
 
         	fieldHTML += '<div class="inputs properties">'+
 								'<div class="col-sm-3">'+
@@ -2196,7 +2210,7 @@ var dyFObj = {
 								'</div>'+
 								'<div class="col-sm-7">'+
 									'<span>'+tradDynForm["Tags link a filter"]+'</span>'+
-									'<input type="text" class="form-control select2TagsInput" name="tags'+field+'0" id="tags'+field+'0" value="'+value+'" placeholder="'+placeholder+'" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
+									'<input type="text" class="form-control '+classInput+'" name="tags'+field+'0" id="tags'+field+'0" value="'+value+'" placeholder="'+placeholder+'" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
 									'<button data-id="'+field+'" class="pull-right removePropLineBtn btn btn-xs letter-red" alt="Remove this line"><i class=" fa fa-minus-circle" ></i></button>'+
 								'</div>'+
 							'</div>'+
