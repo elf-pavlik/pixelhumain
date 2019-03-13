@@ -3235,7 +3235,7 @@ var dyFObj = {
 		initSelect : {},
 		initSelectNetwork : [],
 		addfield : function ( parentContainer,val,name, type ) {
-			mylog.log("dyFObj.init.addfield",parentContainer+' .inputs',val,name);
+			mylog.log("dyFObj.init.addfield",parentContainer+' .inputs val',val, "name", name, "type", type);
 			if(!$.isEmptyObject($(parentContainer+' .inputs')))
 		    {
 		    	if($(parentContainer+' .properties').length > 0){
@@ -3344,15 +3344,23 @@ var dyFObj = {
 		***************************************** */
 		propertyLineHTML : function (propVal,name){
 			var count = $(".addmultifield").length;
-			mylog.log("dyFObj.init.propertyLineHTML", propVal, typeof propVal, name, count);
-			if( !notEmpty(propVal) ) 
-		    	propVal = {"label":"","value":""};
-		    
-		    if(!dyFObj.init.initValues["tags"+name+count])
-	    				dyFObj.init.initValues["tags"+name+count] = {};
-		    dyFObj.init.initValues["tags"+name+count]["tags"] = tagsList;
+			mylog.log("dyFObj.init.propertyLineHTML",dyFObj.init,  propVal, typeof propVal, name, count);
 
-		    dyFObj.init.initSelect["tags"+name+count] = true;
+			var elt = dyFObj.elementObj.dynForm.jsonSchema.properties[name];
+			mylog.log("dyFObj.init elt", elt);
+			if( !notEmpty(propVal) ) 
+					propVal = {"label":"","value":""};
+
+			if($.isArray(elt.values)){
+				if(!dyFObj.init.initValues["tags"+name+count])
+		    				dyFObj.init.initValues["tags"+name+count] = {};
+			    dyFObj.init.initValues["tags"+name+count]["tags"] = tagsList;
+				dyFObj.init.initSelect["tags"+name+count] = true;
+			}else{
+
+			}
+			
+
 
 			var str = '<div class="space5"></div><div class="col-sm-3">'+
 						'<input type="text" id="'+name+count+'" name="'+name+count+'" class="addmultifield addmultifield'+count+' form-control input-md" value="'+propVal.label+'" />'+
@@ -6357,9 +6365,11 @@ var dyFInputs = {
     		obj.name = (trad[type]) ? trad[type] : type;
     	}
     	if( obj === null ){
+    		mylog.log("dyFInputs.get obj", obj, type);
     		obj = dyFInputs.deepGet(type);
-    		if( obj )
+    		if( obj ){
     			obj = dyFInputs.get( obj.col )
+    		}
     	}
     	mylog.log("dyFInputs.get return", obj);
     	return obj;
