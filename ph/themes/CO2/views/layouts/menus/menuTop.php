@@ -77,7 +77,9 @@
 }else{ ?>
     <div>
     <!-- //////////////// CONSTRUCTION OF LEFT NAV //////////////////// --> 
-    <?php if(@$themeParams["header"]["menuTop"] && @$themeParams["header"]["menuTop"]["navLeft"]){ ?>
+    <?php 
+    
+    if(@$themeParams["header"]["menuTop"] && @$themeParams["header"]["menuTop"]["navLeft"]){ ?>
     <div class="navLeft margin-left-10">
         <?php foreach(@$themeParams["header"]["menuTop"]["navLeft"] as $key => $value){
         // LOGO HTML NAV BAR 
