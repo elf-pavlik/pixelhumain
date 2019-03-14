@@ -952,8 +952,10 @@ margin-top: 5px;
     left: 15px;
 }
 
-
-.adminToolBar.entityProfil button{
+.adminToolBar.entityProfil a{
+    font-weight:100;
+}
+.adminToolBar.entityProfil button, .adminToolBar.entityProfil a{
     width: 100%;
     border-radius: inherit;
     background-color: transparent;
@@ -963,7 +965,7 @@ margin-top: 5px;
     height:30px;
 
 }
-.adminToolBar.entityProfil button:hover{
+.adminToolBar.entityProfil button:hover, .adminToolBar.entityProfil a:hover{
     background-color: white;
     color: black;
     font-size: 17px;
