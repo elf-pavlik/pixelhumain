@@ -2169,38 +2169,51 @@ var dyFObj = {
 		* PROPERTIES , is a list of pairs key/values
 		***************************************** */
         else if ( fieldObj.inputType == "properties" ) {
-        	mylog.log("build field "+field+">>>>>> properties list", fieldObj.values);
+        	mylog.log("build field "+field+">>>>>> properties dyFObj.init list", fieldObj.values);
 
         	var classInput =  "";
-        	if(fieldObj.values){
 
-        		if($.isArray(fieldObj.values)){
-        			classInput = "select2TagsInput";
+        	if(!dyFObj.init.properties[field])
+    			dyFObj.init.properties[field] = {};
 
-        			if(!dyFObj.init.initValues["tags"+field+"0"])
-    					dyFObj.init.initValues["tags"+field+"0"] = {};
-    				dyFObj.init.initValues["tags"+field+"0"]["tags"] = fieldObj.values;
-    				mylog.log("build field "+field+">>>>>> properties dyFObj.init.initValues", dyFObj.init.initValues);
-    				mylog.log("fieldObj.data", fieldObj.data, fieldObj);
-		    		if(typeof fieldObj.data != "undefined"){
-		    			var value = fieldObj.data;
-		        		//dyFObj.init.initSelectNetwork[field]=fieldObj.data;
-		        	}
+        	if(!dyFObj.init.initValues["tags"+field+"0"])
+    			dyFObj.init.initValues["tags"+field+"0"] = {};
 
-		        	if(fieldObj.maximumSelectionLength)
-		    			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
 
-		    		if(typeof fieldObj.mainTag != "undefined")
-						mainTag=fieldObj.mainTag;
-        		}else{
-        			var value = fieldObj.values;
-        		}
+    		mylog.log("dyFObj.init fieldObj.values", fieldObj.values, $.isArray(fieldObj.values));
+    		if($.isArray(fieldObj.values)){
+    			fieldObj.values
+    			classInput = "select2TagsInput";
+    			dyFObj.init.properties[field]["type"]  = "tags";
+				dyFObj.init.initValues["tags"+field+"0"]["tags"] = fieldObj.values;
+	    		if(typeof fieldObj.data != "undefined"){
+	    			var value = fieldObj.data;
+	        		//dyFObj.init.initSelectNetwork[field]=fieldObj.data;
+	        	}
+
+	        	if(fieldObj.maximumSelectionLength)
+	    			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
+
+	    		if(typeof fieldObj.mainTag != "undefined")
+					mainTag=fieldObj.mainTag;
+    		}else{
+    			mylog.log("dyFObj.init.properties", dyFObj.init.properties);
+    			var value = fieldObj.values;
+    			dyFObj.init.properties[field]["type"] = "text";
+    			dyFObj.init.properties[field]["values"] = fieldObj.values;
+
+    			dyFObj.init.initValues["tags"+field+"0"]["values"] = fieldObj.values;
+    			dyFObj.init.initValues["tags"+field+"0"]["type"] = "text";
+
+    			mylog.log("dyFObj.init.properties", dyFObj.init.properties);
+    		}
 
     			
-    		}
     		
     		
     		
+    		mylog.log("dyFObj.init classInput", classInput);
+    		mylog.log("dyFObj.init.properties", dyFObj.init.properties);
 
         	fieldHTML += '<div class="inputs properties">'+
 								'<div class="col-sm-3">'+
@@ -3231,6 +3244,7 @@ var dyFObj = {
 		* val can be a value when type array or {"label":"","value":""} when type property
 		***************************************** */
 		initValues : {},
+		properties : {},
 		uploader : {},
 		initSelect : {},
 		initSelectNetwork : [],
@@ -3351,15 +3365,31 @@ var dyFObj = {
 			if( !notEmpty(propVal) ) 
 					propVal = {"label":"","value":""};
 
-			if($.isArray(elt.values)){
-				if(!dyFObj.init.initValues["tags"+name+count])
-		    				dyFObj.init.initValues["tags"+name+count] = {};
-			    dyFObj.init.initValues["tags"+name+count]["tags"] = tagsList;
-				dyFObj.init.initSelect["tags"+name+count] = true;
-			}else{
+			var classInput = "";
 
+			mylog.log("dyFObj.init.properties",dyFObj.init.properties);
+			if(notNull(dyFObj.init.properties) && notNull(dyFObj.init.properties[name])){
+				if(!dyFObj.init.initValues["tags"+name+count])
+				    dyFObj.init.initValues["tags"+name+count] = {};
+
+
+				if(dyFObj.init.properties[name]["type"] == "text"){
+					dyFObj.init.initValues["tags"+name+count]["values"] = dyFObj.init.properties[name]["values"];
+
+				}else{						
+				    dyFObj.init.initValues["tags"+name+count]["tags"] = tagsList;
+				    classInput = "select2TagsInput"					
+				}
+				dyFObj.init.initSelect["tags"+name+count] = true;
+        		
 			}
 			
+
+
+			
+
+			
+			mylog.log("dyFObj.init.propertyLineHTML classInput ", classInput);
 
 
 			var str = '<div class="space5"></div><div class="col-sm-3">'+
@@ -3368,7 +3398,7 @@ var dyFObj = {
 					'</div>'+
 					'<div class="col-sm-7">'+
 						//'<textarea type="text" name="tags'+name+'[]" class="addmultifield'+count+' form-control input-md pull-left" onkeyup="AutoGrowTextArea(this);" placeholder="valeur"   >'+propVal.value+'</textarea>'+
-						'<input type="text" class="form-control select2TagsInput" name="tags'+name+count+'" id="tags'+name+count+'" value="" placeholder="" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
+						'<input type="text" class="form-control '+classInput+'" name="tags'+name+count+'" id="tags'+name+count+'" value="" placeholder="" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
 						'<button class="pull-right removePropLineBtn btn btn-xs letter-red tooltips pull-right" data- data-original-title="Retirer cette ligne" data-placement="bottom"><i class=" fa fa-minus-circle" ></i></button>'+
 					'</div>';
 
@@ -6365,7 +6395,6 @@ var dyFInputs = {
     		obj.name = (trad[type]) ? trad[type] : type;
     	}
     	if( obj === null ){
-    		mylog.log("dyFInputs.get obj", obj, type);
     		obj = dyFInputs.deepGet(type);
     		if( obj ){
     			obj = dyFInputs.get( obj.col )

@@ -60,6 +60,8 @@
     };
     
 var typeObj = {
+    addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+    addFile:{ titleClass : "bg-dark", color : "bg-dark" },
     photo:{ titleClass : "bg-dark", color : "bg-dark" },
     file:{ titleClass : "bg-dark", color : "bg-dark" },
     person : { col : "citoyens" ,
