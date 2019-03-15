@@ -14,7 +14,9 @@
 
 	$networkJson = Network::getNetworkJson(Yii::app()->params['networkParams']);
 
-	$params = CO2::getThemeParams();
+	$params = CO2::getThemeParams("network");
+	Yii::app()->session['paramsConfig'] = $params; 
+    //var_dump(Yii::app()->session['paramsConfig']); exit;
     $metaTitle = @$params["metaTitle"];
     $metaDesc = @$params["metaDesc"]; 
     $metaImg = Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2".@$params["metaImg"];

@@ -19,10 +19,14 @@
     $CO2DomainName = Yii::app()->params["CO2DomainName"];
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
     $cities = []; ?>
-<?php if(@$useHeader != false){ ?>
+<?php 
+
+if(@$useHeader != false){ ?>
 <!-- Header -->
 <header id="<?php echo $menuApp; ?>">   
-    <?php if(isset($themeParams["header"]["banner"]) && is_string($themeParams["header"]["banner"])){ ?>
+    <?php 
+    var_dump($themeParams["pages"]["#".$page]);
+    if(isset($themeParams["header"]["banner"]) && is_string($themeParams["header"]["banner"])){ ?>
         <div id="header-banner" class="banner-<?php echo $menuApp ?>">
             <?php $this->renderPartial( $themeParams["header"]["banner"]  ); ?>
         </div>

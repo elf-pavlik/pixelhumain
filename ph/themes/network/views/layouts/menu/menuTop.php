@@ -2,6 +2,7 @@
 if( !empty($me) )
 	$profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->assetsUrl);
 
+$themeParams = Yii::app()->session['paramsConfig'];
 $cssAnsScriptFilesTheme = array(
 		// SHOWDOWN
 		'/plugins/showdown/showdown.min.js',
