@@ -1507,7 +1507,6 @@ h3.title_panel_map{
     position: relative;
     background-color:rgba(246,246,246,0.6)!important;
 	border-radius: 50px !important;
-	padding:8px 0 0 0px;
 	border:none;
 	height: 40px !important;
 	display: block;
@@ -1516,13 +1515,14 @@ h3.title_panel_map{
 }
 .menu-name-profil img{
 	border:2px solid transparent;
-	margin-top: -8px;
+	vertical-align: inherit !important;
 }
 .menu-name-profil small{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     max-width: 95px;
+    line-height: 40px;
     display: inline-block;
 }
 
@@ -2249,15 +2249,16 @@ margin-right: 5px;
 		font-size: 1.4em;
 	}
 	.menu-name-profil{
-		padding:8px 0 0 0;
+		margin-top: 5px;
+		margin-right: 0px;
+	}
+	.menu-name-profil .tooltips-top-menu-btn{
+		top:45px;
 	}
 	.navbar-custom .btn-show-mainmenu{
 		margin-left:0px;
 	}
 
-	.menu-name-profil{
-		margin-right: 0px;
-	}
 	.main-menu-app {
 	    margin-bottom: 35px !important;
 		/*margin-top: 15px !important;*/
