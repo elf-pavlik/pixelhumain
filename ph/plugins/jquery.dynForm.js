@@ -6746,15 +6746,27 @@ var dyFCustom = {
 	properties : function(p){
 		$.each(p,function(f,k) {
 			mylog.log("dyFCustom properties add f,p", f,k);
-
-			if( typeof dyFInputs != "undefined" && 
-				typeof dyFInputs[f] != "undefined" ){
-				dyFObj.elementObj.dynForm.jsonSchema.properties[f] = dyFInputs[f](k);
-			}else
-				dyFObj.elementObj.dynForm.jsonSchema.properties[f] = k;
-			//dyFObj.elementObj.dynForm.jsonSchema.properties;
+			mylog.log("ESPION : ",dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
+			if(typeof dyFObj.elementObj.dynForm.jsonSchema.properties[f] != "undefined"){
+				dyFObj.elementObj.dynForm.jsonSchema.properties[f]=dyFCustom.setProperties(k, dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
+			} else {
+				if( typeof dyFInputs != "undefined" && 
+					typeof dyFInputs[f] != "undefined" ){
+					// A priori on passe pas par ici car les objets existants sont déjà instanciés !!')
+					var temp = dyFInputs[f]();
+					temp= dyFCustom.setProperties(k, temp);
+					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = temp;
+				}else
+					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = k;
+			}
 	 	});
 	},
+	setProperties : function(cusProp, prop){
+		$.each(cusProp, function(e, v){
+			prop[e]=v;
+        });
+        return prop;
+	}
 };
 
 /* ***********************************
