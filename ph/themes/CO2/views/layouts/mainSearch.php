@@ -408,8 +408,8 @@
                 $.each(modules,function(k,v) { 
                     if(typeof v.init != "undefined" && notNull(v.init)){
                         mylog.log("init.js for module : ",k);
-                        callB=null;
-                        lazyLoad( v.init , null,callB);
+                        callB=(typeof v.callback)? v.callback : null;
+                        lazyLoad( v.init , null, callB);
                     }
                 });
                 if( typeof costum != "undefined" && notNull(costum) ){

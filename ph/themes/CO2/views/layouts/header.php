@@ -12,7 +12,7 @@
     $subdomainName          = $themeParams["pages"]["#".$page]["subdomainName"];
     $icon                   = $themeParams["pages"]["#".$page]["icon"];
     $mainTitle              = @$themeParams["pages"]["#".$page]["mainTitle"];
-    $placeholderMainSearch  = $themeParams["pages"]["#".$page]["placeholderMainSearch"];
+    $placeholderMainSearch  = (@$themeParams["pages"]["#".$page]["placeholderMainSearch"]) ? $themeParams["pages"]["#".$page]["placeholderMainSearch"] : "what are you looking for ?";
     $type = @$themeParams["pages"]["#".$page]["type"];
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
     //$menuFilters=(@$themeParams[["appRendering"]) ? $themeParams["appRendering"] : "horizontal";

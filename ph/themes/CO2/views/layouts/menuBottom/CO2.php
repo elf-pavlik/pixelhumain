@@ -133,28 +133,7 @@ jQuery(document).ready(function() {
 
     });
 });
-function initButtonAddFooter(domContain){
-    menuButtonCreate="";
-    $.each(typeObj, function(e,v){
-        if(typeof v.add != "undefined" && v.add){
-            if(v.add!="onlyAdmin" || canCreate ){
-                hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
-                formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
-                subFormType= (typeof v.subFormType != "undefined") ? 'data-form-subtype="'+v.subFormType+'" ' : "";
-                addClass = (typeof v.class != "undefined") ? v.class : "";
-                nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
-                menuButtonCreate+='<a href="'+hash+'" '+ 
-                    formType+
-                    subFormType+ 
-                    'class="addBtnFoot btn-open-form btn btn-default '+addClass+' bg-'+v.color+' margin-bottom-10">'+ 
-                        '<i class="fa fa-'+v.icon+'"></i> '+
-                        '<span>'+nameLabel+'</span>'+
-                    '</a>';
-            }
-        }
-    });
-    $(domContain).html(menuButtonCreate);
-}
+
 function addBtnSwitch(){ 
     /*$(".addBtnFoot").addClass("hidden");
     $(".addBtnAll").removeClass("hidden");

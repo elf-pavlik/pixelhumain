@@ -49,12 +49,14 @@
         "co2" : <?php echo json_encode( array(
             "url"    => Yii::app()->getModule( "co2" )->assetsUrl
         )); ?>,
-        "costum": <?php echo json_encode( array(
-            "url"    => Yii::app()->getModule( "costum" )->assetsUrl,
-            "module" => "costum",
-            "init"   => Yii::app()->getModule( "costum" )->assetsUrl."/costum.js",
-            "callback"=> "costum.init"
-        )); ?>,
+        "costum": {
+            "url"   : "<?php echo Yii::app()->getModule( "costum" )->assetsUrl ?>",
+            "module" : "costum",
+            "init"   : "<?php echo Yii::app()->getModule( "costum" )->assetsUrl ?>/costum.js",
+            callback: function(){
+                costum.init();
+            }
+        },
         "cotools" : <?php echo json_encode( array(
 
             "module" => "cotools",
@@ -367,7 +369,7 @@
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
             };
-            if(typeof initButtonAddFooter!= "undefined") initButtonAddFooter(".toolbar-bottom-adds");
+            if(typeof directory.buildCreateButton!= "undefined") directory.buildCreateButton(".toolbar-bottom-adds");
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
             if(typeof resizeInterface != "undefined") resizeInterface();
             themeObj.initMyScopes();
