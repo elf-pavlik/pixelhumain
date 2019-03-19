@@ -114,7 +114,11 @@
       $answer = PHDB::findOne( Form::ANSWER_COLLECTION, array("_id"=>new MongoId(@$_GET['id'])));
       $id = $answer["formId"];
     }
-    if( strrpos( @$id, "cte" ) !== false ){
+    if( strrpos( @$id, "ctenat" ) !== false ){
+      $CO2DomainName = "ctenat";
+      $this->renderPartial( "co2.views.custom.init",array( "custom" => "forms.cte" ) );
+    } 
+    else if( strrpos( @$id, "cte" ) !== false ){
       $CO2DomainName = "cte";
       $this->renderPartial( "co2.views.custom.init",array( "custom" => "forms.cte" ) );
     } else if( strrpos(@$id, "poulet") !== false ){
