@@ -224,6 +224,7 @@ var finder = {
 	typeAuthorized : {},
 	callback : {},
 	invite : null,
+	search : null,
 	set : function(){
 		mylog.log("finder set");
 		finder.object={};
@@ -261,6 +262,10 @@ var finder = {
 		else
 			finder.invite = null ;
 
+		if(typeof params.search != "undefined" && params.search != null ){
+			finder.search = params.search;
+		}
+
         $(".finder-"+params.id+" .selectParent").click(function(e){
         	e.preventDefault();
         	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
@@ -288,7 +293,19 @@ var finder = {
 					'<button class="bg-red text-white pull-right" style="border: none;font-size: 15px;border-radius: 6px;padding: 5px 10px !important;" onclick="finder.removeFromForm(\''+keyForm+'\', \''+id+'\')"><i class="fa fa-times"></i></button>'+
 			"</div>";
 		$(".finder-"+keyForm+" .form-list-finder").append(str);
+
 		finder.object[keyForm][id]={"type" : type, "name" : name};
+		if(notNull(finder.search) && notNull(finder.search.filterBy)){
+			
+			mylog.log("filterBy split", split, finder.selectedItems[id][finder.search.filterBy], notNull( finder.selectedItems[id][finder.search.filterBy]) );
+			if(notNull( finder.selectedItems[id][finder.search.filterBy] ) ) {
+				var fBy = {} ;
+				var split = id.split(".");
+				fBy[finder.search.filterBy] = finder.selectedItems[id][finder.search.filterBy] ;
+				finder.object[keyForm][split[0]]=Object.assign({}, finder.object[keyForm][id], fBy);
+				delete finder.object[keyForm][id];
+			}
+		};
 	},
 	removeFromForm : function(keyForm, id){
 		//mylog.log("finder removeFromForm", keyForm, id);
@@ -399,7 +416,6 @@ var finder = {
 			dialog.on('shown.bs.modal', function(e){
 				mylog.log("finder #finderSelectHtml HERE", $("#finderSelectHtml").length);
 				inviteObj.formInvite("#finderSelectHtml #form-invite", "#finderSelectHtml #populateFinder", function(){
-					alert("here");
 					return true;
 				});
 			});
@@ -456,8 +472,31 @@ var finder = {
 					if(typeof finder.finderPopulation[e]== "undefined")
 						finder.finderPopulation[e]=v;
 					if($(".population-elt-finder-"+e).length <= 0){
+
 						img= (v.profilThumbImageUrl != "") ? baseUrl + v.profilThumbImageUrl : assetPath + "/images/thumb/default_"+v.type+".png";
-						str+="<div class='population-elt-finder population-elt-finder-"+e+" col-xs-12' data-value='"+e+"'>"+
+						// if(notNull(finder.search) && notNull(finder.search.filterBy)){
+						// 	if(notNull(v[finder.search.filterBy])){
+						// 		$.each(v[finder.search.filterBy], function(keyF, valF){
+						// 			str+="<div class='population-elt-finder population-elt-finder-"+e+"."+keyF+" col-xs-12' data-value='"+e+"."+keyF+"'>"+
+						// 				'<div class="checkbox-content pull-left">'+
+						// 					'<label>'+
+						// 	    				'<input type="checkbox" class="check-population-finder checkbox-info" data-value="'+e+'.'+keyF+'">'+
+						// 	    				'<span class="cr"><i class="cr-icon fa fa-check"></i></span>'+
+						// 					'</label>'+
+						// 				'</div>'+
+						// 				"<div class='element-finder element-finder-"+e+"."+keyF+"'>"+
+						// 					'<img src="'+ img+'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
+						// 					'<span class="info-contact pull-left margin-left-20">' +
+						// 						'<span class="name-element text-dark text-bold" data-id="'+e+'.'+keyF+'">' + v.name + ' - ' + valF["name"] + '</span>'+
+						// 						'<br/>'+
+						// 						'<span class="type-element text-light pull-left">' + trad[v.type]+ '</span>'+
+						// 					'</span>' +
+						// 				"</div>"+
+						// 			"</div>";
+						// 		});
+						// 	}
+						// }else{
+							str+="<div class='population-elt-finder population-elt-finder-"+e+" col-xs-12' data-value='"+e+"'>"+
 								'<div class="checkbox-content pull-left">'+
 									'<label>'+
 					    				'<input type="checkbox" class="check-population-finder checkbox-info" data-value="'+e+'">'+
@@ -473,6 +512,10 @@ var finder = {
 									'</span>' +
 								"</div>"+
 							"</div>";
+						//}
+
+						
+						
 					}
 				}
 			});
@@ -495,7 +538,13 @@ var finder = {
 					finder.selectedItems={};	
 					$("#list-finder-selected").html("");
 				}
-				finder.selectedItems[$(this).data("value")]=finder.finderPopulation[$(this).data("value")];
+				// if(notNull(finder.search) && notNull(finder.search.filterBy)){
+				// 	var split = $(this).data("value").split(".");
+				// 	finder.selectedItems[$(this).data("value")]=finder.finderPopulation[split[0]];
+				// }else{
+					finder.selectedItems[$(this).data("value")]=finder.finderPopulation[$(this).data("value")];
+				//}
+				
 				$(".population-elt-finder-"+$(this).data("value")).prependTo("#list-finder-selected");
 			}else{
 				delete finder.selectedItems[$(this).data("value")];
@@ -519,10 +568,20 @@ var finder = {
 	searchAndPopulateFinder : function(keyForm, text, typeSearch, multiple){
 		//mylog.log("finder searchAndPopulateFinder", keyForm, text, typeSearch, multiple);
 		//finder.isSearching=true;
+
+		var dataSearch = {
+        	searchType : typeSearch, 
+        	name: text
+        };
+
+        if(notNull(finder.search)){
+        	dataSearch = Object.assign({}, dataSearch, finder.search);
+        }
+
   		$.ajax({
 			type: "POST",
 	        url: baseUrl+"/"+moduleId+"/search/globalautocomplete",
-	        data: {"searchType" : typeSearch, "name": text},
+	        data: dataSearch,
 	        dataType: "json",
 	        success: function(retdata){
 	        	
@@ -683,9 +742,9 @@ var dyFObj = {
 				});
 				formData.addresses = dyFInputs.locationObj.elementLocations;
 			}
-
-			delete formData.newElement_country; 
 		}
+		if(notNull(formData.newElement_country))
+			delete formData.newElement_country; 
 
 		if(notNull(dyFInputs.scopeObj.selected)){
 			formData.scope = dyFInputs.scopeObj.selected;
@@ -787,6 +846,26 @@ var dyFObj = {
 			removeEmptyAttr(formData);
 		else
 			delete formData["isUpdate"];
+
+
+		$.each(dyFObj.elementObj.dynForm.jsonSchema.properties, function(kP, vP) {
+			if(vP["inputType"] == "properties"){
+				var ind = 0;
+				var keyVal = [];
+				var nostop = true;
+				while( nostop ) {
+					mylog.log("formData jsonHelper.notNull", kP, ind, formData[kP+ind], notNull(formData[kP+ind]));
+					if(notNull(formData[kP+ind])){
+						keyVal.push({name : formData[kP+ind], value : formData["tags"+kP+ind]});
+						delete formData[kP+ind];
+						delete formData["tags"+kP+ind];
+						ind++;
+					}else
+						 nostop = false ;
+				}
+				formData[kP] = keyVal ;
+			}
+		});
 
 		mylog.dir(formData);
 		return formData;
@@ -1615,7 +1694,7 @@ var dyFObj = {
 			var thisValue = ( fieldObj.checked == "true" ) ? "true" : "false";
 			forced="";
 			if(value!==""){
-				thisValue = (!value) ? "false" : "true";
+				thisValue = (!value || value=="false") ? "false" : "true";
 				forced="data-checked='"+thisValue+"'";
 			}
 			mylog.log("fieldObj ??? thisValue", thisValue);
@@ -1633,12 +1712,81 @@ var dyFObj = {
 								fieldObj.params.offText+
 							'</a>'+
 						 '</div>';
-			initField = function(){
-				//var checked = ( fieldObj.checked ) ? "checked" : "";
-				//if(checked) 
-				//if( fieldObj.switch )
-					//dyFObj.init.initbootstrapSwitch('#'+field, (fieldObj.switch.onChange) ? fieldObj.switch.onChange : null );
-			};
+			if(typeof fieldObj.init == "undefined"){
+				initField = function(){
+	    			var checked = (typeof fieldObj.checked != "undefined") ? fieldObj.checked : false;
+		    		mylog.log("checkcheck2", checked, "#ajaxFormModal #"+field);
+		    		var idTrue = "#ajaxFormModal ."+field+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
+		    		var idFalse = "#ajaxFormModal ."+field+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
+		    		if(typeof $("#ajaxFormModal #"+field).data("checked") != "undefined")
+		    			checked=$("#ajaxFormModal #"+field).data("checked");//$("#ajaxFormModal #"+id).hasAttr("data-checked");
+		    		$("#ajaxFormModal #"+field).val(checked);
+
+		    		if(typeof fieldObj.params.labelInformation != "undefined")
+		        		$("#ajaxFormModal ."+field+"checkboxSimple label").append(
+		        				"<small class='col-md-12 col-xs-12 text-left no-padding' "+
+										"style='font-weight: 200;'>"+
+										fieldObj.params.labelInformation+
+								"</small>");
+
+		        	if(checked == "true" || checked){
+		    			$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+		    			$("#ajaxFormModal ."+field+"checkboxSimple label").append(
+		    					"<span class='lbl-status-check margin-left-10'>"+
+		    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+fieldObj.params.onLabel+'</span>'+
+		    					"</span>");
+
+		    			setTimeout(function(){
+	    			  		if(typeof fieldObj.inputTrue != "undefined") 
+	    			  			$(fieldObj.inputTrue).hide(400);
+	    			  	}, 1000);
+		        	}
+					else if(checked == "false" || !checked){ 
+		    			$(idFalse).addClass("bg-red").removeClass("letter-red");
+		    			$("#ajaxFormModal ."+field+"checkboxSimple label").append(
+		    					"<span class='lbl-status-check margin-left-10'>"+
+		    						'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+fieldObj.params.offLabel+'</span>'+
+		    					"</span>");
+
+		    			setTimeout(function(){
+	    			  		if(typeof fieldObj.inputId != "undefined") 
+	    			  			$(fieldObj.inputId).hide(400);
+	    			  	}, 1000);
+		    		}
+		    		
+
+		    		$("#ajaxFormModal ."+field+"checkboxSimple .btn-dyn-checkbox").click(function(){
+		    			var checkval = $(this).data('checkval');
+		    			$("#ajaxFormModal #"+field).val(checkval);
+		    			mylog.log("EVENT CLICK ON CHECKSIMPLE", checkval);
+		    			
+		    			if(checkval) {
+		    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+		    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
+		    			  	$("#ajaxFormModal ."+field+"checkboxSimple .lbl-status-check").html(
+		    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+fieldObj.params.onLabel+'</span>');
+		    			  	
+		    			  	if(typeof fieldObj.inputId != "undefined") $(fieldObj.inputId).show(400);
+
+		    			  	if(typeof fieldObj.inputTrue != "undefined") $(fieldObj.inputTrue).hide(400);
+		    			}
+		    			else{
+		    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
+		    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+		    				$("#ajaxFormModal ."+field+"checkboxSimple .lbl-status-check").html(
+		    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+fieldObj.params.offLabel+'</span>');
+
+		    				if(typeof fieldObj.inputId != "undefined") $(fieldObj.inputId).hide(400);
+		    				if(typeof fieldObj.inputTrue != "undefined") $(fieldObj.inputTrue).show(400);
+		    			}
+		    		});
+
+					//var checked = ( fieldObj.checked ) ? "checked" : "";
+					//if(checked) 
+					//if( fieldObj.switch )
+						//dyFObj.init.initbootstrapSwitch('#'+field, (fieldObj.switch.onChange) ? fieldObj.switch.onChange : null );
+				};
+			}
 		}
 
 		/* **************************************
@@ -1929,7 +2077,8 @@ var dyFObj = {
 	        			initType : fieldObj.initType,
 	        			values : initValues,
 	        			update : update,
-	        			invite : fieldObj.invite
+	        			invite : fieldObj.invite,
+	        			search : fieldObj.search
 	        		};
 
 	        		finder.init(finderParams);
@@ -2169,49 +2318,75 @@ var dyFObj = {
 		* PROPERTIES , is a list of pairs key/values
 		***************************************** */
         else if ( fieldObj.inputType == "properties" ) {
-        	mylog.log("build field "+field+">>>>>> properties list", fieldObj.values);
+        	mylog.log("build field "+field+">>>>>> properties dyFObj.init list", fieldObj);
 
         	var classInput =  "";
-        	if(fieldObj.values){
 
-        		if($.isArray(fieldObj.values)){
-        			classInput = "select2TagsInput";
+        	if(!dyFObj.init.properties[field])
+    			dyFObj.init.properties[field] = {};
 
-        			if(!dyFObj.init.initValues["tags"+field+"0"])
-    					dyFObj.init.initValues["tags"+field+"0"] = {};
-    				dyFObj.init.initValues["tags"+field+"0"]["tags"] = fieldObj.values;
-    				mylog.log("build field "+field+">>>>>> properties dyFObj.init.initValues", dyFObj.init.initValues);
-    				mylog.log("fieldObj.data", fieldObj.data, fieldObj);
-		    		if(typeof fieldObj.data != "undefined"){
-		    			var value = fieldObj.data;
-		        		//dyFObj.init.initSelectNetwork[field]=fieldObj.data;
-		        	}
+        	if(!dyFObj.init.initValues["tags"+field+"0"])
+    			dyFObj.init.initValues["tags"+field+"0"] = {};
 
-		        	if(fieldObj.maximumSelectionLength)
-		    			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
 
-		    		if(typeof fieldObj.mainTag != "undefined")
-						mainTag=fieldObj.mainTag;
-        		}else{
-        			var value = fieldObj.values;
-        		}
+    		mylog.log("dyFObj.init fieldObj.values", fieldObj.values, $.isArray(fieldObj.values));
+    		if($.isArray(fieldObj.values)){
+    			fieldObj.values
+    			classInput = "select2TagsInput";
+    			dyFObj.init.properties[field]["type"]  = "tags";
+				dyFObj.init.initValues["tags"+field+"0"]["tags"] = fieldObj.values;
+	    		if(typeof fieldObj.data != "undefined"){
+	    			var value = fieldObj.data;
+	        		//dyFObj.init.initSelectNetwork[field]=fieldObj.data;
+	        	}
+
+	        	if(fieldObj.maximumSelectionLength)
+	    			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
+
+	    		if(typeof fieldObj.mainTag != "undefined")
+					mainTag=fieldObj.mainTag;
+    		}else{
+    			mylog.log("dyFObj.init.properties", dyFObj.init.properties);
+    			var value = fieldObj.values;
+    			dyFObj.init.properties[field]["type"] = "text";
+    			dyFObj.init.properties[field]["values"] = fieldObj.values;
+
+    			dyFObj.init.initValues["tags"+field+"0"]["values"] = fieldObj.values;
+    			dyFObj.init.initValues["tags"+field+"0"]["type"] = "text";
+
+    			mylog.log("dyFObj.init.properties", dyFObj.init.properties);
+    		}
 
     			
-    		}
     		
     		
     		
-
-        	fieldHTML += '<div class="inputs properties">'+
+    		mylog.log("dyFObj.init classInput", classInput);
+    		mylog.log("dyFObj.init.properties", dyFObj.init.properties);
+    		fieldHTML += 	'<div class="padding-5">'+
 								'<div class="col-sm-3">'+
-									'<span>'+tradDynForm["Name of filter"]+'</span>'+
-									'<input type="text" name="'+field+'0" id="'+field+'0" class="addmultifield addmultifield0 form-control input-md" value="" placeholder="'+placeholder+'"/>'+
-									//'<img class="loading_indicator" src="'+parentModuleUrl+'/images/news/ajax-loader.gif">'+
+									'<h6>'+(notNull(fieldObj.labelKey) ? fieldObj.labelKey : tradDynForm["Name of filter"])+'</h6>'+
 								'</div>'+
 								'<div class="col-sm-7">'+
-									'<span>'+tradDynForm["Tags link a filter"]+'</span>'+
-									'<input type="text" class="form-control '+classInput+'" name="tags'+field+'0" id="tags'+field+'0" value="'+value+'" placeholder="'+placeholder+'" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
-									'<button data-id="'+field+'" class="pull-right removePropLineBtn btn btn-xs letter-red" alt="Remove this line"><i class=" fa fa-minus-circle" ></i></button>'+
+									'<h6>'+(notNull(fieldObj.labelValue) ? fieldObj.labelValue : tradDynForm["Tags link a filter"])+'</h6>'+
+								'</div>'+
+							'</div>'+
+				       		'<div class="space5"></div>';
+        	fieldHTML += 	'<div class="inputs properties">'+
+	        					'<div class="col-xs-12">'+
+									'<div class="col-sm-3">'+
+										//'<span>'+tradDynForm["Name of filter"]+'</span>'+
+										'<input type="text" name="'+field+'0" id="'+field+'0" class="addmultifield addmultifield0 form-control input-md" value="" placeholder="'+placeholder+'"/>'+
+										//'<img class="loading_indicator" src="'+parentModuleUrl+'/images/news/ajax-loader.gif">'+
+									'</div>'+
+									'<div class="col-sm-7">'+
+										//'<span>'+tradDynForm["Tags link a filter"]+'</span>'+
+										'<input type="text" class="form-control '+classInput+'" name="tags'+field+'0" id="tags'+field+'0" value="'+value+'" placeholder="'+placeholder+'" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
+									//	'<button data-id="'+field+'" class="pull-right removePropLineBtn btn btn-xs letter-red" alt="Remove this line"><i class=" fa fa-minus-circle" ></i></button>'+
+									'</div>'+
+									'<div class="col-sm-1">'+
+										'<button class="pull-right removePropLineBtn btn letter-red tooltips pull-right" data- data-original-title="Retirer cette ligne" data-placement="bottom"><i class=" fa fa-times" ></i></button>'+
+									'</div>'+
 								'</div>'+
 							'</div>'+
 							'<span class="form-group '+field+fieldObj.inputType+'Btn">'+
@@ -3231,11 +3406,12 @@ var dyFObj = {
 		* val can be a value when type array or {"label":"","value":""} when type property
 		***************************************** */
 		initValues : {},
+		properties : {},
 		uploader : {},
 		initSelect : {},
 		initSelectNetwork : [],
 		addfield : function ( parentContainer,val,name, type ) {
-			mylog.log("dyFObj.init.addfield",parentContainer+' .inputs',val,name);
+			mylog.log("dyFObj.init.addfield",parentContainer+' .inputs val',val, "name", name, "type", type);
 			if(!$.isEmptyObject($(parentContainer+' .inputs')))
 		    {
 		    	if($(parentContainer+' .properties').length > 0){
@@ -3251,30 +3427,32 @@ var dyFObj = {
 
 
 		        mylog.log("dyFObj.init.initSelect", dyFObj.init.initSelect);
-		        $.each(dyFObj.init.initSelect , function(e,v){
-					mylog.log( "id " , e, v, dyFObj.init.initValues[ e ].tags);
-					if( v == true){
-						
-						var selectOptions = 
-						{
-						  "tags": dyFObj.init.initValues[ e ].tags ,
-						  "tokenSeparators": [','],
-						  "placeholder" : ( $("#"+e).attr("placeholder") ) ? $("#"+e).attr("placeholder") : "",
-						};
-						
-						if(dyFObj.init.initValues[ e ].maximumSelectionLength)
-							selectOptions.maximumSelectionLength = dyFObj.init.initValues[e]["maximumSelectionLength"];
-						
-						if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[e] != "undefined" && dyFObj.init.initSelectNetwork[e].length > 0)
-							selectOptions.data=dyFObj.init.initSelectNetwork[e];
-						
-						$("#"+e).removeClass("form-control").select2(selectOptions);
-						if(typeof mainTag != "undefined")
-							$("#"+e).val([mainTag]).trigger('change');
+		        if(dyFObj.init.properties[name]["type"] == "tags"){
+			        $.each(dyFObj.init.initSelect , function(e,v){
+						mylog.log( "id " , e, v, dyFObj.init.initValues[ e ].tags);
+						if( v == true){
+							
+							var selectOptions = 
+							{
+							  "tags": dyFObj.init.initValues[ e ].tags ,
+							  "tokenSeparators": [','],
+							  "placeholder" : ( $("#"+e).attr("placeholder") ) ? $("#"+e).attr("placeholder") : "",
+							};
+							
+							if(dyFObj.init.initValues[ e ].maximumSelectionLength)
+								selectOptions.maximumSelectionLength = dyFObj.init.initValues[e]["maximumSelectionLength"];
+							
+							if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[e] != "undefined" && dyFObj.init.initSelectNetwork[e].length > 0)
+								selectOptions.data=dyFObj.init.initSelectNetwork[e];
+							
+							$("#"+e).removeClass("form-control").select2(selectOptions);
+							if(typeof mainTag != "undefined")
+								$("#"+e).val([mainTag]).trigger('change');
 
-						dyFObj.init.initSelect[e]=false;
-					}
-				 });
+							dyFObj.init.initSelect[e]=false;
+						}
+					});
+				}
 
 
 		    }else 
@@ -3343,25 +3521,53 @@ var dyFObj = {
 		* build HTML for each element of a property list 
 		***************************************** */
 		propertyLineHTML : function (propVal,name){
-			var count = $(".addmultifield").length;
-			mylog.log("dyFObj.init.propertyLineHTML", propVal, typeof propVal, name, count);
+			var count = $(".addmultifield").length - 1;
+			mylog.log("dyFObj.init.propertyLineHTML",dyFObj.init,  propVal, typeof propVal, name, count);
+			mylog.log("dyFObj.init.propertyLineHTML", name);
+
+			var elt = dyFObj.elementObj.dynForm.jsonSchema.properties[name];
+			mylog.log("dyFObj.init elt", elt);
 			if( !notEmpty(propVal) ) 
-		    	propVal = {"label":"","value":""};
-		    
-		    if(!dyFObj.init.initValues["tags"+name+count])
-	    				dyFObj.init.initValues["tags"+name+count] = {};
-		    dyFObj.init.initValues["tags"+name+count]["tags"] = tagsList;
+					propVal = {"label":"","value":""};
 
-		    dyFObj.init.initSelect["tags"+name+count] = true;
+			var classInput = "";
 
-			var str = '<div class="space5"></div><div class="col-sm-3">'+
+			mylog.log("dyFObj.init.properties",dyFObj.init.properties);
+			if(notNull(dyFObj.init.properties) && notNull(dyFObj.init.properties[name])){
+				if(!dyFObj.init.initValues["tags"+name+count])
+				    dyFObj.init.initValues["tags"+name+count] = {};
+
+
+				if(dyFObj.init.properties[name]["type"] == "tags"){
+					dyFObj.init.initValues["tags"+name+count]["tags"] = tagsList;
+				    classInput = "select2TagsInput";	
+				}else{						
+				    dyFObj.init.initValues["tags"+name+count]["values"] = dyFObj.init.properties[name]["values"];	
+				}
+				dyFObj.init.initSelect["tags"+name+count] = true;
+        		
+			}
+			
+
+
+			
+
+			
+			mylog.log("dyFObj.init.propertyLineHTML classInput ", classInput);
+
+
+			var str = '<div class="col-xs-12">'+
+						'<div class="space5"></div><div class="col-sm-3">'+
 						'<input type="text" id="'+name+count+'" name="'+name+count+'" class="addmultifield addmultifield'+count+' form-control input-md" value="'+propVal.label+'" />'+
 						'<img class="loading_indicator" src="'+parentModuleUrl+'/images/news/ajax-loader.gif">'+
 					'</div>'+
 					'<div class="col-sm-7">'+
 						//'<textarea type="text" name="tags'+name+'[]" class="addmultifield'+count+' form-control input-md pull-left" onkeyup="AutoGrowTextArea(this);" placeholder="valeur"   >'+propVal.value+'</textarea>'+
-						'<input type="text" class="form-control select2TagsInput" name="tags'+name+count+'" id="tags'+name+count+'" value="" placeholder="" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
-						'<button class="pull-right removePropLineBtn btn btn-xs letter-red tooltips pull-right" data- data-original-title="Retirer cette ligne" data-placement="bottom"><i class=" fa fa-minus-circle" ></i></button>'+
+						'<input type="text" class="form-control '+classInput+'" name="tags'+name+count+'" id="tags'+name+count+'" value="" placeholder="" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
+					'</div>'+
+					'<div class="col-sm-1">'+
+						'<button class="pull-right removePropLineBtn btn letter-red tooltips pull-right" data- data-original-title="Retirer cette ligne" data-placement="bottom"><i class=" fa fa-times" ></i></button>'+
+					'</div>'+
 					'</div>';
 
 					// TODO Rapha
@@ -6358,8 +6564,9 @@ var dyFInputs = {
     	}
     	if( obj === null ){
     		obj = dyFInputs.deepGet(type);
-    		if( obj )
+    		if( obj ){
     			obj = dyFInputs.get( obj.col )
+    		}
     	}
     	mylog.log("dyFInputs.get return", obj);
     	return obj;
