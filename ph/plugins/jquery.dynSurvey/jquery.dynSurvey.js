@@ -94,6 +94,7 @@ onSave: (optional) overloads the generic saveProcess
 			var lastSection = "";
 			$.each(settings.surveyObj,function( sectionId ,sectionObj ) 
 			{ 
+				mylog.info("check what",settings.surveyObj, settings.sectionObj);
 				mylog.info("building section : ",sectionIndex ,sectionId);
 				var sectionClass = (sectionIndex>0) ? "hide" : ""
 				
@@ -194,7 +195,7 @@ onSave: (optional) overloads the generic saveProcess
 	
 
 })(jQuery);
-
+var answerId=null;
 var dySObj = {
 	navBtnAction : false,
 	activeSection : 0,
@@ -240,7 +241,12 @@ var dySObj = {
 	            }
 	            else {
 	                mylog.log("getSurveyJson data["+name+"] ",data[name]);
-	                dySObj.surveys[name] = data[name];
+	                dySObj.surveys=data;
+	                if(!notNull(dySObj.surveyId) || dySObj.surveyId=="#modal-dynSurvey"){
+	                	dySObj.surveyId="#modal-dynSurvey";
+	                	$("#modal-dynSurvey").empty();
+	                	$(".portfolio-modal-survey").modal("show");
+	                }
 	            }
 	            
 	            if(typeof callback == "function")
@@ -498,7 +504,7 @@ var dySObj = {
 	// builds & returns a survey Json asynchronesly
 	buildOneSurveyFromScenario : function (){
 		mylog.log( "buildOneSurvey scenario x",dySObj.surveys.scenario);
-	    //dySObj.surveys.json={};
+	    if(typeof dySObj.surveys.json == "undefined") dySObj.surveys.json={};
 	    //structure the survey json like a given survey
 	    $.each( dySObj.surveys.scenario, function(s,step) {
 	    	mylog.warn( "buildOneSurvey step",s,step );
@@ -563,10 +569,12 @@ var dySObj = {
 	asyncSurveyLoadedCheck : function() {
 		mylog.log( "asyncSurveyLoadedCheck",dySObj.surveys.json );
 		res = true;
+		if(typeof dySObj.surveys.json != "undefined"){
 		$.each( dySObj.surveys.json, function(s,step) {
 			if(step == null)
 				res = false;
 		});
+		}
 		mylog.log( "asyncSurveyLoadedCheck res",res );
 		if(res)
 			$("#startSurvey").removeClass("hidden");
@@ -574,10 +582,18 @@ var dySObj = {
 	openSurvey : function (key,type,dynType) { 
 	    $("#surveyBtn").hide();
 	    mylog.log("openSurvey",key,type,dynType);
+
 	    if(dynType == "oneSurvey"){
 	    	dySObj.buildSurveySections(); 
 	        dySObj.buildSurvey();
 	    } 
+	    else if(typeof dySObj.surveys.scenario == "undefined" || typeof dySObj.surveys.scenario[key] == "undefined"){
+	    	dySObj.getSurveyJson ( key , baseUrl+"/survey/co/form/id/"+key,"json", function(){
+	    		dySObj.buildOneSurveyFromScenario( );
+	    		dySObj.buildSurveySections();
+	            dySObj.buildSurvey();
+	    	});
+	    }
 	    else if(typeof dySObj.surveys.scenario[key].json == "object"){
 	        mylog.warn("openSurvey :: get survey json exist");
 
