@@ -1,11 +1,9 @@
 <?php 
-    //$params = CO2::getThemeParams();
     $multiscopes = (empty($me) && isset( Yii::app()->request->cookies['multiscopes'] )) ? 
                             Yii::app()->request->cookies['multiscopes']->value : "{}";
     $preferences = Preference::getPreferencesByTypeId(@Yii::app()->session["userId"], Person::COLLECTION);
 ?>
 <script>
-    //alert("init");
     var themeUrl = "<?php echo Yii::app()->theme->baseUrl;?>";
     var themeParams = <?php echo json_encode(@$themeParams);?>;
     var domainName = "<?php echo Yii::app()->params["CO2DomainName"];?>";
@@ -29,6 +27,7 @@
     var moduleUrl = "<?php echo Yii::app()->controller->module->assetsUrl;?>";
     var activeModuleId = "<?php echo $this->module->id?>";
     var assetPath   = "<?php echo $this->module->assetsUrl; ?>";
+    var costum = <?php echo json_encode(Yii::app()->session['costum']) ?>;
     var modules = {
         //Configure here eco
         "classifieds":<?php echo json_encode( Classified::getConfig("classifieds") ) ?>,
@@ -50,6 +49,12 @@
         "co2" : <?php echo json_encode( array(
             "url"    => Yii::app()->getModule( "co2" )->assetsUrl
         )); ?>,
+        "costum": <?php echo json_encode( array(
+            "url"    => Yii::app()->getModule( "costum" )->assetsUrl,
+            "module" => "costum",
+            "init"   => Yii::app()->getModule( "costum" )->assetsUrl."/costum.js",
+            "callback"=> "costum.init"
+        )); ?>,
         "cotools" : <?php echo json_encode( array(
 
             "module" => "cotools",
@@ -59,176 +64,176 @@
         )); ?>
     };
     
-var typeObj = {
-    addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
-    addFile:{ titleClass : "bg-dark", color : "bg-dark" },
-    photo:{ titleClass : "bg-dark", color : "bg-dark" },
-    file:{ titleClass : "bg-dark", color : "bg-dark" },
-    person : { col : "citoyens" ,
-        ctrl : "person", titleClass : "bg-yellow",bgClass : "bgPerson", color:"yellow",icon:"user", hash : "#element.invite", 
-        class: "lbhp", 
-        add: true,
-        name: trad.people,
-        addLabel: trad.invitesomeone,
-        createLabel: trad.invitesomeone,
-        /*explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",*/
-    },
-    persons : { sameAs:"person" },
-    people : { sameAs:"person" },
-    citoyen : { sameAs:"person" },
-    citoyens : { sameAs:"person" },
-    
-    siteurl:{ col:"siteurl",ctrl:"siteurl"},
-    organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga", 
-        add: true,
-        formType:"organization",
-        name: trad.organization, 
-        createLabel: "Create an organization",
-        explainText: "Blabla"
-    },
-    organizations : {sameAs:"organization"},
-    organization2 : { col:"organizations", ctrl:"organization" },
-    LocalBusiness : {col:"organizations",color: "azure",icon: "industry",
-        name:trad.LocalBusiness,
+    var typeObj = {
+        addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
+        addFile:{ titleClass : "bg-dark", color : "bg-dark" },
+        photo:{ titleClass : "bg-dark", color : "bg-dark" },
+        file:{ titleClass : "bg-dark", color : "bg-dark" },
+        person : { col : "citoyens" ,
+            ctrl : "person", titleClass : "bg-yellow",bgClass : "bgPerson", color:"yellow",icon:"user", hash : "#element.invite", 
+            class: "lbhp", 
+            add: true,
+            name: trad.people,
+            addLabel: trad.invitesomeone,
+            createLabel: trad.invitesomeone,
+            /*explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",*/
+        },
+        persons : { sameAs:"person" },
+        people : { sameAs:"person" },
+        citoyen : { sameAs:"person" },
+        citoyens : { sameAs:"person" },
+        
+        siteurl:{ col:"siteurl",ctrl:"siteurl"},
+        organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga", 
+            add: true,
             formType:"organization",
-            formSubType:"Localbusiness",
-            createLabel:"Create a local business",
-            textExplain:"Make visible your company<br>Find new customer<br>Manage your contacts",           
+            name: trad.organization, 
+            createLabel: "Create an organization",
+            explainText: "Blabla"
+        },
+        organizations : {sameAs:"organization"},
+        organization2 : { col:"organizations", ctrl:"organization" },
+        LocalBusiness : {col:"organizations",color: "azure",icon: "industry",
+            name:trad.LocalBusiness,
+                formType:"organization",
+                formSubType:"Localbusiness",
+                createLabel:"Create a local business",
+                textExplain:"Make visible your company<br>Find new customer<br>Manage your contacts",           
+                parentAllow:["citoyens"]
+            },
+        NGO : {sameAs:"organization", color:"green", icon:"users",
+            name : trad.NGO,
+            formType:"organization",
+            createLabel:"Create an NGO",
+            formSubType:"NGO",
+            textExplain:"Make visible your NGO<br>Manage the community<br>Share your news",           
             parentAllow:["citoyens"]
         },
-    NGO : {sameAs:"organization", color:"green", icon:"users",
-        name : trad.NGO,
-        formType:"organization",
-        createLabel:"Create an NGO",
-        formSubType:"NGO",
-        textExplain:"Make visible your NGO<br>Manage the community<br>Share your news",           
-        parentAllow:["citoyens"]
-    },
-    Association : {sameAs:"organization", color:"green", icon: "group"},
-    GovernmentOrganization : {col:"organization", color: "red",icon: "university",
-        name:trad.GovernmentOrganization,
-        formType:"organization",
-        formSubType:"GovernmentOrganization",
-        createLabel:"Create a public sevrice",
-        textExplain:"Town hall, schools, etc...<br>Share your news<br>Share events",           
-        parentAllow:["citoyens"]
-    },
-    Group : {   col:"organizations",color: "turq",icon: "circle-o",
-        name:trad.Group,
-        formType:"organization",
-        formSubType:"Group",
-        createLabel:"Create a group",
-        textExplain:"Make visible your collectif group<br><br>",           
-        parentAllow:["citoyens"]
-    },
-    event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent", 
-        add: true,
-        formType:"event",
-        name: trad.event, 
-        createLabel: "Create an event",
-        explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",
-        parentAllow:["citoyens", "organizations","projects", "events"]
-    },
-    
-    events : {sameAs:"event"},
-    project : {col:"projects",ctrl:"project",   icon : "lightbulb-o",color : "purple",titleClass : "bg-purple", bgClass : "bgProject",
-        add: true,
-        formType:"project",
-        name: trad.project, 
-        createLabel: "Create a project",
-        explainText: "Make visible a project<br>Find support<br>Build a community",
-        parentAllow:[ "citoyens", "organizations","projects"]
-    },
-    projects : {sameAs:"project"},
-    project2 : {col:"projects",ctrl:"project"},
-    city : {sameAs:"cities"},
-    cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
-    
-    entry : {   col:"surveys",  ctrl:"survey",  titleClass : "bg-dark",bgClass : "bgDDA",   icon : "gavel", color : "azure", 
-        saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-    
-    product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",  icon:"shopping-basket"},
-    products : {sameAs:"product"},
-    service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",    icon:"sun-o"},
-    services : {sameAs:"service"},
-    circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",   icon:"ravelry"},
-    circuits : {sameAs:"circuit"},
-    poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-        subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-               "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-               "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ], 
-        add: true,
-        name: tradCategory.poi,
-        formType: "poi",
-        explainText:"Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory",
-        parentAllow:["citoyens", "organizations","projects", "events"]
-    },
-    url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",   },
-    bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
-    document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument", },
-    default : {icon:"arrow-circle-right",color:"dark"},
-    //"video" : {icon:"video-camera",color:"dark"},
-    formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
-    news : { col : "news", ctrl:"news", titleClass : "bg-dark", color:"dark",   icon:"newspaper-o"},
-    //news : { col : "news" }, 
-    config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
-                sections : {
-                    network : { label: "Network Config",key:"network",icon:"map-marker"}
-                }},
+        Association : {sameAs:"organization", color:"green", icon: "group"},
+        GovernmentOrganization : {col:"organization", color: "red",icon: "university",
+            name:trad.GovernmentOrganization,
+            formType:"organization",
+            formSubType:"GovernmentOrganization",
+            createLabel:"Create a public sevrice",
+            textExplain:"Town hall, schools, etc...<br>Share your news<br>Share events",           
+            parentAllow:["citoyens"]
+        },
+        Group : {   col:"organizations",color: "turq",icon: "circle-o",
+            name:trad.Group,
+            formType:"organization",
+            formSubType:"Group",
+            createLabel:"Create a group",
+            textExplain:"Make visible your collectif group<br><br>",           
+            parentAllow:["citoyens"]
+        },
+        event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent", 
+            add: true,
+            formType:"event",
+            name: trad.event, 
+            createLabel: "Create an event",
+            explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",
+            parentAllow:["citoyens", "organizations","projects", "events"]
+        },
+        
+        events : {sameAs:"event"},
+        project : {col:"projects",ctrl:"project",   icon : "lightbulb-o",color : "purple",titleClass : "bg-purple", bgClass : "bgProject",
+            add: true,
+            formType:"project",
+            name: trad.project, 
+            createLabel: "Create a project",
+            explainText: "Make visible a project<br>Find support<br>Build a community",
+            parentAllow:[ "citoyens", "organizations","projects"]
+        },
+        projects : {sameAs:"project"},
+        project2 : {col:"projects",ctrl:"project"},
+        city : {sameAs:"cities"},
+        cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
+        
+        entry : {   col:"surveys",  ctrl:"survey",  titleClass : "bg-dark",bgClass : "bgDDA",   icon : "gavel", color : "azure", 
+            saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
+        
+        product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",  icon:"shopping-basket"},
+        products : {sameAs:"product"},
+        service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",    icon:"sun-o"},
+        services : {sameAs:"service"},
+        circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",   icon:"ravelry"},
+        circuits : {sameAs:"circuit"},
+        poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+            subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+                   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+                   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ], 
+            add: true,
+            name: tradCategory.poi,
+            formType: "poi",
+            explainText:"Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory",
+            parentAllow:["citoyens", "organizations","projects", "events"]
+        },
+        url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",   },
+        bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
+        document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument", },
+        default : {icon:"arrow-circle-right",color:"dark"},
+        //"video" : {icon:"video-camera",color:"dark"},
+        formContact : { titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user", saveUrl : baseUrl+"/"+moduleId+"/app/sendmailformcontact"},
+        news : { col : "news", ctrl:"news", titleClass : "bg-dark", color:"dark",   icon:"newspaper-o"},
+        //news : { col : "news" }, 
+        config : { col:"config",color:"azure",icon:"cogs",titleClass : "bg-azure", title : tradDynForm.addconfig,
+                    sections : {
+                        network : { label: "Network Config",key:"network",icon:"map-marker"}
+                    }},
 
-    classified : { col:"classifieds",ctrl:"classified",color:"azure", icon:"bullhorn", titleClass : "bg-azure", bgClass : "bgPerson", 
-        add: true,
-        formType:"classifieds",
-        name: trad.classified, 
-        createLabel: "Create a classified",
-        textExplain: "Create a classified ad<br>To share To give To sell To rent<br>Material Property Job",
-        parentAllow:[ "citoyens", "organizations","projects"]
-    },
-    classifieds : { sameAs:"classified" },
-    ressource : {  col:"classifieds",ctrl:"classified",color:"vine", icon:"cubes", titleClass : "bg-vine", bgClass : "bgPerson",
-        add: true,
-        formType:"ressources",
-        name: trad.ressource, 
-        createLabel: "add a ressource",
-        textExplain: "Echnager des ressources<br>des outils, des documents<br> des compétences et des besoins",
-        parentAllow:[ "citoyens", "organizations","projects", "events"]
-    },
-    ressources : { sameAs:"ressource" },
-    job :{  col:"classifieds",ctrl:"classified",color:"yellow-k", icon:"briefcase", titleClass : "bg-yellow-k", bgClass : "bgPerson",
-        add: true,
-        formType:"jobs",
-        name: trad.job, 
-        createLabel: "Add an offers",
-        textExplain: "Ajouter les stages, les formations ou les offres d'emploi que vous proposez",
-        parentAllow:[ "citoyens", "organizations","projects"]
-    },
-    jobs : { sameAs:"job" },
-    network : { col:"network",color:"azure",icon:"map-o",titleClass : "bg-turq"},
-    networks : {sameAs:"network"},
-    vote : {sameAs:"proposals"},
-    survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-    surveys : {sameAs:"survey"},
-    proposal : { col:"proposals", ctrl:"proposal", color:"turq",icon:"gavel", titleClass : "bg-turq", 
-        add: true,
-        name: trad.survey,
-        formType:"proposal",
-        createLabel: "Create a survey",
-        explainText: "Make a survey<br>add a referendum<br>construct a collective opinion",
-    }, 
-    proposals : { sameAs : "proposal" },
-    proposal2 : { sameAs : "proposal" },
-    resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
-    action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-    actions : { sameAs : "action" },
-    actionRooms : {sameAs:"room"},
-    rooms : {sameAs:"room"},
-    room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-    discuss : {col:"actionRooms",ctrl:"room"},
-    contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
-        saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
-    curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
-    badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"}
-};
+        classified : { col:"classifieds",ctrl:"classified",color:"azure", icon:"bullhorn", titleClass : "bg-azure", bgClass : "bgPerson", 
+            add: true,
+            formType:"classifieds",
+            name: trad.classified, 
+            createLabel: "Create a classified",
+            textExplain: "Create a classified ad<br>To share To give To sell To rent<br>Material Property Job",
+            parentAllow:[ "citoyens", "organizations","projects"]
+        },
+        classifieds : { sameAs:"classified" },
+        ressource : {  col:"classifieds",ctrl:"classified",color:"vine", icon:"cubes", titleClass : "bg-vine", bgClass : "bgPerson",
+            add: true,
+            formType:"ressources",
+            name: trad.ressource, 
+            createLabel: "add a ressource",
+            textExplain: "Echnager des ressources<br>des outils, des documents<br> des compétences et des besoins",
+            parentAllow:[ "citoyens", "organizations","projects", "events"]
+        },
+        ressources : { sameAs:"ressource" },
+        job :{  col:"classifieds",ctrl:"classified",color:"yellow-k", icon:"briefcase", titleClass : "bg-yellow-k", bgClass : "bgPerson",
+            add: true,
+            formType:"jobs",
+            name: trad.job, 
+            createLabel: "Add an offers",
+            textExplain: "Ajouter les stages, les formations ou les offres d'emploi que vous proposez",
+            parentAllow:[ "citoyens", "organizations","projects"]
+        },
+        jobs : { sameAs:"job" },
+        network : { col:"network",color:"azure",icon:"map-o",titleClass : "bg-turq"},
+        networks : {sameAs:"network"},
+        vote : {sameAs:"proposals"},
+        survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+        surveys : {sameAs:"survey"},
+        proposal : { col:"proposals", ctrl:"proposal", color:"turq",icon:"gavel", titleClass : "bg-turq", 
+            add: true,
+            name: trad.survey,
+            formType:"proposal",
+            createLabel: "Create a survey",
+            explainText: "Make a survey<br>add a referendum<br>construct a collective opinion",
+        }, 
+        proposals : { sameAs : "proposal" },
+        proposal2 : { sameAs : "proposal" },
+        resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
+        action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+        actions : { sameAs : "action" },
+        actionRooms : {sameAs:"room"},
+        rooms : {sameAs:"room"},
+        room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+        discuss : {col:"actionRooms",ctrl:"room"},
+        contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+            saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+        curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
+        badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"}
+    };
 
     
     
@@ -347,6 +352,8 @@ var typeObj = {
     };
     var themeObj = {
         init : function(){
+            themeObj.blockUi.setLoader();
+            $.blockUI({ message : themeObj.blockUi.processingMsg});
             toastr.options = {
               "closeButton": false,
               "positionClass": "toast-bottom-right",
@@ -363,7 +370,7 @@ var typeObj = {
             if(typeof initButtonAddFooter!= "undefined") initButtonAddFooter(".toolbar-bottom-adds");
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
             if(typeof resizeInterface != "undefined") resizeInterface();
-            initMyScopes();
+            themeObj.initMyScopes();
             //if(typeof localStorage != "undefined" && typeof localStorage.circuit != "undefined")
               //  circuit.obj = JSON.parse(localStorage.getItem("circuit"));
             //Init mentions contact
@@ -500,29 +507,47 @@ var typeObj = {
         imgLoad : "CO2r.png" ,
         mainContainer : ".main-container",
         blockUi : {
-            processingMsg :'<div class="lds-css ng-scope">'+
-                    '<div style="width:100%;height:100%" class="lds-dual-ring">'+
-                        '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo.png" class="loadingPageImg" height=80>'+
-                        '<div></div>'+
-                        '<div></div>'+
-                    '</div>'+
-                '</div>', 
-            errorMsg : '<img src="'+themeUrl+'/assets/img/LOGOS/'+domainName+'/logo.png" class="logo-menutop" height=80>'+
-              '<i class="fa fa-times"></i><br>'+
-               '<span class="col-md-12 text-center font-blackoutM text-left">'+
-                '<span class="letter letter-red font-blackoutT" style="font-size:40px;">404</span>'+
-               '</span>'+
+            setLoader : function(){
+                color1="#ff9205";
+                color2="#3dd4ed";
+                logoLoader=themeUrl+'/assets/img/LOGOS/'+domainName+'/logo.png';
+                if(notNull(costum)){
+                    logoLoader=costum.logo;
+                    if(typeof costum.css != "undefined" && typeof costum.css.loader !="undefined"){
+                        if(typeof costum.css.loader.ring1 != "undefined" && costum.css.loader.ring1.color != "undefined")
+                            color1=costum.css.loader.ring1.color;
+                        if(typeof costum.css.loader.ring2 != "undefined" && costum.css.loader.ring2.color != "undefined")
+                            color2=costum.css.loader.ring2.color;
+                    }
 
-              '<h4 style="font-weight:300" class=" text-dark padding-10">'+
-                'Oups ! Une erreur s\'est produite'+
-              '</h4>'+
-              '<span style="font-weight:300" class=" text-dark">'+
-                'Vous allez être redirigé vers la page d\'accueil'+
-              '</span>'
+                }
+                themeObj.blockUi.processingMsg=
+                    '<div class="lds-css ng-scope">'+
+                        '<div style="width:100%;height:100%" class="lds-dual-ring">'+
+                            '<img src="'+logoLoader+'" class="loadingPageImg" height=80>'+
+                            '<div style="border-color: transparent '+color2+' transparent '+color2+';"></div>'+
+                            '<div style="border-color: transparent '+color1+' transparent '+color1+';"></div>'+
+                        '</div>'+
+                    '</div>';
+                themeObj.blockUi.errorMsg= 
+                    '<img src="'+logoLoader+'" class="logo-menutop" height=80>'+
+                    '<i class="fa fa-times"></i><br>'+
+                    '<span class="col-md-12 text-center font-blackoutM text-left">'+
+                        '<span class="letter letter-red font-blackoutT" style="font-size:40px;">404</span>'+
+                    '</span>'+
+
+                    '<h4 style="font-weight:300" class=" text-dark padding-10">'+
+                        'Oups ! Une erreur s\'est produite'+
+                    '</h4>'+
+                    '<span style="font-weight:300" class=" text-dark">'+
+                        'Vous allez être redirigé vers la page d\'accueil'+
+                    '</span>';
+            },
+            processingMsg :"", 
+            errorMsg : ""
         },
         dynForm : {
             onLoadPanel : function (elementObj) { 
-                //console.log("onLoadPanel currentKFormType", currentKFormType);
                 mylog.log("elementObj",elementObj);
                 var typeName = (typeof currentKFormType != "undefined" && currentKFormType!=null && currentKFormType!="") ? 
                     trad["add"+currentKFormType] : elementObj.dynForm.jsonSchema.title;
@@ -556,46 +581,44 @@ var typeObj = {
                 if(typeof currentKFormType != "undefined")
                     $("#ajaxFormModal #type").val(currentKFormType); **/
             }
+        },
+        initMyScopes: function(){
+            if( notNull(localStorage) && notNull(localStorage.myScopes) )
+                myScopes = JSON.parse(localStorage.getItem("myScopes"));
+            if( notNull(myScopes) && myScopes.userId == userId )  {
+                myScopes.open={};
+                myScopes.countActive = 0;
+                myScopes.search = {};
+                myScopes.openNews={};
+                if(myScopes.multiscopes==null)
+                    myScopes.multiscopes={};
+                console.log("init scope", myScopes);
+            } else {
+                myScopes={
+                    type:"open",
+                    typeNews:"open",
+                    userId: userId,
+                    open : {},
+                    openNews : {},
+                    countActive : 0,
+                    search : {},
+                    communexion : <?php echo json_encode(CO2::getCommunexionUser()) ?>,
+                    multiscopes : <?php echo isset($me) && isset($me["multiscopes"]) ? 
+                                    json_encode($me["multiscopes"]) :
+                                    $multiscopes; ?>
+                };
+
+                if( myScopes.communexion != false)
+                    myScopes.communexion=scopeObject(myScopes.communexion);
+                else
+                    myScopes.communexion={};
+                console.log("init scope", myScopes);
+                localStorage.setItem("myScopes",JSON.stringify(myScopes));
+            }
+            //return myScopes;
         }
     };
 
-function initMyScopes(){
-    //if(typeof localStorage != "undefined" && typeof localStorage.myScopes != "undefined" && typeof localStorage.userId != "undefined"){ 
-    //var myScopes={};
-    if( notNull(localStorage) && notNull(localStorage.myScopes) )
-        myScopes = JSON.parse(localStorage.getItem("myScopes"));
-    if( notNull(myScopes) && myScopes.userId == userId )  {
-        myScopes.open={};
-        myScopes.countActive = 0;
-        myScopes.search = {};
-        myScopes.openNews={};
-        if(myScopes.multiscopes==null)
-            myScopes.multiscopes={};
-        console.log("init scope", myScopes);
-    } else {
-        myScopes={
-            type:"open",
-            typeNews:"open",
-            userId: userId,
-            open : {},
-            openNews : {},
-            countActive : 0,
-            search : {},
-            communexion : <?php echo json_encode(CO2::getCommunexionUser()) ?>,
-            multiscopes : <?php echo isset($me) && isset($me["multiscopes"]) ? 
-                            json_encode($me["multiscopes"]) :
-                            $multiscopes; ?>
-        };
-
-        if( myScopes.communexion != false)
-            myScopes.communexion=scopeObject(myScopes.communexion);
-        else
-            myScopes.communexion={};
-        console.log("init scope", myScopes);
-        localStorage.setItem("myScopes",JSON.stringify(myScopes));
-    }
-    //return myScopes;
-}
 
 function expireAllCookies(name, paths) {
     var expires = new Date(0).toUTCString();

@@ -69,83 +69,7 @@
         $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
     }
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal"; 
-    /*$addElement=array(
-        Person::COLLECTION => array(
-            "label"=>Yii::t("common","Invite someone"),
-            "icon"=>Person::ICON,
-            "addClass"=> "bg-yellow lbhp",
-            "href"=>"#element.invite"
-        ),
-        Organization::COLLECTION => array(
-            "label"=>Yii::t("common","Organizations"),
-            "icon"=>Organization::ICON,
-            "formType"=>"organization",
-            "addClass"=> "bg-green",
-            "href"=>"javascript:;"
-        ),
-        Project::COLLECTION => array(
-            "label"=>Yii::t("common","Project"),
-            "icon"=>Project::ICON,
-            "formType"=>"project",
-            "addClass"=> "addBtnFoot_orga addBtnFoot_project bg-purple",
-            "href"=>"javascript:;"
-        ),
-        Event::COLLECTION => array(
-            "label"=>Yii::t("common","Event"),
-            "icon"=>Event::ICON,
-            "formType"=>"event",
-            "addClass"=> "addBtnAll bg-orange",
-            "href"=>"javascript:;"
-        ),
-        Classified::COLLECTION => array(
-            "label"=>Yii::t("common","Classified"),
-            "icon"=>Classified::ICON,
-            "formType"=>"classifieds",
-            "addClass"=> "addBtnFoot_orga addBtnFoot_project bg-azure",
-            "href"=>"javascript:;"
-        ),
-        Classified::TYPE_RESSOURCES => array(
-            "label"=>Yii::t("common","Ressource"),
-            "icon"=>Classified::ICON_RESSOURCES,
-            "formType"=>"ressources",
-            "addClass"=> "addBtnAll bg-vine",
-            "href"=>"javascript:;"
-        ),
-        Classified::TYPE_JOBS => array(
-            "label"=>Yii::t("common","Jobs"),
-            "icon"=>Classified::ICON_JOBS,
-            "formType"=>"jobs",
-            "addClass"=> "hideBtnFoot_person addBtnFoot_orga addBtnFoot_project bg-yellow-k",
-            "href"=>"javascript:;"
-        ),
-        Poi::COLLECTION => array(
-            "label"=>Yii::t("common","Point of interest"),
-            "icon"=>Poi::ICON,
-            "formType"=>"poi",
-            "addClass"=> "addBtnAll bg-green-k",
-            "href"=>"javascript:;"
-        ),Proposal::COLLECTION => array(
-            "label"=>Yii::t("common","Survey"),
-            "icon"=>Proposal::ICON,
-            "formType"=>"proposal",
-            "addClass"=> "addBtnAll bg-turq",
-            "href"=>"javascript:;"
-        )
-    );
-    if( Yii::app()->params['rocketchatMultiEnabled'] ){
-        $addElement["chat"] = array(
-            "label"=>Yii::t("common","Chat"),
-            "icon"=>"fa-comments",
-            "formType"=>"chat",
-            "addClass"=> "addBtnFootChat addBtnFoot_orga addBtnFoot_project addBtnFoot_event bg-red-k",
-            "href"=>"javascript:;"
-        );
-    }
-    //Filtering button add element if custom
-    if(@$themeParams["add"]){
-        foreach($addElement as $key=>$v)
-            if(!@$themeParams["add"][$key]) unset($addElement[$key]);
-    }*/
+
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
     <?php if(!@$themeParams["footer"] || (@$themeParams["footer"]["donate"] && !empty($themeParams["footer"]["donate"]))){ 
@@ -172,14 +96,6 @@
 
 
     <div class="toolbar-bottom-adds toolbar-bottom-fullwidth font-montserrat hidden">
-        <?php /*foreach($addElement as $key => $v){ ?>
-            <a href="<?php echo $v["href"] ?>" 
-                <?php if(@$v["formType"]) echo 'data-form-type="'.$v["formType"].'"' ?> 
-                class="addBtnFoot btn-open-form btn btn-default <?php echo $v["addClass"] ?> margin-bottom-10"> 
-                <i class="fa <?php echo $v["icon"] ?>"></i> 
-                <span><?php echo $v["label"] ?></span>
-            </a>
-        <?php }*/ ?>
         <!--
         <?php 
         if( Yii::app()->params['rocketchatMultiEnabled'] )

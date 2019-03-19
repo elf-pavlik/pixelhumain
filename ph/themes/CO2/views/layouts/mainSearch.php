@@ -75,11 +75,8 @@
                                  array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
 
 
-    if($this->module->id == "costum"){
+    if($this->module->id != "costum"){
 
-        $this->renderPartial( 'costum.views.co.init');
-    }
-    else {
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
         Yii::app()->session["costum"]=null;
     }
@@ -407,15 +404,17 @@
             
             
             jQuery(document).ready(function() { 
-                $.blockUI({ message : themeObj.blockUi.processingMsg});                
+                themeObj.init();           
                 $.each(modules,function(k,v) { 
-                    if(v.init){
+                    if(typeof v.init != "undefined" && notNull(v.init)){
                         mylog.log("init.js for module : ",k);
-                        lazyLoad( v.init , null,null);
+                        callB=null;
+                        lazyLoad( v.init , null,callB);
                     }
                 });
-                if( typeof costum != "undefined" ){
-                    costum.init("mainSearch");
+                if( typeof costum != "undefined" && notNull(costum) ){
+                   
+                   // costum.init();
                 }
 
                 var pageUrls = <?php echo json_encode(Yii::app()->session['paramsConfig']["pages"]); ?>;
@@ -428,10 +427,6 @@
                         });
                     }
                 });
-
-                themeObj.init();
-                
-   
                 //Login.init();
                 
                 
