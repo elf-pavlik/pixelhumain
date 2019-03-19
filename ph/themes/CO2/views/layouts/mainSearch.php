@@ -157,8 +157,36 @@
             ?>
             <div class="pageContent"></div>
         </div>
-        
-
+        <div class="portfolio-modal portfolio-modal-survey modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true" style="top:0px !important;">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                             <div class="modal-header text-dark">
+                                <h3 class="modal-title text-center" id="ajax-modal-modal-title">
+                                 </h3>
+                            </div>
+                            <div id="ajax-modal-modal-body" class="modal-body">
+                                  <form id="modal-dynSurvey" class="" style=""></form>
+       
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 text-center" style="margin-top:50px;margin-bottom:50px;">
+                    <hr>
+                    <a href="javascript:" style="font-size: 13px;" type="button" class="" data-dismiss="modal">
+                    <i class="fa fa-times"></i> <?php echo Yii::t("common","Back") ?>
+                    </a>
+                </div>
+            </div>
+        </div>
         <div id="modal-preview-coop" class="shadow2 hidden"></div>
         <div id="modal-settings" class="shadow2"></div>
         <div id="floopDrawerDirectory" class="floopDrawer"></div>
@@ -251,6 +279,8 @@
                 '/plugins/moment/min/moment.min.js' ,
                 '/plugins/moment/min/moment-with-locales.min.js',
                 '/plugins/jquery.dynForm.js',
+    '/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js',
+                '/plugins/jquery.dynSurvey/jquery.dynSurvey.js',
                 
                 '/plugins/jquery.elastic/elastic.js',
                 '/plugins/underscore-master/underscore.js',

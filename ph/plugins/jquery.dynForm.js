@@ -1694,7 +1694,7 @@ var dyFObj = {
 			var thisValue = ( fieldObj.checked == "true" ) ? "true" : "false";
 			forced="";
 			if(value!==""){
-				thisValue = (!value) ? "false" : "true";
+				thisValue = (!value || value=="false") ? "false" : "true";
 				forced="data-checked='"+thisValue+"'";
 			}
 			mylog.log("fieldObj ??? thisValue", thisValue);
@@ -1712,12 +1712,81 @@ var dyFObj = {
 								fieldObj.params.offText+
 							'</a>'+
 						 '</div>';
-			initField = function(){
-				//var checked = ( fieldObj.checked ) ? "checked" : "";
-				//if(checked) 
-				//if( fieldObj.switch )
-					//dyFObj.init.initbootstrapSwitch('#'+field, (fieldObj.switch.onChange) ? fieldObj.switch.onChange : null );
-			};
+			if(typeof fieldObj.init == "undefined"){
+				initField = function(){
+	    			var checked = (typeof fieldObj.checked != "undefined") ? fieldObj.checked : false;
+		    		mylog.log("checkcheck2", checked, "#ajaxFormModal #"+field);
+		    		var idTrue = "#ajaxFormModal ."+field+"checkboxSimple .btn-dyn-checkbox[data-checkval='true']";
+		    		var idFalse = "#ajaxFormModal ."+field+"checkboxSimple .btn-dyn-checkbox[data-checkval='false']";
+		    		if(typeof $("#ajaxFormModal #"+field).data("checked") != "undefined")
+		    			checked=$("#ajaxFormModal #"+field).data("checked");//$("#ajaxFormModal #"+id).hasAttr("data-checked");
+		    		$("#ajaxFormModal #"+field).val(checked);
+
+		    		if(typeof fieldObj.params.labelInformation != "undefined")
+		        		$("#ajaxFormModal ."+field+"checkboxSimple label").append(
+		        				"<small class='col-md-12 col-xs-12 text-left no-padding' "+
+										"style='font-weight: 200;'>"+
+										fieldObj.params.labelInformation+
+								"</small>");
+
+		        	if(checked == "true" || checked){
+		    			$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+		    			$("#ajaxFormModal ."+field+"checkboxSimple label").append(
+		    					"<span class='lbl-status-check margin-left-10'>"+
+		    						'<span class="letter-green"><i class="fa fa-check-circle"></i> '+fieldObj.params.onLabel+'</span>'+
+		    					"</span>");
+
+		    			setTimeout(function(){
+	    			  		if(typeof fieldObj.inputTrue != "undefined") 
+	    			  			$(fieldObj.inputTrue).hide(400);
+	    			  	}, 1000);
+		        	}
+					else if(checked == "false" || !checked){ 
+		    			$(idFalse).addClass("bg-red").removeClass("letter-red");
+		    			$("#ajaxFormModal ."+field+"checkboxSimple label").append(
+		    					"<span class='lbl-status-check margin-left-10'>"+
+		    						'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+fieldObj.params.offLabel+'</span>'+
+		    					"</span>");
+
+		    			setTimeout(function(){
+	    			  		if(typeof fieldObj.inputId != "undefined") 
+	    			  			$(fieldObj.inputId).hide(400);
+	    			  	}, 1000);
+		    		}
+		    		
+
+		    		$("#ajaxFormModal ."+field+"checkboxSimple .btn-dyn-checkbox").click(function(){
+		    			var checkval = $(this).data('checkval');
+		    			$("#ajaxFormModal #"+field).val(checkval);
+		    			mylog.log("EVENT CLICK ON CHECKSIMPLE", checkval);
+		    			
+		    			if(checkval) {
+		    				$(idTrue).addClass("bg-green-k").removeClass("letter-green");
+		    			  	$(idFalse).removeClass("bg-red").addClass("letter-red");
+		    			  	$("#ajaxFormModal ."+field+"checkboxSimple .lbl-status-check").html(
+		    					'<span class="letter-green"><i class="fa fa-check-circle"></i> '+fieldObj.params.onLabel+'</span>');
+		    			  	
+		    			  	if(typeof fieldObj.inputId != "undefined") $(fieldObj.inputId).show(400);
+
+		    			  	if(typeof fieldObj.inputTrue != "undefined") $(fieldObj.inputTrue).hide(400);
+		    			}
+		    			else{
+		    			  	$(idFalse).addClass("bg-red").removeClass("letter-red");
+		    				$(idTrue).removeClass("bg-green-k").addClass("letter-green");
+		    				$("#ajaxFormModal ."+field+"checkboxSimple .lbl-status-check").html(
+		    					'<span class="letter-red"><i class="fa fa-minus-circle"></i> '+fieldObj.params.offLabel+'</span>');
+
+		    				if(typeof fieldObj.inputId != "undefined") $(fieldObj.inputId).hide(400);
+		    				if(typeof fieldObj.inputTrue != "undefined") $(fieldObj.inputTrue).show(400);
+		    			}
+		    		});
+
+					//var checked = ( fieldObj.checked ) ? "checked" : "";
+					//if(checked) 
+					//if( fieldObj.switch )
+						//dyFObj.init.initbootstrapSwitch('#'+field, (fieldObj.switch.onChange) ? fieldObj.switch.onChange : null );
+				};
+			}
 		}
 
 		/* **************************************
