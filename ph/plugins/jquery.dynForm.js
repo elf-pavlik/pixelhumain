@@ -6612,12 +6612,12 @@ var dyFInputs = {
     links: function(params){
     	var inputObj = {
 			inputType : "finder",
-			label : ( notEmpty(params.label) ? params.label : tradDynForm.whoiscarrytheproject ),
-			multiple : ( notEmpty(params.multiple) ? params.multiple : true ),
-			invite :  ( notEmpty(params.invite) ? params.invite : true ),
-			rules : { required : true, lengthMin:( notEmpty(params.lengthMin) ? params.lengthMin : 3 ) },
-			initType: ( notEmpty(params.type) ? params.type : ["persons"] ),
-			openSearch :( notEmpty(params.openSearch) ? params.openSearch : true )
+			label : ( notEmpty(params) && notEmpty(params.label) ? params.label : tradDynForm.whoiscarrytheproject ),
+			multiple : ( notEmpty(params) &&notEmpty(params.multiple) ? params.multiple : true ),
+			invite :  ( notEmpty(params) &&notEmpty(params.invite) ? params.invite : true ),
+			rules : { required : true, lengthMin:( notEmpty(params) && notEmpty(params.lengthMin) ? params.lengthMin : 3 ) },
+			initType: ( notEmpty(params) &&notEmpty(params.type) ? params.type : ["persons"] ),
+			openSearch :( notEmpty(params) &&notEmpty(params.openSearch) ? params.openSearch : true )
 		}
     	return inputObj;
     }
