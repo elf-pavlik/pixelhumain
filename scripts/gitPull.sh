@@ -4,7 +4,7 @@ blue=`tput setaf 0`
 bgWhite=`tput setab 7`
 reset=`tput sgr0`
 
-tab=("co2" "citizenToolKit" "api" "graph" "interop" "eco" "chat"  "survey" "map" "news" "dda" "onepage" );
+tab=("co2" "citizenToolKit" "api" "graph" "interop" "eco" "chat"  "survey" "map" "news" "dda" "onepage" "costum" );
 
 cd ~/d/modules/
 
