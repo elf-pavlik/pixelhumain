@@ -57,6 +57,7 @@ onSave: (optional) overloads the generic saveProcess
 			};
 			var fieldHTML = '';
 			dyFObj.initFieldOnload={};
+			dyFObj.orderForm=[];
 			/* **************************************
 			* Error Section
 			***************************************** */
@@ -1101,7 +1102,6 @@ var dyFObj = {
 	//entry point function for opening dynForms
 	openForm : function  (type, afterLoad,data, isSub) { 
 		//mylog.clear();
-		//alert("openForm");
 		$.unblockUI();
 		$("#openModal").modal("hide");
 		mylog.warn("--------------- Open Form ",type, afterLoad,data);
@@ -6633,41 +6633,12 @@ var dyFInputs = {
     }
 }
 var dyFCustom = {
+	orderForm:[],
 	beforeBuild : function (obj) {
-// <<<<<<< HEAD
-// 		mylog.log("dyFCustom properties", obj);
-// 		if( typeof obj.onload != "undefined" 
-// 			&& typeof obj.onload.actions != "undefined"
-// 			&& typeof obj.onload.actions.properties != "undefined"){
-// 			mylog.log("dyFCustom properties obj.onload.actions.properties", obj.onload.actions.properties);
-// 			$.each(obj.onload.actions.properties,function(f,p) {
-// 				mylog.log("dyFCustom properties f,p", f,p);
-
-// 				if( typeof dyFInputs != "undefined" && 
-// 					typeof dyFInputs[f] != "undefined" ){
-// 					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = dyFInputs[f](p);
-// 				}
-// 		 	});
-// 		}
-
-// 		if( typeof obj.onload != "undefined" 
-// 			&& typeof obj.onload.actions != "undefined"
-// 			&& typeof obj.onload.actions.required != "undefined"){
-// 			mylog.log("dyFCustom required obj.onload.actions.properties", obj.onload.actions.required);
-// 			$.each(obj.onload.actions.required,function(f,p) {
-// 				mylog.log("dyFCustom required f,p",f,p, dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
-// 				dyFCustom.required(f) ;
-// 		 	});
-// 		}
-// =======
 		$.each(obj,function(f,p) {
 			mylog.log("beforeBuild", f,p);
 			if(typeof dyFCustom[f] == "function")
 				f = dyFCustom[f];
-			/*else if(	typeof dyFObj.elementObj.dynForm.jsonSchema.actions == "function" && 
-						typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
-				f = dyFObj.elementObj.dynForm.jsonSchema.actions[f];*/				
-			
 			if(typeof f == "function"){
 				if(p==1)
 					f();
@@ -6677,7 +6648,6 @@ var dyFCustom = {
 					f(p);
 			}
 		});
-//>>>>>>> 87adf12e16b945541db79bc50518292ca08764df
 	},
 	init : function (obj) {
 		mylog.log("dyFCustom init", obj);
@@ -6754,9 +6724,18 @@ var dyFCustom = {
 		}
 	},
 	properties : function(p){
+		dyFCustom.orderForm=[];
+		orderingForm=false;
+		$.each(dyFObj.elementObj.dynForm.jsonSchema.properties, function(e,v){
+			dyFCustom.orderForm.push(e);
+		});
+		mylog.log("order of main properties dyFObj", dyFCustom.orderForm);
 		$.each(p,function(f,k) {
-			mylog.log("dyFCustom properties add f,p", f,k);
-			mylog.log("ESPION : ",dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
+			mylog.log("ESPION costum properties: ", dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
+			if(typeof k.order != "undefined"){
+				orderingForm=true;
+				dyFCustom.orderForm.splice(k.order, 0, f); 
+			}
 			if(typeof dyFObj.elementObj.dynForm.jsonSchema.properties[f] != "undefined"){
 				dyFObj.elementObj.dynForm.jsonSchema.properties[f]=dyFCustom.setProperties(k, dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
 			} else {
@@ -6770,6 +6749,15 @@ var dyFCustom = {
 					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = k;
 			}
 	 	});
+	 	if(orderingForm)
+	 		dyFObj.elementObj.dynForm.jsonSchema.properties=dyFCustom.orderingProperties(dyFObj.elementObj.dynForm.jsonSchema.properties, dyFCustom.orderForm);
+	},
+	orderingProperties : function(properties, order){
+		object={};
+		$.each(order, function(e, v){
+			object[v]=properties[v];
+		});
+		return object;
 	},
 	setProperties : function(cusProp, prop){
 		$.each(cusProp, function(e, v){
