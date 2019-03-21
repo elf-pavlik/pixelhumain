@@ -89,7 +89,8 @@
 
   $this->renderPartial($layoutPath.'initJs', 
             array(  "me"=>$me, 
-                "parentModuleId" => $parentModuleId, 
+                  "loader"=>false,
+                  "parentModuleId" => $parentModuleId, 
                 "myFormContact" => @$myFormContact, 
                 "communexion" => CO2::getCommunexionCookies()));
 
@@ -166,7 +167,8 @@
 <body class="body">
   <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
     <?php
-    $this->renderPartial( $layoutPath.'menus.'.$CO2DomainName, 
+     if($this->module->id != "news"){
+        $this->renderPartial( $layoutPath.'menus.'.$CO2DomainName, 
                             array( "layoutPath"=>$layoutPath , 
                                     "subdomain"=>"", //$subdomain,
                                     "subdomainName"=>"", //$subdomainName,
@@ -174,6 +176,7 @@
                                     "placeholderMainSearch"=>"", //$placeholderMainSearch,
                                     "type"=>@$type,
                                     "me" => $me ) );
+      }
 
     echo $content; ?> 
     
@@ -182,11 +185,10 @@
   </div>
 
   <script type="text/javascript">
-    //var custom = {};            
     jQuery(document).ready(function() {
       
       bindLBHLinks();
-      themeObj.init();
+      themeObj.init(true);
       $(".btn-show-mainmenu").click(function(){
         $("#dropdown-user").addClass("open");
       });

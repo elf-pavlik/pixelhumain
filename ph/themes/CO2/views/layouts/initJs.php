@@ -353,9 +353,11 @@
         invitor : "<?php echo @$_GET["invitor"]?>",
     };
     var themeObj = {
-        init : function(){
-            themeObj.blockUi.setLoader();
-            $.blockUI({ message : themeObj.blockUi.processingMsg});
+        init : function(noLoading){
+            if(!notNull(noLoading) || !noLoading){
+                themeObj.blockUi.setLoader();
+                $.blockUI({ message : themeObj.blockUi.processingMsg});
+            } 
             toastr.options = {
               "closeButton": false,
               "positionClass": "toast-bottom-right",
@@ -510,8 +512,8 @@
         mainContainer : ".main-container",
         blockUi : {
             setLoader : function(){
-                color1="#ff9205";
-                color2="#3dd4ed";
+                color1="#354c57";
+                color2="#e6344d";
                 logoLoader=themeUrl+'/assets/img/LOGOS/'+domainName+'/logo.png';
                 if(notNull(costum)){
                     logoLoader=costum.logo;
