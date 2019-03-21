@@ -851,20 +851,30 @@ var dyFObj = {
 
 		$.each(dyFObj.elementObj.dynForm.jsonSchema.properties, function(kP, vP) {
 			if(vP["inputType"] == "properties"){
-				var ind = 0;
-				var keyVal = [];
-				var nostop = true;
-				while( nostop ) {
-					mylog.log("formData jsonHelper.notNull", kP, ind, formData[kP+ind], notNull(formData[kP+ind]));
-					if(notNull(formData[kP+ind])){
-						keyVal.push({name : formData[kP+ind], value : formData["tags"+kP+ind]});
-						delete formData[kP+ind];
-						delete formData["tags"+kP+ind];
-						ind++;
-					}else
-						 nostop = false ;
-				}
-				formData[kP] = keyVal ;
+				// var ind = 0;
+				// var keyVal = [];
+				// var nostop = true;
+				// while( nostop ) {
+				// 	mylog.log("formData jsonHelper.notNull", kP, ind, formData[kP+ind], notNull(formData[kP+ind]));
+				// 	if(notNull(formData[kP+ind])){
+				// 		keyVal.push({name : formData[kP+ind], value : formData["tags"+kP+ind]});
+				// 		delete formData[kP+ind];
+				// 		delete formData["tags"+kP+ind];
+				// 		ind++;
+				// 	}else
+				// 		 nostop = false ;
+				// }
+				// formData[kP] = keyVal ;
+				
+				formData[kP] = getPairs("."+kP+vP["inputType"]);
+
+				$.each($("."+kP+vP["inputType"]+' .addmultifield'), function(i,el) {
+					var id1 = $(this).attr('id');
+					var id2 =$( this ).parent().next().children(".addmultifield1").attr('id');
+					delete formData[id1];
+					delete formData[id2];
+			    	
+			    });
 			}
 		});
 
@@ -2381,7 +2391,7 @@ var dyFObj = {
 									'</div>'+
 									'<div class="col-sm-7">'+
 										//'<span>'+tradDynForm["Tags link a filter"]+'</span>'+
-										'<input type="text" class="form-control '+classInput+'" name="tags'+field+'0" id="tags'+field+'0" value="'+value+'" placeholder="'+placeholder+'" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
+										'<input type="text" class="form-control '+classInput+' addmultifield1" name="tags'+field+'0" id="tags'+field+'0" value="'+value+'" placeholder="'+placeholder+'" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
 									//	'<button data-id="'+field+'" class="pull-right removePropLineBtn btn btn-xs letter-red" alt="Remove this line"><i class=" fa fa-minus-circle" ></i></button>'+
 									'</div>'+
 									'<div class="col-sm-1">'+
@@ -3563,7 +3573,7 @@ var dyFObj = {
 					'</div>'+
 					'<div class="col-sm-7">'+
 						//'<textarea type="text" name="tags'+name+'[]" class="addmultifield'+count+' form-control input-md pull-left" onkeyup="AutoGrowTextArea(this);" placeholder="valeur"   >'+propVal.value+'</textarea>'+
-						'<input type="text" class="form-control '+classInput+'" name="tags'+name+count+'" id="tags'+name+count+'" value="" placeholder="" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
+						'<input type="text" class="form-control '+classInput+' addmultifield1" name="tags'+name+count+'" id="tags'+name+count+'" value="" placeholder="" style="width:100%;margin-bottom: 10px;border: 1px solid #ccc;"/>'+
 					'</div>'+
 					'<div class="col-sm-1">'+
 						'<button class="pull-right removePropLineBtn btn letter-red tooltips pull-right" data- data-original-title="Retirer cette ligne" data-placement="bottom"><i class=" fa fa-times" ></i></button>'+
