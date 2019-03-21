@@ -221,24 +221,23 @@
           }
     });*/
             if($("#header-banner").length > 0){
-                $("#affix-sub-menu, #mainNav, #filters-nav, #menuApp").addClass("position-absolute");
                 setDomHtmlPosition($("#header-banner").outerHeight());
-
+                $("#affix-sub-menu, #mainNav, #filters-nav, #menuApp").addClass("position-absolute");
             }else
                setDomHtmlPosition(0); heightTopMenu=$("#mainNav").outerHeight();
             $(window).bind("scroll",function(){ 
                 if($("#header-banner").length > 0){
                     console.log($(this).scrollTop(), $("#header-banner").outerHeight(), infScroll);
                     if($(this).scrollTop() > $("#header-banner").outerHeight() && infScroll){
-                        $(".main-container.vertical .headerSearchContainer").addClass("affix");
-                        $("#affix-sub-menu, #mainNav, #menuApp, #filters-nav").removeClass("position-absolute");
                         setDomHtmlPosition(0);
+                        $("#affix-sub-menu, #mainNav, #menuApp, #filters-nav").removeClass("position-absolute");
+                        $(".main-container.vertical .headerSearchContainer").addClass("affix");
                         infScroll=false;
                     }else if($(this).scrollTop()<=$("#header-banner").outerHeight() && !infScroll){
-                        $(".main-container.vertical .headerSearchContainer").removeClass("affix");
+                        setDomHtmlPosition($("#header-banner").outerHeight());
                         $("#affix-sub-menu, #mainNav, #filters-nav, #menuApp").addClass("position-absolute");
                         infScroll=true;
-                        setDomHtmlPosition($("#header-banner").outerHeight());
+                        
                     }
                 }else{
                     if($(this).scrollTop()<=10){
@@ -270,8 +269,8 @@
         $("#mainNav").css("top",initHeight);
         heightNav=$("#mainNav").outerHeight();
         heightTopMenu=heightNav+initHeight;
-        $("#notificationPanelSearch.vertical.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search, .main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical").css("top",heightTopMenu);
         $("#menuApp, #affix-sub-menu").css("top",heightTopMenu);
+        $("#notificationPanelSearch.vertical.arrow_box, #floopDrawerDirectory, .main-container .dropdown-main-menu, #mainNav .dropdown-result-global-search, .main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical").css("top",heightTopMenu);
         $(".dropdownApps-menuTop .dropdown-menu").css("top", (heightTopMenu+$("#text-search-menu").height()));
         headerHeightPos(false, initHeight);
         if(heightNav > 70){
