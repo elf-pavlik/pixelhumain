@@ -193,32 +193,7 @@ $session = (!empty($_GET["session"]) ? $_GET["session"] : "1");
         </ul>
     </div>
 </div>
-<?php /* ?>
-<div id="affix-sub-menu" class="hidden-xs affix">
-    <div id="territorial-menu" class="col-md-10 col-sm-10 col-xs-12 margin-bottom-10">
-                            
-<a href="<?php echo Yii::app()->createUrl('/survey/co/index/id/cte'); ?>" class="#home btn btn-link pull-left btn-menu-to-app hidden-top link-submenu-header lbh-menu-app">
-<i class="fa fa-home"></i>
-<span class="searchModSpan">Accueil</span>
-<span class=" topbar-badge badge animated bounceIn badge-warning"></span>
-</a>  
-
-<a href="<?php echo Yii::app()->createUrl('/survey/co/admin/id/cte'); ?>" class="#liveModBtn btn btn-link pull-left btn-menu-to-app hidden-top link-submenu-header lbh-menu-app">
-<i class="fa fa-cogs"></i>
-<span class="liveModSpan">Admin</span>
-<span class=" topbar-badge badge animated bounceIn badge-warning"></span>
-</a>  
-
-<a href="<?php echo Yii::app()->createUrl('/survey/co/roles/id/cte'); ?>" class="#agendaModBtn btn btn-link pull-left btn-menu-to-app hidden-top link-submenu-header lbh-menu-app">
-<i class="fa fa-file-text"></i>
-<span class="agendaModSpan">Fiches Actions</span>
-<span class=" topbar-badge badge animated bounceIn badge-warning"></span>
-</a>  
- 
-                </div>
-</div>
-
-<?php */
+<?php 
     
 } 
 
