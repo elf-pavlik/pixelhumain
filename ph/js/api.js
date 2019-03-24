@@ -130,16 +130,19 @@ function getModal(what, ajaxUrl,id)
 //css ex : "/themes/ph-dori/assets/plugins/summernote/dist/summernote.css"
 function lazyLoad (js,css, callback, notBase) { 
     mylog.warn("lazyLoad",js, css, callback, notBase);
-    var url = (notBase==true ? js : baseUrl+js);
+
+    var url = (notBase==true) ? js : baseUrl+js;
+    url=constructSourcePath(url);
     mylog.warn("api.js url",url);
-    if( !$('script[src="'+url+'"]').length )
-    {
-        if(css)
+    if(css)
             $("<link/>", {
                rel: "stylesheet",
                type: "text/css",
                href: css 
             }).appendTo("head");
+    if( !$('script[src="'+url+'"]').length )
+    {
+        
           //mylog.log("lazyLoad  before getScript",js);
         $.getScript( js, function( data, textStatus, jqxhr ) {
           //mylog.log("lazyLoad getScript");
@@ -153,7 +156,17 @@ function lazyLoad (js,css, callback, notBase) {
             callback();
     }
 }
-
+function constructSourcePath(url){
+  construct=baseUrl.split("/");
+  checkUrl=url.split("/");
+  inc=0;
+  $.each(construct, function(e, v){
+    if($.inArray(v, checkUrl) <0)
+      checkUrl.splice(inc, 0, v);
+    inc++;
+  });
+  return checkUrl.join("/");
+}
 var countLazyLoad = null;
 function lazyLoadMany (list, callback, notBase) { 
 	mylog.warn("lazyLoadMany",list.length, callback, notBase);
