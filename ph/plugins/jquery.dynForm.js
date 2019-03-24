@@ -267,6 +267,7 @@ var finder = {
 			finder.search = params.search;
 		}
 
+<<<<<<< HEAD
         $(".finder-"+params.id+" .selectParent").click(function(e){
         	e.preventDefault();
         	//if($(this).data("multiple") || $(this).parent().find(".form-list-finder > .element-finder").length == 0){
@@ -279,6 +280,15 @@ var finder = {
         	//	$(this).parent().find(".error").show(700).text("Vous ne pouvez ajouter qu'un élément");
         	//}
         });
+=======
+var scopeObj = {
+	selected : {},
+	timeoutAddCity : null,
+	spinSearchAddon: function(bool){
+		removeClass= (bool) ? "fa-arrow-circle-right" : "fa-spin fa-circle-o-notch";
+		addClass= (bool) ? "fa-spin fa-circle-o-notch" : "fa-arrow-circle-right";
+		$("#scopeListContainerForm .main-search-bar-addon,#scopeListContainerForm .second-search-bar-addon").find("i").removeClass(removeClass).addClass(addClass);
+>>>>>>> parent of 63af6aa... Hotfix
 	},
 	addInForm : function(keyForm, id, type, name, img){
 		//mylog.log("finder addInForm", keyForm, id, type, name, img);
@@ -474,6 +484,7 @@ var finder = {
 						finder.finderPopulation[e]=v;
 					if($(".population-elt-finder-"+e).length <= 0){
 
+<<<<<<< HEAD
 						img= (v.profilThumbImageUrl != "") ? baseUrl + v.profilThumbImageUrl : assetPath + "/images/thumb/default_"+v.type+".png";
 						// if(notNull(finder.search) && notNull(finder.search.filterBy)){
 						// 	if(notNull(v[finder.search.filterBy])){
@@ -1124,6 +1135,351 @@ var dyFObj = {
 		{
 			if(typeof formInMap != 'undefined')
 				formInMap.formType = type;
+=======
+		$.ajax({
+			type: "POST",
+			url: baseUrl+"/" + moduleId + "/search/globalautocomplete",
+			data: data,
+			dataType: "json",
+			error: function (data){
+				mylog.log("error"); mylog.dir(data);          
+			},
+			success: function(data){
+				spinSearchAddon();
+				var totalDataGS = 0;
+				if(!data){ toastr.error(data.content); }
+				else{
+					mylog.log("globalautocomplete DATA", data);
+					var countData = 0;
+					if(typeof data.count != "undefined")
+						$.each(data.count, function(e, v){countData+=v;});
+					else
+						$.each(data.results, function(i, v) { if(v.length!=0){ countData++; } });
+
+					totalDataGS += countData;
+
+					str = "";
+					var city, postalCode = "";
+
+					if(totalDataGS == 0)      totalDataGSMSG = "<i class='fa fa-ban'></i> "+trad.noresult;
+					else if(totalDataGS == 1) totalDataGSMSG = totalDataGS + " "+trad.result;   
+					else if(totalDataGS > 1)  totalDataGSMSG = totalDataGS + " "+trad.results;   
+
+					if(totalDataGS > 0){
+						labelSearch=(Object.keys(data.results).length == totalDataGS) ? trad.extendedsearch : "Voir tous les résultats";
+						str += '<div class="text-left col-xs-12" id="footerDropdownGS" style="">';
+							str += "<label class='text-dark margin-top-5'><i class='fa fa-angle-down'></i> " + totalDataGSMSG + "</label>";
+							str += '<a href="#search" class="btn btn-default btn-sm pull-right lbh" id="btnShowMoreResultGS">'+
+										'<i class="fa fa-angle-right"></i> <i class="fa fa-search"></i> '+labelSearch+
+									'</a>';
+						str += '</div>';
+						str += "<hr style='margin: 0px; float:left; width:100%;'/>";
+					}
+
+					//parcours la liste des résultats de la recherche
+					$.each(data.results, function(i, o) {
+						mylog.log("globalsearch res : ", o);
+						var typeIco = i;
+						var ico = "fa-"+typeObj["default"].icon;
+						var color = mapColorIconTop["default"];
+
+						mapElementsGS.push(o);
+						if(typeof( typeObj[o.type] ) == "undefined")
+							itemType="poi";
+						typeIco = o.type;
+						//if(directory.dirLog) mylog.warn("itemType",itemType,"typeIco",typeIco);
+						if(typeof o.typeOrga != "undefined")
+							typeIco = o.typeOrga;
+
+						var obj = (dyFInputs.get(typeIco)) ? dyFInputs.get(typeIco) : typeObj["default"] ;
+						ico =  "fa-"+obj.icon;
+						color = obj.color;
+						
+						htmlIco ="<i class='fa "+ ico +" fa-2x bg-"+color+"'></i>";
+						if("undefined" != typeof o.profilThumbImageUrl && o.profilThumbImageUrl != ""){
+							var htmlIco= "<img width='80' height='80' alt='' class='img-circle bg-"+color+"' src='"+baseUrl+o.profilThumbImageUrl+"'/>"
+						}
+
+						city="";
+
+						var postalCode = o.postalCode
+						if (o.address != null) {
+							city = o.address.addressLocality;
+							postalCode = o.postalCode ? o.postalCode : o.address.postalCode ? o.address.postalCode : "";
+						}
+
+						var id = getObjectId(o);
+						var insee = o.insee ? o.insee : "";
+						type = o.type;
+						if(type=="citoyens") type = "person";
+						//var url = "javascript:"; //baseUrl+'/'+moduleId+ "/default/simple#" + o.type + ".detail.id." + id;
+						var url = (notEmpty(o.type) && notEmpty(id)) ? 
+						        '#page.type.'+o.type+'.id.' + id : "";
+
+						//var onclick = 'urlCtrl.loadByHash("#' + type + '.detail.id.' + id + '");';
+						var onclickCp = "";
+						var target = " target='_blank'";
+						var dataId = "";
+						if(type == "city"){
+							dataId = o.name; //.replace("'", "\'");
+						}
+
+
+						var tags = "";
+						if(typeof o.tags != "undefined" && o.tags != null){
+							$.each(o.tags, function(key, value){
+								if(value != "")
+									tags +=   "<a href='javascript:' class='badge bg-red btn-tag'>#" + value + "</a>";
+							});
+						}
+
+						var name = typeof o.name != "undefined" ? o.name : "";
+						var postalCode = (	typeof o.address != "undefined" &&
+											o.address != null &&
+											typeof o.address.postalCode != "undefined") ? o.address.postalCode : "";
+
+						if(postalCode == "") postalCode = typeof o.postalCode != "undefined" ? o.postalCode : "";
+						var cityName = (typeof o.address != "undefined" &&
+										o.address != null &&
+										typeof o.address.addressLocality != "undefined") ? o.address.addressLocality : "";
+	                  	var countryCode=(typeof o.address != "undefined" && notNull(o.address) && typeof o.address.addressCountry != "undefined") ? "("+o.address.addressCountry+")" : ""; 
+						var fullLocality = postalCode + " " + cityName+" "+countryCode;
+						if(fullLocality == " Addresse non renseignée" || fullLocality == "" || fullLocality == " ") 
+							fullLocality = "<i class='fa fa-ban'></i>";
+						mylog.log("fullLocality", fullLocality);
+
+						var description = (	typeof o.shortDescription != "undefined" &&
+											o.shortDescription != null) ? o.shortDescription : "";
+						if(description == "") description = (	typeof o.description != "undefined" &&
+																o.description != null) ? o.description : "";
+	           
+						var startDate = (typeof o.startDate != "undefined") ? "Du "+dateToStr(o.startDate, "fr", true, true) : null;
+						var endDate   = (typeof o.endDate   != "undefined") ? "Au "+dateToStr(o.endDate, "fr", true, true)   : null;
+
+						var followers = (typeof o.links != "undefined" && o.links != null && typeof o.links.followers != "undefined") ?
+						                o.links.followers : 0;
+						var nbFollower = 0;
+						if(followers !== 0)                 
+							$.each(followers, function(key, value){
+							nbFollower++;
+						});
+
+						target = "";
+
+						mylog.log("type", type);
+						if(type != "city" && type != "zone" ){ 
+							str += "<a href='"+url+"' class='lbh col-md-12 col-sm-12 col-xs-12 no-padding searchEntity'>";
+							str += "<div class='col-md-2 col-sm-2 col-xs-2 no-padding entityCenter text-center'>";
+							str +=   htmlIco;
+							str += "</div>";
+							str += "<div class='col-md-10 col-sm-10 col-xs-10 entityRight'>";
+
+							str += "<div class='entityName text-dark'>" + name + "</div>";
+
+							str += '<div data-id="' + dataId + '"' + "  class='entityLocality'>"+
+							"<i class='fa fa-home'></i> " + fullLocality;
+
+							if(nbFollower >= 1)
+							str +=    " <span class='pull-right'><i class='fa fa-chain margin-left-10'></i> " + nbFollower + " follower</span>";
+
+							str += '</div>';
+
+							str += "</div>";
+
+							str += "</a>";
+						}else{
+							o.input = input;
+
+		         	 		
+							if(type == "city"){
+								var valuesScopes = {
+									city : o._id.$id,
+									cityName : o.name,
+									postalCode : (typeof o.postalCode == "undefined" ? "" : o.postalCode),
+									country : o.country,
+									allCP : o.allCP,
+									uniqueCp : o.uniqueCp,
+									level1 : o.level1,
+									level1Name : o.level1Name
+								}
+
+								if( notEmpty( o.nameCity ) ){
+									valuesScopes.name = o.nameCity ;
+								}
+
+								if( notEmpty( o.uniqueCp ) ){
+									valuesScopes.uniqueCp = o.uniqueCp;
+								}
+
+								if( notEmpty( o.level5 ) && valuesScopes.id != o.level5){
+									valuesScopes.level5 = o.level5 ;
+									valuesScopes.level5Name = o.level5Name ;
+								}
+
+								if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+									valuesScopes.level4 = o.level4 ;
+									valuesScopes.level4Name = o.level4Name ;
+								}
+								if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+									valuesScopes.level3 = o.level3 ;
+									valuesScopes.level3Name = o.level3Name ;
+								}
+								if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+									valuesScopes.level2 = o.level2 ;
+									valuesScopes.level2Name = o.level2Name ;
+								}
+
+								//valuesScopes.type = o.type;
+								valuesScopes.type = "cities";
+								o.type = "cities";
+								valuesScopes.key = valuesScopes.city+"cities" ;
+								mylog.log("valuesScopes", valuesScopes);
+								if(notNull(valuesScopes.allCP) && valuesScopes.allCP == false){
+									valuesScopes.key = valuesScopes.key + valuesScopes.postalCode ;
+								}
+
+
+								o.key = valuesScopes.key;
+			         	 		myScopes.search[valuesScopes.key] = valuesScopes;
+								str += directory.cityPanelHtml(o);
+							}
+							else if(type == "zone"){
+
+
+								valuesScopes = {
+									id : o._id.$id,
+									name : o.name,
+									country : o.countryCode,
+									level : o.level
+								}
+								mylog.log("valuesScopes",valuesScopes);
+
+								if(o.level.indexOf("1") >= 0){
+									typeSearchCity="level1";
+									levelSearchCity="1";
+									valuesScopes.numLevel = 1;
+								}else if(o.level.indexOf("2") >= 0){
+									typeSearchCity="level2";
+									levelSearchCity="2";
+									valuesScopes.numLevel = 2;
+								}else if(o.level.indexOf("3") >= 0){
+									typeSearchCity="level3";
+									levelSearchCity="3";
+									valuesScopes.numLevel = 3;
+								}else if(o.level.indexOf("4") >= 0){
+									typeSearchCity="level4";
+									levelSearchCity="4";
+									valuesScopes.numLevel = 4;
+								}else if(o.level.indexOf("5") >= 0){
+									typeSearchCity="level5";
+									levelSearchCity="5";
+									valuesScopes.numLevel = 5;
+								}
+								if(notNull(typeSearchCity))
+									valuesScopes.type = typeSearchCity;				
+
+								mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+
+								if( notEmpty( o.level1 ) && valuesScopes.id != o.level1){
+									mylog.log("valuesScopes test", (valuesScopes.id != o.level1), valuesScopes.id, o.level1);
+									valuesScopes.level1 = o.level1 ;
+									valuesScopes.level1Name = o.level1Name ;
+								}
+
+								var subTitle = "";
+
+								if( notEmpty( o.level5 ) && valuesScopes.id != o.level5){
+									valuesScopes.level5 = o.level5 ;
+									valuesScopes.level5Name = o.level5Name ;
+									subTitle +=  (subTitle == "" ? "" : ", ") +  o.level5Name ;
+								}
+								if( notEmpty( o.level4 ) && valuesScopes.id != o.level4){
+									valuesScopes.level4 = o.level4 ;
+									valuesScopes.level4Name = o.level4Name ;
+									subTitle +=  (subTitle == "" ? "" : ", ") +  o.level4Name ;
+								}
+								if( notEmpty( o.level3 ) && valuesScopes.id != o.level3 ){
+									valuesScopes.level3 = o.level3 ;
+									valuesScopes.level3Name = o.level3Name ;
+									subTitle +=  (subTitle == "" ? "" : ", ") +  o.level3Name ;
+								}
+								if( notEmpty( o.level2 ) && valuesScopes.id != o.level2){
+									valuesScopes.level2 = o.level2 ;
+									valuesScopes.level2Name = o.level2Name ;
+									subTitle +=  (subTitle == "" ? "" : ", ") +  o.level2Name ;
+								}
+								//objToPush.id+objToPush.type+objToPush.postalCode
+								valuesScopes.key = valuesScopes.id+valuesScopes.type ;
+								mylog.log("valuesScopes.key", valuesScopes.key, valuesScopes);
+								myScopes.search[valuesScopes.key] = valuesScopes;
+
+								mylog.log("myScopes.search", myScopes.search);
+								o.key = valuesScopes.key;
+								str += directory.zonePanelHtml(o);
+							}
+						}
+					}); //end each
+
+					//on ajoute le texte dans le html
+					$(domTarget).html(str);
+					//on scroll pour coller le haut de l'arbre au menuTop
+					$(domTarget).scrollTop(0);
+					
+					//on affiche la dropdown
+					showDropDownGS(true, domTarget);
+					//bindScopesInputEvent();
+					
+					$(input+" .item-globalscope-checker").off().on('click', function(){
+						
+						var key = $(this).data("scope-value");
+						mylog.log("item-globalscope-checker myScopes", key, myScopes.search[key] );
+						if( typeof myScopes != "undefined" &&
+							typeof myScopes.search != "undefined" &&
+							typeof myScopes.search[key]  != "undefined" ){
+							var scopeDF = myScopes.search[key];
+
+							var nameZone = (typeof scopeDF.cityName != "undefined") ? scopeDF.cityName : scopeDF.name ;
+							var btnScopeAction="<span class='removeScopeDF tooltips margin-right-5 margin-left-10' "+
+								"data-add='false' data-scope-value='"+scopeDF.id+"' "+
+								'data-scope-key="'+key+'" '+
+								"data-toggle='tooltip' data-placement='top' "+
+								"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
+									"<i class='fa fa-times-circle'></i>"+
+								"</span>";
+							var html = "<div class='scope-order text-red col-xs-12 col-sm-3' data-level='"+scopeDF.level+"''>"+
+			    				btnScopeAction+
+			    				"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
+									"class='item-scope-checker item-scope-input' "+
+									'data-scope-key="'+key+'" '+
+									'data-scope-value="'+scopeDF.id+'" '+
+									'data-scope-name="'+name+'" '+
+									'data-scope-type="'+scopeDF.type+'" '+
+									'data-scope-level="'+scopeDF.type+'" ' +
+									'data-scope-country="'+scopeDF.country+'" ' +
+									'data-btn-type="multiscope" ';
+									if(notNull(scopeDF.level))
+										html += 'data-level="'+scopeDF.level+'"';
+									html += '>' + 
+									nameZone + 
+								"</span>"+
+							"</div>";
+							
+							$(input+" #scopes-container").append(html);
+							scopeObj.selected[key] = myScopes.search[key];
+
+							$(".removeScopeDF").off().on('click', function(){
+								$(this).parent().remove();
+
+								// $.each(scopeObj.selected, function(kScope, vScope) {
+								// 	if(vScope.key == $(this).data("scope-key")){
+								// 		delete scopeObj.selected[kScope];
+								// 	}
+								// });
+								delete scopeObj.selected[$(this).data("scope-key")];
+							});
+						}
+					});
+>>>>>>> parent of 63af6aa... Hotfix
 
 			if(typeof dyFObj.formInMap != 'undefined')
 				dyFObj.formInMap.formType = type;
@@ -6059,6 +6415,7 @@ var dyFInputs = {
 				}
 			});	
 		},
+<<<<<<< HEAD
 		changeCommunexionScope : function(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 			mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);
 			mylog.log("changeCommunexionScope appendDom", appendDom);
@@ -6103,6 +6460,44 @@ var dyFInputs = {
 		// 	// 	bindScopesInputEvent();
 		// 	// }
 		// }
+=======
+		setAsCenter : function (ix){
+
+			$(".centers").removeClass('btn-success');
+			$(".lblcentre").remove();
+			$.each(dyFInputs.locationObj.elementLocations,function(i, v) {
+				mylog.log(v); 
+				if(typeof v.center != "undefined" && v.center)
+					delete v.center;
+			})
+			$(".centers").removeClass('btn-success');
+			$(".center"+ix).addClass('btn-success').append(" <span class='lblcentre'>addresse principale</span>");
+			$(".center"+ix).parent().find(".removeLocalityBtn").attr("href","javascript:dyFInputs.locationObj.removeLocation("+ix+",true)");
+			dyFInputs.locationObj.centerLocation = dyFInputs.locationObj.elementLocations[ix];
+			dyFInputs.locationObj.elementLocations[ix].center = true;
+		}
+	},
+	scope : function (params){
+		var inputObj = {
+			label : ( notNull(params) && notNull(params.label) ? params.label : trad.addplacestyournews ),
+			inputType : "scope",
+			init : function () {
+				mylog.log("scopeObj", scopeObj );
+				$("#searchScopeDF").off().on("keyup", function(e){
+					mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
+					if($("#searchScopeDF").val().trim().length > 1){
+						if(notNull(scopeObj.timeoutAddCity)) 
+							clearTimeout(scopeObj.timeoutAddCity);
+
+						scopeObj.timeoutAddCity = setTimeout(function(){ 
+							scopeObj.search(0, 30, "#scopeListContainerForm");
+						}, 500);
+					}
+				});
+			}
+		}
+		return inputObj;
+>>>>>>> parent of 63af6aa... Hotfix
 	},
 	//produces 
 	subDynForm : function(form, multi){
