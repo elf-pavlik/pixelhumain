@@ -307,7 +307,12 @@
             /* ***********************
             module stuff
             ************************ */
+            
             $moduleAssets = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl()  : $this->module->assetsUrl;
+            HtmlHelper::registerCssAndScriptsFiles( 
+                CO2::getModulesRessources(),
+                $moduleAssets
+            );
             HtmlHelper::registerCssAndScriptsFiles( 
                 array('/js/default/formInMap.js'),
                 $moduleAssets
@@ -345,7 +350,8 @@
                 '/assets/js/radioplayer.js',
     
                 '/assets/css/floopDrawerRight.css',
-                '/assets/css/cooperation.css'
+                '/assets/css/cooperation.css',
+                '/assets/css/default/directory.css'
             );
             HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
 
