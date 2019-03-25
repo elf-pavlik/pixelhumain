@@ -128,23 +128,25 @@ function getModal(what, ajaxUrl,id)
 
 //js ex : "/themes/ph-dori/assets/plugins/summernote/dist/summernote.min.js"
 //css ex : "/themes/ph-dori/assets/plugins/summernote/dist/summernote.css"
-function lazyLoad (js,css, callback, notBase) { 
-    mylog.warn("lazyLoad",js, css, callback, notBase);
+function lazyLoad (js,css, callback, external) { 
+    mylog.warn("lazyLoad",js, css, callback, external);
 
-    var url = (notBase==true) ? js : baseUrl+js;
-    url=constructSourcePath(url);
-    mylog.warn("api.js url",url);
-    if(css)
+   var urlCSS=css;
+  var urlJS=js;
+    if(!notNull(external)){
+      urlCSS= (notNull(css)) ? constructSourcePath(css) : null;
+      urlJS= (notNull(js)) ?constructSourcePath(js): null;
+    }
+    if(urlCSS)
             $("<link/>", {
                rel: "stylesheet",
                type: "text/css",
-               href: css 
+               href: urlCSS 
             }).appendTo("head");
-    if( !$('script[src="'+url+'"]').length )
+    if( !$('script[src="'+urlJS+'"]').length )
     {
-        
           //mylog.log("lazyLoad  before getScript",js);
-        $.getScript( js, function( data, textStatus, jqxhr ) {
+        $.getScript( urlJS, function( data, textStatus, jqxhr ) {
           //mylog.log("lazyLoad getScript");
           //if (typeof dynform !== undefined) alert("script has been loaded!");
           if( typeof callback === "function")
@@ -157,8 +159,10 @@ function lazyLoad (js,css, callback, notBase) {
     }
 }
 function constructSourcePath(url){
+  //alert(url+" / "+baseUrl);
   construct=baseUrl.split("/");
   checkUrl=url.split("/");
+  console.log("path inspector : ",construct,checkUrl);
   inc=0;
   $.each(construct, function(e, v){
     if($.inArray(v, checkUrl) <0)
