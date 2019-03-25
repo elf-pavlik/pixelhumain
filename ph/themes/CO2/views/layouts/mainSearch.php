@@ -108,8 +108,8 @@
         </div>
 
         <?php 
-              $this->renderPartial($layoutPath.'menusMap/'.$CO2DomainName, array( "layoutPath"=>$layoutPath, "me" => $me ) ); 
-              ?>   
+        $this->renderPartial($layoutPath.'menusMap/'.$CO2DomainName, array( "layoutPath"=>$layoutPath, "me" => $me ) ); 
+        ?>   
         
         <?php  if( isset(Yii::app()->session["userId"]) ){
                 $this->renderPartial($layoutPath.'.rocketchat'); 
@@ -457,7 +457,11 @@
                 });
             });
         </script>
-
+        
+        <?php 
+        if(@Yii::app()->session["costum"]["initScript"])
+            $this->renderPartial( Yii::app()->session["costum"]["initScript"] );
+         ?>
     </body>
 
 </html>
