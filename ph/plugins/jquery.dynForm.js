@@ -960,9 +960,9 @@ var dyFObj = {
 		                $("#btn-submit-form").html('Valider <i class="fa fa-arrow-circle-right"></i>').prop("disabled",false).one(function() { 
 							$( settings.formId ).submit();	        	
 				        });
-		           	}
-		            else 
-		            {
+		           	} else {
+
+		           		mylog.log("here");
 		            	if(typeof data.msg != "undefined") 
 		            		toastr.success(data.msg);
 		            	else{
@@ -974,13 +974,16 @@ var dyFObj = {
 		            	// mylog.log("data.id", data.id, data.url);
 		            	/*if(data.map && $.inArray(collection, ["events","organizations","projects","citoyens"] ) !== -1)
 				        	addLocationToFormloopEntity(data.id, collection, data.map);*/
-
+				       
 				        if (typeof networkJson != "undefined"){
+				        	mylog.log("here networkJson", typeof networkJson, networkJson);
 				        	window.location.reload();
-				        }else if (typeof afterSave == "function"){
+				        } else if (typeof afterSave == "function"){
+				        	mylog.log("here afterSave", typeof afterSave, afterSave);
 		            		afterSave(data);
 		            		//urlCtrl.loadByHash( '#'+ctrl+'.detail.id.'+data.id );
 		            	} else {
+		            		 mylog.log("here else", data);
 							dyFObj.closeForm();
 			                if(data.url){
 			                	mylog.log("urlReload data.url", data.url);
@@ -1316,11 +1319,13 @@ var dyFObj = {
 			$('#modalLogin').modal("show");
 		}
 	},
-	commonAfterSave : function(){
+	commonAfterSave : function(data, callB){
+		mylog.log("commonAfterSave", data);
 		if($(".fine-uploader-manual-trigger").length>1){
+			mylog.log("commonAfterSave fine-uploader-manual-trigger");
 			uploadObj.startAfterLoadUploader=false;
 			uploadCount=$(".fine-uploader-manual-trigger").length;
-			i=1;
+			i=1
 			$(".fine-uploader-manual-trigger").each(function(){
 				if(i==uploadCount)
 					uploadObj.startAfterLoadUploader=true;
@@ -1341,6 +1346,7 @@ var dyFObj = {
 		    	i++;
 			});
 		}else{
+			mylog.log("commonAfterSave else");
 			listObject=$(uploadObj.domTarget).fineUploader('getUploads');
 	    	goToUpload=false;
 	    	if(listObject.length > 0){
@@ -1356,16 +1362,18 @@ var dyFObj = {
 	    			callB();
 	    	}
 		    else { 
-		    	mylog.log("here", isMapEnd);
+		    	mylog.log("commonAfterSave isMapEnd", isMapEnd);
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
-				dyFObj.closeForm();
+				
 				/*if(activeModuleId == "survey")//use case for answerList forms updating
 	        		window.location.reload();
 	        	else 
 					urlCtrl.loadByHash( uploadObj.gotoUrl );*/
 	        }
 	    }
+	    dyFObj.closeForm();
+	    mylog.log("commonAfterSave end", dyFObj);
 	},
 	coopAfterSave : function(data){
 		dyFObj.closeForm(); 
@@ -2577,7 +2585,7 @@ var dyFObj = {
 										'</div>'+
 									'</div>'+
 								'</div>'+
-								'<div class="col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+								'<div id="labelselected" class=" hidden col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
 									'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
 								'</div>'+
 								'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
@@ -7288,6 +7296,7 @@ var scopeObj = {
 					//bindScopesInputEvent();
 					
 					$(input+" .item-globalscope-checker").off().on('click', function(){
+						$("#labelselected").removeClass("hidden");
 						if(scopeObj.limit == null || Object.keys(scopeObj.selected).length < scopeObj.limit ){
 							var key = $(this).data("scope-value");
 							mylog.log("item-globalscope-checker myScopes", key, myScopes.search[key] );
@@ -7327,6 +7336,10 @@ var scopeObj = {
 								$(".removeScopeDF").off().on('click', function(){
 									$(this).parent().remove();
 									delete scopeObj.selected[$(this).data("scope-key")];
+									if(Object.keys(scopeObj.selected).length == 0){
+										$("#labelselected").addClass("hidden");
+									}
+									
 								});
 							}
 						} else {
