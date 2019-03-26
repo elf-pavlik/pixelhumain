@@ -82,8 +82,6 @@
     }
         ?>
 
-
-
         <?php 
             $cs->registerScriptFile(Yii::app() -> createUrl($parentModuleId."/default/view/page/trad/dir/..|translation/layout/empty"));
         ?>

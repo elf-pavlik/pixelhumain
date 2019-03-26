@@ -81,8 +81,10 @@
         </div>
     <?php } 
     // Menu Left Or Menu top (container of applications and other)
-    $subMenu=($menuApp == "vertical") ? "menuLeft" : "subMenuTop";
-    $this->renderPartial($layoutPath.'menus/'.$subMenu, array("params"=>$themeParams, "subdomainName"=>$subdomainName, "useFilter"=>@$useFilter )); 
+    if(isset($themeParams["subMenu"]) && !empty($themeParams["subMenu"])){
+        $subMenu=($menuApp == "vertical") ? "menuLeft" : "subMenuTop";
+        $this->renderPartial($layoutPath.'menus/'.$subMenu, array("params"=>$themeParams, "subdomainName"=>$subdomainName, "useFilter"=>@$useFilter )); 
+    }
     // FIlter toolBar subMenu
     if(@$useFilter != false
         && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) ))

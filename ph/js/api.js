@@ -165,7 +165,7 @@ function constructSourcePath(url){
   console.log("path inspector : ",construct,checkUrl);
   inc=0;
   $.each(construct, function(e, v){
-    if($.inArray(v, checkUrl) <0)
+    if($.inArray(v, checkUrl) < 0)
       checkUrl.splice(inc, 0, v);
     inc++;
   });

@@ -752,7 +752,7 @@ section {
     	left: 0px;
         top: 50px;	
         text-align: center;
-   		width: 130px;
+   		min-width: 130px;
     }
     .menu-name-profil .tooltips-top-menu-btn{
     	top: 55px;
