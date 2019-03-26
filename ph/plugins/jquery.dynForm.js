@@ -6920,7 +6920,7 @@ var scopeObj = {
 		}
 
 		if(notNull(params)){
-			scopeObj.limit = ( notNull(params.limit) ? params.limit : {} ) ;
+			scopeObj.limit = ( notNull(params.limit) ? params.limit : null ) ;
 		}
 	},
 	timeoutAddCity : null,
