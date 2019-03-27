@@ -234,7 +234,68 @@
         contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
             saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
         curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
-        badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"}
+        badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"},
+        get: function(e){
+              elt={};
+              if(typeof typeObj[e] != "undefined"){
+                if(typeof typeObj[e].name != "undefined")
+                    elt.name=typeObj[e].name; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.name=typeObj[typeObj[e].sameAs].name;
+                
+                if(typeof typeObj[e].icon != "undefined")
+                    elt.icon=typeObj[e].icon; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.icon=typeObj[typeObj[e].sameAs].icon;
+                
+                if(typeof typeObj[e].color != "undefined")
+                    elt.color=typeObj[e].color; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.color=typeObj[typeObj[e].sameAs].color;
+                
+                if(typeof typeObj[e].formType != "undefined")
+                    elt.formType=typeObj[e].formType; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.formType=typeObj[typeObj[e].sameAs].formType;
+                
+                if(typeof typeObj[e].formParent != "undefined")
+                    elt.formParent=typeObj[e].formParent; 
+                
+                if(typeof typeObj[e].dynForm != "undefined")
+                    elt.dynForm=typeObj[e].dynForm;
+                
+                if(typeof typeObj[e].dynFormCostum != "undefined")
+                    elt.dynFormCostum=typeObj[e].dynFormCostum;
+
+                if(typeof typeObj[e].formSubType != "undefined")
+                    elt.formSubType=typeObj[e].formSubType; 
+                else if(typeof typeObj[e].sameAs != "undefined" && typeof typeObj[typeObj[e].sameAs].formSubType != "undefined")
+                    elt.formSubType=typeObj[typeObj[e].sameAs].formSubType;
+                
+                if(typeof typeObj[e].createLabel != "undefined")
+                    elt.createLabel=typeObj[e].createLabel; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.createLabel=typeObj[typeObj[e].sameAs].createLabel;
+
+                if(typeof typeObj[e].col != "undefined")
+                    elt.col=typeObj[e].col; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.col=typeObj[typeObj[e].sameAs].col;
+
+                if(typeof typeObj[e].ctrl != "undefined")
+                    elt.ctrl=typeObj[e].ctrl; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.ctrl=typeObj[typeObj[e].sameAs].ctrl;
+              }
+              console.log("getFormat typeObj", elt);
+              return elt;
+        },
+        isDefined:function(type, entry){
+            res = (typeof typeObj[type] != "undefined") ? true : false;
+            if(notNull(entry) && res)
+                res = (typeof typeObj[type][entry] != "undefined") ? true : false;
+            return res;
+        }
     };
 
     

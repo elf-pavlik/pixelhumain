@@ -26,6 +26,25 @@
             <img src="<?php echo $logoMin;?>" class="logo-menutop pull-left visible-xs" height="40">
         </a>
         <?php }
+        else if($key=="app"){
+            foreach ($themeParams["pages"] as $key => $value) {
+                if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
+                    <button class="btn btn-link pull-left menu-button btn-menu lbh-menu-app text-dark btn-menu-tooltips menu-btn-top <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>" data-hash="<?php echo $key; ?>"
+                          data-toggle="tooltip" data-placement="bottom" alt="<?php echo Yii::t("common","Notifications") ?>">
+                        <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
+                        <span class="tooltips-top-menu-btn"><?php echo Yii::t("common", $value["subdomainName"]); ?></span>
+                    </button>
+                    <!--<a href="javascript:;" data-hash="<?php echo $key; ?>" 
+                    class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+                            
+                    <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
+                    <span class="<?php echo str_replace("#","",$key); ?>ModSpan"><?php echo Yii::t("common", $value["subdomainName"]); ?></span>
+                    <span class="<?php echo @$value["notif"]; ?> topbar-badge badge animated bounceIn badge-warning"></span>
+                        </a>  -->
+                <?php   }
+            } 
+             
+        }
         // END LOGO HTML NAV BAR
         else if($key=="searchBar" && $value){ 
             $searchBar=(@$useFilter && $useFilter) ? $value["useFilter"] : $value["noUseFilter"]; ?>

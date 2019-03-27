@@ -793,7 +793,7 @@ var dyFObj = {
 			}
 		});
 		if( typeof formData.source != "undefined" && formData.source != "" ){
-			originInsert=(typeof custom != "undefined" && notNull(custom)) ? "costum" : "network";
+			originInsert=(typeof costum != "undefined" && notNull(costum)) ? "costum" : "network";
 			formData.source = { insertOrign : originInsert,
 								keys : [ 
 									formData.source
@@ -1184,6 +1184,9 @@ var dyFObj = {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
 			//via themeObj.dynForm.folder overload
 			var dfPath = moduleUrl+'/js/dynForm/'+type+'.js';
+			var dyfCallObj=typeObj.get(type);
+			if(typeof dyfCallObj.formParent != "undefined")
+				dfPath=moduleUrl+'/js/dynForm/'+dyfCallObj.formParent+'.js';
 			
 			//sometimes special forms sit in the theme obj
 			if ( jsonHelper.notNull( "themeObj.dynForm.folder") ) 
@@ -1192,6 +1195,8 @@ var dyFObj = {
 			//a dynform can be called from a module , but comes from parent Co2 module
 			if ( moduleId != activeModuleId ){
 				dfPath = parentModuleUrl+'/js/dynForm/'+type+'.js';
+				if(typeof dyfCallObj.formParent != "undefined")
+					dfPath=parentModuleUrl+'/js/dynForm/'+dyfCallObj.formParent+'.js';
 				mylog.log("properties from MODULE CO2","modules/"+type+"/assets/js/dynform.js");
 			}
 			
@@ -1204,7 +1209,7 @@ var dyFObj = {
 			//a full path is given to a form definition
 			if ( type.indexOf(".js")>-1)  
 				dfPath = type;
-
+			
 			mylog.log("getDynFormObj",type,dfPath);
 			lazyLoad( dfPath, 
 				null,
@@ -1212,12 +1217,13 @@ var dyFObj = {
 					//alert(dfPath+type+'.js');
 					mylog.log("lazyLoaded",type,dfPath);
 					mylog.dir(dynForm);
-					//typeObj[type].dynForm = dynForm;
 					
-				  	dyFInputs.get(type).dynForm = dynForm;
-					dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
-					if( notNull( dyFInputs.get(type).col) ) 
-						uploadObj.type = dyFInputs.get(type).col;
+				  	//dyFInputs.get(type).dynForm = dynForm;
+					typeObj[type].dynForm = dynForm;
+					dyFObj[dyFObj.activeElem] = typeObj.get(type);
+					//console.log("culuclucluccuucucuc",dyFObj[dyFObj.activeElem]);
+					if( notNull( typeObj.get(type).col) ) 
+						uploadObj.type = typeObj.get(type).col;
     				callback( afterLoad, data );
 				});
 		}
@@ -4752,7 +4758,8 @@ var dyFInputs = {
 			$.each(object.typeObj, function(key, v) {
 				mylog.log("key", key);
 				//key=(key=="jobs" || key=="ressources") ? "classifieds" : key;
-				key=(typeof typeObj[key].sameAs != "undefined") ? typeObj[key].sameAs : key; 
+				//key=(typeof typeObj[key].sameAs != "undefined") ? typeObj[key].sameAs : key; 
+				key=(!typeObj.isDefined(key, "dynForm") && typeObj.isDefined(key, "sameAs")) ? typeObj[key].sameAs : key;
 				if( typeof typeObj[key].dynForm != "undefined"){
 					
 					if( typeof object.slug != "undefined")
@@ -4768,9 +4775,7 @@ var dyFInputs = {
 								typeObj[key].dynForm.jsonSchema.properties.tags.data = object.request.searchTag;
 							}
 
-							if(	typeof typeObj[key] != "undefined" &&
-								typeof typeObj[key].dynForm != "undefined" && 
-								typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined" &&
+							if(	typeof typeObj[key].dynForm.jsonSchema.properties.tags != "undefined" &&
 								( 	typeof object.dynForm == "undefined" ||
 									typeof object.dynForm.extra == "undefined" ||
 									(	typeof object.dynForm.extra.tags == "undefined" ||
@@ -6039,7 +6044,7 @@ var dyFInputs = {
     	var obj = null;
     	if( jsonHelper.notNull("typeObj."+type)){
     		if (jsonHelper.notNull("typeObj."+type+".sameAs") ){
-    			obj = typeObj[ typeObj[type].sameAs ];
+    			obj = typeObj.get(type);
     		} else
     			obj = typeObj[type];
     		obj.name = (trad[type]) ? trad[type] : type;
