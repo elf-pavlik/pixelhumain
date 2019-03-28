@@ -434,9 +434,92 @@ var finder = {
 			mylog.log("finder #finderSelectHtml", $("#finderSelectHtml").length);
 			dialog.on('shown.bs.modal', function(e){
 				mylog.log("finder #finderSelectHtml HERE", $("#finderSelectHtml").length);
-				inviteObj.formInvite("#finderSelectHtml #form-invite", "#finderSelectHtml #populateFinder", function(){
-					return true;
+
+				// var paramsInvite = {
+				// 	container : "#finderSelectHtml #form-invite"
+				// };
+
+				// inviteObj.init(paramsInvite);
+				// inviteObj.formInvite(function(){
+				// 	alert("HERE");
+				// 	return true;
+				// });
+
+
+				$('#finderSelectHtml #form-invite #btnInviteNew').off().on("click", function(e){
+				mylog.log("finder btnInviteNew ", inviteObj);
+				var formInvite = $("#finderSelectHtml #form-invite");
+				mylog.log("finder form ", formInvite, inviteObj);
+				formInvite.submit(function(e){ mylog.log("finder submit ", e); e.preventDefault() });
+				var errorHandler = $('.errorHandler', formInvite);
+				mylog.log("finder errorHandler ", errorHandler);
+				formInvite.validate({
+					rules : {
+						inviteEmail : {
+							minlength : 2,
+							required : true,
+							email: true
+						},
+						inviteName : {
+							minlength : 2,
+							required : true,
+						},
+						inviteText : {
+							maxlength : 500,
+						}
+					},
+					submitHandler : function(formInvite) {
+
+						alert("submitHandler");
+						// mylog.log("finder submitHandler form", formInvite, inviteObj);
+						// errorHandler.hide();
+						// if(typeof callback != "undefined" && callback != null){
+						// 	callback();
+						// }else{
+						// 	var mail = $('#finderSelectHtml #form-invite #inviteEmail').val();
+						// 	var msg = $('#finderSelectHtml #form-invite #inviteText').val();
+						// 	var name = $('#finderSelectHtml #form-invite #inviteName').val();
+
+						// 	if(typeof listInvite.invites[mail] == "undefined"){
+						// 		var keyUnique = keyUniqueByMail(mail);
+						// 		listInvite.invites[keyUniqueByMail(mail)] = {
+						// 			name : name,
+						// 			mail : mail,
+						// 			msg : msg
+						// 		} ;
+
+						// 		if(parentType != "citoyens")
+						// 			listInvite.invites[keyUnique].isAdmin = "";
+
+						// 		$('#finderSelectHtml #form-invite #inviteEmail').val("");
+						// 		$('#finderSelectHtml #form-invite #inviteText').val("");
+						// 		$('#finderSelectHtml #form-invite #inviteName').val("");
+						// 		$('#finderSelectHtml #form-invite #form-invite").hide();
+						// 	} else {
+						// 		toastr.error(tradDynForm.alreadyInTheList);
+						// 	}
+						// 	showElementInvite(listInvite, true);
+						// 	bindRemove();
+						// }
+					},
+					invalidHandler: function(event, validator) {
+						alert("invalidHandler");
+						// mylog.log("finder invalidHandler", event, validator)
+						// var errors = validator.numberOfInvalids();
+						// if (errors) {
+						// 	var message = errors == 1
+						// 	? 'You missed 1 field. It has been highlighted'
+						// 	: 'You missed ' + errors + ' fields. They have been highlighted';
+						// 	mylog.log("finder message", message);
+						// 	$("div.error span").html(message);
+						// 	$("div.error").show();
+						// } else {
+						// 	$("div.error").hide();
+						// }
+					}
+
 				});
+			});
 			});
 		}
 
