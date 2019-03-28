@@ -1035,11 +1035,13 @@ var dyFObj = {
 				mylog.log("editElement data", data);
 				dyFObj.elementData = data;
 				typeModules=(notNull(subType)) ? subType : type; 
-				if(typeof subType == "object")
+				if(typeof typeObj[typeModules] != "undefined")
+					typeForm=typeModules;
+				else if(typeof subType == "object")
 					typeForm = subType;
 				else if(jsonHelper.notNull( "modules."+typeModules+".form") ) 
 					typeForm = typeModules;
-				else
+				else 
 					typeForm = dyFInputs.get(typeModules).ctrl;
 
 				mylog.log("editElement typeForm", typeForm);

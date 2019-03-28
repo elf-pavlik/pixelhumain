@@ -3,15 +3,14 @@
     
 </style>
 <!-- Navigation -->
-<nav id="mainNav" class="navbar navbar-default col-xs-12 navbar-custom menuTop <?php echo @$menuApp ?>">
+<nav id="mainNav" class="navbar-default col-xs-12 navbar-custom menuTop <?php echo @$menuApp ?>">
 <?php if(@$themeParams["header"]["menuTop"] && is_string($themeParams["header"]["menuTop"])){
     $this->renderPartial( $themeParams["header"]["menuTop"]  ); 
 }else{ ?>
     <div>
     <!-- //////////////// CONSTRUCTION OF LEFT NAV //////////////////// --> 
     <?php 
-    
-    if(@$themeParams["header"]["menuTop"] && @$themeParams["header"]["menuTop"]["navLeft"]){ ?>
+    if(isset($themeParams["header"]["menuTop"]) && isset($themeParams["header"]["menuTop"]["navLeft"])){ ?>
     <div class="navLeft margin-left-10">
         <?php foreach(@$themeParams["header"]["menuTop"]["navLeft"] as $key => $value){
         // LOGO HTML NAV BAR 
@@ -25,67 +24,26 @@
             <img src="<?php echo $logo;?>" class="logo-menutop pull-left hidden-xs" height="<?php echo $height ?>">
             <img src="<?php echo $logoMin;?>" class="logo-menutop pull-left visible-xs" height="40">
         </a>
-        <?php }
-        else if($key=="app"){
-            foreach ($themeParams["pages"] as $key => $value) {
-                if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
-                    <button class="btn btn-link pull-left menu-button btn-menu lbh-menu-app text-dark btn-menu-tooltips menu-btn-top <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>" data-hash="<?php echo $key; ?>"
-                          data-toggle="tooltip" data-placement="bottom" alt="<?php echo Yii::t("common","Notifications") ?>">
-                        <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
-                        <span class="tooltips-top-menu-btn"><?php echo Yii::t("common", $value["subdomainName"]); ?></span>
-                    </button>
-                    <!--<a href="javascript:;" data-hash="<?php echo $key; ?>" 
-                    class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
-                            
-                    <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
-                    <span class="<?php echo str_replace("#","",$key); ?>ModSpan"><?php echo Yii::t("common", $value["subdomainName"]); ?></span>
-                    <span class="<?php echo @$value["notif"]; ?> topbar-badge badge animated bounceIn badge-warning"></span>
-                        </a>  -->
-                <?php   }
-            } 
-             
-        }
-        // END LOGO HTML NAV BAR
-        else if($key=="searchBar" && $value){ 
-            $searchBar=(@$useFilter && $useFilter) ? $value["useFilter"] : $value["noUseFilter"]; ?>
-            <!-- INPUT SEARCH BAR IN NAV -->
-             <div class="hidden-xs <?php echo $searchBar["classes"]["container"] ?> navbar-item-left">
-                <input type="text" class="form-control pull-left <?php echo $searchBar["classes"]["input"] ?>" id="<?php echo $searchBar["ids"]["input"] ?>" placeholder="<?php echo Yii::t("common", $placeholderMainSearch) ?>">
-                <span class="text-white input-group-addon pull-left <?php echo $searchBar["classes"]["spanAddon"] ?>" id="<?php echo $searchBar["ids"]["spanAddon"] ?>">
-                    <i class="fa fa-arrow-circle-right"></i>
-                </span>
-                <?php if(@$searchBar["dropdownResult"]){ ?>
-                 <div class="dropdown-result-global-search hidden-xs col-sm-6 col-md-5 col-lg-5 no-padding"></div> 
-                <?php } ?>
+        <?php } else if($key=="app"){ ?>
+            <div class="pull-left menu-app-top">
+                <?php echo ButtonCtk::app($value); ?>
             </div>
-            <?php if(@$searchBar["dropdownApp"]
-                && !empty($menuApp) && $menuApp!="vertical" 
-                && @$themeParams["numberOfApp"]==1 
-                && @$themeParams["pages"]){
-             foreach (@$themeParams["pages"] as $key => $value) {
-                if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
-                    <a href="javascript:;" data-hash="<?php echo $key; ?>" 
-                    class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left navbar-item-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>" style="line-height:27px;border:none;">
-                            
-                    <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
-                    <span class="<?php echo str_replace("#","",$key); ?>ModSpan"><?php echo Yii::t("common", $value["subdomainName"]); ?></span>
-                    </a>  
-            <?php   }
-                } 
-            } ?>
-            <!-- END INPUT SEARCH BAR IN NAV -->
-        <?php }else if($key=="useFilter" && @$useFilter && $useFilter){   
-            $showScopeFilter=(@$value["scopeFilter"] && $value["scopeFilter"]) ? true : false;
-            $showFilters=(@$value["showFilter"] && $value["showFilter"]) ? true : false;
-            ?>
-           
-            <?php if($showScopeFilter){ ?> 
+        <?php
+        // END LOGO HTML NAV BAR
+        }else if($key=="searchBar"){ 
+            $value["dropdownResult"]=$dropdownResult;
+            echo ButtonCtk::searchBar($value);    
+        // END INPUT SEARCH BAR IN NAV -->
+        }else if($key=="useFilter" && isset($useFilter) && !empty($useFilter)){   
+            $showScopeFilter=(@$value["scopeFilter"] && $value["scopeFilter"] && (!isset($useFilter["scope"]) || $useFilter["scope"])) ? true : false;
+            $showFilters=(@$value["showFilter"] && $value["showFilter"] && (!isset($useFilter["filters"]) || $useFilter["filters"])) ? true : false;
+            if($showScopeFilter){ ?> 
             <button class="btn hidden-xs pull-left menu-btn-scope-filter text-red elipsis margin-right-10 navbar-item-left"
                     data-type="<?php echo @$type; ?>">
                     <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>
             </button>
-            <?php } ?>
-            <?php if($showFilters){ ?>
+            <?php } 
+            if($showFilters){ ?>
              <button class="btn btn-show-filters pull-left hidden-xs navbar-item-left"> <i class="fa fa-filter visible-sm pull-left" style="font-size:18px;"></i><span class="hidden-sm"><?php echo Yii::t("common", "Filters") ?></span> <span class="topbar-badge badge animated bounceIn badge-warning"></span> <i class="fa fa-angle-down"></i></button>
             <?php }
             
@@ -128,8 +86,8 @@
             if($key=="login"){ ?>
                 <button class="letter-green font-montserrat btn-menu-connect margin-left-10 margin-right-10 menu-btn-top" 
                         data-toggle="modal" data-target="#modalLogin" style="font-size: 17px;">
-                        <i class="fa fa-sign-in"></i> 
-                        <span class="hidden-xs"><small style="width:70%;"><?php echo Yii::t("login", "LOG IN") ?></small></span>
+                        <i class="fa fa-<?php echo $value["icon"] ?>"></i> 
+                        <span class="hidden-xs"><small style="width:70%;"><?php echo Yii::t("login", $value["label"]) ?></small></span>
                 </button>
             <?php }
             if($key=="dropdownUser"){ ?>
