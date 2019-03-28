@@ -47,7 +47,9 @@
         }
         // END LOGO HTML NAV BAR
         else if($key=="searchBar" && $value){ 
-            $searchBar=(@$useFilter && $useFilter) ? $value["useFilter"] : $value["noUseFilter"]; ?>
+
+            $searchBar=(@$useFilter && $useFilter) ? $value["useFilter"] : $value["noUseFilter"]; 
+            ?>
             <!-- INPUT SEARCH BAR IN NAV -->
              <div class="hidden-xs <?php echo $searchBar["classes"]["container"] ?> navbar-item-left">
                 <input type="text" class="form-control pull-left <?php echo $searchBar["classes"]["input"] ?>" id="<?php echo $searchBar["ids"]["input"] ?>" placeholder="<?php echo Yii::t("common", $placeholderMainSearch) ?>">
