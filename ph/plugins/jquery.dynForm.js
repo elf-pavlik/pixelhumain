@@ -15,6 +15,13 @@ formValues: contains the values if needed
 onLoad : (optional) is a function that is launched once the form has been created and written into the DOM 
 onSave: (optional) overloads the generic saveProcess
 test
+
+var dyFObj
+var dyFInputs 
+var dyFCustom
+var finder 
+
+
 ***************************************** */
 
 (function($) {
@@ -227,6 +234,16 @@ var finder = {
 	callback : {},
 	invite : null,
 	search : null,
+	initVar : function(){
+		mylog.log("finder initVar");
+		finder.object = {};
+		finder.finderPopulation = {};
+		finder.selectedItems={};
+		finder.typeAuthorized = {};
+		finder.callback = {};
+		finder.invite = null;
+		finder.search = null;
+	},
 	set : function(){
 		mylog.log("finder set");
 		finder.object={};
@@ -1126,6 +1143,10 @@ var dyFObj = {
 		}
 		dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
 		dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
+
+		if(notNull(finder))
+			finder.initVar();
+
 		if(userId)
 		{
 			if(typeof formInMap != 'undefined')
@@ -4681,6 +4702,7 @@ var dyFObj = {
 var dyFInputs = {
 
 	init : function() {
+		mylog.log("KEY init");
 		 //global variables clean up
 		dyFInputs.locationObj.elementLocation = null;
 	    dyFInputs.locationObj.elementLocations = [];
@@ -4695,6 +4717,7 @@ var dyFInputs = {
 	    	dyFInputs.initializeTypeObjForm(costum);
 	},
 	initializeTypeObjForm : function(object){
+		mylog.log("KEY initializeTypeObjForm", object);
 		// Initialize tags list for network in form of element
 		var networkTags = [];
 		var networkTagsCategory = {};
@@ -4747,6 +4770,10 @@ var dyFInputs = {
 				//key=(typeof typeObj[key].sameAs != "undefined") ? typeObj[key].sameAs : key; 
 				key=(!typeObj.isDefined(key, "dynForm") && typeObj.isDefined(key, "sameAs")) ? typeObj[key].sameAs : key;
 				if( typeof typeObj[key].dynForm != "undefined"){
+					
+					if( typeof object.slug != "undefined")
+						typeObj[key].dynForm.jsonSchema.properties.source = object.slug;
+
 					if( typeof object.request != "undefined"){
 						if(typeof object.request.sourceKey != "undefined"){
 							sourceObject = {inputType:"hidden", value : object.request.sourceKey[0]};

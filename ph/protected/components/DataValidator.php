@@ -132,7 +132,7 @@ class DataValidator {
 		// var_dump($dataBinding);
 		if (isset($dataBinding[$fieldName])) {
 			$data = $dataBinding[$fieldName];
-			$name = $data["name"];
+			$name =(@$data["name"]) ? $data["name"] : "noname";
 			//Validate field
 			if (isset($data["rules"])) {
 				$rules = $data["rules"];
@@ -160,6 +160,14 @@ class DataValidator {
 	{
 		
 		$dataBinding = $type::$dataBinding;
+		if( @Yii::app()->session["costum"]["typeObj"][$type::COLLECTION]["dynFormCostum"]["beforeBuild"]["properties"] ){
+			foreach (Yii::app()->session["costum"]["typeObj"][$type::COLLECTION]["dynFormCostum"]["beforeBuild"]["properties"] as $key => $value) {
+				if(!isset($dataBinding[ $key ])){
+					$savePath = ( @$value["savePath"] ) ? $value["savePath"] : "costum.".$key;
+					$dataBinding[ $key ] = array( $key => $savePath );
+				}
+			}
+		}
 		//var_dump($dataBinding); return;
 		//var_dump($values); return;
 
