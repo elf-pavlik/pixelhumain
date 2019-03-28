@@ -15,6 +15,13 @@ formValues: contains the values if needed
 onLoad : (optional) is a function that is launched once the form has been created and written into the DOM 
 onSave: (optional) overloads the generic saveProcess
 test
+
+var dyFObj
+var dyFInputs 
+var dyFCustom
+var finder 
+
+
 ***************************************** */
 
 (function($) {

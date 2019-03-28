@@ -132,7 +132,7 @@ class DataValidator {
 		// var_dump($dataBinding);
 		if (isset($dataBinding[$fieldName])) {
 			$data = $dataBinding[$fieldName];
-			$name = $data["name"];
+			$name =(@$data["name"]) ? $data["name"] : "noname";
 			//Validate field
 			if (isset($data["rules"])) {
 				$rules = $data["rules"];
