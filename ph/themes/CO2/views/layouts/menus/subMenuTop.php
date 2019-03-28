@@ -8,11 +8,12 @@
     </button>
     <?php //if(false){
         foreach ($params["pages"] as $key => $value) {
-           //var_dump($value);
-            if(@$value["inMenu"]==true && @$value["open"]==true){
+          
+            if(!empty($value["inMenu"]) && $value["inMenu"]==true ){ 
+                //var_dump($key);
                 $url = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
                 $target = ( !empty($value["target"]) && $value["target"] === true ? "_blanc" : "") ;
-
+                //$class = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
 
                 if(!empty($value["urlExtern"])){ ?>
                     <a href="<?php echo $value["urlExtern"]; ?>" 
