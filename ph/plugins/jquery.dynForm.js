@@ -4676,7 +4676,7 @@ var dyFObj = {
 					if( typeof valProp.rules.lengthMin != "undefined" &&
 						valProp.rules.lengthMin != null &&
 						Object.keys(finder.object[kProp]).length < valProp.rules.lengthMin ){
-						dyFObj.showError(kProp+valProp.inputType, "quandtitté minumun : "+valProp.rules.lengthMin);
+						dyFObj.showError(kProp+valProp.inputType, "quantité minimum : "+valProp.rules.lengthMin);
 						notError = false;
 					}
 				}
@@ -6109,7 +6109,7 @@ var dyFInputs = {
 			label : ( notEmpty(params) && notEmpty(params.label) ? params.label : tradDynForm.whoiscarrytheproject ),
 			multiple : ( notEmpty(params) &&notEmpty(params.multiple) ? params.multiple : true ),
 			invite :  ( notEmpty(params) &&notEmpty(params.invite) ? params.invite : true ),
-			rules : { required : true, lengthMin:( notEmpty(params) && notEmpty(params.lengthMin) ? params.lengthMin : 3 ) },
+			rules : { required : true, lengthMin:( notEmpty(params) && notEmpty(params.lengthMin) ? params.lengthMin : null ) },
 			initType: ( notEmpty(params) &&notEmpty(params.type) ? params.type : ["persons"] ),
 			openSearch :( notEmpty(params) &&notEmpty(params.openSearch) ? params.openSearch : true )
 		}
