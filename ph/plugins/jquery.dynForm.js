@@ -434,9 +434,92 @@ var finder = {
 			mylog.log("finder #finderSelectHtml", $("#finderSelectHtml").length);
 			dialog.on('shown.bs.modal', function(e){
 				mylog.log("finder #finderSelectHtml HERE", $("#finderSelectHtml").length);
-				inviteObj.formInvite("#finderSelectHtml #form-invite", "#finderSelectHtml #populateFinder", function(){
-					return true;
+
+				// var paramsInvite = {
+				// 	container : "#finderSelectHtml #form-invite"
+				// };
+
+				// inviteObj.init(paramsInvite);
+				// inviteObj.formInvite(function(){
+				// 	alert("HERE");
+				// 	return true;
+				// });
+
+
+				$('#finderSelectHtml #form-invite #btnInviteNew').off().on("click", function(e){
+				mylog.log("finder btnInviteNew ", inviteObj);
+				var formInvite = $("#finderSelectHtml #form-invite");
+				mylog.log("finder form ", formInvite, inviteObj);
+				formInvite.submit(function(e){ mylog.log("finder submit ", e); e.preventDefault() });
+				var errorHandler = $('.errorHandler', formInvite);
+				mylog.log("finder errorHandler ", errorHandler);
+				formInvite.validate({
+					rules : {
+						inviteEmail : {
+							minlength : 2,
+							required : true,
+							email: true
+						},
+						inviteName : {
+							minlength : 2,
+							required : true,
+						},
+						inviteText : {
+							maxlength : 500,
+						}
+					},
+					submitHandler : function(formInvite) {
+
+						alert("submitHandler");
+						// mylog.log("finder submitHandler form", formInvite, inviteObj);
+						// errorHandler.hide();
+						// if(typeof callback != "undefined" && callback != null){
+						// 	callback();
+						// }else{
+						// 	var mail = $('#finderSelectHtml #form-invite #inviteEmail').val();
+						// 	var msg = $('#finderSelectHtml #form-invite #inviteText').val();
+						// 	var name = $('#finderSelectHtml #form-invite #inviteName').val();
+
+						// 	if(typeof listInvite.invites[mail] == "undefined"){
+						// 		var keyUnique = keyUniqueByMail(mail);
+						// 		listInvite.invites[keyUniqueByMail(mail)] = {
+						// 			name : name,
+						// 			mail : mail,
+						// 			msg : msg
+						// 		} ;
+
+						// 		if(parentType != "citoyens")
+						// 			listInvite.invites[keyUnique].isAdmin = "";
+
+						// 		$('#finderSelectHtml #form-invite #inviteEmail').val("");
+						// 		$('#finderSelectHtml #form-invite #inviteText').val("");
+						// 		$('#finderSelectHtml #form-invite #inviteName').val("");
+						// 		$('#finderSelectHtml #form-invite #form-invite").hide();
+						// 	} else {
+						// 		toastr.error(tradDynForm.alreadyInTheList);
+						// 	}
+						// 	showElementInvite(listInvite, true);
+						// 	bindRemove();
+						// }
+					},
+					invalidHandler: function(event, validator) {
+						alert("invalidHandler");
+						// mylog.log("finder invalidHandler", event, validator)
+						// var errors = validator.numberOfInvalids();
+						// if (errors) {
+						// 	var message = errors == 1
+						// 	? 'You missed 1 field. It has been highlighted'
+						// 	: 'You missed ' + errors + ' fields. They have been highlighted';
+						// 	mylog.log("finder message", message);
+						// 	$("div.error span").html(message);
+						// 	$("div.error").show();
+						// } else {
+						// 	$("div.error").hide();
+						// }
+					}
+
 				});
+			});
 			});
 		}
 
@@ -2603,24 +2686,24 @@ var dyFObj = {
         ************************************** */
         else if( fieldObj.inputType == "scope" ) {
         	mylog.log("scopeObj ", fieldObj);
-        	fieldHTML += 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
-			fieldHTML +=		'<div id="news-scope-search" class="col-xs-12 no-padding">'+
-									'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
-										'<div class="input-group shadow-input-header">'+
-											'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
-											'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
-										'</div>'+
-										'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
-								'<div id="labelselected" class=" hidden col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
-									'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
-								'</div>'+
-								'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
-        	fieldHTML += 	'</div>';
+   //      	fieldHTML += 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
+			// fieldHTML +=		'<div id="news-scope-search" class="col-xs-12 no-padding">'+
+			// 						'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
+			// 							'<div class="input-group shadow-input-header">'+
+			// 								'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+			// 								'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
+			// 							'</div>'+
+			// 							'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
+			// 							'</div>'+
+			// 						'</div>'+
+			// 					'</div>'+
+			// 					'<div id="labelselected" class=" hidden col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+			// 						'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
+			// 					'</div>'+
+			// 					'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
+   //      	fieldHTML += 	'</div>';
 
-
+   			fieldHTML += scopeObj.getHtml();
         	scopeObj.initVar(fieldObj);
 
 					
@@ -5572,19 +5655,21 @@ var dyFInputs = {
 			inputType : "scope",
 			limit : ( notNull(params) && notNull(params.limit) ? params.limit : null ),
 			init : function (p) {
-				mylog.log("scopeObj init", p );
-				mylog.log("scopeObj searchScopeDF", $("#searchScopeDF").length );
-				$("#searchScopeDF").off().on("keyup", function(e){
-					mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
-					if($("#searchScopeDF").val().trim().length > 1){
-						if(notNull(scopeObj.timeoutAddCity)) 
-							clearTimeout(scopeObj.timeoutAddCity);
 
-						scopeObj.timeoutAddCity = setTimeout(function(){ 
-							scopeObj.search(0, 30, "#scopeListContainerForm");
-						}, 500);
-					}
-				});
+				scopeObj.init(p);
+				// mylog.log("scopeObj init", p );
+				// mylog.log("scopeObj searchScopeDF", $("#searchScopeDF").length );
+				// $("#searchScopeDF").off().on("keyup", function(e){
+				// 	mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
+				// 	if($("#searchScopeDF").val().trim().length > 1){
+				// 		if(notNull(scopeObj.timeoutAddCity)) 
+				// 			clearTimeout(scopeObj.timeoutAddCity);
+
+				// 		scopeObj.timeoutAddCity = setTimeout(function(){ 
+				// 			scopeObj.search(0, 30, "#scopeListContainerForm");
+				// 		}, 500);
+				// 	}
+				// });
 			}
 		}
 		return inputObj;
@@ -6951,7 +7036,7 @@ var scopeObj = {
 	subParams : {},
 	limit : null,
 	initVar : function(params) {
-		mylog.log("scopeObj", scopeObj );
+		mylog.log("scopeObj initVar", params );
 
 		if(notNull(params)){
 			scopeObj.subParams = ( notNull(params.subParams) ? params.subParams : {} ) ;
@@ -6960,6 +7045,40 @@ var scopeObj = {
 		if(notNull(params)){
 			scopeObj.limit = ( notNull(params.limit) ? params.limit : null ) ;
 		}
+	},
+	init : function(p){
+		mylog.log("scopeObj init", p );
+		mylog.log("scopeObj searchScopeDF", $("#searchScopeDF").length );
+		$("#searchScopeDF").off().on("keyup", function(e){
+			mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
+			if($("#searchScopeDF").val().trim().length > 1){
+				if(notNull(scopeObj.timeoutAddCity)) 
+					clearTimeout(scopeObj.timeoutAddCity);
+
+				scopeObj.timeoutAddCity = setTimeout(function(){ 
+					scopeObj.search(0, 30, "#scopeListContainerForm");
+				}, 500);
+			}
+		});
+	},
+	getHtml: function(){
+		str = 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">'+
+					'<div id="news-scope-search" class="col-xs-12 no-padding">'+
+						'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
+							'<div class="input-group shadow-input-header">'+
+								'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+								'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
+							'</div>'+
+							'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div id="labelselected" class=" hidden col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+						'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
+					'</div>'+
+					'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>'+
+        		'</div>';
+        return str
 	},
 	timeoutAddCity : null,
 	spinSearchAddon: function(bool){
