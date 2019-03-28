@@ -164,7 +164,7 @@ class DataValidator {
 			foreach (Yii::app()->session["costum"]["typeObj"][$type::COLLECTION]["dynFormCostum"]["beforeBuild"]["properties"] as $key => $value) {
 				if(!isset($dataBinding[ $key ])){
 					$savePath = ( @$value["savePath"] ) ? $value["savePath"] : "costum.".$key;
-					$dataBinding[ $key ] = array( $key => "costum.".$key);
+					$dataBinding[ $key ] = array( $key => $savePath );
 				}
 			}
 		}
