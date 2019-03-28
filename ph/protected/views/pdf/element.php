@@ -54,13 +54,39 @@ table.first td .entete {
 
 
 	<div class='col-xs-12'>
-		<?php 
-		$exept  = array('_id', 'name');
+		<?php
 		$str = "";
+		if(!empty($elt["shortDescription"])){
+			$str .= '<h4 class="padding-20 blue" style="">'."shortDescription".'</h4>';
+			$str .= '<span>'.$elt["shortDescription"].'</span>';
+		}
+
+		if(!empty($elt["description"])){
+			$str .= '<h4 class="padding-20 blue" style="">'."description".'</h4>';
+			$str .= '<span>'.$elt["Description"].'</span>';
+		}
+
+		if(!empty($elt["tags"])){
+			$str .= '<h4 class="padding-20 blue" style="">'."tags".'</h4>';
+			$str .= '<span>';
+
+			foreach ($elt["tags"] as $keyT => $valT) {
+				$str.= '<span style="color :red">#'.$valT.'</span> ';
+			}
+
+			'</span>';
+		}
+
+
+
+
+
+		$exept  = array('_id', 'name', 'shortDescription' ,'description', 'tags', 'creator','created', 'modified', 'updated');
+		
 		foreach ($elt as $key => $value) {
 
-			if(!in_array($key, $exept)){
-				$str .= '<h4 class="padding-20 blue" style="">'.$key.'</h4>'.is_array($value);
+			if(!in_array($key, $exept) && !is_array($value)){
+				$str .= '<h4 class="padding-20 blue" style="">'.$key.'</h4>';
 			 	if(!empty($value)){
 			 		if(is_string($value) === true){
 			 			//$str .= $value;
@@ -78,6 +104,8 @@ table.first td .entete {
 				} else
 					$str .= "<i> Pas renseigner </i>";
 				$str .= '<br/>';
+				
+				
 			}
 		}
 

@@ -7317,7 +7317,7 @@ var scopeObj = {
 					$(domTarget).scrollTop(0);
 					
 					//on affiche la dropdown
-					showDropDownGS(true, domTarget);
+					scopeObj.showDropDownGS(true, domTarget);
 					//bindScopesInputEvent();
 					
 					$(input+" .item-globalscope-checker").off().on('click', function(){
@@ -7331,6 +7331,7 @@ var scopeObj = {
 								var scopeDF = myScopes.search[key];
 								var nameZone = (typeof scopeDF.cityName != "undefined") ? scopeDF.cityName : scopeDF.name ;
 								var btnScopeAction="<span class='removeScopeDF tooltips margin-right-5 margin-left-10' "+
+									"style='font-size: 18px;' "+
 									"data-add='false' data-scope-value='"+scopeDF.id+"' "+
 									'data-scope-key="'+key+'" '+
 									"data-toggle='tooltip' data-placement='top' "+
@@ -7341,6 +7342,7 @@ var scopeObj = {
 									btnScopeAction+
 									"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
 										"class='item-scope-checker item-scope-input' "+
+										"style='font-size: 18px;' "+
 										'data-scope-key="'+key+'" '+
 										'data-scope-value="'+scopeDF.id+'" '+
 										'data-scope-name="'+name+'" '+
@@ -7366,9 +7368,11 @@ var scopeObj = {
 									}
 									
 								});
+
+								$(domTarget).hide();
 							}
 						} else {
-							toastr.error("Vous avez déjà selectionnerle nombre max elements")
+							toastr.error("Vous avez déjà selectionné le nombre max élèments")
 						}
 						
 					});
@@ -7390,7 +7394,7 @@ var scopeObj = {
 
 					if(isMapEnd){
 						//affiche les éléments sur la carte
-						showDropDownGS(false);
+						scopeObj.showDropDownGS(false);
 						Sig.showMapElements(Sig.map, mapElementsGS, "globe", "Recherche globale");
 					}
 				}
