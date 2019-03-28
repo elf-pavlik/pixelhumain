@@ -434,7 +434,7 @@ section {
 	display: inline;
 }
 
-.navbar-custom .btn-show-map, .main-container.vertical .btn-show-map{
+.navbar-custom .btn-show-map, .main-container.vertical .btn-show-map {
 	background-color: #0095FF;
 	/*background-color: #7bd18f;*/
 	color: white;
@@ -446,7 +446,7 @@ section {
 	width: 40px;
 	height: 40px;
 }
-.navbar-custom .btn-show-map:hover, .main-container.vertical .btn-show-map:hover{
+.navbar-custom .btn-show-map:hover, .main-container.vertical .btn-show-map:hover, .main-container.horizontal .btn-show-map:hover{
 	background-color: transparent;
 	color: #0095FF;
 	border: 2px solid #0095FF;
@@ -834,7 +834,7 @@ section {
         }
     }
     @media (min-width: 768px) {
-	    .main-container.vertical .btn-show-map{
+	    .main-container.vertical .btn-show-map, .main-container.horizontal .btn-show-map{
 			margin: 0px 3px;
 		    font-size: 14px;
 		    width: 40%;
