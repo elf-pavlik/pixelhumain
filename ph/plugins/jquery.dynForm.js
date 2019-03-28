@@ -337,9 +337,7 @@ var finder = {
 		titleForm="Sélectionner dans la liste";
 		if(!notNull(multiple) && !multiple)
 			titleForm+="(Un seulement)";
-		var dialog = bootbox.dialog({
-		    title: titleForm,
-		    message: '<div id="finderSelectHtml">'+
+		smallMenu.open( '<div id="finderSelectHtml">'+
 		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
 						'<div id="list-finder-selected"></div>'+
 		    			'<hr/><div id="list-finder-selection" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
@@ -374,27 +372,7 @@ var finder = {
 								'<button class="btn btn-success" id="btnInviteNew" ><i class="fa fa-add"></i> Add to the list</button>'+
 							'</div>'+
 						'</div>'+
-		    		'</div>',
-		    closeButton:false,
-		    buttons: {
-			    cancel: {
-			        label: trad.close,
-			        className: 'btn-default',
-			        callback: function(){
-			            dialog.modal('hide');
-			        }
-			    },
-			    ok: {
-			        label: "Ajouter",
-			        className: 'btn-success',
-			        callback: function(e){
-			        	e.preventDefault();
-			        	finder.addSelectedToForm(keyForm, multiple);
-			        }
-			    }
-			}
-		});
-		dialog.init(function(){
+		    		'</div>',null,null,function(){
 		    //setTimeout(function(){
 		    finder.finderPopulation={};
 		    if(typeof myContacts != "undefined"){
@@ -432,7 +410,7 @@ var finder = {
 
 		if(typeof finder.invite != "undefined" && finder.invite != null && finder.invite === true){
 			mylog.log("finder #finderSelectHtml", $("#finderSelectHtml").length);
-			dialog.on('shown.bs.modal', function(e){
+			$("#openModal").on('shown.bs.modal', function(e){
 				mylog.log("finder #finderSelectHtml HERE", $("#finderSelectHtml").length);
 
 				 var paramsInvite = {
