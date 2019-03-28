@@ -306,6 +306,29 @@
             );
             HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
 
+            $cssAnsScriptFilesModule = array(
+                "/js/default/loginRegister.js",
+                '/js/co.js',
+                '/js/default/directory.js',
+                '/js/links.js',
+                '/js/default/index.js',
+                '/js/default/notifications.js',
+                //'/js/default/directory.js',
+                '/js/dataHelpers.js',
+                '/js/sig/localisationHtml5.js',
+                '/js/floopDrawerRight.js',
+                '/js/sig/geoloc.js',
+                //'/js/default/formInMap.js',
+                //'/js/default/formInMapOld.js',
+                '/js/default/globalsearch.js',
+                '/js/sig/findAddressGeoPos.js',
+                '/js/jquery.filter_input.js',
+                //'/js/breadcrum_co.js',
+                '/js/scopes/scopes.js',
+                //'/js/scopes/breadcrum_co.js',
+                //'/js/scopes/multiscopes.js',
+                );
+            HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl() );
             /* ***********************
             END theme stuff
             ************************ */

@@ -85,7 +85,7 @@
             <?php }
             if($key=="login"){ ?>
                 <button class="letter-green font-montserrat btn-menu-connect margin-left-10 margin-right-10 menu-btn-top" 
-                        data-toggle="modal" data-target="#modalLogin" style="font-size: 17px;">
+                        data-toggle="modal" data-target="<?php echo $value["dataTarget"] ?>" style="font-size: 17px;">
                         <i class="fa fa-<?php echo $value["icon"] ?>"></i> 
                         <span class="hidden-xs"><small style="width:70%;"><?php echo Yii::t("login", $value["label"]) ?></small></span>
                 </button>

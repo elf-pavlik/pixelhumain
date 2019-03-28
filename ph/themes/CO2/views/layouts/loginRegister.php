@@ -1,5 +1,5 @@
 
-<?php HtmlHelper::registerCssAndScriptsFiles( array('/js/default/loginRegister.js') , $this->module->getParentAssetsUrl()); ?>
+<?php //HtmlHelper::registerCssAndScriptsFiles( array('/js/default/loginRegister.js') , $this->module->getParentAssetsUrl()); ?>
 
 <style>
     .no-display {
