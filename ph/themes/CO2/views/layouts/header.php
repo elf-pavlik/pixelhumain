@@ -12,6 +12,7 @@
     $subdomainName          = $themeParams["pages"]["#".$page]["subdomainName"];
     $icon                   = $themeParams["pages"]["#".$page]["icon"];
     $mainTitle              = @$themeParams["pages"]["#".$page]["mainTitle"];
+    $dropdownResult              = @$themeParams["pages"]["#".$page]["dropdownResult"];
     $placeholderMainSearch  = (@$themeParams["pages"]["#".$page]["placeholderMainSearch"]) ? $themeParams["pages"]["#".$page]["placeholderMainSearch"] : "what are you looking for ?";
     $type = @$themeParams["pages"]["#".$page]["type"];
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
@@ -35,6 +36,7 @@
             "placeholderMainSearch"=>$placeholderMainSearch,
             "menuApp"=>$menuApp,
             "useFilter"=>$useFilter,
+            "dropdownResult"=> $dropdownResult,
             "type"=>@$type,
             "me" => $me) ); 
     ?>
@@ -86,7 +88,7 @@
         $this->renderPartial($layoutPath.'menus/'.$subMenu, array("params"=>$themeParams, "subdomainName"=>$subdomainName, "useFilter"=>@$useFilter )); 
     }
     // FIlter toolBar subMenu
-    if(@$useFilter != false
+    if(isset($useFilter) && $useFilter!==false
         && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) ))
         $this->renderPartial($layoutPath.'menus/menuFilters', array("params"=>$themeParams)); 
 ?>
@@ -114,7 +116,7 @@
                 <div class="dropdown-result-global-search col-xs-12 no-padding"></div>
             <?php } ?>
         </div>
-        <?php if(@$useFilter && $useFilter!=false){ 
+        <?php if(isset($useFilter) && $useFilter!=false){ 
             if(!isset($useFilter["filters"]) || !empty($useFilter["filters"])){ ?>
                 <button class="btn btn-show-filters visible-xs">
                     <?php echo Yii::t("common", "Filters") ?> 
@@ -277,7 +279,7 @@
         headerHeightPos(false, initHeight);
         if(heightNav > 70){
             marginTop=(heightNav-55);
-            $("#mainNav .navbar-right, #mainNav .navbar-item-left").css("margin-top", marginTop); 
+            $("#mainNav .navbar-right, #mainNav .navbar-item-left, #mainNav .menu-app-top").css("margin-top", marginTop); 
           //  heightTopMenu=$("#mainNav").outerHeight()+initHeight;
         }
             

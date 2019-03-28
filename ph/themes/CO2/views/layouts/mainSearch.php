@@ -113,43 +113,8 @@
                 $this->renderPartial($layoutPath.'.rocketchat'); 
             } 
         ?>
+
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
-
-            <?php 
-                  /*  $CO2DomainName = Yii::app()->params["CO2DomainName"];
-                    $this->renderPartial( $layoutPath.'menus/'.$CO2DomainName, 
-                                            array( "layoutPath"=>$layoutPath , 
-                                                    "subdomain"=>"", //$subdomain,
-                                                    "subdomainName"=>"", //$subdomainName,
-                                                    "mainTitle"=>"", //$mainTitle,
-                                                    "placeholderMainSearch"=>"", //$placeholderMainSearch,
-                                                    "type"=>@$type,
-                                                    "me" => $me,
-                                                    "themeParams"=>$params) );
-                   <header>
-                    <div class="col-md-12 text-center main-menu-app" style="">
-                        <?php 
-                            $CO2DomainName = Yii::app()->params["CO2DomainName"];
-                            $this->renderPartial( $layoutPath.'menus.moduleMenu',array( "params" => $params , 
-                                                                                        "subdomain"  => ""));
-                        ?>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="intro-text">  
-
-                                    <?php $this->renderPartial($layoutPath.'headers/'.Yii::app()->params["CO2DomainName"],
-                                    array("themeParams"=>$params)); ?>
-
-                                        
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>*/
-               
-            ?>
             <div class="pageContent"></div>
         </div>
         <div class="portfolio-modal portfolio-modal-survey modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true" style="top:0px !important;">
@@ -217,13 +182,6 @@
             </div>
         </div>
         
-
-        <?php // BOUBOULE NOT USE FOR MOMENT =>if($CO2DomainName == "kgougle" || $CO2DomainName == "CO2")
-            //    $this->renderPartial($layoutPath."modals/".$CO2DomainName.'/radioplayermodal', array( "layoutPath"=>$layoutPath ) ); 
-
-        //$this->renderPartial($layoutPath."modals/".$CO2DomainName.'/selectCreate', array( "layoutPath"=>$layoutPath ) ); 
-        ?> 
-        
         <?php 
 
             /* ***********************
@@ -274,7 +232,7 @@
                 '/plugins/moment/min/moment.min.js' ,
                 '/plugins/moment/min/moment-with-locales.min.js',
                 '/plugins/jquery.dynForm.js',
-    '/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js',
+                '/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js',
                 '/plugins/jquery.dynSurvey/jquery.dynSurvey.js',
                 
                 '/plugins/jquery.elastic/elastic.js',
@@ -327,60 +285,32 @@
             theme stuff
             ************************ */
             $cssAnsScriptFilesModule = array(
-                '/assets/js/cookie.js' ,
-                '/assets/js/jqBootstrapValidation.js' ,
+                //'/assets/js/cookie.js' ,
+                //'/assets/js/jqBootstrapValidation.js' ,
                 
-                '/assets/data/mainCategories.js' ,
+                //'/assets/data/mainCategories.js' ,
                 
                 '/assets/vendor/bootstrap/js/bootstrap.min.js',
                 '/assets/vendor/bootstrap/css/bootstrap.min.css',
                 '/assets/css/sig/sig.css',
                 '/assets/css/freelancer.css',
                 '/assets/css/default/dynForm.css',
-
-                '/assets/css/CO2/CO2-boot.css',
-                '/assets/css/CO2/CO2-color.css',
-                '/assets/css/CO2/CO2.css',
+                '/assets/css/CO2-boot.css',
+                '/assets/css/CO2-color.css',
+                '/assets/css/CO2.css',
                 '/assets/css/plugins.css',
-                 // TODO BOUBOULE - Radio à ne pas appeler pour CO2
-                '/assets/vendor/jPlayer-2.9.2/dist/skin/blue.monday/css/jplayer.blue.monday.min.css',
-                '/assets/vendor/jPlayer-2.9.2/dist/jplayer/jquery.jplayer.min.js',
-                '/assets/js/radioplayer.js',
-    
                 '/assets/css/floopDrawerRight.css',
                 '/assets/css/cooperation.css',
-                '/assets/css/default/directory.css'
+                '/assets/css/default/directory.css',
+                '/assets/js/comments.js'
             );
             HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
 
             /* ***********************
             END theme stuff
             ************************ */
-            
-
-            //inclue le css & js du theme si != de CO2 (surcharge du code commun du theme si besoin) ex : kgougle
-            //if($CO2DomainName != "CO2"){
-
-                $cssAnsScriptFilesModule = array(
-                    '/assets/css/themes/'.$CO2DomainName.'/'.$CO2DomainName.'.css',
-                    '/assets/js/comments.js',
-                    //'/assets/css/themes/'.$CO2DomainName.'/'.$CO2DomainName.'-color.css',
-                    //'/assets/js/themes/'.$CO2DomainName.'.js',
-                );
-                HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
-            //}
-
-            if($CO2DomainName != "CO2"){
-                $cssAnsScriptFilesModule = array(
-                    //'/assets/css/themes/'.$CO2DomainName.'/'.$CO2DomainName.'.css',
-                    '/assets/css/themes/'.$CO2DomainName.'/'.$CO2DomainName.'-color.css',
-                    '/assets/js/themes/'.$CO2DomainName.'.js',
-                );
-                HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
-            }
+    
         ?>
-
-        <?php //$this->renderPartial($layoutPath.'initCommunexion', array()); ?>
         
         <?php $this->renderPartial('dda.views.co.pod.modalCommon', array()); 
             if(isset(Yii::app()->session['userId'])){
@@ -390,16 +320,6 @@
 
             // BOUBOULE NOT USE FOR MOMENT $this->renderPartial($layoutPath.'modals.'.$CO2DomainName.'.mainMenu', array("me"=>$me) ); 
             $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"], array("themeParams"=>@Yii::app()->session['paramsConfig'])); 
-
-            if(false && (($CO2DomainName == "CO2" &&
-                !@Yii::app()->session["userId"] && 
-                !@Yii::app()->session["user"]["preferences"]) || 
-                ($CO2DomainName == "CO2" &&
-                @Yii::app()->session["user"]["preferences"] && 
-                !@Yii::app()->session["user"]["preferences"]["unseenHelpCo"])) &&
-                !@Yii::app()->request->cookies['unseenHelpCo'])
-                $this->renderPartial($layoutPath.'footer.donation'); 
-
         ?>
         
         <script>        
@@ -441,7 +361,7 @@
                 setTimeout(function(){
                     $("#page-top").show();
                 }, 500);
-                $(".close-footer-help").click(function(){
+                /*$(".close-footer-help").click(function(){
                     $("#footer-help").remove();
                     if(typeof userId != "undefined" && userId != ""){
                         $.ajax({
@@ -458,13 +378,13 @@
                     $.cookie('unseenHelpCo', true, { expires: 365, path: "/" });
                     $("#footer-help").fadeOut();
                     toastr.success("Ce bandeau ne s'affichera plus sur ce navigateur !");
-                });
+                });*/
             });
         </script>
         
         <?php 
-        if(@Yii::app()->session["costum"]["initScript"])
-            $this->renderPartial( Yii::app()->session["costum"]["initScript"] );
+       // if(@Yii::app()->session["costum"]["initScript"])
+         //   $this->renderPartial( Yii::app()->session["costum"]["initScript"] );
          ?>
     </body>
 

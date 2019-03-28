@@ -33,12 +33,12 @@
 <div id="menuApp" class="menuLeft hidden-xs">
     <?php
         foreach ($params["pages"] as $key => $value) {
-            if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
+            if(@$value["inMenu"]==true){ ?>
                 <a href="javascript:;" data-hash="<?php echo $key; ?>" 
                 class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app btn-menu-vertical col-xs-12 hidden-xs hidden-top link-submenu-header <?php if(@$subdomainName==$value["subdomainName"]) echo 'active'; ?>">
                         
                 <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
-                <span class="<?php echo str_replace("#","",$key); ?>ModSpan tooltips-menu-btn"><?php echo Yii::t("common", @$value["subdomainName"]); ?></span>
+                <span class="tooltips-menu-btn"><?php echo Yii::t("common", @$value["subdomainName"]); ?></span>
                 <!--<span class="<?php echo @$value["notif"]; ?> topbar-badge badge animated bounceIn badge-warning"></span>-->
             </a>  
         <?php   }
