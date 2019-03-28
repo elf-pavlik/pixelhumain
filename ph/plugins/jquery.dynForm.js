@@ -2603,24 +2603,24 @@ var dyFObj = {
         ************************************** */
         else if( fieldObj.inputType == "scope" ) {
         	mylog.log("scopeObj ", fieldObj);
-        	fieldHTML += 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
-			fieldHTML +=		'<div id="news-scope-search" class="col-xs-12 no-padding">'+
-									'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
-										'<div class="input-group shadow-input-header">'+
-											'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
-											'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
-										'</div>'+
-										'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
-								'<div id="labelselected" class=" hidden col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
-									'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
-								'</div>'+
-								'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
-        	fieldHTML += 	'</div>';
+   //      	fieldHTML += 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">';
+			// fieldHTML +=		'<div id="news-scope-search" class="col-xs-12 no-padding">'+
+			// 						'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
+			// 							'<div class="input-group shadow-input-header">'+
+			// 								'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+			// 								'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
+			// 							'</div>'+
+			// 							'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
+			// 							'</div>'+
+			// 						'</div>'+
+			// 					'</div>'+
+			// 					'<div id="labelselected" class=" hidden col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+			// 						'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
+			// 					'</div>'+
+			// 					'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>';
+   //      	fieldHTML += 	'</div>';
 
-
+   			fieldHTML += scopeObj.getHtml();
         	scopeObj.initVar(fieldObj);
 
 					
@@ -5572,19 +5572,21 @@ var dyFInputs = {
 			inputType : "scope",
 			limit : ( notNull(params) && notNull(params.limit) ? params.limit : null ),
 			init : function (p) {
-				mylog.log("scopeObj init", p );
-				mylog.log("scopeObj searchScopeDF", $("#searchScopeDF").length );
-				$("#searchScopeDF").off().on("keyup", function(e){
-					mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
-					if($("#searchScopeDF").val().trim().length > 1){
-						if(notNull(scopeObj.timeoutAddCity)) 
-							clearTimeout(scopeObj.timeoutAddCity);
 
-						scopeObj.timeoutAddCity = setTimeout(function(){ 
-							scopeObj.search(0, 30, "#scopeListContainerForm");
-						}, 500);
-					}
-				});
+				scopeObj.init(p);
+				// mylog.log("scopeObj init", p );
+				// mylog.log("scopeObj searchScopeDF", $("#searchScopeDF").length );
+				// $("#searchScopeDF").off().on("keyup", function(e){
+				// 	mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
+				// 	if($("#searchScopeDF").val().trim().length > 1){
+				// 		if(notNull(scopeObj.timeoutAddCity)) 
+				// 			clearTimeout(scopeObj.timeoutAddCity);
+
+				// 		scopeObj.timeoutAddCity = setTimeout(function(){ 
+				// 			scopeObj.search(0, 30, "#scopeListContainerForm");
+				// 		}, 500);
+				// 	}
+				// });
 			}
 		}
 		return inputObj;
@@ -6947,7 +6949,7 @@ var scopeObj = {
 	subParams : {},
 	limit : null,
 	initVar : function(params) {
-		mylog.log("scopeObj", scopeObj );
+		mylog.log("scopeObj initVar", params );
 
 		if(notNull(params)){
 			scopeObj.subParams = ( notNull(params.subParams) ? params.subParams : {} ) ;
@@ -6956,6 +6958,40 @@ var scopeObj = {
 		if(notNull(params)){
 			scopeObj.limit = ( notNull(params.limit) ? params.limit : null ) ;
 		}
+	},
+	init : function(p){
+		mylog.log("scopeObj init", p );
+		mylog.log("scopeObj searchScopeDF", $("#searchScopeDF").length );
+		$("#searchScopeDF").off().on("keyup", function(e){
+			mylog.log("searchScopeDF", $("#searchScopeDF").val().trim().length);
+			if($("#searchScopeDF").val().trim().length > 1){
+				if(notNull(scopeObj.timeoutAddCity)) 
+					clearTimeout(scopeObj.timeoutAddCity);
+
+				scopeObj.timeoutAddCity = setTimeout(function(){ 
+					scopeObj.search(0, 30, "#scopeListContainerForm");
+				}, 500);
+			}
+		});
+	},
+	getHtml: function(){
+		str = 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">'+
+					'<div id="news-scope-search" class="col-xs-12 no-padding">'+
+						'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
+							'<div class="input-group shadow-input-header">'+
+								'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
+								'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
+							'</div>'+
+							'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					'<div id="labelselected" class=" hidden col-md-12 col-sm-12 col-xs-12 margin-top-10 no-padding">'+
+						'<label class="margin-left-5"><i class="fa fa-angle-down"></i> '+trad.selectedzones+'</label><br>'+
+					'</div>'+
+					'<div id="scopes-container" class="col-md-12 col-sm-12 col-xs-12"></div>'+
+        		'</div>';
+        return str
 	},
 	timeoutAddCity : null,
 	spinSearchAddon: function(bool){
