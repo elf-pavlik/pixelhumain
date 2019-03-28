@@ -8,9 +8,26 @@
     </button>
     <?php //if(false){
         foreach ($params["pages"] as $key => $value) {
-            if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
-                <a href="javascript:;" data-hash="<?php echo $key; ?>" 
-                class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+          
+            if(!empty($value["inMenu"]) && $value["inMenu"]==true ){ 
+                //var_dump($key);
+                $url = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
+                $target = ( !empty($value["target"]) && $value["target"] === true ? "_blanc" : "") ;
+                //$class = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
+
+                if(!empty($value["urlExtern"])){ ?>
+                    <a href="<?php echo $value["urlExtern"]; ?>" 
+                    target="<?php echo $target; ?>" 
+                    class="<?php echo $key; ?>ModBtn btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+                <?php
+                } else { ?>
+                    <a href="javascript:;" data-hash="<?php echo $key; ?>" 
+                    target="<?php echo $target; ?>" 
+                    class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+                <?php
+                }
+                ?>
+                
                         
                 <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
                 <span class="<?php echo str_replace("#","",$key); ?>ModSpan"><?php echo Yii::t("common", $value["subdomainName"]); ?></span>
