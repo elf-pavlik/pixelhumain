@@ -6307,7 +6307,9 @@ var dyFCustom = {
 			if(typeof k.order != "undefined"){
 				orderingForm=true;
 				dyFCustom.orderForm.splice(k.order, 0, f); 
-			}
+			}else
+				dyFCustom.orderForm.splice(dyFCustom.orderForm.length, 0, f);
+			
 			if(typeof dyFObj.elementObj.dynForm.jsonSchema.properties[f] != "undefined"){
 				dyFObj.elementObj.dynForm.jsonSchema.properties[f]=dyFCustom.setProperties(k, dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
 			} else {
