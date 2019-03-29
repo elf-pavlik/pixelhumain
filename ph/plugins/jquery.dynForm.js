@@ -397,6 +397,8 @@ var finder = {
 		});
 		dialog.init(function(){
 		    //setTimeout(function(){
+
+		    alert("HERE");
 		    finder.finderPopulation={};
 		    if(typeof myContacts != "undefined"){
 		    	$.each(typeSearch, function(e, type){
@@ -439,8 +441,17 @@ var finder = {
 				 	container : "#finderSelectHtml #form-invite"
 				 };
 			 	 inviteObj.init(paramsInvite);
-				 inviteObj.formInvite(function(){
+				 inviteObj.formInvite(function(data){
 				 	alert("HERE");
+
+				 	finder.finderPopulation[data.id]={
+    					"name": data.name,
+    					"email": data.mail,
+    					"type": "persons",
+    					"profilThumbImageUrl": assetPath + "/images/thumb/default_citoyens.png"
+    				};
+
+				 	finder.addSelected(true, multiple, val )
 				 	return true;
 				 });
 
@@ -464,7 +475,7 @@ var finder = {
 		});
 	},
 	populateFinder : function(keyForm, obj, multiple, first){
-		//mylog.log("finder populateFinder", keyForm, obj, multiple, first);
+		mylog.log("finder populateFinder", keyForm, obj, multiple, first);
 		str="";
 		if(first && typeof finder.object[keyForm][userId] == "undefined"){
 			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : assetPath + "/images/thumb/default_citoyens.png";
@@ -577,6 +588,25 @@ var finder = {
 				$(".population-elt-finder-"+$(this).data("value")).prependTo("#list-finder-selection");
 			}
 		});
+	},
+	addSelected : function(checked, multiple, val ){
+		if($(this).is(":checked")){
+			if(!multiple){
+				finder.selectedItems={};	
+				$("#list-finder-selected").html("");
+			}
+			// if(notNull(finder.search) && notNull(finder.search.filterBy)){
+			// 	var split = val.split(".");
+			// 	finder.selectedItems[val]=finder.finderPopulation[split[0]];
+			// }else{
+				finder.selectedItems[val]=finder.finderPopulation[val];
+			//}
+			
+			$(".population-elt-finder-"+val).prependTo("#list-finder-selected");
+		}else{
+			delete finder.selectedItems[val];
+			$(".population-elt-finder-"+val).prependTo("#list-finder-selection");
+		}
 	},
 	addSelectedToForm: function(keyForm, multiple){
 		//mylog.log("finder addSelectedToForm", keyForm, multiple);
