@@ -300,7 +300,7 @@ var finder = {
 	},
 	addInForm : function(keyForm, id, type, name, img){
 		//mylog.log("finder addInForm", keyForm, id, type, name, img);
-		img= (img != "") ? baseUrl + img : assetPath + "/images/thumb/default_"+type+".png";
+		img= (img != "") ? baseUrl + img : modules.co2.url + "/images/thumb/default_"+type+".png";
 		var str="";
 		str="<div class='col-xs-12 element-finder element-finder-"+id+" shadow2 padding-10'>"+
 					'<img src="'+ img+'" class="img-circle pull-left margin-right-10" height="35" width="35">'+
@@ -349,7 +349,7 @@ var finder = {
 		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
 						'<div id="list-finder-selected"></div>'+
 		    			'<hr/><div id="list-finder-selection" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
-		    			'<form id="form-invite" class="hidden" style="">'+
+		    			'<form id="form-invite" class="hidden col-sm-12" style="margin-top : 10px">'+
 		    			//"<div id='form-invite' class='hidden'>"+
     						'<div class="row margin-bottom-10">'+
 								'<div class="col-md-1 col-md-offset-1" id="iconUser">'+    
@@ -378,7 +378,7 @@ var finder = {
 							'<div class="errorHandler alert alert-danger hidden"></div>'+
 							'<div class="col-md-12 col-sm-12 col-xs-12 text-center">'+
 								// '<input class="submit" type="submit" value="Submit">'+
-								'<button class="btn btn-success" id="btnInviteNew" ><i class="fa fa-add"></i> Add to the list</button>'+
+								'<button class="btn btn-success" id="btnInviteNew" ><i class="fa fa-add"></i> Ajouter à la liste</button>'+
 							'</div>'+
 						'</div>'+
 		    		'</div>',
@@ -451,7 +451,7 @@ var finder = {
     					"name": data.name,
     					"email": data.mail,
     					"type": "citoyens",
-    					"profilThumbImageUrl": assetPath + "/images/thumb/default_citoyens.png"
+    					"profilThumbImageUrl": modules.co2.url + "/images/thumb/default_citoyens.png"
     				};
     				finder.selectedItems[data.id]=finder.finderPopulation[data.id];
 				 	
@@ -464,7 +464,7 @@ var finder = {
 									'</label>'+
 								'</div>'+
 								"<div class='element-finder element-finder-"+data.id+"'>"+
-									'<img src="'+ assetPath + "/images/thumb/default_citoyens.png" +'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
+									'<img src="'+ modules.co2.url + "/images/thumb/default_citoyens.png" +'" class="thumb-send-to pull-left img-circle" height="40" width="40">'+
 									'<span class="info-contact pull-left margin-left-20">' +
 										'<span class="name-element text-dark text-bold" data-id="'+data.id+'">' + data.name + '</span>'+
 										'<br/>'+
@@ -504,7 +504,7 @@ var finder = {
 		mylog.log("finder populateFinder", keyForm, obj, multiple, first);
 		str="";
 		if(first && typeof finder.object[keyForm][userId] == "undefined"){
-			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : assetPath + "/images/thumb/default_citoyens.png";
+			img= (userConnected.profilThumbImageUrl != "") ? baseUrl + userConnected.profilThumbImageUrl : modules.co2.url + "/images/thumb/default_citoyens.png";
 			if(typeof finder.finderPopulation[userId]=="undefined"){
 				finder.finderPopulation[userId]={
 					name:userConnected.name + ' ('+tradDynForm.me+')',
@@ -536,7 +536,7 @@ var finder = {
 						finder.finderPopulation[e]=v;
 					if($(".population-elt-finder-"+e).length <= 0){
 
-						img= (v.profilThumbImageUrl != "") ? baseUrl + v.profilThumbImageUrl : assetPath + "/images/thumb/default_"+v.type+".png";
+						img= (v.profilThumbImageUrl != "") ? baseUrl + v.profilThumbImageUrl : modules.co2.url + "/images/thumb/default_"+v.type+".png";
 						// if(notNull(finder.search) && notNull(finder.search.filterBy)){
 						// 	if(notNull(v[finder.search.filterBy])){
 						// 		$.each(v[finder.search.filterBy], function(keyF, valF){
