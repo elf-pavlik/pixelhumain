@@ -629,7 +629,7 @@ var dyFObj = {
 			}
 		});
 		if( typeof formData.source != "undefined" && formData.source != "" ){
-			originInsert=(typeof custom != "undefined" && notNull(custom)) ? "costum" : "network";
+			originInsert=(typeof costum != "undefined" && notNull(costum)) ? "costum" : "network";
 			formData.source = { insertOrign : originInsert,
 								keys : [ 
 									formData.source
@@ -884,8 +884,8 @@ var dyFObj = {
 		var obj = null ;
 		if(typeof networkJson != 'undefined' && notNull(networkJson))
 			obj = networkJson;
-		if(typeof custom != 'undefined' && notNull(custom))
-			obj = custom;
+		if(typeof costum != 'undefined' && notNull(costum))
+			obj = costum;
 
 		if(obj != null && notNull(obj.dynForm) && notNull(data.tags)){
 			if(notNull(obj.dynForm.extra)){
@@ -4292,8 +4292,8 @@ var dyFInputs = {
 	    // Forced dynForm in network or cOstum
 	    if(typeof networkJson != 'undefined' && notNull(networkJson))
 	    	dyFInputs.initializeTypeObjForm(networkJson);
-	    if(typeof custom != 'undefined' && notNull(custom))
-	    	dyFInputs.initializeTypeObjForm(custom);
+	    if(typeof costum != 'undefined' && notNull(costum))
+	    	dyFInputs.initializeTypeObjForm(costum);
 	},
 	initializeTypeObjForm : function(object){
 		// Initialize tags list for network in form of element
@@ -6141,9 +6141,9 @@ var dyFInputs = {
 }
 var dyFCustom = {
 	init : function (type) { 
-		if( typeof custom.dynForm[type].onload != "undefined" 
-			&& typeof custom.dynForm[type].onload.actions != "undefined"){
-			$.each(custom.dynForm[type].onload.actions,function(f,p) {
+		if( typeof costum.dynForm[type].onload != "undefined" 
+			&& typeof costum.dynForm[type].onload.actions != "undefined"){
+			$.each(costum.dynForm[type].onload.actions,function(f,p) {
 				if(typeof dyFCustom[f] == "function")
 					f = dyFCustom[f];
 				else if(typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
@@ -6159,11 +6159,11 @@ var dyFCustom = {
 		}
 	},
     adminOnly : function(p) {
-		if(  typeof custom != "undefined" 
-			&& typeof custom.admins != "undefined" 
-			&& typeof custom.admins[userId] != "undefined" 
-			&& typeof custom.admins[userId].isAdmin != "undefined" 
-			&& custom.admins[userId].isAdmin == true ){
+		if(  typeof costum != "undefined" 
+			&& typeof costum.admins != "undefined" 
+			&& typeof costum.admins[userId] != "undefined" 
+			&& typeof costum.admins[userId].isAdmin != "undefined" 
+			&& costum.admins[userId].isAdmin == true ){
 				
 			$.each(p,function(el,v) {
 				$("."+el).show();
