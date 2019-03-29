@@ -6307,8 +6307,7 @@ var dyFCustom = {
 			if(typeof k.order != "undefined"){
 				orderingForm=true;
 				dyFCustom.orderForm.splice(k.order, 0, f); 
-			}else
-				dyFCustom.orderForm.splice(dyFCustom.orderForm.length, 0, f);
+			}
 			if(typeof dyFObj.elementObj.dynForm.jsonSchema.properties[f] != "undefined"){
 				dyFObj.elementObj.dynForm.jsonSchema.properties[f]=dyFCustom.setProperties(k, dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
 			} else {
@@ -6322,13 +6321,11 @@ var dyFCustom = {
 					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = k;
 			}
 	 	});
-	 	if(orderingForm){
+	 	if(orderingForm)
 	 		dyFObj.elementObj.dynForm.jsonSchema.properties=dyFCustom.orderingProperties(dyFObj.elementObj.dynForm.jsonSchema.properties, dyFCustom.orderForm);
-	 	}
 	},
 	orderingProperties : function(properties, order){
 		object={};
-		mylog.log("Order finally organization dynform properties", properties, order);
 		$.each(order, function(e, v){
 			object[v]=properties[v];
 		});
