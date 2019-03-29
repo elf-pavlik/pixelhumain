@@ -26,7 +26,6 @@ if(@$useHeader != false){ ?>
 <!-- Header -->
 <header id="<?php echo $menuApp; ?>">   
     <?php 
-    var_dump($themeParams["pages"]["#".$page]);
     if(isset($themeParams["header"]["banner"]) && is_string($themeParams["header"]["banner"])){ ?>
         <div id="header-banner" class="banner-<?php echo $menuApp ?>">
             <?php $this->renderPartial( $themeParams["header"]["banner"]  ); ?>
