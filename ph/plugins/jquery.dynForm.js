@@ -6302,7 +6302,6 @@ var dyFCustom = {
 		$.each(dyFObj.elementObj.dynForm.jsonSchema.properties, function(e,v){
 			dyFCustom.orderForm.push(e);
 		});
-		mylog.log("order of main properties dyFObj", dyFCustom.orderForm);
 		$.each(p,function(f,k) {
 			mylog.log("ESPION costum properties: ", dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
 			if(typeof k.order != "undefined"){
@@ -6323,7 +6322,6 @@ var dyFCustom = {
 					dyFObj.elementObj.dynForm.jsonSchema.properties[f] = k;
 			}
 	 	});
-	 	alert(orderingForm);
 	 	if(orderingForm){
 	 		dyFObj.elementObj.dynForm.jsonSchema.properties=dyFCustom.orderingProperties(dyFObj.elementObj.dynForm.jsonSchema.properties, dyFCustom.orderForm);
 	 	}
