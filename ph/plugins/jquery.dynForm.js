@@ -6256,13 +6256,14 @@ var dyFCustom = {
 		$.each(dyFObj.elementObj.dynForm.jsonSchema.properties, function(e,v){
 			dyFCustom.orderForm.push(e);
 		});
-		mylog.log("order of main properties dyFObj", dyFCustom.orderForm);
 		$.each(p,function(f,k) {
 			mylog.log("ESPION costum properties: ", dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
 			if(typeof k.order != "undefined"){
 				orderingForm=true;
 				dyFCustom.orderForm.splice(k.order, 0, f); 
-			}
+			}else
+				dyFCustom.orderForm.splice(dyFCustom.orderForm.length, 0, f);
+			
 			if(typeof dyFObj.elementObj.dynForm.jsonSchema.properties[f] != "undefined"){
 				dyFObj.elementObj.dynForm.jsonSchema.properties[f]=dyFCustom.setProperties(k, dyFObj.elementObj.dynForm.jsonSchema.properties[f]);
 			} else {

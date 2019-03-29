@@ -295,6 +295,47 @@
             if(notNull(entry) && res)
                 res = (typeof typeObj[type][entry] != "undefined") ? true : false;
             return res;
+        },
+        buildCreateButton: function(domContain, dropdownButton){
+            menuButtonCreate="";
+            count=0;
+            var hash="";
+            var formType="";
+            var subFormType=  "";
+            var addClass =  "";
+            var nameLabel="";
+
+            $.each(typeObj, function(e,v){
+                if(typeof v.add != "undefined" && v.add){
+                    if(v.add!="onlyAdmin" || canCreate ){
+                        count++;
+                        hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
+                        formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
+                        subFormType= (typeof v.subFormType != "undefined") ? 'data-form-subtype="'+v.subFormType+'" ' : "";
+                        addClass = (typeof v.class != "undefined") ? v.class : "";
+                        nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
+                        menuButtonCreate+='<a href="'+hash+'" '+ 
+                            formType+
+                            subFormType+ 
+                            'class="addBtnFoot btn-open-form btn btn-default '+addClass+' bg-'+v.color+' margin-bottom-10">'+ 
+                                '<i class="fa fa-'+v.icon+'"></i> '+
+                                '<span>'+nameLabel+'</span>'+
+                            '</a>';
+                    }
+                }
+            });
+            $(domContain).html(menuButtonCreate);
+            
+            if(count <= 1 && notNull(dropdownButton) && dropdownButton){
+                oneButton='<a href="'+hash+'" '+
+                        formType+
+                        subFormType+ 
+                        'class="btn btn-default no-padding btn-menu-vertical btn-open-form" id="show-bottom-add">'+
+                            '<i class="fa fa-plus-circle"></i>'+
+                            '<span class="tooltips-menu-btn">'+nameLabel+'</span>'+
+                        '</a>';
+                $("#show-bottom-add").replaceWith(oneButton);
+            }
         }
     };
 
@@ -432,7 +473,7 @@
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
             };
-            if(typeof directory.buildCreateButton!= "undefined") directory.buildCreateButton(".toolbar-bottom-adds");
+            if(typeof directory.buildCreateButton!= "undefined") typeObj.buildCreateButton(".toolbar-bottom-adds", true);
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
             if(typeof resizeInterface != "undefined") resizeInterface();
             themeObj.initMyScopes();
