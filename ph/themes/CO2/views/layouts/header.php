@@ -1,4 +1,6 @@
-<?php   HtmlHelper::registerCssAndScriptsFiles(array('/assets/css/menus/multi_tags_scopes.css'), Yii::app()->theme->baseUrl); 
+<?php   
+
+HtmlHelper::registerCssAndScriptsFiles(array('/assets/css/menus/multi_tags_scopes.css'), Yii::app()->theme->baseUrl); 
     $themeParams = Yii::app()->session['paramsConfig'];  
     if(@$type=="cities")    { 
         $lblCreate = "";
@@ -31,6 +33,7 @@ if(@$useHeader != false){ ?>
             <?php $this->renderPartial( $themeParams["header"]["banner"]  ); ?>
         </div>
     <?php }   
+
     $this->renderPartial($layoutPath.'menus/menuTop', 
         array( "layoutPath"=>$layoutPath , 
             "subdomain"=>$subdomain,
