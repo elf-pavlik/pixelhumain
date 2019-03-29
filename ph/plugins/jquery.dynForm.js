@@ -1204,8 +1204,8 @@ var dyFObj = {
 		if(notNull(finder))
 			finder.initVar();
 
-		if(notNull(finder))
-			finder.initVar();
+		if(notNull(scopeObj))
+			scopeObj.selected = {};
 
 		if(userId)
 		{
