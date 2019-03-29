@@ -341,7 +341,8 @@ var finder = {
 		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
 						'<div id="list-finder-selected"></div>'+
 		    			'<hr/><div id="list-finder-selection" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
-		    			"<div id='form-invite' class='hidden'>"+
+		    			'<form id="form-invite" class="hidden" style="">'+
+		    			//"<div id='form-invite' class='hidden'>"+
     						'<div class="row margin-bottom-10">'+
 								'<div class="col-md-1 col-md-offset-1" id="iconUser">'+    
 									'<i class="fa fa-user fa-2x"></i>'+
@@ -421,82 +422,6 @@ var finder = {
 				 	alert("HERE");
 				 	return true;
 				 });
-
-
-				$('#finderSelectHtml #form-invite #btnInviteNew').off().on("click", function(e){
-				mylog.log("finder btnInviteNew ", inviteObj);
-				var formInvite = $("#finderSelectHtml #form-invite");
-				mylog.log("finder form ", formInvite, inviteObj);
-				formInvite.submit(function(e){ mylog.log("finder submit ", e); e.preventDefault() });
-				var errorHandler = $('.errorHandler', formInvite);
-				mylog.log("finder errorHandler ", errorHandler);
-				formInvite.validate({
-					rules : {
-						inviteEmail : {
-							minlength : 2,
-							required : true,
-							email: true
-						},
-						inviteName : {
-							minlength : 2,
-							required : true,
-						},
-						inviteText : {
-							maxlength : 500,
-						}
-					},
-					submitHandler : function(formInvite) {
-
-						alert("submitHandler");
-						// mylog.log("finder submitHandler form", formInvite, inviteObj);
-						// errorHandler.hide();
-						// if(typeof callback != "undefined" && callback != null){
-						// 	callback();
-						// }else{
-						// 	var mail = $('#finderSelectHtml #form-invite #inviteEmail').val();
-						// 	var msg = $('#finderSelectHtml #form-invite #inviteText').val();
-						// 	var name = $('#finderSelectHtml #form-invite #inviteName').val();
-
-						// 	if(typeof listInvite.invites[mail] == "undefined"){
-						// 		var keyUnique = keyUniqueByMail(mail);
-						// 		listInvite.invites[keyUniqueByMail(mail)] = {
-						// 			name : name,
-						// 			mail : mail,
-						// 			msg : msg
-						// 		} ;
-
-						// 		if(parentType != "citoyens")
-						// 			listInvite.invites[keyUnique].isAdmin = "";
-
-						// 		$('#finderSelectHtml #form-invite #inviteEmail').val("");
-						// 		$('#finderSelectHtml #form-invite #inviteText').val("");
-						// 		$('#finderSelectHtml #form-invite #inviteName').val("");
-						// 		$('#finderSelectHtml #form-invite #form-invite").hide();
-						// 	} else {
-						// 		toastr.error(tradDynForm.alreadyInTheList);
-						// 	}
-						// 	showElementInvite(listInvite, true);
-						// 	bindRemove();
-						// }
-					},
-					invalidHandler: function(event, validator) {
-						alert("invalidHandler");
-						// mylog.log("finder invalidHandler", event, validator)
-						// var errors = validator.numberOfInvalids();
-						// if (errors) {
-						// 	var message = errors == 1
-						// 	? 'You missed 1 field. It has been highlighted'
-						// 	: 'You missed ' + errors + ' fields. They have been highlighted';
-						// 	mylog.log("finder message", message);
-						// 	$("div.error span").html(message);
-						// 	$("div.error").show();
-						// } else {
-						// 	$("div.error").hide();
-						// }
-					}
-
-				});
-			});
 			});
 		}
 
