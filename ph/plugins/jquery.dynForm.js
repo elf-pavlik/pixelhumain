@@ -1129,8 +1129,8 @@ var dyFObj = {
 		var obj = null ;
 		if(typeof networkJson != 'undefined' && notNull(networkJson))
 			obj = networkJson;
-		if(typeof custom != 'undefined' && notNull(custom))
-			obj = custom;
+		if(typeof costum != 'undefined' && notNull(costum))
+			obj = costum;
 
 		if(obj != null && notNull(obj.dynForm) && notNull(data.tags)){
 			if(notNull(obj.dynForm.extra)){
@@ -6981,6 +6981,7 @@ function addToSurvey(id, type){
 	mylog.log("fillSurvey", id, type );
 	
 }
+//<<<<<<< HEAD
 
 var scopeObj = {
 	selected : {},
@@ -6995,6 +6996,38 @@ var scopeObj = {
 
 		if(notNull(params)){
 			scopeObj.limit = ( notNull(params.limit) ? params.limit : null ) ;
+// =======
+// var dyFCustom = {
+// 	init : function (type) { 
+// 		if( typeof costum.dynForm[type].onload != "undefined" 
+// 			&& typeof costum.dynForm[type].onload.actions != "undefined"){
+// 			$.each(costum.dynForm[type].onload.actions,function(f,p) {
+// 				if(typeof dyFCustom[f] == "function")
+// 					f = dyFCustom[f];
+// 				else if(typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
+// 					f = dyFObj.elementObj.dynForm.jsonSchema.actions[f]
+				
+// 				if(typeof f == "function"){
+// 					if(p==1)
+// 						f();
+// 					else if(typeof p == "object")
+// 						f(p);
+// 				}
+// 		 	})
+// 		}
+// 	},
+//     adminOnly : function(p) {
+// 		if(  typeof costum != "undefined" 
+// 			&& typeof costum.admins != "undefined" 
+// 			&& typeof costum.admins[userId] != "undefined" 
+// 			&& typeof costum.admins[userId].isAdmin != "undefined" 
+// 			&& costum.admins[userId].isAdmin == true ){
+				
+// 			$.each(p,function(el,v) {
+// 				$("."+el).show();
+// 		 	});
+				
+// >>>>>>> master
 		}
 	},
 	init : function(p){
