@@ -1387,7 +1387,12 @@ var dyFObj = {
 	},
 	commonAfterSave : function(data, callB){
 		mylog.log("commonAfterSave", data);
-		if($(".fine-uploader-manual-trigger").length>1){
+		totalUploader=0;
+		$(".fine-uploader-manual-trigger").each(function(){
+			if($(this).parent().is(":visible"))
+				totalUploader++;
+		});
+		if(totalUploader.length>1){
 			mylog.log("commonAfterSave fine-uploader-manual-trigger");
 			uploadObj.startAfterLoadUploader=false;
 			uploadCount=$(".fine-uploader-manual-trigger").length;
@@ -1413,6 +1418,7 @@ var dyFObj = {
 			});
 		}else{
 			mylog.log("commonAfterSave else");
+			uploadObj.startAfterLoadUploader=true;
 			listObject=$(uploadObj.domTarget).fineUploader('getUploads');
 	    	goToUpload=false;
 	    	if(listObject.length > 0){
@@ -1432,10 +1438,10 @@ var dyFObj = {
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
 				
-				/*if(activeModuleId == "survey")//use case for answerList forms updating
+				if(activeModuleId == "survey")//use case for answerList forms updating
 	        		window.location.reload();
 	        	else 
-					urlCtrl.loadByHash( uploadObj.gotoUrl );*/
+					urlCtrl.loadByHash( uploadObj.gotoUrl );
 	        }
 	    }
 	    dyFObj.closeForm();
@@ -3214,6 +3220,8 @@ var dyFObj = {
 							    			dyFObj.coopAfterSave(uploadObj.callBackData);
 							    		}else if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
 							    			v.afterUploadComplete();
+							    		}else{
+							    			urlCtrl.loadByHash(uploadObj.gotoUrl);
 							    		}
 							     		uploadObj.gotoUrl = null;
 							     	}
