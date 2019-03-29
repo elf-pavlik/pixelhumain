@@ -298,7 +298,7 @@
         },
         buildCreateButton: function(domContain, dropdownButton){
             menuButtonCreate="";
-            count=0;
+            var count=0;
             var hash="";
             var formType="";
             var subFormType=  "";
@@ -473,7 +473,7 @@
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
             };
-            if(typeof directory.buildCreateButton!= "undefined") typeObj.buildCreateButton(".toolbar-bottom-adds", true);
+            if(typeof typeObj.buildCreateButton!= "undefined") typeObj.buildCreateButton(".toolbar-bottom-adds", true);
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
             if(typeof resizeInterface != "undefined") resizeInterface();
             themeObj.initMyScopes();
