@@ -309,3 +309,10 @@ section h2 {
 .capitalize{
 	text-transform: capitalize;
 }
+
+.markdown{
+	white-space: pre-line;
+}
+.text-justify{
+	text-align: justify;
+}

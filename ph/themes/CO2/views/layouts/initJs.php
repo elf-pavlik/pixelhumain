@@ -266,7 +266,9 @@
                 
                 if(typeof typeObj[e].dynFormCostum != "undefined")
                     elt.dynFormCostum=typeObj[e].dynFormCostum;
-
+                 else if(typeof typeObj[e].sameAs != "undefined" && typeof typeObj[typeObj[e].sameAs].dynFormCostum != "undefined")
+                    elt.dynFormCostum=typeObj[typeObj[e].sameAs].dynFormCostum;
+                
                 if(typeof typeObj[e].formSubType != "undefined")
                     elt.formSubType=typeObj[e].formSubType; 
                 else if(typeof typeObj[e].sameAs != "undefined" && typeof typeObj[typeObj[e].sameAs].formSubType != "undefined")
@@ -290,10 +292,27 @@
               console.log("getFormat typeObj", elt);
               return elt;
         },
-        isDefined:function(type, entry){
-            res = (typeof typeObj[type] != "undefined") ? true : false;
-            if(notNull(entry) && res)
-                res = (typeof typeObj[type][entry] != "undefined") ? true : false;
+        isDefined:function(type, entry, obj){
+            res=true;
+            if(notNull(obj))
+                inspector=obj;
+            else if(typeof typeObj[type] !="undefined")
+                inspector=typeObj[type];
+            else
+                res=false;
+            if(res){
+                checkValues=(entry.indexOf(".")) ? entry.split(".") : [entry];
+                $.each(checkValues, function(e,v){
+                    if(typeof inspector[v] != "undefined"){
+                        res=true;
+                        inspector=inspector[v];
+                    }else
+                        res=false;
+                });
+            }
+            //if(notNull(entry) && res)
+              //  res = (typeof typeObj[type][entry] != "undefined") ? true : false;
+            //}
             return res;
         },
         buildCreateButton: function(domContain, dropdownButton){
