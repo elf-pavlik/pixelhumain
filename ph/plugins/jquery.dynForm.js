@@ -301,6 +301,7 @@ var finder = {
 	addInForm : function(keyForm, id, type, name, img){
 		//mylog.log("finder addInForm", keyForm, id, type, name, img);
 		img= (img != "") ? baseUrl + img : modules.co2.url + "/images/thumb/default_"+type+".png";
+		//img= (img != "") ? img : modules.co2.url + "/images/thumb/default_"+type+".png";
 		var str="";
 		str="<div class='col-xs-12 element-finder element-finder-"+id+" shadow2 padding-10'>"+
 					'<img src="'+ img+'" class="img-circle pull-left margin-right-10" height="35" width="35">'+
