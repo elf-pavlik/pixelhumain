@@ -1112,6 +1112,8 @@ var dyFObj = {
 				typeModules=(notNull(subType)) ? subType : type; 
 				if(typeof typeObj[typeModules] != "undefined")
 					typeForm=typeModules;
+				else if(typeof typeObj[type] != "undefined" && typeObj[type].formType !="undefined")
+					typeForm=type;
 				else if(typeof subType == "object")
 					typeForm = subType;
 				else if(jsonHelper.notNull( "modules."+typeModules+".form") ) 
