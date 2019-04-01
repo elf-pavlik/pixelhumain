@@ -4192,8 +4192,8 @@ var dyFObj = {
 		bindFormInMap : function(){
 			mylog.log("bindFormInMap");
 
-			$('#ajaxFormModal  #newElement_country').change(function(){
-				mylog.log("formInMap.NE_country D", $(this).val(), $('#ajaxFormModal  #newElement_country').val());
+			$('#ajaxFormModal  [name="newElement_country"]').change(function(){
+				mylog.log("formInMap.NE_country D", $(this).val(), $('#ajaxFormModal  [name="newElement_country"]').val());
 				dyFObj.formInMap.initVarNE();
 				dyFObj.formInMap.NE_country = $(this).val() ;
 				mylog.log("formInMap.NE_country M", dyFObj.formInMap.NE_country );

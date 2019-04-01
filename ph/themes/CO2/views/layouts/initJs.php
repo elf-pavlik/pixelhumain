@@ -435,6 +435,7 @@
     var roomList = <?php echo json_encode( CO2::getContextList("room") ) ?>;
     
     var directoryViewMode="<?php echo "block" ?>";
+    console.log("directoryViewMode 0 ", directoryViewMode);
     //var classifiedSubTypes = <?php //echo json_encode( Classified::$classifiedSubTypes ) ?>;
     var urlTypes = <?php asort(Element::$urlTypes); echo json_encode(Element::$urlTypes) ?>;
     
