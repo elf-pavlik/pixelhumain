@@ -71,15 +71,12 @@
     $communexion = CO2::getCommunexionCookies();
             
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
-    $this->renderPartial($layoutPath.'initJs', 
-                                 array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
-
-
     if($this->module->id != "costum"){
-
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
         Yii::app()->session["costum"]=null;
     }
+    $this->renderPartial($layoutPath.'initJs', 
+                                 array( "me"=>$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact, "communexion" => $communexion, "themeParams"=>$params));
         ?>
 
         <?php 
