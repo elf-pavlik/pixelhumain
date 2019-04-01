@@ -1,6 +1,12 @@
 <?php
-$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header');
-$url = Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.".$collection.".id.".$id;
+$logoHeader=(@$logoHeader) ? $logoHeader : "";
+$urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
+if(!empty($url) && empty($baseUrl) ) {
+	$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
+}
+$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));
+//$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header');
+$url = $urlRedirect."/#page.type.".$collection.".id.".$id;
 Yii::app()->language = $language;
 ?>
 <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;position: relative;display: table;">
@@ -35,7 +41,7 @@ Yii::app()->language = $language;
 		</tr>
 		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer'); ?>
+				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>
 			</td>
 		</tr>
 	</tbody>

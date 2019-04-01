@@ -1,5 +1,10 @@
-<?php 
-  $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header');
+<?php
+	$logoHeader=(@$logoHeader) ? $logoHeader : "";
+	$urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
+	if(!empty($url) && empty($baseUrl) ) {
+		$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
+	}
+  $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));
 	$type="";
 	if (@$parentType){
 		if($parentType == "organizations"){
@@ -38,7 +43,7 @@
   else /*if($type==Organization::COLLECTION)*/
     $dir="members";
 
-	$url=Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.".$parentType.".id.".(String) $parent["id"].".view.directory.dir.".$dir;
+	$url=$urlRedirect."/#page.type.".$parentType.".id.".(String) $parent["id"].".view.directory.dir.".$dir;
 ?>
 <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;position: relative;display: table;">
 	<tbody>
@@ -48,10 +53,10 @@
 				<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;">
 					<tr style="padding: 0;vertical-align: top;text-align: left;">
 						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-							<a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;"><img align="right" width="200" src="<?php echo Yii::app()->getRequest()->getBaseUrl(true)."/images/bdb.png"?>" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;border: none;" alt="Intelligence collective"></a>
+							<a href="<?php echo $urlRedirect ?>" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;"><img align="right" width="200" src="<?php echo Yii::app()->getRequest()->getBaseUrl(true)."/images/bdb.png"?>" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;border: none;" alt="Intelligence collective"></a>
 							<b><h5 style="color: inherit;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-wrap: normal;margin-bottom: 10px;font-size: 20px;"></h5></b><br>
 							<?php 
-							echo Yii::t("mail","The user {who} asks to become {what} of {where}",array("{who}"=>'<a href="'.Yii::app()->getRequest()->getBaseUrl(true).'/'.$this->module->id.'#page.type.'.Person::COLLECTION.'.id.'.$newPendingAdmin["id"].'">'.@$newPendingAdmin["name"].'</a>',"{what}"=>Yii::t("common",$typeOfDemand) ,"{where}"=>'<a href="'.$url.'">'.@$parent["name"].'</a>')) ?>.
+							echo Yii::t("mail","The user {who} asks to become {what} of {where}",array("{who}"=>'<a href="'.$urlRedirect.'/'.$this->module->id.'#page.type.'.Person::COLLECTION.'.id.'.$newPendingAdmin["id"].'">'.@$newPendingAdmin["name"].'</a>',"{what}"=>Yii::t("common",$typeOfDemand) ,"{where}"=>'<a href="'.$url.'">'.@$parent["name"].'</a>')) ?>.
 							<br><br>
 							<?php echo Yii::t("mail","In order to validate this user as {what}, go to the community of {where}",array("{what}"=>yii::t("common",$typeOfDemand),"{where}"=>'<a href="'.$url.'">'.$parent["name"].'</a>')); ?>.
 							<br><br>
@@ -67,7 +72,7 @@
 		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 				
-				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer'); ?>
+				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>
 
 			</td>
 

@@ -19,10 +19,14 @@
 			</th>
 		</tr>
 
-<?php if($nameTeam== "COmmunecter"){ ?>
+
 	<tr style="padding: 0;vertical-align: top;text-align: left;">
 		<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 15px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 			<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;margin-top: 10px">
+				<?php 
+				//if($nameTeam== "COmmunecter"){ 
+				if(empty($url)){
+				?>
 				<tr style="padding: 0;vertical-align: top;text-align: left;">
 				  <th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 					<center style="width: 100%;min-width: 532px;">
@@ -34,6 +38,8 @@
 				  </th>
 				  <th class="expander" style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0 !important;margin: 0;text-align: left;line-height: 19px;font-size: 15px;visibility: hidden;width: 0;"></th>
 				</tr>
+
+				<?php } ?>
 				<tr style="padding: 0;vertical-align: top;text-align: left;">
 						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0px;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 							<p class="text-center footercopy" style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 15px; font-style: italic;">
@@ -71,7 +77,7 @@
 			</table>
 		</td>
 	</tr>
-<?php } ?>
+
 </table>
    <!-- End main email content -->
 

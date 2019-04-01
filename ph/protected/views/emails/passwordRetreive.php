@@ -1,5 +1,12 @@
 <?php
-	$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header');
+
+	$logoHeader=(@$logoHeader) ? $logoHeader : "";
+	$urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
+	if(!empty($url) && empty($baseUrl) ) {
+		$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
+	}
+	$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));
+	//$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header');
 ?>
 
 <table class="row masthead" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;background: white;width: 100%;position: relative;display: table;">
@@ -36,4 +43,4 @@
 	</th>
 </tr></tbody></table>
 
-		<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer'); ?>
+		<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>

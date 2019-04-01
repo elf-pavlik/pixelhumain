@@ -1,8 +1,8 @@
 <?php
   $logoHeader=(@$logoHeader) ? $logoHeader : "";
-  $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true);
-  $urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id.'/person/activate/user/'.$user.'/validationKey/'.Person::getValidationKeyCheck($user);
-  if(@$url){
+  $urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
+  $urlValidation=$urlRedirect."/".$this->module->id.'/person/activate/user/'.$user.'/validationKey/'.Person::getValidationKeyCheck($user);
+  if(!empty($url) && empty($baseUrl) ) {
     $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
     $keyOn=(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false) ? str_replace("/", ".", $url) : ltrim($url, '/');
     $urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id.'/person/activate/user/'.$user.'/validationKey/'.Person::getValidationKeyCheck($user)."/redirect/".$keyOn;
