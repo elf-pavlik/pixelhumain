@@ -347,7 +347,7 @@
                         && typeof elt.parentAllow != "undefined" && $.inArray(config.contextType, elt.parentAllow) < 0)
                         auth=false;
                 }
-                if(typeof elt.add != "undefined" && elt.add=="onlyAdmin" && (typeof canCreate == "undefined" || !canCreate))
+                if(typeof elt.add != "undefined" && (!elt.add || (elt.add=="onlyAdmin" && (typeof canCreate == "undefined" || !canCreate))))
                     auth=false;
             }else if(typeof elt.add != "undefined"){
                 if(elt.add=="onlyAdmin" && typeof canCreate != "undefined" && canCreate) 
