@@ -75,6 +75,7 @@
             ctrl : "person", titleClass : "bg-yellow",bgClass : "bgPerson", color:"yellow",icon:"user", hash : "#element.invite", 
             class: "lbhp", 
             add: true,
+            addInElement:false,
             name: trad.people,
             addLabel: trad.invitesomeone,
             createLabel: trad.invitesomeone,
@@ -88,6 +89,7 @@
         siteurl:{ col:"siteurl",ctrl:"siteurl"},
         organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga", 
             add: true,
+            addInElement:false,
             formType:"organization",
             name: trad.organization, 
             createLabel: "Create an organization",
@@ -97,18 +99,20 @@
         organization2 : { col:"organizations", ctrl:"organization" },
         LocalBusiness : {col:"organizations",color: "azure",icon: "industry",
             name:trad.LocalBusiness,
-                formType:"organization",
-                formSubType:"Localbusiness",
-                createLabel:"Create a local business",
-                textExplain:"Make visible your company<br>Find new customer<br>Manage your contacts",           
-                parentAllow:["citoyens"]
-            },
+            addInElement:true,
+            formType:"organization",
+            formSubType:"LocalBusiness",
+            createLabel:"Create a local business",
+            explainText:tradDynForm.infosmallcreatebusiness,           
+            parentAllow:["citoyens"]
+        },
         NGO : {sameAs:"organization", color:"green", icon:"users",
             name : trad.NGO,
             formType:"organization",
             createLabel:"Create an NGO",
             formSubType:"NGO",
-            textExplain:"Make visible your NGO<br>Manage the community<br>Share your news",           
+            addInElement:true,
+            explainText:tradDynForm.infosmallcreatengo,           
             parentAllow:["citoyens"]
         },
         Association : {sameAs:"organization", color:"green", icon: "group"},
@@ -117,7 +121,8 @@
             formType:"organization",
             formSubType:"GovernmentOrganization",
             createLabel:"Create a public sevrice",
-            textExplain:"Town hall, schools, etc...<br>Share your news<br>Share events",           
+            addInElement:true,
+            explainText:tradDynForm.infosmallcreatepublicservice,           
             parentAllow:["citoyens"]
         },
         Group : {   col:"organizations",color: "turq",icon: "circle-o",
@@ -125,25 +130,28 @@
             formType:"organization",
             formSubType:"Group",
             createLabel:"Create a group",
-            textExplain:"Make visible your collectif group<br><br>",           
+            addInElement:true,
+            explainText:tradDynForm.infosmallcreategroup,           
             parentAllow:["citoyens"]
         },
         event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent", 
             add: true,
+            addInElement:true,
             formType:"event",
             name: trad.event, 
             createLabel: "Create an event",
-            explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",
+            explainText:tradDynForm.infosmallcreateevent,
             parentAllow:["citoyens", "organizations","projects", "events"]
         },
         
         events : {sameAs:"event"},
         project : {col:"projects",ctrl:"project",   icon : "lightbulb-o",color : "purple",titleClass : "bg-purple", bgClass : "bgProject",
             add: true,
+            addInElement:true,
             formType:"project",
             name: trad.project, 
             createLabel: "Create a project",
-            explainText: "Make visible a project<br>Find support<br>Build a community",
+            explainText: tradDynForm.infosmallcreateproject,
             parentAllow:[ "citoyens", "organizations","projects"]
         },
         projects : {sameAs:"project"},
@@ -165,9 +173,10 @@
                    "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
                    "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ], 
             add: true,
+            addInElement:true,
             name: tradCategory.poi,
             formType: "poi",
-            explainText:"Make visible an interesting place<br>Contribute to the collaborative map<br>Highlight your territory",
+            explainText:tradDynForm.infosmallcreatepoi,
             parentAllow:["citoyens", "organizations","projects", "events"]
         },
         url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",   },
@@ -185,28 +194,31 @@
 
         classified : { col:"classifieds",ctrl:"classified",color:"azure", icon:"bullhorn", titleClass : "bg-azure", bgClass : "bgPerson", 
             add: true,
+            addInElement:true,
             formType:"classifieds",
             name: trad.classified, 
             createLabel: "Create a classified",
-            textExplain: "Create a classified ad<br>To share To give To sell To rent<br>Material Property Job",
+            explainText: tradDynForm.infosmallcreateclassifieds,
             parentAllow:[ "citoyens", "organizations","projects"]
         },
         classifieds : { sameAs:"classified" },
         ressource : {  col:"classifieds",ctrl:"classified",color:"vine", icon:"cubes", titleClass : "bg-vine", bgClass : "bgPerson",
             add: true,
+            addInElement:true,
             formType:"ressources",
             name: trad.ressource, 
             createLabel: "add a ressource",
-            textExplain: "Echnager des ressources<br>des outils, des documents<br> des compétences et des besoins",
+            explainText: tradDynForm.infosmallcreateressources,
             parentAllow:[ "citoyens", "organizations","projects", "events"]
         },
         ressources : { sameAs:"ressource" },
         job :{  col:"classifieds",ctrl:"classified",color:"yellow-k", icon:"briefcase", titleClass : "bg-yellow-k", bgClass : "bgPerson",
             add: true,
+            addInElement:true,
             formType:"jobs",
             name: trad.job, 
             createLabel: "Add an offers",
-            textExplain: "Ajouter les stages, les formations ou les offres d'emploi que vous proposez",
+            explainText: tradDynForm.infosmallcreatejobs,
             parentAllow:[ "citoyens", "organizations","projects"]
         },
         jobs : { sameAs:"job" },
@@ -217,10 +229,12 @@
         surveys : {sameAs:"survey"},
         proposal : { col:"proposals", ctrl:"proposal", color:"turq",icon:"gavel", titleClass : "bg-turq", 
             add: true,
+            addInElement: true,
             name: trad.survey,
             formType:"proposal",
             createLabel: "Create a survey",
             explainText: "Make a survey<br>add a referendum<br>construct a collective opinion",
+            parentAllow:["organizations","projects"]
         }, 
         proposals : { sameAs : "proposal" },
         proposal2 : { sameAs : "proposal" },
@@ -233,6 +247,15 @@
         discuss : {col:"actionRooms",ctrl:"room"},
         contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
             saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+        contacts : {color:"blue",icon:"envelope", titleClass : "bg-blue", 
+            add: false,
+            addInElement:true,
+            name: trad.contact,
+            formType:"contactPoint",
+            createLabel: "Add a contact",
+            explainText:tradDynForm.infosmallcreatecontact,
+            parentAllow:["organizations","projects"]
+        }, 
         curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
         badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"},
         get: function(e){
@@ -315,7 +338,26 @@
             //}
             return res;
         },
-        buildCreateButton: function(domContain, dropdownButton){
+        authorizedButton : function(elt, config){
+            auth=false;
+            if(notNull(config) && typeof config.inElement != "undefined"){ 
+                if(typeof elt.addInElement !="undefined" && elt.addInElement){
+                    auth=true;
+                    if(typeof config.allowIn != "undefined" && config.allowIn 
+                        && typeof elt.parentAllow != "undefined" && $.inArray(config.contextType, elt.parentAllow) < 0)
+                        auth=false;
+                }
+                if(typeof elt.add != "undefined" && elt.add=="onlyAdmin" && (typeof canCreate == "undefined" || !canCreate))
+                    auth=false;
+            }else if(typeof elt.add != "undefined"){
+                if(elt.add=="onlyAdmin" && typeof canCreate != "undefined" && canCreate) 
+                    auth=true;
+                else if(elt.add===true)
+                    auth=true;
+            }
+            return auth;
+        },
+        buildCreateButton: function(domContain, dropdownButton, params){
             menuButtonCreate="";
             var count=0;
             var hash="";
@@ -323,28 +365,37 @@
             var subFormType=  "";
             var addClass =  "";
             var nameLabel="";
-
+            var bgClass="";
+            var textExplain="";
             $.each(typeObj, function(e,v){
-                if(typeof v.add != "undefined" && v.add){
-                    if(v.add!="onlyAdmin" || canCreate ){
-                        count++;
-                        hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
-                        formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
-                        subFormType= (typeof v.subFormType != "undefined") ? 'data-form-subtype="'+v.subFormType+'" ' : "";
-                        addClass = (typeof v.class != "undefined") ? v.class : "";
-                        nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
-                        menuButtonCreate+='<a href="'+hash+'" '+ 
-                            formType+
-                            subFormType+ 
-                            'class="addBtnFoot btn-open-form btn btn-default '+addClass+' bg-'+v.color+' margin-bottom-10">'+ 
-                                '<i class="fa fa-'+v.icon+'"></i> '+
-                                '<span>'+nameLabel+'</span>'+
-                            '</a>';
+                if(typeObj.authorizedButton(v, params)){
+                    count++;
+                    hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
+                    formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
+                    subFormType= (typeof v.formSubType != "undefined") ? 'data-form-subtype="'+v.formSubType+'" ' : "";
+                    addClass = (typeof v.class != "undefined") ? v.class : "";
+                    nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
+                    bgIcon="";
+                    bgClass="bg-"+v.color;
+                    inline="";
+                    if(notNull(params)){
+                        bgClass=(typeof params.bgColor != "undefined") ? "bg-"+params.bgColor : bgClass;
+                        textExplain=(typeof params.explain != "undefined") ? "<small>"+v.explainText+"</small>": "";
+                        addClass=(typeof params.addClass != "undefined") ? params.addClass : addClass;
+                        addClass=(typeof params.textColor != "undefined") ? addClass+" text-"+v.color : addClass;
+                        bgIcon=(typeof params.bgIcon != "undefined") ? "bg-"+v.color : bgIcon;
+                        inline=(typeof params.inline != "undefined" && !params.inline) ? "<br/>" : ""; 
                     }
+                    menuButtonCreate+='<a href="'+hash+'" '+ 
+                        formType+
+                        subFormType+ 
+                        'class="addBtnFoot btn-open-form btn btn-default '+addClass+' '+bgClass+' margin-bottom-10">'+ 
+                            '<i class="fa fa-'+v.icon+' '+bgIcon+'"></i>'+inline+' <span>'+nameLabel+'</span>'+
+                            inline+textExplain
+                        '</a>';
                 }
             });
-            $(domContain).html(menuButtonCreate);
-            
+            $(domContain).html(menuButtonCreate);            
             if(count <= 1 && notNull(dropdownButton) && dropdownButton){
                 oneButton='<a href="'+hash+'" '+
                         formType+
