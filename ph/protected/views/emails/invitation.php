@@ -1,15 +1,15 @@
 <?php
 $logoHeader=(@$logoHeader) ? $logoHeader : "";
-$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true);
+$urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
 $validationKey =Person::getValidationKeyCheck($invitedUserId);
 //$url = Yii::app()->getRequest()->getBaseUrl(true).(empty($url) ? "/".$this->module->id : $url)."/person/validateinvitation/user/".$invitedUserId.'/validationKey/'.$validationKey.'/invitation/1';
 
-$urlValidation = Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id."/person/validateinvitation/user/".$invitedUserId.'/validationKey/'.$validationKey.'/invitation/1';
+$urlValidation = $urlRedirect."/".$this->module->id."/person/validateinvitation/user/".$invitedUserId.'/validationKey/'.$validationKey.'/invitation/1';
 Yii::app()->language = $language;
 
 if(!empty($invitorUrl))
 	$invitorName='<a href="'.$invitorUrl.'" target="_blank">'.$invitorName.'</a>';
-if(@$url){
+if(!empty($url) && empty($baseUrl)){
     $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
     $keyOn=(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false) ? str_replace("/", ".", $url) : ltrim($url, '/');
     $urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id."/person/validateinvitation/user/".$invitedUserId.'/validationKey/'.$validationKey.'/invitation/1/redirect/'.$keyOn;
@@ -101,7 +101,7 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 				
-				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer'); ?>
+				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>
 
 			</td>
 

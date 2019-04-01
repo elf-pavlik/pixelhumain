@@ -1,11 +1,19 @@
   <?php
-  $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header');
-  $url = Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.".$parentType.".id.".(string)$parent["_id"];
-  $verbAction=$verb;
-  if($verb=="contribute")
-    $verbAction="contribute to";
-  else if ($verb=="participate")
-    $verbAction="participate to";
+  //$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header');
+
+  	$logoHeader=(@$logoHeader) ? $logoHeader : "";
+	$urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
+	if(!empty($url) && empty($baseUrl) ) {
+		$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
+	}
+	$this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));
+
+	$url = $urlRedirect."/#page.type.".$parentType.".id.".(string)$parent["_id"];
+	$verbAction=$verb;
+	if($verb=="contribute")
+		$verbAction="contribute to";
+	else if ($verb=="participate")
+		$verbAction="participate to";
   ?>
 <table class="row" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;position: relative;display: table;">
 	<tbody>
@@ -16,10 +24,10 @@
 				<table style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;width: 100%;">
 					<tr style="padding: 0;vertical-align: top;text-align: left;">
 						<th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
-							<a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;"><img align="right" width="200" src="<?php echo Yii::app()->getRequest()->getBaseUrl(true)."/images/bdb.png"?>" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;border: none;" alt="Intelligence collective"></a>
+							<a href="<?php echo $urlRedirect ?>" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;"><img align="right" width="200" src="<?php echo Yii::app()->getRequest()->getBaseUrl(true)."/images/bdb.png"?>" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;border: none;" alt="Intelligence collective"></a>
 							<b><h5 style="color: inherit;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-wrap: normal;margin-bottom: 10px;font-size: 20px;"></h5></b><br>
 
-							<?php echo Yii::t("mail","{who} has confirmed your request to {action} {what}",array("{who}"=>'<b><a href="'.Yii::app()->getRequest()->getBaseUrl(true).'/#page.type.'.Person::COLLECTION.'.id.'.$authorId.'" target="_blank">'.$authorName.'</a></b>',"{action}"=>Yii::t("mail",$verbAction),"{what}"=>Yii::t("common", "the ".Element::getControlerByCollection($parentType)).' <a href="'.$url.'" target="_blank">'.$parent["name"].'</a>'))?>
+							<?php echo Yii::t("mail","{who} has confirmed your request to {action} {what}",array("{who}"=>'<b><a href="'.$urlRedirect.'/#page.type.'.Person::COLLECTION.'.id.'.$authorId.'" target="_blank">'.$authorName.'</a></b>',"{action}"=>Yii::t("mail",$verbAction),"{what}"=>Yii::t("common", "the ".Element::getControlerByCollection($parentType)).' <a href="'.$url.'" target="_blank">'.$parent["name"].'</a>'))?>
 							<br><br><br>
 
 							<?php echo Yii::t("mail","Now, you can connect you and used all functions {ofwhat} on {where} : editing details, add element, publish news, manage comunity, etc.",array("{ofwhat}"=>Yii::t("mail", "of ".$typeOfDemand),"{where}"=>Yii::t("common","this ".Element::getControlerByCollection($parentType))))."." ?>
@@ -41,7 +49,7 @@
 		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 				
-				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer'); ?>
+				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>
 
 			</td>
 
