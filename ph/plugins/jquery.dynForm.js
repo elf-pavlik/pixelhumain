@@ -1109,6 +1109,7 @@ var dyFObj = {
 					delete data.map["_id"];
 				mylog.log("editElement data", data);
 				dyFObj.elementData = data;
+
 				typeModules=(notNull(subType)) ? subType : type; 
 				if(typeof typeObj[typeModules] != "undefined")
 					typeForm=typeModules;
@@ -1128,6 +1129,34 @@ var dyFObj = {
 	        } else 
 	           toastr.error("something went wrong!! please try again.");
 	    });
+	},
+	deepPropertyBuild : function(obj,p) {
+		//alert( Object.keys( obj ).length );
+    	$.each( obj,  function(k,v) { 
+    		path = (p) ? p+"."+k  : k;
+    		if( typeof v != "object" ){
+    			dyFObj.elementObj.dynForm.jsonSchema.properties[k] = dyFInputs.inputText(path);
+    			console.log("::::::",path, typeof v);
+    			path = null;
+    		}
+    		else {
+    			
+    			/*dyFObj.elementObj.dynForm.jsonSchema.properties[k."groupSection"] = {
+	                inputType : "custom",
+	                html:"<a href='javascript:;' onclick='$(\""+k+"Content\")' >"+k+"group></a> <div class='"+k+"Content hidden'>",
+	            };*/
+    			console.log(">>>>>>>>>>>>> xxx object ",path,v);
+
+    			if($.inArray(k,["afterUploadComplete","documentation"]) < 0)
+    				dyFObj.deepPropertyBuild(v, path);
+
+    			// dyFObj.elementObj.dynForm.jsonSchema.properties[k."groupclose"] = {
+	      //           inputType : "custom",
+	      //           httpml:"</div>",
+	      //       };
+
+    		} 
+    	})
 	},
 	openAjaxForm : function (url){
 		mylog.warn("--------------- openAjaxForm ",url);

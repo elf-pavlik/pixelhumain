@@ -258,6 +258,7 @@
         }, 
         curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
         badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"},
+        costum : { col: "costum", color:"dark",icon:"photo",titleClass : "bg-dark",title : "Costum"},
         get: function(e){
               elt={};
               if(typeof typeObj[e] != "undefined"){
