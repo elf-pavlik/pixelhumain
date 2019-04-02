@@ -92,7 +92,7 @@
             addInElement:false,
             formType:"organization",
             name: trad.organization, 
-            createLabel: "Create an organization",
+            createLabel: trad.createorganization,
             explainText: "Blabla"
         },
         organizations : {sameAs:"organization"},
@@ -139,7 +139,7 @@
             addInElement:true,
             formType:"event",
             name: trad.event, 
-            createLabel: "Create an event",
+            createLabel: trad.createevent,
             explainText:tradDynForm.infosmallcreateevent,
             parentAllow:["citoyens", "organizations","projects", "events"]
         },
@@ -150,7 +150,7 @@
             addInElement:true,
             formType:"project",
             name: trad.project, 
-            createLabel: "Create a project",
+            createLabel: trad.createproject,
             explainText: tradDynForm.infosmallcreateproject,
             parentAllow:[ "citoyens", "organizations","projects"]
         },
