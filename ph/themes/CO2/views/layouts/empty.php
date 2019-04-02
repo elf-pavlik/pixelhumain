@@ -62,9 +62,9 @@
 
   $cssJs = array(
     '/assets/css/freelancer.css',
-    '/assets/css/CO2/CO2-boot.css',
-    '/assets/css/CO2/CO2-color.css',
-    '/assets/css/CO2/CO2.css',
+    '/assets/css/CO2-boot.css',
+    '/assets/css/CO2-color.css',
+    '/assets/css/CO2.css',
     '/assets/css/plugins.css',
     '/assets/css/default/dynForm.css',
     '/assets/js/coController.js',
