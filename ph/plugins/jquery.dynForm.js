@@ -346,7 +346,7 @@ var finder = {
 			titleForm+="(Un seulement)";
 		var dialog = bootbox.dialog({
 		    title: titleForm,
-		    message: '<div id="finderSelectHtml" style="height:480px;">'+
+		    message: '<div id="finderSelectHtml" style="max-height:480px;">'+
 		    			'<input class="form-group form-control" type="text" id="populateFinder"/>'+
 						'<div id="list-finder-selected" style="max-height:200px; overflow-y:auto"></div>'+
 		    			'<hr/><div id="list-finder-selection" style="height:200px; overflow-y:auto" class="shadow2"><p><i class="fa fa-spin fa-spinner"></i> '+trad.currentlyloading+'...</p></div>'+
