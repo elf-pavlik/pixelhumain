@@ -386,14 +386,14 @@ var finder = {
 		    closeButton:false,
 		    buttons: {
 			    cancel: {
-			        label: trad.close,
+			        label: trad.Close,
 			        className: 'btn-default',
 			        callback: function(){
 			            dialog.modal('hide');
 			        }
 			    },
 			    ok: {
-			        label: "Ajouter",
+			        label: trad.Add,
 			        className: 'btn-success',
 			        callback: function(e){
 			        	e.preventDefault();
