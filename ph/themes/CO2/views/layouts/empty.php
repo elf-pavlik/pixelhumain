@@ -62,9 +62,9 @@
 
   $cssJs = array(
     '/assets/css/freelancer.css',
-    '/assets/css/CO2/CO2-boot.css',
-    '/assets/css/CO2/CO2-color.css',
-    '/assets/css/CO2/CO2.css',
+    '/assets/css/CO2-boot.css',
+    '/assets/css/CO2-color.css',
+    '/assets/css/CO2.css',
     '/assets/css/plugins.css',
     '/assets/css/default/dynForm.css',
     '/assets/js/coController.js',
@@ -74,7 +74,30 @@
     '/js/dataHelpers.js'
   );
   HtmlHelper::registerCssAndScriptsFiles($cssJS, Yii::app()->getModule( "co2" )->getAssetsUrl() );
-
+ $cssAnsScriptFilesModule = array(
+                "/js/default/loginRegister.js",
+                /*'/js/co.js',
+                '/js/default/directory.js',
+                '/js/links.js',
+                '/js/default/index.js',
+                '/js/default/notifications.js',
+                //'/js/default/directory.js',
+                '/js/dataHelpers.js',
+                '/js/sig/localisationHtml5.js',
+                '/js/floopDrawerRight.js',
+                '/js/sig/geoloc.js',
+                //'/js/default/formInMap.js',
+                //'/js/default/formInMapOld.js',
+                '/js/default/globalsearch.js',
+                '/js/sig/findAddressGeoPos.js',
+                '/js/jquery.filter_input.js',
+                //'/js/breadcrum_co.js',
+                '/js/scopes/scopes.js',
+                //'/js/scopes/breadcrum_co.js',
+                //'/js/scopes/multiscopes.js',*/
+                );
+            HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl() );
+            
 
   $cs->registerScriptFile(Yii::app()->request->baseUrl. '/plugins/jQuery/jquery-2.1.1.min.js' );
 ?>
@@ -167,7 +190,7 @@
 <body class="body">
   <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
     <?php
-     if($this->module->id != "news"){
+     if($this->module->id != "news" && $this->module->id != "costum"){
         $this->renderPartial( $layoutPath.'menus.'.$CO2DomainName, 
                             array( "layoutPath"=>$layoutPath , 
                                     "subdomain"=>"", //$subdomain,
