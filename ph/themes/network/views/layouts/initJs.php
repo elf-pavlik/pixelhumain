@@ -9,7 +9,7 @@ $multiscopes = (empty($me) && isset( Yii::app()->request->cookies['multiscopes']
     var moduleUrl = "<?php echo Yii::app()->controller->module->assetsUrl;?>";
     var moduleId = "<?php echo $parentModuleId?>";
     var activeModuleId = "<?php echo $this->module->id?>";
-
+     var parentModuleUrl = "<?php echo ( @Yii::app()->params["module"]["parent"] )  ? Yii::app()->getModule( Yii::app()->params["module"]["parent"] )->getAssetsUrl() : Yii::app()->controller->module->assetsUrl ?>";
 
     var modules = {
         //Configure here eco
@@ -159,57 +159,116 @@ $multiscopes = (empty($me) && isset( Yii::app()->request->cookies['multiscopes']
     var typeObj = {
         addPhoto:{ titleClass : "bg-dark", color : "bg-dark" },
         addFile:{ titleClass : "bg-dark", color : "bg-dark" },
-        person : { col : "citoyens" ,ctrl : "person",titleClass : "bg-yellow",bgClass : "bgPerson",color:"yellow",icon:"user",lbh : "#person.invite",   },
+        photo:{ titleClass : "bg-dark", color : "bg-dark" },
+        file:{ titleClass : "bg-dark", color : "bg-dark" },
+        person : { col : "citoyens" ,
+            ctrl : "person", titleClass : "bg-yellow",bgClass : "bgPerson", color:"yellow",icon:"user", hash : "#element.invite", 
+            class: "lbhp", 
+            add: true,
+            addInElement:false,
+            name: trad.people,
+            addLabel: trad.invitesomeone,
+            createLabel: trad.invitesomeone,
+            /*explainText:"Diffuse an event<br>Invite attendees<br>Communicate to your network",*/
+        },
         persons : { sameAs:"person" },
         people : { sameAs:"person" },
         citoyen : { sameAs:"person" },
         citoyens : { sameAs:"person" },
         
-        poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
-            subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
-                   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
-                   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ] },
-        
-        
         siteurl:{ col:"siteurl",ctrl:"siteurl"},
-        organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga"},
+        organization : { col:"organizations", ctrl:"organization", icon : "group",titleClass : "bg-green",color:"green",bgClass : "bgOrga", 
+            add: true,
+            addInElement:false,
+            formType:"organization",
+            name: trad.organization, 
+            createLabel: trad.createorganization,
+            explainText: "Blabla"
+        },
         organizations : {sameAs:"organization"},
-        LocalBusiness : {col:"organizations",color: "azure",icon: "industry"},
-        NGO : {sameAs:"organization", color:"green", icon:"users"},
+        organization2 : { col:"organizations", ctrl:"organization" },
+        LocalBusiness : {col:"organizations",color: "azure",icon: "industry",
+            name:trad.LocalBusiness,
+            addInElement:true,
+            formType:"organization",
+            formSubType:"LocalBusiness",
+            createLabel:"Create a local business",
+            explainText:tradDynForm.infosmallcreatebusiness,           
+            parentAllow:["citoyens"]
+        },
+        NGO : {sameAs:"organization", color:"green", icon:"users",
+            name : trad.NGO,
+            formType:"organization",
+            createLabel:"Create an NGO",
+            formSubType:"NGO",
+            addInElement:true,
+            explainText:tradDynForm.infosmallcreatengo,           
+            parentAllow:["citoyens"]
+        },
         Association : {sameAs:"organization", color:"green", icon: "group"},
-        GovernmentOrganization : {col:"organization", color: "red",icon: "university"},
-        Group : {   col:"organizations",color: "turq",icon: "circle-o"},
-        event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent"},
+        GovernmentOrganization : {col:"organization", color: "red",icon: "university",
+            name:trad.GovernmentOrganization,
+            formType:"organization",
+            formSubType:"GovernmentOrganization",
+            createLabel:"Create a public sevrice",
+            addInElement:true,
+            explainText:tradDynForm.infosmallcreatepublicservice,           
+            parentAllow:["citoyens"]
+        },
+        Group : {   col:"organizations",color: "turq",icon: "circle-o",
+            name:trad.Group,
+            formType:"organization",
+            formSubType:"Group",
+            createLabel:"Create a group",
+            addInElement:true,
+            explainText:tradDynForm.infosmallcreategroup,           
+            parentAllow:["citoyens"]
+        },
+        event : {col:"events",ctrl:"event",icon : "calendar",titleClass : "bg-orange", color:"orange",bgClass : "bgEvent", 
+            add: true,
+            addInElement:true,
+            formType:"event",
+            name: trad.event, 
+            createLabel: trad.createevent,
+            explainText:tradDynForm.infosmallcreateevent,
+            parentAllow:["citoyens", "organizations","projects", "events"]
+        },
+        
         events : {sameAs:"event"},
-        project : {col:"projects",ctrl:"project",   icon : "lightbulb-o",color : "purple",titleClass : "bg-purple", bgClass : "bgProject"},
+        project : {col:"projects",ctrl:"project",   icon : "lightbulb-o",color : "purple",titleClass : "bg-purple", bgClass : "bgProject",
+            add: true,
+            addInElement:true,
+            formType:"project",
+            name: trad.project, 
+            createLabel: trad.createproject,
+            explainText: tradDynForm.infosmallcreateproject,
+            parentAllow:[ "citoyens", "organizations","projects"]
+        },
         projects : {sameAs:"project"},
+        project2 : {col:"projects",ctrl:"project"},
         city : {sameAs:"cities"},
         cities : {col:"cities",ctrl:"city", titleClass : "bg-red", icon : "university",color:"red"},
         
         entry : {   col:"surveys",  ctrl:"survey",  titleClass : "bg-dark",bgClass : "bgDDA",   icon : "gavel", color : "azure", 
             saveUrl : baseUrl+"/" + moduleId + "/survey/saveSession"},
-        vote : {sameAs:"proposals"},
-        survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-        surveys : {sameAs:"survey"},
-        proposal : { col:"proposals", ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
-        proposals : { sameAs : "proposal" },
-        resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
-        action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
-        actions : { sameAs : "action" },
-        actionRooms : {sameAs:"room"},
-        rooms : {sameAs:"room"},
-        room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
-        discuss : {col:"actionRooms",ctrl:"room"},
-
-        contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
-            saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+        
         product:{ col:"products",ctrl:"product", titleClass : "bg-orange", color:"orange",  icon:"shopping-basket"},
         products : {sameAs:"product"},
         service:{ col:"services",ctrl:"service", titleClass : "bg-green", color:"green",    icon:"sun-o"},
         services : {sameAs:"service"},
         circuit:{ col:"circuits",ctrl:"circuit", titleClass : "bg-orange", color:"green",   icon:"ravelry"},
         circuits : {sameAs:"circuit"},
-        
+        poi:{  col:"poi",ctrl:"poi",color:"green-poi", titleClass : "bg-green-poi", icon:"map-marker",
+            subTypes:["link" ,"tool","machine","software","rh","RessourceMaterielle","RessourceFinanciere",
+                   "ficheBlanche","geoJson","compostPickup","video","sharedLibrary","artPiece","recoveryCenter",
+                   "trash","history","something2See","funPlace","place","streetArts","openScene","stand","parking","other" ], 
+            add: true,
+            addInElement:true,
+            name: tradCategory.poi,
+            formType: "poi",
+            explainText:tradDynForm.infosmallcreatepoi,
+            parentAllow:["citoyens", "organizations","projects", "events"]
+        },
         url : {col : "url" , ctrl : "url",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user",saveUrl : baseUrl+"/" + moduleId + "/element/saveurl",   },
         bookmark : {col : "bookmarks" , ctrl : "bookmark",titleClass : "bg-dark",bgClass : "bgPerson",color:"blue",icon:"bookmark"},
         document : {col : "document" , ctrl : "document",titleClass : "bg-dark",bgClass : "bgPerson",color:"dark",icon:"upload",saveUrl : baseUrl+"/" + moduleId + "/element/savedocument", },
@@ -222,28 +281,223 @@ $multiscopes = (empty($me) && isset( Yii::app()->request->cookies['multiscopes']
                     sections : {
                         network : { label: "Network Config",key:"network",icon:"map-marker"}
                     }},
+
+        classified : { col:"classifieds",ctrl:"classified",color:"azure", icon:"bullhorn", titleClass : "bg-azure", bgClass : "bgPerson", 
+            add: true,
+            addInElement:true,
+            formType:"classifieds",
+            name: trad.classified, 
+            createLabel: "Create a classified",
+            explainText: tradDynForm.infosmallcreateclassifieds,
+            parentAllow:[ "citoyens", "organizations","projects"]
+        },
+        classifieds : { sameAs:"classified" },
+        ressource : {  col:"classifieds",ctrl:"classified",color:"vine", icon:"cubes", titleClass : "bg-vine", bgClass : "bgPerson",
+            add: true,
+            addInElement:true,
+            formType:"ressources",
+            name: trad.ressource, 
+            createLabel: "add a ressource",
+            explainText: tradDynForm.infosmallcreateressources,
+            parentAllow:[ "citoyens", "organizations","projects", "events"]
+        },
+        ressources : { sameAs:"ressource" },
+        job :{  col:"classifieds",ctrl:"classified",color:"yellow-k", icon:"briefcase", titleClass : "bg-yellow-k", bgClass : "bgPerson",
+            add: true,
+            addInElement:true,
+            formType:"jobs",
+            name: trad.job, 
+            createLabel: "Add an offers",
+            explainText: tradDynForm.infosmallcreatejobs,
+            parentAllow:[ "citoyens", "organizations","projects"]
+        },
+        jobs : { sameAs:"job" },
         network : { col:"network",color:"azure",icon:"map-o",titleClass : "bg-turq"},
         networks : {sameAs:"network"},
-        inputs : { color:"red",icon:"address-card-o",titleClass : "bg-phink", title : "All inputs"},
-        addAny : { color:"pink",icon:"plus",titleClass : "bg-phink",title : tradDynForm.wantToAddSomething,
-                    sections : {
-                        person : { label: trad["Invite your contacts"],key:"person",icon:"user"},
-                        organization : { label: trad.organization,key:"organization",icon:"group"},
-                        event : { label: trad.event,key:"event",icon:"calendar"},
-                        project : { label: trad.project ,key:"project",icon:"lightbulb-o"},
-                    }},
-        apps : { color:"pink",icon:"cubes",titleClass : "bg-phink",title : tradDynForm.appList,
-                    sections : {
-                        search : { label: "SEARCH",key:"#search",icon:"search fa-2x text-red"},
-                        agenda : { label: "AGENDA",key:"#agenda",icon:"group fa-2x text-red"},
-                        news : { label: "NEWS",key:"#news",icon:"newspaper-o fa-2x text-red"},
-                        classifieds : { label: "ANNONCEs",key:"#classifieds",icon:"bullhorn fa-2x text-red"},
-                        dda : { label: "DISCUSS DECIDE ACT" ,key:"#dda",icon:"gavel fa-2x text-red"},
-                        chat : { label: "CHAT" ,key:"#chat",icon:"comments fa-2x text-red"},
-                    }},
-        filter : { color:"azure",icon:"list",titleClass : "bg-turq",title : "Nouveau Filtre"}
-    };
+        vote : {sameAs:"proposals"},
+        survey : {col:"proposals",ctrl:"proposal", color:"dark",icon:"hashtag", titleClass : "bg-turq" }, 
+        surveys : {sameAs:"survey"},
+        proposal : { col:"proposals", ctrl:"proposal", color:"turq",icon:"gavel", titleClass : "bg-turq", 
+            add: true,
+            addInElement: true,
+            name: trad.survey,
+            formType:"proposal",
+            createLabel: "Create a survey",
+            explainText: "Make a survey<br>add a referendum<br>construct a collective opinion",
+            parentAllow:["organizations","projects"]
+        }, 
+        proposals : { sameAs : "proposal" },
+        proposal2 : { sameAs : "proposal" },
+        resolutions : { col:"resolutions", ctrl:"resolution", titleClass : "bg-turq", bgClass : "bgDDA", icon : "certificate", color : "turq" },
+        action : {col:"actions", ctrl:"action", titleClass : "bg-turq", bgClass : "bgDDA", icon : "cogs", color : "dark" },
+        actions : { sameAs : "action" },
+        actionRooms : {sameAs:"room"},
+        rooms : {sameAs:"room"},
+        room : {col:"rooms",ctrl:"room",color:"azure",icon:"connectdevelop",titleClass : "bg-turq"},
+        discuss : {col:"actionRooms",ctrl:"room"},
+        contactPoint : {col : "contact" , ctrl : "person",titleClass : "bg-blue",bgClass : "bgPerson",color:"blue",icon:"user", 
+            saveUrl : baseUrl+"/" + moduleId + "/element/saveContact"},
+        contacts : {color:"blue",icon:"envelope", titleClass : "bg-blue", 
+            add: false,
+            addInElement:true,
+            name: trad.contact,
+            formType:"contactPoint",
+            createLabel: "Add a contact",
+            explainText:tradDynForm.infosmallcreatecontact,
+            parentAllow:["organizations","projects"]
+        }, 
+        curiculum : { color:"dark",icon:"clipboard",titleClass : "bg-dark",title : "My CV"},
+        badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"},
+        get: function(e){
+              elt={};
+              if(typeof typeObj[e] != "undefined"){
+                if(typeof typeObj[e].name != "undefined")
+                    elt.name=typeObj[e].name; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.name=typeObj[typeObj[e].sameAs].name;
+                
+                if(typeof typeObj[e].icon != "undefined")
+                    elt.icon=typeObj[e].icon; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.icon=typeObj[typeObj[e].sameAs].icon;
+                
+                if(typeof typeObj[e].color != "undefined")
+                    elt.color=typeObj[e].color; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.color=typeObj[typeObj[e].sameAs].color;
+                
+                if(typeof typeObj[e].formType != "undefined")
+                    elt.formType=typeObj[e].formType; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.formType=typeObj[typeObj[e].sameAs].formType;
+                
+                if(typeof typeObj[e].formParent != "undefined")
+                    elt.formParent=typeObj[e].formParent; 
+                
+                if(typeof typeObj[e].dynForm != "undefined")
+                    elt.dynForm=typeObj[e].dynForm;
+                
+                if(typeof typeObj[e].dynFormCostum != "undefined")
+                    elt.dynFormCostum=typeObj[e].dynFormCostum;
+                 else if(typeof typeObj[e].sameAs != "undefined" && typeof typeObj[typeObj[e].sameAs].dynFormCostum != "undefined")
+                    elt.dynFormCostum=typeObj[typeObj[e].sameAs].dynFormCostum;
+                
+                if(typeof typeObj[e].formSubType != "undefined")
+                    elt.formSubType=typeObj[e].formSubType; 
+                else if(typeof typeObj[e].sameAs != "undefined" && typeof typeObj[typeObj[e].sameAs].formSubType != "undefined")
+                    elt.formSubType=typeObj[typeObj[e].sameAs].formSubType;
+                
+                if(typeof typeObj[e].createLabel != "undefined")
+                    elt.createLabel=typeObj[e].createLabel; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.createLabel=typeObj[typeObj[e].sameAs].createLabel;
 
+                if(typeof typeObj[e].col != "undefined")
+                    elt.col=typeObj[e].col; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.col=typeObj[typeObj[e].sameAs].col;
+
+                if(typeof typeObj[e].ctrl != "undefined")
+                    elt.ctrl=typeObj[e].ctrl; 
+                else if(typeof typeObj[e].sameAs != "undefined")
+                    elt.ctrl=typeObj[typeObj[e].sameAs].ctrl;
+              }
+              console.log("getFormat typeObj", elt);
+              return elt;
+        },
+        isDefined:function(type, entry, obj){
+            res=true;
+            if(notNull(obj))
+                inspector=obj;
+            else if(typeof typeObj[type] !="undefined")
+                inspector=typeObj[type];
+            else
+                res=false;
+            if(res){
+                checkValues=(entry.indexOf(".")) ? entry.split(".") : [entry];
+                $.each(checkValues, function(e,v){
+                    if(typeof inspector[v] != "undefined"){
+                        res=true;
+                        inspector=inspector[v];
+                    }else
+                        res=false;
+                });
+            }
+            //if(notNull(entry) && res)
+              //  res = (typeof typeObj[type][entry] != "undefined") ? true : false;
+            //}
+            return res;
+        },
+        authorizedButton : function(elt, config){
+            auth=false;
+            if(notNull(config) && typeof config.inElement != "undefined"){ 
+                if(typeof elt.addInElement !="undefined" && elt.addInElement){
+                    auth=true;
+                    if(typeof config.allowIn != "undefined" && config.allowIn 
+                        && typeof elt.parentAllow != "undefined" && $.inArray(config.contextType, elt.parentAllow) < 0)
+                        auth=false;
+                }
+                if(typeof elt.add != "undefined" && (!elt.add || (elt.add=="onlyAdmin" && (typeof canCreate == "undefined" || !canCreate))))
+                    auth=false;
+            }else if(typeof elt.add != "undefined"){
+                if(elt.add=="onlyAdmin" && typeof canCreate != "undefined" && canCreate) 
+                    auth=true;
+                else if(elt.add===true)
+                    auth=true;
+            }
+            return auth;
+        },
+        buildCreateButton: function(domContain, dropdownButton, params){
+            menuButtonCreate="";
+            var count=0;
+            var hash="";
+            var formType="";
+            var subFormType=  "";
+            var addClass =  "";
+            var nameLabel="";
+            var bgClass="";
+            var textExplain="";
+            $.each(typeObj, function(e,v){
+                if(typeObj.authorizedButton(v, params)){
+                    count++;
+                    hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
+                    formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
+                    subFormType= (typeof v.formSubType != "undefined") ? 'data-form-subtype="'+v.formSubType+'" ' : "";
+                    addClass = (typeof v.class != "undefined") ? v.class : "";
+                    nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
+                    bgIcon="";
+                    bgClass="bg-"+v.color;
+                    inline="";
+                    if(notNull(params)){
+                        bgClass=(typeof params.bgColor != "undefined") ? "bg-"+params.bgColor : bgClass;
+                        textExplain=(typeof params.explain != "undefined") ? "<small>"+v.explainText+"</small>": "";
+                        addClass=(typeof params.addClass != "undefined") ? params.addClass : addClass;
+                        addClass=(typeof params.textColor != "undefined") ? addClass+" text-"+v.color : addClass;
+                        bgIcon=(typeof params.bgIcon != "undefined") ? "bg-"+v.color : bgIcon;
+                        inline=(typeof params.inline != "undefined" && !params.inline) ? "<br/>" : ""; 
+                    }
+                    menuButtonCreate+='<a href="'+hash+'" '+ 
+                        formType+
+                        subFormType+ 
+                        'class="addBtnFoot btn-open-form btn btn-default '+addClass+' '+bgClass+' margin-bottom-10">'+ 
+                            '<i class="fa fa-'+v.icon+' '+bgIcon+'"></i>'+inline+' <span>'+nameLabel+'</span>'+
+                            inline+textExplain
+                        '</a>';
+                }
+            });
+            $(domContain).html(menuButtonCreate);            
+            if(count <= 1 && notNull(dropdownButton) && dropdownButton){
+                oneButton='<a href="'+hash+'" '+
+                        formType+
+                        subFormType+ 
+                        'class="btn btn-default no-padding btn-menu-vertical btn-open-form" id="show-bottom-add">'+
+                            '<i class="fa fa-plus-circle"></i>'+
+                            '<span class="tooltips-menu-btn">'+nameLabel+'</span>'+
+                        '</a>';
+                $("#show-bottom-add").replaceWith(oneButton);
+            }
+        }
+    };
     var directoryViewMode="block";
     var themeObj = {
         init : function(){

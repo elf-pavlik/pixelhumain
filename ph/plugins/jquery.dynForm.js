@@ -1179,6 +1179,8 @@ var dyFObj = {
 					delete data.tags;
 			}
 		}
+
+		mylog.log("prepData",data);
 		return data;
 
 	},
@@ -1705,7 +1707,8 @@ var dyFObj = {
         		  fieldObj.inputType == "numeric" || 
         		  fieldObj.inputType == "tags" || 
         		  fieldObj.inputType == "tags" ) {
-        	mylog.log("build field "+field+">>>>>> text, numeric, tags, tags");
+        	mylog.log("build field "+field+">>>>>> text, numeric, tags, tags", fieldObj);
+
         	if(fieldObj.inputType == "tags"){
         		fieldClass += " select2TagsInput";
         		if(fieldObj.values){
@@ -1723,14 +1726,16 @@ var dyFObj = {
         			dyFObj.init.initValues[field]["minimumInputLength"] = fieldObj.minimumInputLength;
         			mylog.log("select2TagsInput fieldObj dyFObj.init.initValues[field]", dyFObj.init.initValues[field]);
         		}
-        		if(typeof fieldObj.data != "undefined"){
-        			value = fieldObj.data;
-	        		//dyFObj.init.initSelectNetwork[field]=fieldObj.data;
-	        	}
+        		//TODO RApha bien géré les tags via network et costum 
+        		// if(typeof fieldObj.data != "undefined"){
+        		// 	value = fieldObj.data;
+	        	// }
+
         		if(typeof fieldObj.mainTag != "undefined")
 					mainTag=fieldObj.mainTag;
         		style = "style='width:100%;margin-bottom: 10px;border: 1px solid #ccc;'";
         	}
+
         	mylog.log("select2TagsInput field",field, value );
         	//var label = '<label class="pull-left"><i class="fa fa-circle"></i> '+placeholder+'</label><br>';
         	fieldHTML += iconOpen+' <input type="text" class="form-control '+fieldClass+'" name="'+field+'" id="'+field+'" value="'+value+'" placeholder="'+placeholder+'" '+style+'/>'+iconClose;
@@ -4797,11 +4802,11 @@ var dyFInputs = {
 			if(typeof object.request.mainTag != "undefined")
 				networkTags.push({id:object.request.mainTag[0],text:object.request.mainTag[0]});
 
-			if(typeof object.request.searchTag != "undefined"){
-				console.log("NETWORK searchTag", networkTags);
-				networkTags = $.merge(networkTags, object.request.searchTag);
-				console.log("NETWORK searchTag", networkTags);
-			}
+			// if(typeof object.request.searchTag != "undefined"){
+			// 	mylog.log("NETWORK searchTag", networkTags);
+			// 	networkTags = $.merge(networkTags, object.request.searchTag);
+			// 	mylog.log("NETWORK searchTag", networkTags);
+			// }
 		}
 
 		if(typeof object.filter != "undefined" && typeof object.filter.linksTag != "undefined"){
@@ -4862,6 +4867,7 @@ var dyFInputs = {
 										object.dynForm.extra.tags == null ||
 										object.dynForm.extra.tags == false ) ) ) {
 								typeObj[key].dynForm.jsonSchema.properties.tags.values=networkTags;
+								mylog.log("initializeTypeObjForm ", typeObj[key].dynForm.jsonSchema.properties.tags);
 								if(typeof object.request.mainTag != "undefined"){
 									typeObj[key].dynForm.jsonSchema.properties.tags.mainTag = object.request.mainTag;
 									if(typeof typeObj[key].dynForm.jsonSchema.properties.tags.data == "undefined")

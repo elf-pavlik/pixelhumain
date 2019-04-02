@@ -200,6 +200,8 @@
 		HtmlHelper::registerCssAndScriptsFiles( array('/js/default/formInMap.js') , $this->module->assetsUrl);
 
 		$cssAnsScriptFilesModule = array(
+			'/assets/vendor/bootstrap/js/bootstrap.min.js',
+                '/assets/vendor/bootstrap/css/bootstrap.min.css',
 			'/assets/css/themes/theme-simple-login.css',
 			'/assets/css/styles.css',
 			'/assets/js/cookie.js' ,
@@ -214,12 +216,61 @@
 			// '/assets/css/styles-responsive.css',
 			'/assets/css/default/directory.css',
 			'/assets/css/floopDrawerRight.css',
+			'/assets/css/cooperation.css',
 			'/assets/css/news/index.css',
 			'/assets/js/comments.js',
 			'/assets/css/search_simply.css',
 					
 		);
 		HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
+	
+		$cssAnsScriptFilesModule = array(
+                //'/assets/js/cookie.js' ,
+                //'/assets/js/jqBootstrapValidation.js' ,
+                
+                //'/assets/data/mainCategories.js' ,
+                
+                '/assets/vendor/bootstrap/js/bootstrap.min.js',
+                '/assets/vendor/bootstrap/css/bootstrap.min.css',
+                '/assets/css/sig/sig.css',
+                '/assets/css/freelancer.css',
+                '/assets/css/default/dynForm.css',
+                '/assets/css/CO2-boot.css',
+                '/assets/css/CO2-color.css',
+                '/assets/css/CO2.css',
+                '/assets/css/plugins.css',
+                '/assets/css/floopDrawerRight.css',
+                '/assets/css/cooperation.css',
+                '/assets/css/default/directory.css',
+                '/assets/js/comments.js'
+            );
+            HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, Yii::app()->theme->baseUrl);
+
+
+		 $cssAnsScriptFilesModule = array(
+            "/js/default/loginRegister.js",
+            '/js/co.js',
+            '/js/default/directory.js',
+            '/js/links.js',
+            '/js/default/index.js',
+            '/js/default/notifications.js',
+            //'/js/default/directory.js',
+            '/js/dataHelpers.js',
+            '/js/sig/localisationHtml5.js',
+            '/js/floopDrawerRight.js',
+            '/js/sig/geoloc.js',
+            //'/js/default/formInMap.js',
+            //'/js/default/formInMapOld.js',
+            '/js/default/globalsearch.js',
+            '/js/sig/findAddressGeoPos.js',
+            '/js/jquery.filter_input.js',
+            //'/js/breadcrum_co.js',
+            '/js/scopes/scopes.js',
+            //'/js/scopes/breadcrum_co.js',
+            //'/js/scopes/multiscopes.js',
+            );
+        HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl() );
+
 		$this->renderPartial($layoutPath.'initJs', 
                                  array( "me"=>@$me, "parentModuleId" => $parentModuleId, "myFormContact" => @$myFormContact));
 
