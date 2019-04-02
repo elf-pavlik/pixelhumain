@@ -434,7 +434,7 @@ section {
 	display: inline;
 }
 
-.navbar-custom .btn-show-map, .main-container.vertical .btn-show-map {
+.navbar-custom .btn-show-map, .main-container.vertical .btn-show-map, .main-container.horizontal .btn-show-map {
 	background-color: #0095FF;
 	/*background-color: #7bd18f;*/
 	color: white;
