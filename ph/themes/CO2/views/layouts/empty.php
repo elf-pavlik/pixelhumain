@@ -167,7 +167,7 @@
 <body class="body">
   <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
     <?php
-     if($this->module->id != "news"){
+     if($this->module->id != "news" && $this->module->id != "costum"){
         $this->renderPartial( $layoutPath.'menus.'.$CO2DomainName, 
                             array( "layoutPath"=>$layoutPath , 
                                     "subdomain"=>"", //$subdomain,
