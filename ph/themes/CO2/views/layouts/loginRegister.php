@@ -226,7 +226,7 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
                     <p></p>
                 </div>
             </div>
-            <div class="col-md-4 col-md-offset-4 text-left">
+            <div class="col-md-4 col-md-offset-4 text-left form-register-inputs">
                 <div class="pull-left form-actions no-margin" style="width:100%; padding:10px;">
                     <div class="errorHandler alert alert-danger no-display registerResult pull-left " style="width:100%;">
                         <i class="fa fa-remove-sign"></i> <?php echo Yii::t("login","Please verify your entries.") ?>
@@ -235,21 +235,26 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
                         <i class="fa fa-check"></i> <?php echo Yii::t("login","You've been invited : please resume the registration process in order to log in.") ?>
                     </div>
                 </div>
-
-                <label class="letter-black"><i class="fa fa-address-book-o"></i> <?php echo Yii::t("login","Name and surname") ?></label>
-                <input class="form-control" id="registerName" name="name" type="text" placeholder="<?php echo Yii::t("login","name and surname") ?>"><br/>
-                
+                <div class="nameRegister">
+                    <label class="letter-black"><i class="fa fa-address-book-o"></i> <?php echo Yii::t("login","Name and surname") ?></label>
+                    <input class="form-control" id="registerName" name="name" type="text" placeholder="<?php echo Yii::t("login","name and surname") ?>"><br/>
+                </div>
+                <div class="usernameRegister">
                 <label class="letter-black"><i class="fa fa-user-circle-o"></i> <?php echo Yii::t("login","User name") ?></label><br>
                 <input class="form-control" id="username" name="username" type="text" placeholder="<?php echo Yii::t("login","user name") ?>"><br/>
-                
+                </div>
+                <div class="emailRegister">
                 <label class="letter-black"><i class="fa fa-envelope"></i> <?php echo Yii::t("login","Email") ?></label><br>
                 <input class="form-control" id="email3" name="email3" type="text" placeholder="<?php echo Yii::t("login","email") ?>"><br/>
-                
+                </div>
+                <div class="passwordRegister">
                 <label class="letter-black"><i class="fa fa-key"></i> <?php echo Yii::t("login","Password") ?></label><br/>
                 <input class="form-control" id="password3" name="password3" type="password" placeholder="<?php echo Yii::t("login","password") ?>"><br/>
-                
+                </div>
+                <div class="passwordAgainRegister">
                 <label class="letter-black"><i class="fa fa-key"></i> <?php echo Yii::t("login","Password again") ?></label><br/>
                 <input class="form-control" id="passwordAgain" name="passwordAgain" type="password" placeholder="<?php echo Yii::t("login","password (confirmation)") ?>">
+                </div>
                 <input class="form-control" id="isInvitation" name="isInvitation" type="hidden" value="false">
                 <hr>
                 <div class="form-group pull-left no-margin padding-top-10" style="width:100%;">
