@@ -1109,7 +1109,6 @@ var dyFObj = {
 					delete data.map["_id"];
 				mylog.log("editElement data", data);
 				dyFObj.elementData = data;
-
 				typeModules=(notNull(subType)) ? subType : type; 
 				if(typeof typeObj[typeModules] != "undefined")
 					typeForm=typeModules;
@@ -1129,34 +1128,6 @@ var dyFObj = {
 	        } else 
 	           toastr.error("something went wrong!! please try again.");
 	    });
-	},
-	deepPropertyBuild : function(obj,p) {
-		//alert( Object.keys( obj ).length );
-    	$.each( obj,  function(k,v) { 
-    		path = (p) ? p+"."+k  : k;
-    		if( typeof v != "object" ){
-    			dyFObj.elementObj.dynForm.jsonSchema.properties[k] = dyFInputs.inputText(path);
-    			console.log("::::::",path, typeof v);
-    			path = null;
-    		}
-    		else {
-    			
-    			/*dyFObj.elementObj.dynForm.jsonSchema.properties[k."groupSection"] = {
-	                inputType : "custom",
-	                html:"<a href='javascript:;' onclick='$(\""+k+"Content\")' >"+k+"group></a> <div class='"+k+"Content hidden'>",
-	            };*/
-    			console.log(">>>>>>>>>>>>> xxx object ",path,v);
-
-    			if($.inArray(k,["afterUploadComplete","documentation"]) < 0)
-    				dyFObj.deepPropertyBuild(v, path);
-
-    			// dyFObj.elementObj.dynForm.jsonSchema.properties[k."groupclose"] = {
-	      //           inputType : "custom",
-	      //           httpml:"</div>",
-	      //       };
-
-    		} 
-    	})
 	},
 	openAjaxForm : function (url){
 		mylog.warn("--------------- openAjaxForm ",url);
@@ -4831,11 +4802,11 @@ var dyFInputs = {
 			if(typeof object.request.mainTag != "undefined")
 				networkTags.push({id:object.request.mainTag[0],text:object.request.mainTag[0]});
 
-			// if(typeof object.request.searchTag != "undefined"){
-			// 	mylog.log("NETWORK searchTag", networkTags);
-			// 	networkTags = $.merge(networkTags, object.request.searchTag);
-			// 	mylog.log("NETWORK searchTag", networkTags);
-			// }
+			if(typeof object.request.searchTag != "undefined"){
+				mylog.log("NETWORK searchTag", networkTags);
+				networkTags = $.merge(networkTags, object.request.searchTag);
+				mylog.log("NETWORK searchTag", networkTags);
+			}
 		}
 
 		if(typeof object.filter != "undefined" && typeof object.filter.linksTag != "undefined"){
@@ -4865,19 +4836,22 @@ var dyFInputs = {
 				networkTagsCategory[category].push(optgroupObject);
 			});
 		}
-		mylog.log("object.add", object.typeObj, typeObj);
+		mylog.log("object.add", object.typeObj, object);
 		if(	typeof object.typeObj != "undefined"  && 
 			typeof typeObj != "undefined" ){
 
 			$.each(object.typeObj, function(key, v) {
-				mylog.log("key", key);
+				mylog.log("object.add ", key);
 				//key=(key=="jobs" || key=="ressources") ? "classifieds" : key;
 				//key=(typeof typeObj[key].sameAs != "undefined") ? typeObj[key].sameAs : key; 
-				key=(!typeObj.isDefined(key, "dynForm") && typeObj.isDefined(key, "sameAs")) ? typeObj[key].sameAs : key;
+				key = (!typeObj.isDefined(key, "dynForm") && typeObj.isDefined(key, "sameAs")) ? typeObj[key].sameAs : key;
+				mylog.log("object.add ", key, typeof typeObj[key].dynForm);
 				if( typeof typeObj[key].dynForm != "undefined"){
 					
-					if( typeof object.slug != "undefined")
+					if( typeof object.slug != "undefined"){
+						mylog.log("object.add source", object.slug, object);
 						typeObj[key].dynForm.jsonSchema.properties.source = object.slug;
+					}
 
 					if( typeof object.request != "undefined"){
 						if(typeof object.request.sourceKey != "undefined"){
@@ -7065,38 +7039,6 @@ var scopeObj = {
 
 		if(notNull(params)){
 			scopeObj.limit = ( notNull(params.limit) ? params.limit : null ) ;
-// =======
-// var dyFCustom = {
-// 	init : function (type) { 
-// 		if( typeof costum.dynForm[type].onload != "undefined" 
-// 			&& typeof costum.dynForm[type].onload.actions != "undefined"){
-// 			$.each(costum.dynForm[type].onload.actions,function(f,p) {
-// 				if(typeof dyFCustom[f] == "function")
-// 					f = dyFCustom[f];
-// 				else if(typeof dyFObj.elementObj.dynForm.jsonSchema.actions[f] == "function")
-// 					f = dyFObj.elementObj.dynForm.jsonSchema.actions[f]
-				
-// 				if(typeof f == "function"){
-// 					if(p==1)
-// 						f();
-// 					else if(typeof p == "object")
-// 						f(p);
-// 				}
-// 		 	})
-// 		}
-// 	},
-//     adminOnly : function(p) {
-// 		if(  typeof costum != "undefined" 
-// 			&& typeof costum.admins != "undefined" 
-// 			&& typeof costum.admins[userId] != "undefined" 
-// 			&& typeof costum.admins[userId].isAdmin != "undefined" 
-// 			&& costum.admins[userId].isAdmin == true ){
-				
-// 			$.each(p,function(el,v) {
-// 				$("."+el).show();
-// 		 	});
-				
-// >>>>>>> master
 		}
 	},
 	init : function(p){
@@ -7505,62 +7447,7 @@ var scopeObj = {
 					scopeObj.showDropDownGS(true, domTarget);
 					//bindScopesInputEvent();
 					
-					$(input+" .item-globalscope-checker").off().on('click', function(){
-						$("#labelselected").removeClass("hidden");
-						if(scopeObj.limit == null || Object.keys(scopeObj.selected).length < scopeObj.limit ){
-							var key = $(this).data("scope-value");
-							mylog.log("item-globalscope-checker myScopes", key, myScopes.search[key] );
-							if( typeof myScopes != "undefined" &&
-								typeof myScopes.search != "undefined" &&
-								typeof myScopes.search[key]  != "undefined" ){
-								var scopeDF = myScopes.search[key];
-								var nameZone = (typeof scopeDF.cityName != "undefined") ? scopeDF.cityName : scopeDF.name ;
-								var btnScopeAction="<span class='removeScopeDF tooltips margin-right-5 margin-left-10' "+
-									"style='font-size: 18px;' "+
-									"data-add='false' data-scope-value='"+scopeDF.id+"' "+
-									'data-scope-key="'+key+'" '+
-									"data-toggle='tooltip' data-placement='top' "+
-									"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
-										"<i class='fa fa-times-circle'></i>"+
-									"</span>";
-								var html = "<div class='scope-order text-red col-xs-12 col-sm-6' data-level='"+scopeDF.level+"'>"+
-									btnScopeAction+
-									"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
-										"class='item-scope-checker item-scope-input' "+
-										"style='font-size: 18px;' "+
-										'data-scope-key="'+key+'" '+
-										'data-scope-value="'+scopeDF.id+'" '+
-										'data-scope-name="'+name+'" '+
-										'data-scope-type="'+scopeDF.type+'" '+
-										'data-scope-level="'+scopeDF.type+'" ' +
-										'data-scope-country="'+scopeDF.country+'" ' +
-										'data-btn-type="multiscope" ';
-										if(notNull(scopeDF.level))
-											html += 'data-level="'+scopeDF.level+'"';
-										html += '>' + 
-										nameZone + 
-									"</span>"+
-								"</div>";
-								
-								$(input+" #scopes-container").append(html);
-								scopeObj.selected[key] = myScopes.search[key];
-
-								$(".removeScopeDF").off().on('click', function(){
-									$(this).parent().remove();
-									delete scopeObj.selected[$(this).data("scope-key")];
-									if(Object.keys(scopeObj.selected).length == 0){
-										$("#labelselected").addClass("hidden");
-									}
-									
-								});
-
-								$(domTarget).hide();
-							}
-						} else {
-							toastr.error("Vous avez déjà selectionné le nombre max élèments")
-						}
-						
-					});
+					scopeObj.onclickScope(input, domTarget);
 
 					bindLBHLinks();
 
@@ -7585,6 +7472,64 @@ var scopeObj = {
 				}
 			}
 		});	
+	},
+	onclickScope : function(input, domTarget){
+		$(input+" .item-globalscope-checker").off().on('click', function(){
+			$("#labelselected").removeClass("hidden");
+			if(scopeObj.limit == null || Object.keys(scopeObj.selected).length < scopeObj.limit ){
+				var key = $(this).data("scope-value");
+				mylog.log("item-globalscope-checker myScopes", key, myScopes.search[key] );
+				if( typeof myScopes != "undefined" &&
+					typeof myScopes.search != "undefined" &&
+					typeof myScopes.search[key]  != "undefined" ){
+					var scopeDF = myScopes.search[key];
+					var nameZone = (typeof scopeDF.cityName != "undefined") ? scopeDF.cityName : scopeDF.name ;
+					var btnScopeAction="<span class='removeScopeDF tooltips margin-right-5 margin-left-10' "+
+						"style='font-size: 18px;' "+
+						"data-add='false' data-scope-value='"+scopeDF.id+"' "+
+						'data-scope-key="'+key+'" '+
+						"data-toggle='tooltip' data-placement='top' "+
+						"data-original-title='"+trad.removeFromMyFavoritesPlaces+"'>"+
+							"<i class='fa fa-times-circle'></i>"+
+						"</span>";
+					var html = "<div class='scope-order text-red col-xs-12 col-sm-6' data-level='"+scopeDF.level+"'>"+
+						btnScopeAction+
+						"<span data-toggle='dropdown' data-target='dropdown-multi-scope' "+
+							"class='item-scope-checker item-scope-input' "+
+							"style='font-size: 18px;' "+
+							'data-scope-key="'+key+'" '+
+							'data-scope-value="'+scopeDF.id+'" '+
+							'data-scope-name="'+name+'" '+
+							'data-scope-type="'+scopeDF.type+'" '+
+							'data-scope-level="'+scopeDF.type+'" ' +
+							'data-scope-country="'+scopeDF.country+'" ' +
+							'data-btn-type="multiscope" ';
+							if(notNull(scopeDF.level))
+								html += 'data-level="'+scopeDF.level+'"';
+							html += '>' + 
+							nameZone + 
+						"</span>"+
+					"</div>";
+					
+					$(input+" #scopes-container").append(html);
+					scopeObj.selected[key] = myScopes.search[key];
+
+					$(".removeScopeDF").off().on('click', function(){
+						$(this).parent().remove();
+						delete scopeObj.selected[$(this).data("scope-key")];
+						if(Object.keys(scopeObj.selected).length == 0){
+							$("#labelselected").addClass("hidden");
+						}
+						
+					});
+
+					$(domTarget).hide();
+				}
+			} else {
+				toastr.error("Vous avez déjà selectionné le nombre max élèments")
+			}
+			
+		});
 	},
 	changeCommunexionScope : function(scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom){
 		mylog.log("changeCommunexionScope", scopeValue, scopeName, scopeType, scopeLevel, values, notSearch, testCo, appendDom);

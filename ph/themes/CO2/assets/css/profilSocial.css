@@ -460,6 +460,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', e
     left: 53px;
     width: initial !important;
 }
+
+.main-container.horizontal .sub-menu-social.affix {
+     margin-top: -150px !important;
+}
 @media (max-width: 767px) {
     .central-section{
         margin-top: 10px;
