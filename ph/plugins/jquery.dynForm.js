@@ -7056,13 +7056,13 @@ var scopeObj = {
 			}
 		});
 	},
-	getHtml: function(){
+	getHtml: function(placeholder=trad.searchcity){
 		str = 	'<div id="scopeListContainerForm" class="col-xs-12 no-padding margin-bottom-10">'+
 					'<div id="news-scope-search" class="col-xs-12 no-padding">'+
 						'<div id="input-sec-search" class="hidden-xs col-xs-12 col-sm-10">'+
 							'<div class="input-group shadow-input-header">'+
 								'<span class="input-group-addon bg-white addon-form-news"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>'+
-								'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+trad.searchcity+' ...">'+
+								'<input type="text" class="form-control input-global-search" id="searchScopeDF" autocomplete="off" placeholder="'+placeholder+' ...">'+
 							'</div>'+
 							'<div class="dropdown-result-global-search col-xs-12 col-sm-5 col-md-5 col-lg-5 no-padding" style="max-height: 70%; display: none;"><div class="text-center" id="footerDropdownGS"><label class="text-dark"><i class="fa fa-ban"></i> Aucun résultat</label><br></div>'+
 							'</div>'+
