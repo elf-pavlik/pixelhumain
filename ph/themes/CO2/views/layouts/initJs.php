@@ -260,6 +260,7 @@
         badge : { col: "badges", color:"dark",icon:"bookmark",titleClass : "bg-dark",title : "Badge"},
         costum : { col: "costum", color:"dark",icon:"photo",titleClass : "bg-dark",title : "Costum"},
         get: function(e){
+            mylog.log("HERE typeObj.get", e);
               elt={};
               if(typeof typeObj[e] != "undefined"){
                 if(typeof typeObj[e].name != "undefined")
@@ -313,7 +314,7 @@
                 else if(typeof typeObj[e].sameAs != "undefined")
                     elt.ctrl=typeObj[typeObj[e].sameAs].ctrl;
               }
-              console.log("getFormat typeObj", elt);
+              mylog.log("getFormat typeObj", elt);
               return elt;
         },
         isDefined:function(type, entry, obj){
@@ -370,6 +371,7 @@
             var textExplain="";
             $.each(typeObj, function(e,v){
                 if(typeObj.authorizedButton(v, params)){
+                    mylog.log("buildCreateButton", v, params);
                     count++;
                     hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
                     formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
@@ -396,6 +398,7 @@
                         '</a>';
                 }
             });
+            mylog.log("buildCreateButton menuButtonCreate", menuButtonCreate);
             $(domContain).html(menuButtonCreate);            
             if(count <= 1 && notNull(dropdownButton) && dropdownButton){
                 oneButton='<a href="'+hash+'" '+
