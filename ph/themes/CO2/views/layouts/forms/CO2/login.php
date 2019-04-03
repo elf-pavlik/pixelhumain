@@ -1,6 +1,6 @@
 
 <?php 
-HtmlHelper::registerCssAndScriptsFiles( array('/js/default/loginRegister.js') , $this->module->getParentAssetsUrl()); ?>
+//HtmlHelper::registerCssAndScriptsFiles( array('/js/default/loginRegister.js') , $this->module->getParentAssetsUrl()); ?>
 
 <style>
     .no-display {
