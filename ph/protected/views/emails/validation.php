@@ -2,10 +2,16 @@
   $logoHeader=(@$logoHeader) ? $logoHeader : "";
   $urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
   $urlValidation=$urlRedirect."/".$this->module->id.'/person/activate/user/'.$user.'/validationKey/'.Person::getValidationKeyCheck($user);
-  if(!empty($url) && empty($baseUrl) ) {
-    $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
-    $keyOn=(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false) ? str_replace("/", ".", $url) : ltrim($url, '/');
-    $urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id.'/person/activate/user/'.$user.'/validationKey/'.Person::getValidationKeyCheck($user)."/redirect/".$keyOn;
+  if(!empty($url)) {
+    if(empty($baseUrl)){
+      if(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false){
+        $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
+        $urlValidation=$urlValidation."/redirect/".str_replace("/", ".", $url);// : ltrim($url, '/');
+      }
+    }else{
+      $urlValidation=$urlValidation."/costum/true";
+    }
+   // $urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id.'/person/activate/user/'.$user.'/validationKey/'.Person::getValidationKeyCheck($user)."/".$redirK;
   }
   $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));
 ?>
