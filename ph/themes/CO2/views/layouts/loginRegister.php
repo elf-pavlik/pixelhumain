@@ -226,7 +226,7 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
                     <p></p>
                 </div>
             </div>
-            <div class="col-md-4 col-md-offset-4 text-left form-register-inputs">
+            <div class="col-md-8 col-md-offset-2 text-left form-register-inputs">
                 <div class="pull-left form-actions no-margin" style="width:100%; padding:10px;">
                     <div class="errorHandler alert alert-danger no-display registerResult pull-left " style="width:100%;">
                         <i class="fa fa-remove-sign"></i> <?php echo Yii::t("login","Please verify your entries.") ?>

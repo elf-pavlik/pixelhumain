@@ -9,10 +9,15 @@ Yii::app()->language = $language;
 
 if(!empty($invitorUrl))
 	$invitorName='<a href="'.$invitorUrl.'" target="_blank">'.$invitorName.'</a>';
-if(!empty($url) && empty($baseUrl)){
-    $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
-    $keyOn=(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false) ? str_replace("/", ".", $url) : ltrim($url, '/');
-    $urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id."/person/validateinvitation/user/".$invitedUserId.'/validationKey/'.$validationKey.'/invitation/1/redirect/'.$keyOn;
+if(!empty($url)){
+	if(empty($baseUrl)){
+		if(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false){
+   	 		$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
+   	 		$urlValidation=$urlValidation."/redirect/".str_replace("/", ".", $url); //: ltrim($url, '/');
+    	}
+    }else
+    	$urlValidation=$urlValidation."/costum/true";
+    //$urlValidation=Yii::app()->getRequest()->getBaseUrl(true)."/".$this->module->id."/person/validateinvitation/user/".$invitedUserId.'/validationKey/'.$validationKey.'/invitation/1/'.$redirK;
 }
 $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));
  ?>
