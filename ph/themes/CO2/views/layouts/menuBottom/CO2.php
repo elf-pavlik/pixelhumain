@@ -72,9 +72,9 @@
 
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
-    <?php if(!@$themeParams["footer"] || (@$themeParams["footer"]["donate"] && !empty($themeParams["footer"]["donate"]))){ 
-        $label=(@$themeParams["footer"]["donate"]["label"]) ? $themeParams["footer"]["donate"]["label"] : Yii::t("common","Be aCOeur");
-        $url=(@$themeParams["footer"]["donate"]["url"]) ? $themeParams["footer"]["donate"]["url"] : "https://www.helloasso.com/associations/open-atlas/collectes/communecter/don";
+    <?php if(!@$themeParams["menuBottom"] || (@$themeParams["menuBottom"]["donate"] && !empty($themeParams["menuBottom"]["donate"]))){ 
+        $label=(@$themeParams["menuBottom"]["donate"]["label"]) ? $themeParams["menuBottom"]["donate"]["label"] : Yii::t("common","Be aCOeur");
+        $url=(@$themeParams["menuBottom"]["donate"]["url"]) ? $themeParams["menuBottom"]["donate"]["url"] : "https://www.helloasso.com/associations/open-atlas/collectes/communecter/don";
     ?> 
     <a href="<?php echo $url ?>" target="_blank" id="donation-btn" class="btn btn-default donation-btn btn-menu-vertical">
         <i class="fa fa-heart"></i> 
@@ -86,7 +86,7 @@
         data-placement="top" title="Radio-Pixel-Humain is on air, listen now !">
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
     </button>-->
-    <?php if(@Yii::app()->session["userId"] && (!@$themeParams["footer"] || (@$themeParams["footer"]["add"] && !empty($themeParams["footer"]["add"])))) { ?>
+    <?php if(@Yii::app()->session["userId"] && (!@$themeParams["menuBottom"] || (@$themeParams["menuBottom"]["add"] && !empty($themeParams["menuBottom"]["add"])))) { ?>
         <button class="btn btn-default no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
             <span class="tooltips-menu-btn"><?php echo Yii::t("common","Add something") ?></span>
