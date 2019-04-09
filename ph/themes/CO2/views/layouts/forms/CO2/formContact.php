@@ -134,10 +134,12 @@ jQuery(document).ready(function() {
 
 
 function sendEmail(){
+	alert("HERE");
 	var emailSender = $("#emailSender").val();
 	var subject = $("#subject").val();
 	var name = $("#name").val();
 	var message = $("#message").val();
+	var emailFrom = $(".contact-email").html();
 
 	var idReceiver = $("#idReceiver").val();
 	var idReceiverParent = $("#idReceiverParent").val();
@@ -152,28 +154,26 @@ function sendEmail(){
 	if($("#form-fail").html()!="") { $("#form-fail").removeClass("hidden"); return }
 	else $("#form-fail").addClass("hidden");
 
-	var params = { 	idReceiver: idReceiver,
-					idReceiverParent: idReceiverParent,
-					typeReceiverParent: typeReceiverParent,
-
-					emailSender: emailSender, 
-	        		subject:subject, 
-	        		names:name,
-	        		contentMsg	: message,
-	        		captchaUserVal: $("#captcha").val(),
-	        		captchaHash: $("#captcha").realperson('getHash')
-	        	};
+	var params = {
+		emailFrom : emailFrom,
+		emailSender: emailSender, 
+		subject:subject, 
+		names:name,
+		contentMsg	: message,
+		captchaUserVal: $("#captcha").val(),
+		captchaHash: $("#captcha").realperson('getHash')
+	};
 
 	console.log("sendMail", params);
 	//toastr.error("L'envoie d'email est désactivé pour l'instant, retentez votre chance dans quelques jours !");
 	//return;
 
 	$.ajax({ 
-        type: "POST",
-        url: baseUrl+"/"+moduleId+"/app/sendmailformcontactprivate",
-        data: params,
-        success:
-            function(data) {
+		type: "POST",
+		url: baseUrl+"/"+moduleId+"/app/sendmailformcontactprivate",
+		data: params,
+		success:
+		    function(data) {
                 if(data.res == true){
                 	toastr.success("Votre message a bien été envoyé");
                 	$("#conf-send-mail").removeClass("hidden");

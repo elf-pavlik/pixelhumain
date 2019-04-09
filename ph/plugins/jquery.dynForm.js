@@ -799,7 +799,7 @@ var dyFObj = {
     },
     initFieldOnload : {},
 	formatData : function (formData, collection,ctrl) { 
-		mylog.warn("----------- formatData",formData, collection,ctrl);
+		mylog.warn("----------- formatData",formData, collection,ctrl, dynForm);
 		formData.collection = collection;
 		formData.key = ctrl;
 		if( $.isArray(formData.id) )
@@ -865,6 +865,18 @@ var dyFObj = {
 								],
 								key : formData.source
 							}
+
+			if( typeof dynForm.jsonSchema.typeObjOrigin != "undefined" && 
+				dynForm.jsonSchema.typeObjOrigin != null && 
+				typeof costum != "undefined" && costum != null && 
+				typeof costum.typeObj != "undefined" && costum.typeObj != null &&
+				typeof costum.typeObj[dynForm.jsonSchema.typeObjOrigin] != "undefined" && 
+				costum.typeObj[dynForm.jsonSchema.typeObjOrigin] != null &&
+				typeof costum.typeObj[dynForm.jsonSchema.typeObjOrigin].toBeValidated != "undefined" && 
+				costum.typeObj[dynForm.jsonSchema.typeObjOrigin].toBeValidated === true
+				 ) {
+				formData.source.toBeValidated = true;
+			}
 		}
 		if(typeof finder != "undefined" && Object.keys(finder.object).length > 0){
 			$.each(finder.object, function(key, object){
@@ -4841,13 +4853,23 @@ var dyFInputs = {
 			typeof typeObj != "undefined" ){
 
 			$.each(object.typeObj, function(key, v) {
-				mylog.log("object.add ", key);
+				mylog.log("object.add key", key);
 				//key=(key=="jobs" || key=="ressources") ? "classifieds" : key;
 				//key=(typeof typeObj[key].sameAs != "undefined") ? typeObj[key].sameAs : key; 
+				var typeObjOrigin = key;
+				// if(!typeObj.isDefined(key, "dynForm") && typeObj.isDefined(key, "sameAs")){
+
+				// 	typeObjOrigin = key;
+				// 	key = typeObj[key].sameAs;
+				// 	mylog.log("object.add typeObjOrigin",typeObjOrigin, key);
+				// }
+	
 				key = (!typeObj.isDefined(key, "dynForm") && typeObj.isDefined(key, "sameAs")) ? typeObj[key].sameAs : key;
-				mylog.log("object.add ", key, typeof typeObj[key].dynForm);
+				mylog.log("object.add typeObjOrigin2", key, typeof typeObj[key].dynForm, typeObjOrigin);
 				if( typeof typeObj[key].dynForm != "undefined"){
-					
+					if(typeObjOrigin != null)
+						typeObj[key].dynForm.jsonSchema.typeObjOrigin = typeObjOrigin;
+
 					if( typeof object.slug != "undefined"){
 						mylog.log("object.add source", object.slug, object);
 						typeObj[key].dynForm.jsonSchema.properties.source = object.slug;

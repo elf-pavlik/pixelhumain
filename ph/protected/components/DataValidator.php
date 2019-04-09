@@ -160,14 +160,30 @@ class DataValidator {
 	{
 		
 		$dataBinding = $type::$dataBinding;
-		if( @Yii::app()->session["costum"]["typeObj"][$type::COLLECTION]["dynFormCostum"]["beforeBuild"]["properties"] ){
-			foreach (Yii::app()->session["costum"]["typeObj"][$type::COLLECTION]["dynFormCostum"]["beforeBuild"]["properties"] as $key => $value) {
-				if(!isset($dataBinding[ $key ])){
-					$savePath = ( @$value["savePath"] ) ? $value["savePath"] : "costum.".$key;
-					$dataBinding[ $key ] = array( $key => $savePath );
+
+		if( !empty(Yii::app()->session["costum"]["typeObj"]) ){
+			if( @Yii::app()->session["costum"]["typeObj"][$type::COLLECTION]["dynFormCostum"]["beforeBuild"]["properties"] ){
+				foreach (Yii::app()->session["costum"]["typeObj"][$type::COLLECTION]["dynFormCostum"]["beforeBuild"]["properties"] as $key => $value) {
+					if(!isset($dataBinding[ $key ])){
+						$savePath = ( @$value["savePath"] ) ? $value["savePath"] : "costum.".$key;
+						$dataBinding[ $key ] = array( $key => $savePath );
+					}
+				}
+			}
+
+			foreach (Yii::app()->session["costum"]["typeObj"] as $kO => $valO) {
+				if(!empty($valO["sameAs"]) && $valO["sameAs"]== strtolower($type) ) {
+					foreach ($valO["dynFormCostum"]["beforeBuild"]["properties"] as $key => $value) {
+						if(!isset($dataBinding[ $key ])){
+							$savePath = ( @$value["savePath"] ) ? $value["savePath"] : "costum.".$key;
+							$dataBinding[ $key ] = array( $key => $savePath );
+						}
+					}
 				}
 			}
 		}
+
+		
 		//var_dump($dataBinding); return;
 		//var_dump($values); return;
 
@@ -181,7 +197,7 @@ class DataValidator {
 				} else {
 					error_log("error : ".$key);
 					$res["result"] = false;
-					$res["msg"] = "Contenu Invalide ".$key;
+					$res["msg"] = "Contenu Invalide ".$key." : ".$type;
 				}
 			} catch( Exception $e ) {
 				error_log("error : ".$key);
@@ -274,7 +290,7 @@ class DataValidator {
 	public static function source($toValidate, $object=null, $objectId=null) {
 		$res = "";
 		$strings = array("key", "url");
-		$allKeysSource = array('id', "key", "keys", "url", "update", "insertOrign");
+		$allKeysSource = array('id', "key", "keys", "url", "update", "insertOrign", "toBeValidated");
 		if(!empty($toValidate)){
 			foreach ($toValidate as $key => $value) {
 				if($key == "keys" && !is_array($value))
