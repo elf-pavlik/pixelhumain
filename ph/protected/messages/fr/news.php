@@ -10,6 +10,10 @@ return array(
 	"News" => "Fil d'actualités",
 	"Activity" => "Activités",
 	"News sent to" => "Destination de la news",
+
+  "Posts" => "Publications",
+
+  "Activity stream" => "Activités sur co",
 	/*"verb create" => "a créé",
 	"verb share" => "a partagé",
 	"verb share pluriel" => "ont partagé",
