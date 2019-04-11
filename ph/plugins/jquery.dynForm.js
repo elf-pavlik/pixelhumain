@@ -4907,7 +4907,6 @@ var dyFInputs = {
 								};
 								nbListTags++;
 							}
-
 							if( typeof object.dynForm.extra.tags == "undefined" ||
 								object.dynForm.extra.tags == null ||
 								object.dynForm.extra.tags == false )
