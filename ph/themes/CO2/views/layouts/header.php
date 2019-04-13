@@ -225,7 +225,6 @@ if(@$useHeader != false){ ?>
                setDomHtmlPosition(0); heightTopMenu=$("#mainNav").outerHeight();
             $(window).bind("scroll",function(){ 
                 if($("#header-banner").length > 0){
-                    console.log($(this).scrollTop(), $("#header-banner").outerHeight(), infScroll);
                     if($(this).scrollTop() > $("#header-banner").outerHeight() && infScroll){
                         setDomHtmlPosition(0);
                         $("#affix-sub-menu, #mainNav, #menuApp, #filters-nav").removeClass("position-absolute");

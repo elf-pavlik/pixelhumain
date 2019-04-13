@@ -509,10 +509,10 @@
     var urlBackHistory = location.hash;
     var allReadyLoadWindow=false;
     var navInSlug=false;
-    var historyReplace=false;
+    var historyReplace=true;
     var searchObject={
         text:"",
-        page:0,
+        nbPage:0,
         indexMin:0,
         indexStep:30,
         count:true,
