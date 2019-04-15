@@ -348,7 +348,7 @@
             
             
             jQuery(document).ready(function() { 
-                themeObj.init();           
+                themeObj.init(); 
                 $.each(modules,function(k,v) { 
                     if(typeof v.init != "undefined" && notNull(v.init)){
                         mylog.log("init.js for module : ",k);
