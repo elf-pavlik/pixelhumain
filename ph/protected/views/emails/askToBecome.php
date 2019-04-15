@@ -4,6 +4,7 @@
 	if(!empty($url) && empty($baseUrl) ) {
 		$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
 	}
+	
   $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlRedirect));
 	$type="";
 	if (@$parentType){

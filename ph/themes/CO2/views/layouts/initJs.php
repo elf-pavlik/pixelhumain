@@ -374,9 +374,11 @@
                     mylog.log("buildCreateButton", v, params);
                     count++;
                     hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";
+                    openFormClass=(typeof v.hash == "undefined") ? "btn-open-form" : "";
                     formType=(typeof v.formType != "undefined") ? 'data-form-type="'+v.formType+'" ' : "";
                     subFormType= (typeof v.formSubType != "undefined") ? 'data-form-subtype="'+v.formSubType+'" ' : "";
                     addClass = (typeof v.class != "undefined") ? v.class : "";
+                    addClass+=" "+openFormClass;
                     nameLabel=(typeof v.addLabel!= "undefined") ? v.addLabel : v.name;
                     bgIcon="";
                     bgClass="bg-"+v.color;
@@ -392,7 +394,7 @@
                     menuButtonCreate+='<a href="'+hash+'" '+ 
                         formType+
                         subFormType+ 
-                        'class="addBtnFoot btn-open-form btn btn-default '+addClass+' '+bgClass+' margin-bottom-10">'+ 
+                        'class="addBtnFoot btn btn-default '+addClass+' '+bgClass+' margin-bottom-10">'+ 
                             '<i class="fa fa-'+v.icon+' '+bgIcon+'"></i>'+inline+' <span>'+nameLabel+'</span>'+
                             inline+textExplain
                         '</a>';
@@ -404,7 +406,7 @@
                 oneButton='<a href="'+hash+'" '+
                         formType+
                         subFormType+ 
-                        'class="btn btn-default no-padding btn-menu-vertical btn-open-form" id="show-bottom-add">'+
+                        'class="btn btn-default no-padding btn-menu-vertical '+addClass+'" id="show-bottom-add">'+
                             '<i class="fa fa-plus-circle"></i>'+
                             '<span class="tooltips-menu-btn">'+nameLabel+'</span>'+
                         '</a>';
