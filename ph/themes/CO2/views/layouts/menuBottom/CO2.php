@@ -64,10 +64,13 @@
 </style>
 <?php 
     $canCreate=false;
+
     if(Yii::app()->session["userIsAdmin"] || Yii::app()->session[ "userIsAdminPublic" ] || Yii::app()->session["isCostumAdmin"]){
         $canCreate=true;
         $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
     }
+
+    var_dump($canCreate);
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal"; 
 
 ?>
