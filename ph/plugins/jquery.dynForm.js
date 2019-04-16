@@ -857,6 +857,7 @@ var dyFObj = {
 				formData.medias.push(mediaObject);
 			}
 		});
+		mylog.log( "formData", formData );
 		if( typeof formData.source != "undefined" && formData.source != "" ){
 			originInsert=(typeof costum != "undefined" && notNull(costum)) ? "costum" : "network";
 			formData.source = { insertOrign : originInsert,
@@ -4854,10 +4855,12 @@ var dyFInputs = {
 					}
 
 					if( typeof object.request != "undefined"){
+						
 						if(typeof object.request.sourceKey != "undefined"){
-							sourceObject = {inputType:"hidden", value : object.request.sourceKey[0]};
+							sourceObject = { inputType:"hidden", value : object.request.sourceKey[0] };
 							typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 						}
+
 						if(v){
 							if(typeof object.request.searchTag != "undefined"){
 								typeObj[key].dynForm.jsonSchema.properties.tags.data = object.request.searchTag;
