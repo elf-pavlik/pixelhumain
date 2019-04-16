@@ -340,9 +340,19 @@
             //}
             return res;
         },
-        authorizedButton : function(elt, config){
+        authorizedButton : function(elt, config, context){
+            if( typeof context != "undefined")
+                mylog.log("authorizedButton",elt, config, context);
             auth=false;
-            if(notNull(config) && typeof config.inElement != "undefined"){ 
+            if(notNull(context) && typeof context != "undefined"){ 
+                if(elt.add=="onlyMember" && 
+                    ( typeof context.isMember != "undefined" && context.isMember === true) )
+                    auth=true;
+                else if(elt.add=="onlyAdmin" && typeof canCreate != "undefined" && canCreate) 
+                    auth=true;
+                else if(elt.add===true)
+                    auth=true;
+            }else if(notNull(config) && typeof config.inElement != "undefined"){ 
                 if(typeof elt.addInElement !="undefined" && elt.addInElement){
                     auth=true;
                     if(typeof config.allowIn != "undefined" && config.allowIn 
@@ -359,7 +369,7 @@
             }
             return auth;
         },
-        buildCreateButton: function(domContain, dropdownButton, params){
+        buildCreateButton: function(domContain, dropdownButton, params, context){
             menuButtonCreate="";
             var count=0;
             var hash="";
@@ -370,7 +380,7 @@
             var bgClass="";
             var textExplain="";
             $.each(typeObj, function(e,v){
-                if(typeObj.authorizedButton(v, params)){
+                if(typeObj.authorizedButton(v, params, context)){
                     mylog.log("buildCreateButton", v, params);
                     count++;
                     hash=(typeof v.hash != "undefined") ? v.hash : "javascript:;";

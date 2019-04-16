@@ -69,8 +69,6 @@
         $canCreate=true;
         $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
     }
-
-    var_dump($canCreate);
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal"; 
 
 ?>
@@ -89,7 +87,9 @@
         data-placement="top" title="Radio-Pixel-Humain is on air, listen now !">
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
     </button>-->
-    <?php if(@Yii::app()->session["userId"] && (!@$themeParams["menuBottom"] || (@$themeParams["menuBottom"]["add"] && !empty($themeParams["menuBottom"]["add"])))) { ?>
+    <?php if( @Yii::app()->session["userId"] && 
+                ( !@$themeParams["menuBottom"] || 
+                    ( @$themeParams["menuBottom"]["add"] && !empty($themeParams["menuBottom"]["add"])) ) ) { ?>
         <button class="btn btn-default no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
             <span class="tooltips-menu-btn"><?php echo Yii::t("common","Add something") ?></span>
