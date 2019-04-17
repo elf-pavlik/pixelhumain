@@ -96,7 +96,7 @@ if(@$useHeader != false){ ?>
     // FIlter toolBar subMenu
     if(isset($useFilter) && $useFilter!==false
         && (!isset($useFilter["filters"]) || !empty($useFilter["filters"]) ))
-        $this->renderPartial($layoutPath.'menus/menuFilters', array("params"=>$themeParams)); 
+        $this->renderPartial($layoutPath.'menus/menuFilters', array("themeParams"=>$themeParams, "page" => $page)); 
 ?>
     <!-- View xs bar with search and button app -->
     <div id="affix-sub-menu" class="affix menu-xs-accessibility">

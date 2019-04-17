@@ -1,8 +1,8 @@
-<div id="filters-nav" class="menuFilters menuFilters-<?php echo $params["appRendering"] ?> col-xs-12" style="min-height:40px;">
-  <ul id="filters-nav-list" class="no-padding no-margin">
-      <li class="dropdown dropdown-tags">
-          <a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left" data-label-xs="tags" type="button" id="dropdownTags" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 
-        title="<?php echo Yii::t("common","Themes") ?>" alt="<?php echo Yii::t("common","Themes") ?>"><?php echo Yii::t("common","Themes") ?> <i class="fa fa-angle-down"></i></a>
+<div id="filters-nav" class="menuFilters menuFilters-<?php echo $themeParams["appRendering"] ?> col-xs-12" style="min-height:40px;">
+	<ul id="filters-nav-list" class="no-padding no-margin">
+		<li class="dropdown dropdown-tags">
+			<a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left" data-label-xs="tags" type="button" id="dropdownTags" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 
+			title="<?php echo Yii::t("common","Themes") ?>" alt="<?php echo Yii::t("common","Themes") ?>"><?php echo Yii::t("common","Themes") ?> <i class="fa fa-angle-down"></i></a>
           <div class="dropdown-menu arrow_box hidden-xs" aria-labelledby="dropdownTags">
               <div class="col-xs-12 no-padding margin-bottom-5">
                   <div class="form-group filterstags col-md-8 col-sm-8 col-xs-10 no-margin no-padding">
@@ -77,7 +77,7 @@
                   <select class="form-control" name="devise" id="devise" style="">
                   <?php 
                     //$params = CO2::getThemeParams();
-                    $devises = @$params["devises"]; ?>
+                    $devises = @$themeParams["devises"]; ?>
                     <?php if(@$devises){ 
                       foreach($devises as $key => $devise){ ?>
                       <option class="bold" value="<?php echo $key; ?>"><?php echo Yii::t("common",$devise); ?></option>
