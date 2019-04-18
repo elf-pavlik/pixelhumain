@@ -55,8 +55,7 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 				
 				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', 
 					array("logo" => @$logo,
-							"url" => $url,
-							"name" => @$title) ); ?>
+							"url" => $url, "name" => (!empty($title) ? $title : null) ) ); ?>
 
 			</td>
 
