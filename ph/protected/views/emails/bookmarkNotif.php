@@ -56,5 +56,5 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 
 
 				
-							   <?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array("name"=>@$title, "url"=>@$urlRedirect)); ?>
+							   <?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array("name" => (!empty($title) ? $title : null) , "url"=>@$urlRedirect)); ?>
 						

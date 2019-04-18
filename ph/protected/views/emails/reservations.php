@@ -43,5 +43,5 @@
               <div style="word-break: break-all;"><b><?php echo $url ?></b></div>
 
              
-  <?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>
+  <?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect, "name" => (!empty($title) ? $title : null) )); ?>
 

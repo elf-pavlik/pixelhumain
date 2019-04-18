@@ -3,16 +3,18 @@
 $parentType = $target["type"];
 
 $logoHeader=(@$logoHeader) ? $logoHeader : "";
-$urlSite=Yii::app()->getRequest()->getBaseUrl(true);
-$urlInvite=Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.".$parentType.".id.".$target["id"];
+$urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
+
+$urlSite=$urlRedirect;
+$urlInvite=$urlRedirect."/#page.type.".$parentType.".id.".$target["id"];
 if(@$url){
-	$urlInvite=Yii::app()->getRequest()->getBaseUrl(true).$url;
+	$urlInvite=$urlRedirect.$url;
 	$urlSite=$urlInvite;
 	if(strrpos($url, "costum") !== false)
 		$urlInvite=$urlSite."#page.type.".$parentType.".id.".$target["id"];
 }
 $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.header', array("logo"=>@$logoHeader, "url"=> $urlSite));
-//$url = Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.".$parentType.".id.".$target["id"];
+//$url = $urlRedirect."/#page.type.".$parentType.".id.".$target["id"];
 $verb = $value["verb"];
 $typeOfDemand = $value["typeOfDemand"];
 $verbAction=$verb;
@@ -42,10 +44,11 @@ if(in_array($parentType, [Organization::COLLECTION,Project::COLLECTION,Event::CO
             <tr style="padding: 0;vertical-align: top;text-align: left;">
               <th style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
                 <!--http://localhost:8888/ph/images/betatest.png-->
-              <a href="<?php echo Yii::app()->getRequest()->getBaseUrl(true) ?>" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;"><img align="right" width="200" src="<?php echo Yii::app()->getRequest()->getBaseUrl(true)."/images/bdb.png"?>" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;border: none;" alt="Intelligence collective"></a>
+             <!--  <a href="<?php //echo $urlRedirect ?>" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;">
+                <img align="right" width="200" src="<?php //echo $urlRedirect."/images/bdb.png"?>" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;width: auto;max-width: 100%;clear: both;display: block;border: none;" alt="Intelligence collective"></a> -->
               <b>
               <h5 style="color: inherit;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-wrap: normal;margin-bottom: 10px;font-size: 20px;"></h5></b><br>
-              <?php echo Yii::t("mail","You have been invited on {what} by {who}",array("{what}"=>Yii::t("common", "the ".Element::getControlerByCollection($parentType)), "{who}"=>"<b><a href='".Yii::app()->getRequest()->getBaseUrl(true)."/#page.type.".Person::COLLECTION.".id.".$invitedUserId."' target='_blank'>".$invitorName."</a>.</b>")) ?><br>
+              <?php echo Yii::t("mail","You have been invited on {what} by {who}",array("{what}"=>Yii::t("common", "the ".Element::getControlerByCollection($parentType)), "{who}"=>"<b><a href='".$urlRedirect."/#page.type.".Person::COLLECTION.".id.".$invitedUserId."' target='_blank'>".$invitorName."</a>.</b>")) ?><br>
               <br><br>
               <?php echo Yii::t("mail","Please connect you and go to the detail of {what} following link under to answer to the invitation",array("{what}"=>$whereThis)).". ".Yii::t("mail","If you validate, you will be added as {what} else the link between you and {where} will be destroyed",array("{what}"=>Yii::t("common", $typeOfDemand), "{where}"=>$whereThe))."." ?>
               <br>
@@ -66,7 +69,7 @@ if(in_array($parentType, [Organization::COLLECTION,Project::COLLECTION,Event::CO
     <tr style="padding: 0;vertical-align: top;text-align: left;">
       <td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
         
-        <?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer'); ?>
+        <?php  $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect, "name" => (!empty($title) ? $title : null) )); ?>
 
       </td>
 
