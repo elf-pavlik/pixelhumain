@@ -76,33 +76,17 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
             <div class="row">
                 <div class="col-lg-12">
                     <span class="name" >
-                        <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/KGOUGLE-logo.png" height="60" class="inline margin-bottom-15">
-                        <?php } else if(Yii::app()->params["CO2DomainName"] == "FI"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/FI-logo.png" height="90" class="inline margin-bottom-15">
-                        <?php } else { ?>
+                        
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
                                 <?php  
-                                
-                                
                                 $nameTheme = ( (Yii::app()->theme->name == "network") ? "CO2" : Yii::app()->theme->name );
-                                if(!@Yii::app()->session['costum']["logo"])
-                                    //$this->renderPartial('webroot.themes.'.$nameTheme.'.views.layouts.forms.CO2.menuTitle'); ?>
-                                <img style="width:100%; border: 10px solid white; border-bottom-width:0px;max-height: inherit;" class="pull-right logoLoginRegister" src="<?php echo $logo;?>"/>
+                                ?>
+                                <img style="width:150px; border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto" class="logoLoginRegister" src="<?php echo $logo;?>"/>
                                 
                                 </div>
                             </div>
-                            <!-- <h4 class="text-dark col-md-12 margin-top-5 homestead">
-                                <!-- Bienvenue sur la version CO.2 - ->
-                                <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="35" 
-                                     class="inline margin-left-10">
-                                <!-- <br/>Le commun avance <span class="text-red">montez à bord !</span>  - ->
-                                <hr>
-                            </h4> -->
-                        <?php } ?>
                     </span>
-                    <!--<h3 class="letter-red no-margin" style="margin-top:-15px!important;">se connecter</h3><br>-->
                    
                     
                 </div>
@@ -203,24 +187,15 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
             <div class="row">
                 <div class="col-lg-12">
                     <span class="name" >
-                        <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/KGOUGLE-logo.png" height="60" class="inline margin-bottom-15">
-                       <?php } else if(Yii::app()->params["CO2DomainName"] == "FI"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/FI-logo.png" height="60" class="inline margin-bottom-15">
-                       <?php } else { ?>
+                        
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
-                                <?php  
-                                // if(!@Yii::app()->session['custom']["logo"])
-                                //     $this->renderPartial('webroot.themes.'.$nameTheme.'.views.layouts.forms.CO2.menuTitle'); ?>
-                                     <img style="width:100%; border: 10px solid white; border-bottom-width:0px;max-height: inherit;" class="pull-right logoLoginRegister" src="<?php echo $logo; ?>"/>
+                                
+                                    <img style="width:150px; border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto" class="logoLoginRegister" src="<?php echo $logo;?>"/>
                                 
                                 </div>
                             </div>
-                        <?php } ?>
                     </span>
-                    <!--<h3 class="letter-red no-margin" style="margin-top:-15px!important;">se connecter</h3><br>-->
-                    <!-- <p>Rejoindre la version co2<br/>Le commun avance, montez à bord !!<hr></p> -->
                 </div>
                 <div class="col-lg-12">
                     <p></p>
@@ -363,18 +338,10 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
             <div class="row">
                 <div class="col-lg-12">
                     <span class="name" >
-                        <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/KGOUGLE-logo.png" height="60" class="inline margin-bottom-15">
-                       <?php } else if(Yii::app()->params["CO2DomainName"] == "FI"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/FI-logo.png" height="60" class="inline margin-bottom-15">
-                       <?php } else { 
-                            
-                            ?>
-                            <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
-                            
-                                <img style="width:100%; border: 10px solid white; border-bottom-width:0px;max-height: inherit;" class="pull-right logoLoginRegister" src="<?php echo $logo;?>"/>
-                                </div>
-                        <?php } ?>
+                        <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
+                        
+                            <img style="width:150px; border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto" class="logoLoginRegister" src="<?php echo $logo;?>"/>
+                        </div>
                     </span>
                     <br>
                     <p class=" col-xs-12 padding-top-15"><?php echo Yii::t("login","Indicate your email link to your account to recover a password") ?>.<hr></p>
@@ -395,12 +362,6 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
                         <i class="fa fa-remove-sign"></i> <?php echo Yii::t("login","You have some form errors. Please check below.") ?>
                     </div>
                 </div>
-
-                <!-- <div class="form-actions">
-                     <button type="submit"  data-size="s" data-style="expand-right" style="background-color:#E33551" class="forgotBtn ladda-button center center-block">
-                        <span class="ladda-label">XXXXXXXX</span><span class="ladda-spinner"></span><span class="ladda-spinner"></span>
-                    </button>
-                </div> -->
 
                 <a href="javascript:" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> <?php echo Yii::t("common", "Back") ?></a>
                 <button class="btn btn-success text-white pull-right forgotBtn"><i class="fa fa-sign-in"></i> <?php echo Yii::t("common","Validate") ?></button>

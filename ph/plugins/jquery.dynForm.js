@@ -3107,7 +3107,7 @@ var dyFObj = {
 			            },
 			            validation: {
 			                allowedExtensions: (v.filetypes) ? v.filetypes : ['jpeg', 'jpg', 'gif', 'png'],
-			                sizeLimit: 2000000,
+			                sizeLimit: 5000000,
 			                itemLimit: (v.itemLimit) ? v.itemLimit : 0
 			            },
 			            messages: {
