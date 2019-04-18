@@ -5,17 +5,18 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	</head>
 	<body>
-		<span style="text-align: left;"><?php echo Utils::getServerName()?></span>
 		<table cellpadding="0" cellspacing="0" border="0" width="100%">
 			<tr>
 				<td align="left" valign="top">
 					<?php
 
 					$baseUrl = ( !empty($baseUrl)? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
-					$logoUrl=(@$logo && !empty($logo)) ? $logo : Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->params['logoUrl'] ;
-
-					?>
-					<img src='<?php echo $baseUrl.$logo ?>' alt="<?php echo $title?>" title="<?php echo $title?>"/><br/>
+					$logoUrl = Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->params['logoUrl'] ;
+					if( !empty($logo) && $logo != Yii::app()->params['logoUrl'] ) {
+						$logoUrl = $logo ;
+					}
+				?>
+					<img src='<?php echo $logoUrl ?>' alt="<?php echo $title?>" title="<?php echo $title?>"/><br/>
 				</td>
 			</tr>
 
