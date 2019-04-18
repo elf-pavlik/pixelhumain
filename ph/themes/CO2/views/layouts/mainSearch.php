@@ -371,8 +371,6 @@
                         });
                     }
                 });
-                //Login.init();
-                
                 
                 if(themeObj.firstLoad){
                     themeObj.firstLoad=false;

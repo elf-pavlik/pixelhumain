@@ -55,6 +55,7 @@
             "init"   : "<?php echo Yii::app()->getModule( "costum" )->assetsUrl ?>/costum.js",
             callback: function(){
                 costum.init();
+
             }
         },
         "cotools" : <?php echo json_encode( array(
@@ -695,7 +696,7 @@
                 lastWindowUrl = location.hash;
             }
         },
-        firstLoad:true,
+        firstLoad:(costum!= null && costum.themeObj!=null && costum.themeObj.firstLoad != null) ? costum.themeObj.firstLoad: true,
         imgLoad : "CO2r.png" ,
         mainContainer : ".main-container",
         blockUi : {

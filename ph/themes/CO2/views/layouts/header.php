@@ -186,10 +186,11 @@ if(@$useHeader != false){ ?>
             }else{
                  $(".menu-btn-scope-filter").addClass("visible");
                 $("#filter-scopes-menu").show(200);
-                
                // showWhere(true);
             }
             setTimeout(function(){headerHeightPos(true)},250);
+            if(typeof costum != "undefined" && typeof costum.scopeHeaderFunction == "function")
+                costum.scopeHeaderFunction(); 
         });
 
         //headerHeightPos(true);
