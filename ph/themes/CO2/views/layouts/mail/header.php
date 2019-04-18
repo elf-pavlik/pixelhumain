@@ -1431,9 +1431,16 @@
       }
   </style>
   </head>
-<?php 
-  $logoUrl=(@$logo && !empty($logo)) ? $logo : Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->params['logoUrl'] ;
+<?php
+
+  $logoUrl = Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->params['logoUrl'] ;
   $urlRedirect=(@$url && !empty($url)) ? $url : Yii::app()->getRequest()->getBaseUrl(true) ;
+  if( !empty($logo) && $logo != Yii::app()->params['logoUrl'] ) {
+    $logoUrl = $logo ;
+  }
+  //echo $logoUrl ;
+  // $logoUrl=(@$logo && !empty($logo)) ? $logo : Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->params['logoUrl'] ;
+  
 ?>
 <body style="min-width: 100%;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;margin: 0;padding: 0;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;text-align: left;line-height: 19px;font-size: 15px;width: 100% !important;">
 <table class="body" style="border-spacing: 0;border-collapse: collapse;padding: 0;vertical-align: top;text-align: left;background: #f0f0f0;height: 100%;width: 100%;color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 15px;"><tr style="padding: 0;vertical-align: top;text-align: left;"><td class="center" align="center" valign="top" style="word-wrap: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;padding: 0;vertical-align: top;text-align: left;color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;margin: 0;line-height: 19px;font-size: 15px;border-collapse: collapse !important;"><center style="width: 100%;min-width: 580px;">
