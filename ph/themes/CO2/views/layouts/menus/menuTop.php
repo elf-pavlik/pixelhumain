@@ -138,6 +138,13 @@
                     </div>
                 </div>
             <?php }
+        if($key=="app"){ ?>
+            <div class="pull-left menu-app-top">
+                <?php echo ButtonCtk::app($value); ?>
+            </div>
+        <?php
+        // END LOGO HTML NAV BAR
+        }
             if($key=="userProfil"){
                   $profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->getParentAssetsUrl()); ?> 
                 <a  href="#page.type.citoyens.id.<?php echo Yii::app()->session['userId']; ?>"

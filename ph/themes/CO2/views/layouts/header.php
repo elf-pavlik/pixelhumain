@@ -273,7 +273,7 @@ if(@$useHeader != false){ ?>
         headerHeightPos(false, initHeight);
         if(heightNav > 70){
             marginTop=(heightNav-55);
-            $("#mainNav .navbar-right, #mainNav .navbar-item-left, #mainNav .menu-app-top").css("margin-top", marginTop); 
+            $("#mainNav .navbar-right, #mainNav .navbar-item-left, #mainNav .navbar-item-left .menu-app-top").css("margin-top", marginTop); 
           //  heightTopMenu=$("#mainNav").outerHeight()+initHeight;
         }
             
