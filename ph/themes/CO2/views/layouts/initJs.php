@@ -28,6 +28,7 @@
     var activeModuleId = "<?php echo $this->module->id?>";
     var assetPath   = "<?php echo $this->module->assetsUrl; ?>";
     var costum = <?php echo json_encode(Yii::app()->session['costum']) ?>;
+
     var modules = {
         //Configure here eco
         "classifieds":<?php echo json_encode( Classified::getConfig("classifieds") ) ?>,
@@ -53,7 +54,7 @@
             "url"   : "<?php echo Yii::app()->getModule( "costum" )->assetsUrl ?>",
             "module" : "costum",
             "init"   : "<?php echo Yii::app()->getModule( "costum" )->assetsUrl ?>/costum.js",
-            callback: function(){
+            callback : function(){
                 costum.init();
 
             }
