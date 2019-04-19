@@ -141,7 +141,7 @@
                     </div>
                 </div>
             <?php }
-        if($key=="app" && $value === true){ ?>
+        if($key=="app" && !empty($value)){ ?>
             <div class="pull-left menu-app-top">
                 <?php echo ButtonCtk::app($value); ?>
             </div>
