@@ -19,6 +19,7 @@
     $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
     $metaImg = (@$this->module->image) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
+    $metaRelCanoncial=(isset($this->module->relCanonical)) ? $this->module->relCanonical : "https://www.communecter.org";
     $keywords = ""; 
     if(@$this->module->keywords) 
         $keywords = $this->module->keywords; 
@@ -48,6 +49,7 @@
         <meta name="keywords" lang="<?php echo Yii::app()->language; ?>" content="<?php echo CHtml::encode($keywords); ?>" >  
         <title><?php echo $metaTitle;?></title> 
         <link rel='shortcut icon' type='image/x-icon' href="<?php echo $favicon;?>" />  
+        <link rel="canonical" href="<?php echo $metaRelCanoncial ?>" />
  
 <?php if( Yii::app()->params["forceMapboxActive"]==true &&  Yii::app()->params["mapboxActive"]==true ){ ?>
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
@@ -307,6 +309,7 @@
                 "/js/default/loginRegister.js",
                 '/js/co.js',
                 '/js/default/directory.js',
+                '/js/default/search.js',
                 '/js/links.js',
                 '/js/default/index.js',
                 '/js/default/notifications.js',
