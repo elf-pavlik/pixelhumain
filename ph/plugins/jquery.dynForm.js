@@ -1481,8 +1481,10 @@ var dyFObj = {
 				
 				if(activeModuleId == "survey")//use case for answerList forms updating
 	        		window.location.reload();
-	        	else 
+	        	else if(notNull(uploadObj.gotoUrl))
 					urlCtrl.loadByHash( uploadObj.gotoUrl );
+				else
+					urlCtrl.loadByHash( location.hash );
 	        }
 	    }
 	    dyFObj.closeForm();
