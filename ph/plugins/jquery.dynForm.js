@@ -3466,7 +3466,7 @@ var dyFObj = {
 
 
 		        mylog.log("dyFObj.init.initSelect", dyFObj.init.initSelect);
-		        if(dyFObj.init.properties[name]["type"] == "tags"){
+		        if(typeof dyFObj.init.properties[name] != "undefined" && dyFObj.init.properties[name]["type"] == "tags"){
 			        $.each(dyFObj.init.initSelect , function(e,v){
 						mylog.log( "id " , e, v, dyFObj.init.initValues[ e ].tags);
 						if( v == true){
