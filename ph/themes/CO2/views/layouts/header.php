@@ -189,7 +189,9 @@ if(@$useHeader != false){ ?>
                // showWhere(true);
             }
             setTimeout(function(){headerHeightPos(true)},250);
-            if(typeof costum != "undefined" && typeof costum.scopeHeaderFunction == "function")
+            if(notNull(costum)  
+                && typeof costum.scopeHeaderFunction!="undefined" 
+                && typeof costum.scopeHeaderFunction == "function")
                 costum.scopeHeaderFunction(); 
         });
 
