@@ -1481,8 +1481,10 @@ var dyFObj = {
 				
 				if(activeModuleId == "survey")//use case for answerList forms updating
 	        		window.location.reload();
-	        	else 
+	        	else if(notNull(uploadObj.gotoUrl))
 					urlCtrl.loadByHash( uploadObj.gotoUrl );
+				else
+					urlCtrl.loadByHash( location.hash );
 	        }
 	    }
 	    dyFObj.closeForm();
@@ -3107,7 +3109,7 @@ var dyFObj = {
 			            },
 			            validation: {
 			                allowedExtensions: (v.filetypes) ? v.filetypes : ['jpeg', 'jpg', 'gif', 'png'],
-			                sizeLimit: 2000000,
+			                sizeLimit: 5000000,
 			                itemLimit: (v.itemLimit) ? v.itemLimit : 0
 			            },
 			            messages: {
@@ -3466,7 +3468,7 @@ var dyFObj = {
 
 
 		        mylog.log("dyFObj.init.initSelect", dyFObj.init.initSelect);
-		        if(dyFObj.init.properties[name]["type"] == "tags"){
+		        if(typeof dyFObj.init.properties[name] != "undefined" && dyFObj.init.properties[name]["type"] == "tags"){
 			        $.each(dyFObj.init.initSelect , function(e,v){
 						mylog.log( "id " , e, v, dyFObj.init.initValues[ e ].tags);
 						if( v == true){

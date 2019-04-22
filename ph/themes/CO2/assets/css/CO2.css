@@ -29,11 +29,11 @@
 	src: url('../../vendor/fonts/blackout/Blackout Sunrise.ttf');
 }.font-blackoutS{font-family:"BlackoutS"!important;}
 
-@font-face{
+/*@font-face{
 	font-family: BlackoutT;
 	src: url('../../vendor/fonts/blackout/Blackout Two AM.ttf');
 }.font-blackoutT{font-family:"BlackoutT"!important;}
-
+*/
 @font-face{
 	font-family: ZILAP;
 	src: url('../../vendor/fonts/ZILAP.ttf');
@@ -2237,6 +2237,9 @@ margin-right: 5px;
     min-height:700px;
 }
 
+.btn-social{
+    line-height: 34px !important;
+}
 /************************************************************************************/
 /************************************************************************************/
 /************************************************************************************/

@@ -712,6 +712,19 @@ var jsonHelper = {
     //mylog.dir(destArray);
     return destArray;
   },
+  eval : function(obj, pathJson){
+    var pathT = pathJson.split(".");
+    res = null;
+    var dynPath = obj;
+    pathT.shift();
+    
+    $.each( pathT , function (i,k) {
+      dynPath = dynPath[k];
+      if( typeof dynPath != "undefined" && i == pathT.length-1  )
+          res = dynPath;
+    });
+   return undefined;
+  },
   //tests existance of every step of a json path 
   //can also validate element type 
   // ex : 

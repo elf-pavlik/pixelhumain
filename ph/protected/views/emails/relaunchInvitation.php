@@ -66,4 +66,4 @@ Yii::app()->language = (@$language) ? $language : "fr";
 							<p style="margin: 0;margin-bottom: 10px;color: #3c5665 !important;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;text-align: left;line-height: 19px;font-size: 12px;">
 							<?php echo Yii::t("mail","PS: If the link does not work you can copy the address in your browser") ?>
 							<div style="word-break: break-all;font-size: 12px;"><?php echo $url?></div></p>
-							<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>
+							<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect, "name" => (!empty($title) ? $title : null) )); ?>

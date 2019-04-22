@@ -58,10 +58,13 @@
     ///////////////////////////////////////////////////////////////
     //////////////// CONSTRUCT OF RIGHT NAV ////////////////////
     ///////////////////////////////////////////////////////////////
+    //var_dump($menuRight);
     if(@$themeParams["header"]["menuTop"] && @$themeParams["header"]["menuTop"]["navRight"]){ 
         $menuRight=(@Yii::app()->session['userId']) ? $themeParams["header"]["menuTop"]["navRight"]["connected"] : $themeParams["header"]["menuTop"]["navRight"]["disconnected"]; ?> 
     <div id="navbar" class="navbar-collapse pull-right navbar-right margin-right-15">
-        <?php foreach($menuRight as $key => $value){
+        <?php 
+
+        foreach($menuRight as $key => $value){
             if($key=="map"){ ?>
                 <button class="btn-show-map pull-right"
                         title="<?php echo Yii::t("common", "Show the map"); ?>"
@@ -138,6 +141,13 @@
                     </div>
                 </div>
             <?php }
+        if($key=="app" && !empty($value)){ ?>
+            <div class="pull-left menu-app-top">
+                <?php echo ButtonCtk::app($value); ?>
+            </div>
+        <?php
+        // END LOGO HTML NAV BAR
+        }
             if($key=="userProfil"){
                   $profilThumbImageUrl = Element::getImgProfil($me, "profilThumbImageUrl", $this->module->getParentAssetsUrl()); ?> 
                 <a  href="#page.type.citoyens.id.<?php echo Yii::app()->session['userId']; ?>"

@@ -54,7 +54,11 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 							<b>
 								<h5 style="color: inherit;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: center;line-height: 1.3;word-wrap: normal;margin-bottom: 10px;font-size: 20px;">
 									<!-- Aussi connecté que Facebook et aussi ouvert que Wikipédia, rejoignez le mouvement ! -->
-									<?php echo Yii::t("mail","Open Like Wikipedia and as connected as Facebook join the movement!") ?>
+									<?php 
+									if( empty($title) || $title == "Communecter"){
+										echo Yii::t("mail","Open Like Wikipedia and as connected as Facebook join the movement!") ;
+									}
+									?>
 								</h5>
 							</b><br/>
 							<?php echo Yii::t("mail","You have been inviting on {what} by {who}",array("{what}"=>$title,"{who}"=>"<b>".$invitorName."</b>"));
@@ -106,7 +110,7 @@ $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.m
 		<tr style="padding: 0;vertical-align: top;text-align: left;">
 			<td style="color: #3c5665;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 19px;font-size: 15px;">
 				
-				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect )); ?>
+				<?php $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layouts.mail.footer', array('url' => $urlRedirect, "name" => (!empty($title) ? $title : null) )); ?>
 
 			</td>
 

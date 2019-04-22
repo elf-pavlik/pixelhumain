@@ -201,8 +201,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
                                 <?php  $this->renderPartial('webroot.themes.'.$nameTheme.'.views.layouts.forms.CO2.menuTitle'); ?>
-                                     <img style="width:100%; border: 10px solid white; border-bottom-width:0px;max-height: inherit;" class="pull-right logoLoginRegister" src="<?php echo $this->module->getParentAssetsUrl()?>/images/logoL.jpg"/>
-                                <!--<img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="100" class="inline margin-bottom-15">-->
+                                     <img style="width:150px; border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto;" class=" logoLoginRegister" src="<?php echo $this->module->getParentAssetsUrl()?>/images/logoL.jpg"/>
                                 </div>
                             </div>
                         <?php } ?>
