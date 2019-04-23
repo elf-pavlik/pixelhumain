@@ -63,7 +63,7 @@
         $menuRight=(@Yii::app()->session['userId']) ? $themeParams["header"]["menuTop"]["navRight"]["connected"] : $themeParams["header"]["menuTop"]["navRight"]["disconnected"]; ?> 
     <div id="navbar" class="navbar-collapse pull-right navbar-right margin-right-15">
         <?php 
-
+        //var_dump($menuRight);
         foreach($menuRight as $key => $value){
             if($key=="map"){ ?>
                 <button class="btn-show-map pull-right"
