@@ -565,7 +565,7 @@
             if(typeof typeObj.buildCreateButton!= "undefined") typeObj.buildCreateButton(".toolbar-bottom-adds", true);
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
             if(typeof resizeInterface != "undefined") resizeInterface();
-            themeObj.initMyScopes();
+            if(typeof themeObj.initMyScopes != "undefined") themeObj.initMyScopes();
             //if(typeof localStorage != "undefined" && typeof localStorage.circuit != "undefined")
               //  circuit.obj = JSON.parse(localStorage.getItem("circuit"));
             //Init mentions contact
