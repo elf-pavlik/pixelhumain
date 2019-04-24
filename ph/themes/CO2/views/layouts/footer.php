@@ -27,6 +27,7 @@
 
     .col-footer-ph .font-blackoutT, .col-footer-ph .join-us {
         vertical-align: middle;
+        line-height: 50px !important;
     }
 @media screen and (max-width: 1024px) {
     
