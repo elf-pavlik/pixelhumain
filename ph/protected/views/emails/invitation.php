@@ -10,7 +10,7 @@ Yii::app()->language = $language;
 if(!empty($invitorUrl))
 	$invitorName='<a href="'.$invitorUrl.'" target="_blank">'.$invitorName.'</a>';
 if(!empty($url)){
-	if(empty($baseUrl)){
+	if(strpos($baseUrl, Yii::app()->getRequest()->getBaseUrl(true)) !== false){
 		if(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false){
    	 		$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
    	 		$urlValidation=$urlValidation."/redirect/".str_replace("/", ".", $url); //: ltrim($url, '/');

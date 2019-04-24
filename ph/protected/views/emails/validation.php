@@ -3,7 +3,7 @@
   $urlRedirect= (!empty($baseUrl) ? $baseUrl : Yii::app()->getRequest()->getBaseUrl(true) );
   $urlValidation=$urlRedirect."/".$this->module->id.'/person/activate/user/'.$user.'/validationKey/'.Person::getValidationKeyCheck($user);
   if(!empty($url)) {
-    if(empty($baseUrl)){
+    if(strpos($baseUrl, Yii::app()->getRequest()->getBaseUrl(true)) !== false){
       if(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false){
         $urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
         $urlValidation=$urlValidation."/redirect/".str_replace("/", ".", $url);// : ltrim($url, '/');
