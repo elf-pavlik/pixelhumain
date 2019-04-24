@@ -53,7 +53,7 @@
                 <!--http://localhost:8888/ph/images/betatest.png-->
               <h3 style="color: inherit;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;word-wrap: normal;margin-bottom: 10px;font-size: 22px;"><?php echo Yii::t("mail","Welcome on {what}",array("{what}"=>$title)) ?></h3>
              <?php echo Yii::t("mail","Please click on the following link to confirm your account") ?>:<br>
-           <a href="<?php echo $urlValidation ?>" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;"><?php echo Yii::t("mail","Validation of my account") ?></a>
+           <a href="<?php echo $urlValidation ?>" target="_blank" style="color: #e33551;font-family: Helvetica, Arial, sans-serif;font-weight: normal;padding: 0;margin: 0;text-align: left;line-height: 1.3;text-decoration: none;"><?php echo Yii::t("mail","Validation of my account") ?></a>
            <br>
             <br>
             <?php echo Yii::t("mail","If the link doesn&apos;t work, you can copy it in your browser&apos;s address"); ?> :<br>  
