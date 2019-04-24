@@ -12,8 +12,8 @@ if(!empty($invitorUrl))
 if(!empty($url)){
 	if(strpos($baseUrl, Yii::app()->getRequest()->getBaseUrl(true)) !== false){
 		if(strrpos($url, "survey") !== false || strrpos($url, "costum") !== false){
-   	 		$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
-   	 		$urlValidation=$urlValidation."/redirect/".str_replace("/", ".", $url); //: ltrim($url, '/');
+   	 		//$urlRedirect=Yii::app()->getRequest()->getBaseUrl(true).$url;
+   	 		$urlValidation=str_replace($url, "", $urlValidation)."/redirect/".str_replace("/", ".", $url); //: ltrim($url, '/');
     	}
     }else
     	$urlValidation=$urlValidation."/costum/true";
