@@ -2941,8 +2941,11 @@ var dyFObj = {
 						if(dyFObj.init.initValues[ $(this).attr("id") ].maximumSelectionLength)
 							selectOptions.maximumSelectionLength = dyFObj.init.initValues[$(this).attr("id")]["maximumSelectionLength"];
 						mylog.log( "select2TagsInput dyFObj.init.initValues", dyFObj.init.initValues);
-						if(typeof dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength == "number")
+
+						if(typeof dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength == "number" && dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength > 0){
+							mylog.log( "select2TagsInput minimumInputLength ", selectOptions);
 							selectOptions.minimumInputLength = dyFObj.init.initValues[$(this).attr("id")]["minimumInputLength"];
+						}
 
 						if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[$(this).attr("id")] != "undefined" && dyFObj.init.initSelectNetwork[$(this).attr("id")].length > 0){
 							mylog.log("select2TagsInput data", dyFObj.init.initSelectNetwork[$(this).attr("id")]);
@@ -2952,6 +2955,8 @@ var dyFObj = {
 						$(this).removeClass("form-control").select2(selectOptions);
 						if(typeof mainTag != "undefined")
 							$(this).val([mainTag]).trigger('change');
+
+						mylog.log( "select2TagsInput end ", selectOptions);
 					}
 				});
 			} else
