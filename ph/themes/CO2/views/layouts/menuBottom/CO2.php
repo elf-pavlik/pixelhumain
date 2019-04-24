@@ -1,67 +1,4 @@
-<style type="text/css">
-    .footer-menu-vertical{
-        z-index:200000;
-    }
 
-    .footer-menu-vertical .toolbar-bottom.bottom-left{
-        bottom:10px;
-        left: 1px;
-    }
-    .footer-menu-vertical .toolbar-bottom{
-        z-index: 10000;
-    }
-    .footer-menu-vertical .toolbar-bottom.bottom-left #donation-btn{
-        background-color: white !important;
-        color:#E5344D !important;
-    }
-    .footer-menu-vertical .toolbar-bottom.bottom-right{
-        bottom:60px;
-        left: 1px;
-        right: inherit;
-    }
-
-    .footer-menu-vertical .toolbar-bottom.bottom-right #show-bottom-add{
-        background-color: white !important;
-        color:#34a853 !important;
-    }
-    .footer-menu-vertical .toolbar-bottom.bottom-right #show-bottom-add:hover, .footer-menu-vertical .toolbar-bottom.bottom-left #donation-btn:hover{
-        box-shadow: none;
-    }
-    .footer-menu-vertical .toolbar-bottom.bottom-right #show-bottom-add i{
-        font-size: 28px;
-    }
-    .footer-menu-vertical .toolbar-bottom.bottom-right #show-bottom-add:hover i{
-        font-size: 30px;
-    }
-    .footer-menu-vertical .toolbar-bottom.bottom-left #donation-btn:hover i{
-        font-size: 25px;
-    }
-    .footer-menu-vertical .toolbar-bottom-adds{
-        bottom: 68px;
-        left: 53px;
-    }
-    .footer-menu-vertical .toolbar-bottom-adds a.addBtnFoot{
-        text-transform: capitalize;
-        margin-bottom: 0px !important;
-        border-radius: 0px;
-    }
-
-    .footer-menu-vertical .toolbar-bottom-adds a.addBtnFoot{
-        margin-bottom: 0px !important;
-        border-radius: 0px;
-    }
-    .footer-menu-vertical .toolbar-bottom-adds a:first-child{
-        border-radius: 0px 10px 0px 0px;
-    }
-
-    .footer-menu-vertical .toolbar-bottom-adds a:last-child{
-        border-radius: 0px 0px 10px 0px;
-    }
-    .footer-menu-vertical .toolbar-bottom-adds a:hover{
-        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
-        font-size: 16px;
-    }
-</style>
 <?php 
     $canCreate=false;
 
@@ -73,7 +10,7 @@
 
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
-    <?php if(!@$themeParams["menuBottom"] || (@$themeParams["menuBottom"]["donate"] && !empty($themeParams["menuBottom"]["donate"]))){ 
+    <?php if(!@$themeParams["menuBottom"] || (isset($themeParams["menuBottom"]["donate"]) && !empty($themeParams["menuBottom"]["donate"]))){ 
         $label=(@$themeParams["menuBottom"]["donate"]["label"]) ? $themeParams["menuBottom"]["donate"]["label"] : Yii::t("common","Be aCOeur");
         $url=(@$themeParams["menuBottom"]["donate"]["url"]) ? $themeParams["menuBottom"]["donate"]["url"] : "https://www.helloasso.com/associations/open-atlas/collectes/communecter/don";
     ?> 
