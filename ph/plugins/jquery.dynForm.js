@@ -1743,7 +1743,9 @@ var dyFObj = {
         		}
         		//TODO RApha bien géré les tags via network et costum 
         		// if(typeof fieldObj.data != "undefined"){
-        		// 	value = fieldObj.data;
+
+        		// 	delete fieldObj.data;
+        		// 	//value = fieldObj.data;
 	        	// }
 
         		if(typeof fieldObj.mainTag != "undefined")
