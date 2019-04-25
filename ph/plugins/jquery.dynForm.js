@@ -1749,9 +1749,10 @@ var dyFObj = {
         		if(typeof fieldObj.mainTag != "undefined")
 					mainTag=fieldObj.mainTag;
         		style = "style='width:100%;margin-bottom: 10px;border: 1px solid #ccc;'";
+        		mylog.log("select2TagsInput field",field, value );
         	}
 
-        	mylog.log("select2TagsInput field",field, value );
+        	
         	//var label = '<label class="pull-left"><i class="fa fa-circle"></i> '+placeholder+'</label><br>';
         	fieldHTML += iconOpen+' <input type="text" class="form-control '+fieldClass+'" name="'+field+'" id="'+field+'" value="'+value+'" placeholder="'+placeholder+'" '+style+'/>'+iconClose;
         
