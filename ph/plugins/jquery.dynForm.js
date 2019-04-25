@@ -1673,7 +1673,8 @@ var dyFObj = {
 	*	each input field type has a corresponding HTMl to build
 	***************************************** */
 	buildInputField : function (id, field, fieldObj,formValues, tooltip){
-		mylog.warn("------------------ buildInputField",id, field, formValues)
+		mylog.warn("------------------ buildInputField",id, field, fieldObj,formValues, tooltip);
+		mylog.log("------------------ buildInputField !",id, field, fieldObj,formValues, tooltip);
 		var fieldHTML = '<div class="form-group '+field+fieldObj.inputType+'">';
 		var required = "";
 		if(fieldObj.rules && fieldObj.rules.required)
@@ -1766,6 +1767,39 @@ var dyFObj = {
 				fieldHTML += 	'<option class="bold" value="CFP">CFP</option>';
 				fieldHTML += '</select>';
         	}
+        } else if( fieldObj.inputType == "tags2" ) {
+        	mylog.log("build field "+field+">>>>>> tags2", fieldObj);
+        	alert("HERE");
+        		fieldClass += " select2Tags2";
+        		if(fieldObj.values){
+        			if(!dyFObj.init.initValues[field])
+        				dyFObj.init.initValues[field] = {};
+        			dyFObj.init.initValues[field]["tags"] = fieldObj.values;
+        		}
+
+        		if(fieldObj.maximumSelectionLength)
+        			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
+        		mylog.log("select2TagsInput fieldObj.minimumInputLength", fieldObj.minimumInputLength);
+        		if(typeof fieldObj.minimumInputLength != "undefined" && typeof fieldObj.minimumInputLength == "number"){
+        			if(!dyFObj.init.initValues[field])
+        				dyFObj.init.initValues[field] = {};
+        			dyFObj.init.initValues[field]["minimumInputLength"] = fieldObj.minimumInputLength;
+        			mylog.log("select2TagsInput fieldObj dyFObj.init.initValues[field]", dyFObj.init.initValues[field]);
+        		}
+
+        		if(typeof fieldObj.mainTag != "undefined")
+					mainTag=fieldObj.mainTag;
+        		style = "style='width:100%;margin-bottom: 10px;border: 1px solid #ccc;'";
+        		mylog.log("select2TagsInput field",field, value );
+        	
+        	
+        	fieldHTML += '<select name="'+field+'" id="'+field+'" class="form-control select2Tags2" multiple="multiple">';
+        	$.each(fieldObj.values, function(kT,vT){
+        		mylog.log("tags2 values ",kT,vT);
+				fieldHTML += '<option>'+vT+'</option>';
+			});
+        	fieldHTML += '</select>';
+
         }
         
         /* **************************************
