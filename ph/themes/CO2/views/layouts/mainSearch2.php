@@ -94,7 +94,10 @@
     </head>
 
     <body id="page-top" class="index" style="display: none;">
-
+    <!-- <script type="text/javascript">
+    var d = new Date();
+    var timecount = d.getTime();
+    </script> -->
         <!-- **************************************
         MAP CONTAINER
         ******************************************* -->
@@ -115,7 +118,11 @@
 
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
             <div class="pageContent">
-                <?php echo $content; ?>
+
+                <?php 
+                $this->renderPartial($layoutPath.'header',array("page"=>"welcome","layoutPath"=>$layoutPath));    
+                echo $content; 
+                ?>
             </div>
         </div>
         <div class="portfolio-modal portfolio-modal-survey modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true" style="top:0px !important;">
@@ -380,6 +387,13 @@
 
                     themeObj.firstLoad=false;
                     //urlCtrl.loadByHash(location.hash,true);
+
+                    setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+                    setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+                    setTimeout(function(){ $('.progressTop').val(80)}, 3500);
+                    setTimeout(function(){ $(".progressTop").val(100);}, 4000);
+                    setTimeout(function(){ $(".progressTop").fadeOut(200);}, 4500);
+
                     $.unblockUI();
                 }
                 setTimeout(function(){

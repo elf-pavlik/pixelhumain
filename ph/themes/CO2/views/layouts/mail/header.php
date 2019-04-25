@@ -1436,7 +1436,14 @@
   $logoUrl = Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->params['logoUrl'] ;
   $urlRedirect=(@$url && !empty($url)) ? $url : Yii::app()->getRequest()->getBaseUrl(true) ;
   if( !empty($logo) && $logo != Yii::app()->params['logoUrl'] ) {
-    $logoUrl = $logo ;
+    //var_dump($logo); var_dump(Yii::app()->getRequest()->getBaseUrl(true));var_dump(Yii::app()->params['logoUrl']);exit;
+    $createbase=Yii::app()->getRequest()->getBaseUrl(true);
+    $checkArray=explode("/", $logo);
+    foreach($checkArray as $check){
+      if(!empty($check) && strrpos($createbase, $check) !== false )
+        $createbase=str_replace("/".$check, "", $createbase);
+    }
+    $logoUrl = $createbase.$logo ;
   }
   //echo $logoUrl ;
   // $logoUrl=(@$logo && !empty($logo)) ? $logo : Yii::app()->getRequest()->getBaseUrl(true).Yii::app()->params['logoUrl'] ;

@@ -732,7 +732,7 @@ var jsonHelper = {
   //jsonHelper.notNull("themeObj.blockUi","function") > false or true accordingly
   notNull : function (pathJson,type) 
   {
-    mylog.log(pathJson);
+    //mylog.log("notNull",pathJson);
     if(pathJson.indexOf("[")>=0)
       pathJson = pathJson.replace(/\[/g, '.').replace(/]/g, '');
         
