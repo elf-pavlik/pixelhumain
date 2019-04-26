@@ -7061,11 +7061,13 @@ var scopeObj = {
 
 		if(notNull(params)){
 			scopeObj.subParams = ( notNull(params.subParams) ? params.subParams : {} ) ;
+			mylog.log("scopeObj subParams", scopeObj.subParams );
 		}
 
 		if(notNull(params)){
 			scopeObj.limit = ( notNull(params.limit) ? params.limit : null ) ;
 		}
+
 	},
 	init : function(p){
 		mylog.log("scopeObj init", p );
