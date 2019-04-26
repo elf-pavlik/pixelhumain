@@ -10,7 +10,7 @@
 
 ?>
 <div class="footer-menu-<?php echo $menuApp ?>">
-    <?php if(!@$themeParams["menuBottom"] || (isset($themeParams["menuBottom"]["donate"]) && !empty($themeParams["menuBottom"]["donate"]))){ 
+    <?php if(isset($themeParams["menuBottom"]) && isset($themeParams["menuBottom"]["donate"]) && !empty($themeParams["menuBottom"]["donate"])){ 
         $label=(@$themeParams["menuBottom"]["donate"]["label"]) ? $themeParams["menuBottom"]["donate"]["label"] : Yii::t("common","Be aCOeur");
         $url=(@$themeParams["menuBottom"]["donate"]["url"]) ? $themeParams["menuBottom"]["donate"]["url"] : "https://www.helloasso.com/associations/open-atlas/collectes/communecter/don";
     ?> 
@@ -25,8 +25,8 @@
         <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/radios/radio-ico-close.png" height="60">
     </button>-->
     <?php if( @Yii::app()->session["userId"] && 
-                ( !@$themeParams["menuBottom"] || 
-                    ( @$themeParams["menuBottom"]["add"] && !empty($themeParams["menuBottom"]["add"])) ) ) { ?>
+                isset($themeParams["menuBottom"]) && 
+                    isset($themeParams["menuBottom"]["add"]) && !empty($themeParams["menuBottom"]["add"])) { ?>
         <button class="btn btn-default no-padding btn-menu-vertical" id="show-bottom-add">
             <i class="fa fa-plus-circle"></i>
             <span class="tooltips-menu-btn"><?php echo Yii::t("common","Add something") ?></span>
