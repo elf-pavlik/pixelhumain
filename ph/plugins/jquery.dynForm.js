@@ -252,7 +252,7 @@ var finder = {
 	},
 	//init : function(id, multiple, initType, values, update, callbackSelect){
 	init : function(params, callbackSelect){
-		mylog.log("finder init", params, callbackSelect);
+		mylog.log("finder init!", params, callbackSelect);
 		finder.object[params.id]={};
 		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
