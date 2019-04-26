@@ -2,7 +2,16 @@
 
 <!-- ****************************** THEME CO2 : mainSearch ******************************-->
 <?php 
-
+    if(!isset(Yii::app()->session["userId"]) && 
+        isset( Yii::app()->request->cookies['remember'] ) && 
+        Yii::app()->request->cookies['remember']->value == "true" &&
+        isset( Yii::app()->request->cookies['lyame'] ) && 
+        isset( Yii::app()->request->cookies['drowsp'] ) && 
+        @Yii::app()->request->cookies['drowsp']->value != "null"){
+            $pwdDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['drowsp']->value);
+            $emailDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['lyame']->value);
+            $res = Person::login($emailDecrypt, $pwdDecrypt, false);
+    }
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     $themeAssetsUrl = Yii::app()->theme->baseUrl. '/assets';
     $parentModuleId = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->params["module"]["parent"] : $this->module->id;
