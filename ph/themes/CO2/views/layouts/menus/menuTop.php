@@ -112,9 +112,18 @@
                             $href=($k=="logout") ? Yii::app()->createUrl($v["href"]) : $v["href"];
                             $blank=(@$blank) ? "target='_blank'" : "";
                             if($k=="admin"){ 
-                                if(Yii::app()->session["userIsAdmin"] || Yii::app()->session[ "userIsAdminPublic" ] || Yii::app()->session["isCostumAdmin"]){
+                                if(Yii::app()->session["userIsAdmin"] || 
+                                   Yii::app()->session[ "userIsAdminPublic" ] || 
+                                   Yii::app()->session["isCostumAdmin"]){
                                     $show=true;
                                     $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
+
+                                    if(Yii::app()->session["userIsAdmin"])
+                                        echo '<li class="text-center">Super Admin</li>';
+                                    else if(Yii::app()->session[ "userIsAdminPublic" ])
+                                        echo '<li class="text-center">Admin Public</li>';
+                                    else if( Yii::app()->session["isCostumAdmin"])
+                                        echo '<li class="text-center">Costum Admin</li>';
                                 }else
                                     $show=false;
                             }

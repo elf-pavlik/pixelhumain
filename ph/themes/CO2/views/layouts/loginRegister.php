@@ -82,7 +82,7 @@ $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']
                                 <?php  
                                 $nameTheme = ( (Yii::app()->theme->name == "network") ? "CO2" : Yii::app()->theme->name );
                                 ?>
-                                <img style="border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto" class="logoLoginRegister img-responsive" src="<?php echo $logo;?>"/>
+                                <!-- <img style="border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto" class="logoLoginRegister img-responsive" src="<?php echo $logo;?>"/> -->
                                 
                                 </div>
                             </div>
