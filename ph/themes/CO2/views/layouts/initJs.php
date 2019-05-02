@@ -699,7 +699,7 @@
         },
         firstLoad:(costum!= null && costum.themeObj!=null && costum.themeObj.firstLoad != null) ? costum.themeObj.firstLoad: true,
         imgLoad : "CO2r.png" ,
-        mainContainer : ".main-container",
+        mainContainer : ".pageContent",
         blockUi : {
             setLoader : function(){
                 color1="#354c57";
