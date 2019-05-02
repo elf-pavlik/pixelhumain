@@ -252,7 +252,7 @@ var finder = {
 	},
 	//init : function(id, multiple, initType, values, update, callbackSelect){
 	init : function(params, callbackSelect){
-		mylog.log("finder init", params, callbackSelect);
+		mylog.log("finder init!", params, callbackSelect);
 		finder.object[params.id]={};
 		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
@@ -879,6 +879,7 @@ var dyFObj = {
 				formData.source.toBeValidated = true;
 			}
 		}
+		mylog.log("finder formData", finder);
 		if(typeof finder != "undefined" && Object.keys(finder.object).length > 0){
 			$.each(finder.object, function(key, object){
 				formData[key]=object;
@@ -967,7 +968,7 @@ var dyFObj = {
 			}
 		});
 
-		mylog.dir(formData);
+		mylog.log("formData", formData);
 		return formData;
 	},
 
