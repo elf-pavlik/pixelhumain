@@ -1198,8 +1198,9 @@ var dyFObj = {
 
 	},
 	//entry point function for opening dynForms
-	openForm : function  (type, afterLoad,data, isSub) { 
+	openForm : function  (type, afterLoad,data, isSub, dynFormCostum) { 
 		//mylog.clear();
+
 		$.unblockUI();
 		$("#openModal").modal("hide");
 		mylog.warn("--------------- Open Form ",type, afterLoad,data);
@@ -1219,6 +1220,12 @@ var dyFObj = {
 		dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
 		dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
 
+		//enables setting dynform customization 
+		//sample used in costum/views/tpls/wizard
+		if( typeof dynFormCostum != "undefined"){
+			dyFObj.dynFormCostum = dynFormCostum;
+		}
+
 		if(notNull(finder))
 			finder.initVar();
 
@@ -1235,7 +1242,7 @@ var dyFObj = {
 
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.startBuild(afterLoad,data);
-			},afterLoad, data);
+			},afterLoad, data, dynFormCostum);
 		} else {
 			dyFObj.openFormAfterLogin = {
 				type : type, 
@@ -1308,6 +1315,10 @@ var dyFObj = {
 				  	//dyFInputs.get(type).dynForm = dynForm;
 					typeObj[type].dynForm = dynForm;
 					dyFObj[dyFObj.activeElem] = typeObj.get(type);
+
+					if( typeof dyFObj.dynFormCostum != "undefined")
+						dyFObj[dyFObj.activeElem].dynFormCostum = dyFObj.dynFormCostum;
+
 					//console.log("culuclucluccuucucuc",dyFObj[dyFObj.activeElem]);
 					if( notNull( typeObj.get(type).col) ) 
 						uploadObj.type = typeObj.get(type).col;
@@ -6280,8 +6291,14 @@ var dyFCustom = {
 				
 			$.each(p,function(el,v) {
 				$("."+el).show();
+				alert("adminOnly show "+el);
 		 	});
 				
+		} else {
+			$.each(p,function(el,v) {
+				$("."+el).hide();
+				alert("adminOnly hide "+el);
+		 	});
 		}
 	},
 	presetValue : function(p) {
