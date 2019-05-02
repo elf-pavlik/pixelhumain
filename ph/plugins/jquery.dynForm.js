@@ -2236,6 +2236,16 @@ var dyFObj = {
         	}
         }
         /* **************************************
+		* COLOR PICKER  , we use colorpicker.js
+		***************************************** */
+        else if ( fieldObj.inputType == "colorpicker" ) {
+        	if(placeholder == "")
+        		placeholder="#ff0066";
+        	mylog.log("build field "+field+">>>>>> colorpicker");
+        	fieldHTML += iconOpen+'<input id="'+field+'" type="text" class="form-control colorpickerInput '+fieldClass+'" name="'+field+'" id="'+field+'" value="'+value+'" placeholder="'+placeholder+'"/>'+iconClose;
+        }
+
+        /* **************************************
 		* DATE INPUT , we use bootstrap-datepicker
 		***************************************** */
         else if ( fieldObj.inputType == "date" ) {
@@ -2969,6 +2979,37 @@ var dyFObj = {
 				mylog.error("select2 library is missing");
 		} 
 
+		/* **************************************
+		* Color picker 
+		***************************************** */
+		function loadColorPicker(callback) {
+			mylog.log("loadColorPicker");
+			if( ! jQuery.isFunction(jQuery.ColorPicker) ) {
+				mylog.log("loadDateTimePicker2");
+				lazyLoad( baseUrl+'/plugins/colorpicker/js/colorpicker.js', 
+						  baseUrl+'/plugins/colorpicker/css/colorpicker.css',
+						  callback);
+		    }
+		}
+		var initColor = function(){
+			mylog.log("init .colorpickerInput");
+			$(".colorpickerInput").ColorPicker({ 
+		        color : "pink",
+		        onSubmit: function(hsb, hex, rgb, el) {
+					$(el).val(hex);
+					$(el).ColorPickerHide();
+				},
+				onBeforeShow: function () {
+					$(this).ColorPickerSetColor(this.value);
+				}
+		    }).bind('keyup', function(){
+				$(this).ColorPickerSetColor(this.value);
+			});
+		};
+
+		if(  $(".colorpickerInput").length){
+			loadColorPicker(initColor);
+		}
 		/* **************************************
 		* DATE INPUT , we use http://xdsoft.net/jqplugins/datetimepicker/
 		***************************************** */
@@ -5339,7 +5380,7 @@ var dyFInputs = {
 			label : "ta mere",
        		placeholder:"",
        		rules: "",
-       		params : {"targetId":contextData.id, "targetType":contextData.type, 
+       		params : { "targetId":contextData.id, "targetType":contextData.type, 
      					"targetImg":contextData.profilThumbImageUrl, "targetName":contextData.name, 
      					"authorId":userId,"authorImg":userConnected.profilThumbImageUrl, "authorName":userConnected.name}
    		}
@@ -5935,6 +5976,15 @@ var dyFInputs = {
     	};
 	    return inputObj;
 	},
+	colorpicker : function(typeDate, label, placeholder, rules){
+    	var inputObj = {
+	        inputType : "colorpicker",
+	        placeholder: "#ff0066" ,
+	        label : ( notEmpty(label) ? label : "Choisir une couleur" ),
+	        rules : ( notEmpty(rules) ? rules : {} ) 
+	    }
+    	return inputObj;
+    },
 	allDay : function(checked){
 
     	var inputObj = {
