@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 
-<!-- ****************************** THEME CO2 : mainSearch ******************************-->
+<!-- ****************************** THEME CO2 : mainSearch 2 ******************************-->
 <?php 
-    if(!isset(Yii::app()->session["userId"]) && 
-        isset( Yii::app()->request->cookies['remember'] ) && 
-        Yii::app()->request->cookies['remember']->value == "true" &&
-        isset( Yii::app()->request->cookies['lyame'] ) && 
-        isset( Yii::app()->request->cookies['drowsp'] ) && 
-        @Yii::app()->request->cookies['drowsp']->value != "null"){
-            $pwdDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['drowsp']->value);
-            $emailDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['lyame']->value);
-            $res = Person::login($emailDecrypt, $pwdDecrypt, false);
-    }
+
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     $themeAssetsUrl = Yii::app()->theme->baseUrl. '/assets';
     $parentModuleId = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->params["module"]["parent"] : $this->module->id;
@@ -103,7 +94,10 @@
     </head>
 
     <body id="page-top" class="index" style="display: none;">
-
+    <!-- <script type="text/javascript">
+    var d = new Date();
+    var timecount = d.getTime();
+    </script> -->
         <!-- **************************************
         MAP CONTAINER
         ******************************************* -->
@@ -123,7 +117,12 @@
         ?>
 
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
-            <div class="pageContent"></div>
+            <?php $this->renderPartial($layoutPath.'header',array("page"=>"welcome","layoutPath"=>$layoutPath)); ?>
+            <div class="pageContent">
+                <?php 
+                echo $content; 
+                ?>
+            </div>
         </div>
         <div class="portfolio-modal portfolio-modal-survey modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true" style="top:0px !important;">
             <div class="modal-content">
@@ -384,8 +383,18 @@
                 });
                 
                 if(themeObj.firstLoad){
+
                     themeObj.firstLoad=false;
-                    urlCtrl.loadByHash(location.hash,true);
+                    hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
+                    urlCtrl.loadByHash(hashLoading);
+
+                    setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+                    setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+                    setTimeout(function(){ $('.progressTop').val(80)}, 3500);
+                    setTimeout(function(){ $(".progressTop").val(100);}, 4000);
+                    setTimeout(function(){ $(".progressTop").fadeOut(200);}, 4500);
+
+                    $.unblockUI();
                 }
                 setTimeout(function(){
                     $("#page-top").show();
@@ -410,11 +419,6 @@
                 });*/
             });
         </script>
-        
-        <?php 
-       // if(@Yii::app()->session["costum"]["initScript"])
-         //   $this->renderPartial( Yii::app()->session["costum"]["initScript"] );
-         ?>
     </body>
 
 </html>
