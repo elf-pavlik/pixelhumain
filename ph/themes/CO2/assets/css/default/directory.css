@@ -1074,6 +1074,19 @@
 .btn-element-panel-link.disabled{
   opacity: inherit !important;
 }
+.btn-tags-unik{
+    margin-top: 5px;
+    border-radius:3px;
+    color: white;
+}
+.btn-tags-unik:hover{
+    color:white;
+    text-decoration: none;
+}
+.btn-tags-unik.active{
+    background-color: white;
+    color: red;
+}
 @media (max-width: 768px) {
   .btn-select-type-anc.col-xs-5{
     width:48%!important;
