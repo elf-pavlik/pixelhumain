@@ -879,6 +879,7 @@ var dyFObj = {
 				formData.source.toBeValidated = true;
 			}
 		}
+		mylog.log("finder formData", finder);
 		if(typeof finder != "undefined" && Object.keys(finder.object).length > 0){
 			$.each(finder.object, function(key, object){
 				formData[key]=object;
@@ -967,7 +968,7 @@ var dyFObj = {
 			}
 		});
 
-		mylog.dir(formData);
+		mylog.log("formData", formData);
 		return formData;
 	},
 
@@ -1684,7 +1685,8 @@ var dyFObj = {
 	*	each input field type has a corresponding HTMl to build
 	***************************************** */
 	buildInputField : function (id, field, fieldObj,formValues, tooltip){
-		mylog.warn("------------------ buildInputField",id, field, formValues)
+		mylog.warn("------------------ buildInputField",id, field, fieldObj,formValues, tooltip);
+		mylog.log("------------------ buildInputField !",id, field, fieldObj,formValues, tooltip);
 		var fieldHTML = '<div class="form-group '+field+fieldObj.inputType+'">';
 		var required = "";
 		if(fieldObj.rules && fieldObj.rules.required)
@@ -1754,15 +1756,18 @@ var dyFObj = {
         		}
         		//TODO RApha bien géré les tags via network et costum 
         		// if(typeof fieldObj.data != "undefined"){
-        		// 	value = fieldObj.data;
+
+        		// 	delete fieldObj.data;
+        		// 	//value = fieldObj.data;
 	        	// }
 
         		if(typeof fieldObj.mainTag != "undefined")
 					mainTag=fieldObj.mainTag;
         		style = "style='width:100%;margin-bottom: 10px;border: 1px solid #ccc;'";
+        		mylog.log("select2TagsInput field",field, value );
         	}
 
-        	mylog.log("select2TagsInput field",field, value );
+        	
         	//var label = '<label class="pull-left"><i class="fa fa-circle"></i> '+placeholder+'</label><br>';
         	fieldHTML += iconOpen+' <input type="text" class="form-control '+fieldClass+'" name="'+field+'" id="'+field+'" value="'+value+'" placeholder="'+placeholder+'" '+style+'/>'+iconClose;
         
@@ -1774,6 +1779,39 @@ var dyFObj = {
 				fieldHTML += 	'<option class="bold" value="CFP">CFP</option>';
 				fieldHTML += '</select>';
         	}
+        } else if( fieldObj.inputType == "tags2" ) {
+        	mylog.log("build field "+field+">>>>>> tags2", fieldObj);
+        	alert("HERE");
+        		fieldClass += " select2Tags2";
+        		if(fieldObj.values){
+        			if(!dyFObj.init.initValues[field])
+        				dyFObj.init.initValues[field] = {};
+        			dyFObj.init.initValues[field]["tags"] = fieldObj.values;
+        		}
+
+        		if(fieldObj.maximumSelectionLength)
+        			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
+        		mylog.log("select2TagsInput fieldObj.minimumInputLength", fieldObj.minimumInputLength);
+        		if(typeof fieldObj.minimumInputLength != "undefined" && typeof fieldObj.minimumInputLength == "number"){
+        			if(!dyFObj.init.initValues[field])
+        				dyFObj.init.initValues[field] = {};
+        			dyFObj.init.initValues[field]["minimumInputLength"] = fieldObj.minimumInputLength;
+        			mylog.log("select2TagsInput fieldObj dyFObj.init.initValues[field]", dyFObj.init.initValues[field]);
+        		}
+
+        		if(typeof fieldObj.mainTag != "undefined")
+					mainTag=fieldObj.mainTag;
+        		style = "style='width:100%;margin-bottom: 10px;border: 1px solid #ccc;'";
+        		mylog.log("select2TagsInput field",field, value );
+        	
+        	
+        	fieldHTML += '<select name="'+field+'" id="'+field+'" class="form-control select2Tags2" multiple="multiple">';
+        	$.each(fieldObj.values, function(kT,vT){
+        		mylog.log("tags2 values ",kT,vT);
+				fieldHTML += '<option>'+vT+'</option>';
+			});
+        	fieldHTML += '</select>';
+
         }
         
         /* **************************************
@@ -2962,8 +3000,11 @@ var dyFObj = {
 						if(dyFObj.init.initValues[ $(this).attr("id") ].maximumSelectionLength)
 							selectOptions.maximumSelectionLength = dyFObj.init.initValues[$(this).attr("id")]["maximumSelectionLength"];
 						mylog.log( "select2TagsInput dyFObj.init.initValues", dyFObj.init.initValues);
-						if(typeof dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength == "number")
+
+						if(typeof dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength == "number" && dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength > 0){
+							mylog.log( "select2TagsInput minimumInputLength ", selectOptions);
 							selectOptions.minimumInputLength = dyFObj.init.initValues[$(this).attr("id")]["minimumInputLength"];
+						}
 
 						if(typeof dyFObj.init.initSelectNetwork != "undefined" && typeof dyFObj.init.initSelectNetwork[$(this).attr("id")] != "undefined" && dyFObj.init.initSelectNetwork[$(this).attr("id")].length > 0){
 							mylog.log("select2TagsInput data", dyFObj.init.initSelectNetwork[$(this).attr("id")]);
@@ -2973,6 +3014,8 @@ var dyFObj = {
 						$(this).removeClass("form-control").select2(selectOptions);
 						if(typeof mainTag != "undefined")
 							$(this).val([mainTag]).trigger('change');
+
+						mylog.log( "select2TagsInput end ", selectOptions);
 					}
 				});
 			} else

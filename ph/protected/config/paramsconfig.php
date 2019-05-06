@@ -38,6 +38,7 @@ $params = array(
     "version"=> "2.2.0",
     //Beta Test ?
     'betaTest' => false,
+    'serverIp'=>"52.51.228.223",
     'rocketchatEnabled' => true,
     "rocketchatMultiEnabled" => false,
     //By default controller
