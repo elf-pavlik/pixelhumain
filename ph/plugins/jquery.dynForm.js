@@ -1728,9 +1728,11 @@ var dyFObj = {
 
         	if(fieldObj.inputType == "tags"){
         		fieldClass += " select2TagsInput";
-        		mylog.log("text, numeric, tags, tags HERE", typeof fieldObj.tagsList, typeof costum, typeof costum[fieldObj.tagsList] ) 
-        		if(	typeof fieldObj.tagsList != "undefined" && 
-        			typeof costum != "undefined" && 
+        		mylog.log("text, numeric, tags, tags HERE", fieldObj);
+        		if(	typeof fieldObj.tagsList != "undefined" &&
+        			typeof fieldObj.tagsList != null && 
+        			typeof costum != "undefined" &&
+        			typeof costum != null && 
         			typeof costum[fieldObj.tagsList] != "undefined"){
         			fieldObj.values = costum[fieldObj.tagsList];
         			fieldObj.data = costum[fieldObj.tagsList];
