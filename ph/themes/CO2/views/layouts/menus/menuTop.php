@@ -80,7 +80,7 @@
                         <img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo Yii::app()->language ?>.png" width="22"/> <span class="caret"></span></a>
                         <ul class="dropdown-menu arrow_box dropdown-languages-nouser" role="menu" style="">
                             <?php foreach($themeParams["languages"] as $lang => $label){ ?>
-                                    <li><a href="javascript:;" onclick="setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png" width="25"/> <?php echo Yii::t("common",$label) ?></a></li>
+                                    <li><a href="javascript:;" onclick="coInterface.setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png" width="25"/> <?php echo Yii::t("common",$label) ?></a></li>
                                 <?php } ?>
                         </ul>
                     </li>
@@ -136,7 +136,7 @@
                                 <?php if($k=="languages"){ ?>
                                     <ul class="dropdown-menu">
                                     <?php foreach($themeParams["languages"] as $lang => $label){ ?>
-                                        <li><a href="javascript:;" onclick="setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png"/><span class="hidden-xs"><?php echo Yii::t("common",$label) ?></span></a></li>
+                                        <li><a href="javascript:;" onclick="coInterface.setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png"/><span class="hidden-xs"><?php echo Yii::t("common",$label) ?></span></a></li>
                                     <?php } ?>
                                     </ul>
                                 <?php } ?>

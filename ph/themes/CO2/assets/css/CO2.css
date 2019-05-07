@@ -970,7 +970,7 @@ a, a:hover, a:focus, a:active, a.active{
 	    border: 1px solid #dadada !important;
 	    background-color: #ea4335!important;
 	    color: white !important;
-	    font-size: 21px;
+	    font-size: 20px;
 	    padding: 3px 2px;
 	    width: 10%;
 	    /* border-radius: 0px 20px 20px 0px !important; */
@@ -978,7 +978,7 @@ a, a:hover, a:focus, a:active, a.active{
 	    float: left;
 	}
 	#text-search-menu #dropdown-apps.padding{
-		padding: 4px 2px;
+		padding: 5px 2px;
 	}
 	#text-search-menu #dropdown-apps #dropdownApps{
 		background: none;
@@ -988,12 +988,14 @@ a, a:hover, a:focus, a:active, a.active{
 	.dropdown-result-global-search{
 		max-height: 70% !important;
 	    border-radius: 0px 0px 25px 25px;
-	    box-shadow: rgba(0, 0, 0, 0.4) 4px 10px 11px 1px;
 	    overflow-y: scroll;
 	    position: fixed;
 	    background-color: white;
 	    top: 106px;
 	}
+    .dropdown-result-global-search:visible{
+        box-shadow: rgba(0, 0, 0, 0.4) 4px 10px 11px 1px;
+    }
 }
 #main-input-group{
 	margin-top:0px;
@@ -2370,7 +2372,7 @@ margin-right: 5px;
 	}
 
 	.main-container.vertical .portfolio-modal.modal, .portfolio-modal.modal.vertical{
-		left: 0px;
+		left: 0px !important;
 	}
 	#ajax-modal .form-group, #ajax-modal .form-actions{
 		min-width:unset !important;
@@ -2660,6 +2662,25 @@ margin-right: 5px;
         border: none;
         height: 30px;
         border-radius: 10px 0 0 0;
+    }
+    .footer-menu-vertical #show-bottom-add {
+        bottom: 0px;
+        left: 0px;
+        border-radius: 0px 20px 0px 0px;
+        background-color: #34a853;
+        color: white;
+        width: 45px;
+        height: 45px;
+    }
+    .footer-menu-vertical #show-bottom-add i{
+        font-size: 40px;
+    }
+    .footer-menu-vertical .toolbar-bottom-adds {
+        bottom: 47px;
+        left: 0px;
+    }
+    .footer-menu-vertical .toolbar-bottom-adds a.addBtnFoot{
+        font-size: 18px;
     }
     #show-bottom-add.opened{
         transform: rotate(0deg);

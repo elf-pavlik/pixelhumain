@@ -93,7 +93,7 @@
 
     </head>
 
-    <body id="page-top" class="index" style="display: none;">
+    <body id="page-top" class="index">
     <!-- <script type="text/javascript">
     var d = new Date();
     var timecount = d.getTime();
@@ -101,6 +101,14 @@
         <!-- **************************************
         MAP CONTAINER
         ******************************************* -->
+        <div class="firstLoad">
+        <?php 
+            if(isset($themeParams["firstLoad"]))
+                $this->renderPartial( $themeParams["header"]["banner"]  );
+            else   
+                $this->renderPartial($layoutPath.'header',array("page"=>"welcome","layoutPath"=>$layoutPath));
+        ?>
+        </div>
         <progress class="progressTop" max="100" value="20"></progress>   
         <div id="mainMap">
             <?php 
@@ -385,20 +393,16 @@
                 if(themeObj.firstLoad){
 
                     themeObj.firstLoad=false;
-                    hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
-                    urlCtrl.loadByHash(hashLoading);
+                    //hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
+                    urlCtrl.loadByHash(location.hash);
 
-                    setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+                    /*setTimeout(function(){ $('.progressTop').val(40)}, 1000);
                     setTimeout(function(){ $('.progressTop').val(60)}, 3000);
                     setTimeout(function(){ $('.progressTop').val(80)}, 3500);
                     setTimeout(function(){ $(".progressTop").val(100);}, 4000);
-                    setTimeout(function(){ $(".progressTop").fadeOut(200);}, 4500);
-
-                    $.unblockUI();
-                }
-                setTimeout(function(){
+                    setTimeout(function(){ $(".progressTop").fadeOut(200);}, 4500);*/
+                }else
                     $("#page-top").show();
-                }, 500);
                 /*$(".close-footer-help").click(function(){
                     $("#footer-help").remove();
                     if(typeof userId != "undefined" && userId != ""){

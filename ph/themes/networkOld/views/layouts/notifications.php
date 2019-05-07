@@ -222,7 +222,7 @@ var maxNotifTimstamp = <?php echo $maxTimestamp ?>;
 jQuery(document).ready(function() 
 {
 	initNotifications();
-	//bindLBHLinks();
+	//coInterface.bindLBHLinks();
 	bindNotifEvents("");
 	//refreshNotifications(userId,"<?php echo Person::COLLECTION ?>","");
 	$("#notificationPanelSearch").mouseleave(function(){
@@ -439,7 +439,7 @@ function buildNotifications(list)
 		setTimeout( function(){
 	    	notifCount();
 	    	bindNotifEvents();
-	    	//bindLBHLinks();
+	    	//coInterface.bindLBHLinks();
 	    }, 800);
 		//bindNotifEvents();
 	}

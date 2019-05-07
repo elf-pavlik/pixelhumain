@@ -1408,8 +1408,8 @@ var dyFObj = {
 							$("#"+e).fineUploader('setEndpoint', endPoint);
 						});
 				   	}
-				    if( typeof bindLBHLinks != "undefined")
-			        	bindLBHLinks();
+				    if( typeof coInterface.bindLBHLinks != "undefined")
+			        	coInterface.bindLBHLinks();
 			    },
 			    onSave : function()
 			    {
@@ -7587,7 +7587,7 @@ var scopeObj = {
 					
 					scopeObj.onclickScope(input, domTarget);
 
-					bindLBHLinks();
+					coInterface.bindLBHLinks();
 
 					//signal que le chargement est terminé
 					mylog.log("loadingDataGS false");
