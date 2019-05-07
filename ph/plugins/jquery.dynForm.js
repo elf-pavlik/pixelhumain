@@ -1728,11 +1728,21 @@ var dyFObj = {
 
         	if(fieldObj.inputType == "tags"){
         		fieldClass += " select2TagsInput";
+        		mylog.log("text, numeric, tags, tags HERE", typeof fieldObj.tagsList, typeof costum, typeof costum[fieldObj.tagsList] ) 
+        		if(	typeof fieldObj.tagsList != "undefined" && 
+        			typeof costum != "undefined" && 
+        			typeof costum[fieldObj.tagsList] != "undefined"){
+        			fieldObj.values = costum[fieldObj.tagsList];
+        			fieldObj.data = costum[fieldObj.tagsList];
+        			mylog.log("text, numeric, tags, tags HERE", fieldObj);
+        		}
+
         		if(fieldObj.values){
         			if(!dyFObj.init.initValues[field])
         				dyFObj.init.initValues[field] = {};
         			dyFObj.init.initValues[field]["tags"] = fieldObj.values;
         		}
+        		mylog.log("build field "+field+">>>>>> text, numeric, tags, tags", fieldObj);
 
         		if(fieldObj.maximumSelectionLength)
         			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
