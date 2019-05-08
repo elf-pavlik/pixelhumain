@@ -101,15 +101,15 @@
         <!-- **************************************
         MAP CONTAINER
         ******************************************* -->
-        <div class="firstLoad">
+        <div id="firstLoader">
         <?php 
-            if(isset($themeParams["firstLoad"]))
-                $this->renderPartial( $themeParams["header"]["banner"]  );
+            if(isset($themeParams["loadingModal"]))
+                $this->renderPartial( $themeParams["loadingModal"]  );
             else   
-                $this->renderPartial($layoutPath.'header',array("page"=>"welcome","layoutPath"=>$layoutPath));
+                $this->renderPartial($layoutPath.'loadingModal',array("themeParams"=>$params));
         ?>
         </div>
-        <progress class="progressTop" max="100" value="20"></progress>   
+        <progress class="progressTop" max="100" value="0"></progress>   
         <div id="mainMap">
             <?php 
             $this->renderPartial( $layoutPath.'mainMap.'.Yii::app()->params["CO2DomainName"], array("modulePath"=>$modulePath )); ?>
@@ -299,12 +299,7 @@
             /* ***********************
             theme stuff
             ************************ */
-            $cssAnsScriptFilesModule = array(
-                //'/assets/js/cookie.js' ,
-                //'/assets/js/jqBootstrapValidation.js' ,
-                
-                //'/assets/data/mainCategories.js' ,
-                
+            $cssAnsScriptFilesModule = array(   
                 '/assets/vendor/bootstrap/js/bootstrap.min.js',
                 '/assets/vendor/bootstrap/css/bootstrap.min.css',
                 '/assets/css/sig/sig.css',
@@ -329,21 +324,15 @@
                 '/js/links.js',
                 '/js/default/index.js',
                 '/js/default/notifications.js',
-                //'/js/default/directory.js',
                 '/js/dataHelpers.js',
                 '/js/sig/localisationHtml5.js',
                 '/js/floopDrawerRight.js',
                 '/js/sig/geoloc.js',
-                //'/js/default/formInMap.js',
-                //'/js/default/formInMapOld.js',
                 '/js/default/globalsearch.js',
                 '/js/sig/findAddressGeoPos.js',
                 '/js/jquery.filter_input.js',
-                //'/js/breadcrum_co.js',
                 '/js/scopes/scopes.js',
-                //'/js/scopes/breadcrum_co.js',
-                //'/js/scopes/multiscopes.js',
-                );
+            );
             HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl() );
             /* ***********************
             END theme stuff
@@ -391,14 +380,14 @@
                 });
                 
                 if(themeObj.firstLoad){
-
+                    $("#loadingModal").css({"opacity": 0.8});
+                    //setTimeout(function(){ $('.progressTop').val(40)}, 1000);
                     themeObj.firstLoad=false;
                     //hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
                     urlCtrl.loadByHash(location.hash);
-
-                    /*setTimeout(function(){ $('.progressTop').val(40)}, 1000);
-                    setTimeout(function(){ $('.progressTop').val(60)}, 3000);
-                    setTimeout(function(){ $('.progressTop').val(80)}, 3500);
+                    
+                    //setTimeout(function(){ $('.progressTop').val(60)}, 3000);
+                    /*setTimeout(function(){ $('.progressTop').val(80)}, 3500);
                     setTimeout(function(){ $(".progressTop").val(100);}, 4000);
                     setTimeout(function(){ $(".progressTop").fadeOut(200);}, 4500);*/
                 }else

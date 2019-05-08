@@ -533,11 +533,7 @@
         invitor : "<?php echo @$_GET["invitor"]?>",
     };
     var themeObj = {
-        init : function(noLoading){
-            if(!notNull(noLoading) || !noLoading){
-                themeObj.blockUi.setLoader();
-                $.blockUI({ message : themeObj.blockUi.processingMsg});
-            } 
+        init : function(noLoading){$
             toastr.options = {
               "closeButton": false,
               "positionClass": "toast-bottom-right",

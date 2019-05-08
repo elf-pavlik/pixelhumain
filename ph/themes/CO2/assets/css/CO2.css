@@ -1283,7 +1283,7 @@ a, a:hover, a:focus, a:active, a.active{
 .lds-dual-ring > img{
     height: 100px;
 }
-.blockUI .lds-css{
+.blockUI .lds-css, #loadingModal .lds-css{
 	width: 300px;
     margin-top: 5%;
     position: relative;
@@ -1316,6 +1316,22 @@ a, a:hover, a:focus, a:active, a.active{
   height: 200px !important;
   -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
   transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
+#loadingModal{
+    position: fixed;
+    left: 0px;
+    width: 100%!important;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 150000 !important;
+    text-align: -webkit-center;
+    background-color: white;
+}
+#loadingModal .lds-css{
+    top: 200px;
+    width: 300px;
+    margin:auto;
 }
 /****************µEND BOUBOULE ********************/
 .blockUI{
