@@ -1,4 +1,3 @@
-<div id="filters-nav" class="menuFilters menuFilters-<?php echo $themeParams["appRendering"] ?> col-xs-12" style="min-height:40px;">
 	<ul id="filters-nav-list" class="no-padding no-margin">
 		<li class="dropdown dropdown-tags">
 			<a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left" data-label-xs="tags" type="button" id="dropdownTags" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 
@@ -29,31 +28,31 @@
       </li>
       <li class="dropdown dropdown-types">
           <a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left"  type="button" id="dropdownThematics" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-label-xs="types" data-toggle="tooltip" data-placement="bottom" 
-        title="<?php echo Yii::t("common","Choose a type") ?>" alt="<?php echo Yii::t("common","type") ?>"><?php echo Yii::t("common","Type") ?> <i class="fa fa-angle-down"></i></a>
+        title="<?php echo Yii::t("common","Type") ?>" alt="<?php echo Yii::t("common","type") ?>"><?php echo Yii::t("common","Type") ?> <i class="fa fa-angle-down"></i></a>
           <div class="dropdown-menu arrow_box hidden-xs" style="overflow-y: auto;" aria-labelledby="dropdownTypes">
           </div>
       </li>
       <li class="dropdown dropdown-sources">
           <a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left"  data-label-xs="sources" type="button" id="dropdownSources" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 
-        title="<?php echo Yii::t("common","Select a source of data") ?>" alt="<?php echo Yii::t("common","Select a source of data") ?>"><?php echo Yii::t("common","Source data") ?> <i class="fa fa-angle-down"></i></a>
+        title="<?php echo Yii::t("common","Source data") ?>" alt="<?php echo Yii::t("common","Select a source of data") ?>"><?php echo Yii::t("common","Source data") ?> <i class="fa fa-angle-down"></i></a>
           <div class="dropdown-menu arrow_box hidden-xs" aria-labelledby="dropdownSources">
           </div>
       </li>
       <li class="dropdown dropdown-section">
           <a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left"  data-label-xs="section" type="button" id="dropdownSection" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 
-        title="<?php echo Yii::t("common","Choose a section") ?>" alt="<?php echo Yii::t("common","Choose a section") ?>"><?php echo Yii::t("common","Section") ?> <i class="fa fa-angle-down"></i></a>
+        title="<?php echo Yii::t("common","Section") ?>" alt="<?php echo Yii::t("common","Choose a section") ?>"><?php echo Yii::t("common","Section") ?> <i class="fa fa-angle-down"></i></a>
           <div class="dropdown-menu arrow_box hidden-xs" aria-labelledby="dropdownSections">
           </div>
       </li>
       <li class="dropdown dropdown-category">
           <a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left" data-label-xs="category" type="button" id="dropdownCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 
-        title="<?php echo Yii::t("common","Choose a category") ?>" alt="<?php echo Yii::t("common","Choose a category") ?>"><?php echo Yii::t("common","Category") ?> <i class="fa fa-angle-down"></i></a>
+        title="<?php echo Yii::t("common","Category") ?>" alt="<?php echo Yii::t("common","Choose a category") ?>"><?php echo Yii::t("common","Category") ?> <i class="fa fa-angle-down"></i></a>
           <div class="dropdown-menu arrow_box hidden-xs" aria-labelledby="dropdownCategory" style="overflow-y: auto;">
           </div>
       </li>
       <li class="dropdown dropdown-price">
           <a href="javascript:;" class="dropdown-toggle menu-button btn-menu text-dark pull-left" data-label-xs="price" type="button" id="dropdownPrice" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" 
-        title="<?php echo Yii::t("common","Range prices") ?>" alt="<?php echo Yii::t("common","Range prices") ?>"><?php echo Yii::t("common","Price") ?> <i class="fa fa-angle-down"></i></a>
+        title="<?php echo Yii::t("common","Price") ?>" alt="<?php echo Yii::t("common","Range prices") ?>"><?php echo Yii::t("common","Price") ?> <i class="fa fa-angle-down"></i></a>
           <div class="dropdown-menu arrow_box hidden-xs" aria-labelledby="dropdownPrice">
                <div class="form-group col-md-4 col-sm-4 col-xs-6 divPriceMin">
                   <label class="col-md-12 col-sm-12 col-xs-12 text-left control-label no-padding" for="sectionBtn">
@@ -76,7 +75,6 @@
                   </label>
                   <select class="form-control" name="devise" id="devise" style="">
                   <?php 
-                    //$params = CO2::getThemeParams();
                     $devises = @$themeParams["devises"]; ?>
                     <?php if(@$devises){ 
                       foreach($devises as $key => $devise){ ?>
@@ -161,8 +159,8 @@
                   </label>
                   <select class="form-control" name="devise" id="devise" style="">
                   <?php 
-                    $params = CO2::getThemeParams();
-                    $devises = $params["devises"]; ?>
+                    //$params = CO2::getThemeParams();
+                    $devises = @$themeParams["devises"]; ?>
                     <?php if(@$devises){ 
                       foreach($devises as $key => $devise){ ?>
                       <option class="bold" value="<?php echo $key; ?>"><?php echo Yii::t("common",$devise); ?></option>
@@ -180,4 +178,3 @@
           </div>
       </div>
   </div>
-</div>

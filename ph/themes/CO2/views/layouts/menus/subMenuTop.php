@@ -10,11 +10,8 @@
         foreach ($params["pages"] as $key => $value) {
           
             if(!empty($value["inMenu"]) && $value["inMenu"]==true ){ 
-                //var_dump($key);
                 $url = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
                 $target = ( !empty($value["target"]) && $value["target"] === true ? "_blanc" : "") ;
-                //$class = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
-
                 if(!empty($value["urlExtern"])){ ?>
                     <a href="<?php echo $value["urlExtern"]; ?>" 
                     target="<?php echo $target; ?>" 
@@ -23,7 +20,7 @@
                 } else { ?>
                     <a href="javascript:;" data-hash="<?php echo $key; ?>" 
                     target="<?php echo $target; ?>" 
-                    class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+                    class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header">
                 <?php
                 }
                 ?>

@@ -15,8 +15,6 @@
 	}
 	
 </style>
-
-<div class="pageContent">
 	<div class="col-md-12 col-lg-12 col-sm-12 imageSection no-padding" 
 		 style="margin-top: 5px; position:relative;">
 
@@ -672,64 +670,6 @@
 		<center>
 	</div>
 
-</div>
-
-
-
-
-<div class="portfolio-modal modal fade" id="modalForgot" tabindex="-1" role="dialog" aria-hidden="true">
-    <form class="modal-content form-email box-email padding-top-15"  >
-        <div class="close-modal" data-dismiss="modal">
-            <div class="lr">
-                <div class="rl">
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <span class="name hidden" >
-                        <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/KGOUGLE-logo.png" height="60" class="inline margin-bottom-15">
-                       <?php } else { ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/CO2r.png" height="100" class="inline margin-bottom-15">
-                        <?php } ?>
-                    </span>
-                    <h4 class="letter-red no-margin" style="margin-top:-5px!important;">Mot de passe oublié ?</h4><br>
-                    <hr>
-                    <p><small>Indiquez votre addresse e-mail, vous recevrez un e-mail contenant votre mot de passe.</small></p>
-                    <hr>
-                    
-                </div>
-            </div>
-            <div class="col-md-4 col-md-offset-4 text-left">
-                
-                <label class="letter-black"><i class="fa fa-envelope"></i> E-mail</label><br>
-                <input class="form-control" id="email2" name="email2" type="text" placeholder="E-mail"><br/>
-                
-                <hr>
-
-                <div class="pull-left form-actions no-margin" style="width:100%; padding:10px;">
-                    <div class="errorHandler alert alert-danger no-display registerResult pull-left " style="width:100%;">
-                        <i class="fa fa-remove-sign"></i> <?php echo Yii::t("login","You have some form errors. Please check below.") ?>
-                    </div>
-                </div>
-
-                <!-- <div class="form-actions">
-                     <button type="submit"  data-size="s" data-style="expand-right" style="background-color:#E33551" class="forgotBtn ladda-button center center-block">
-                        <span class="ladda-label">XXXXXXXX</span><span class="ladda-spinner"></span><span class="ladda-spinner"></span>
-                    </button>
-                </div> -->
-
-                <a href="javascript:" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> <?php echo Yii::t("common","Back") ?></a>
-                <button class="btn btn-success text-white pull-right forgotBtn"><i class="fa fa-sign-in"></i> Envoyer</button>
-                
-                
-                <div class="col-md-12 margin-top-50 margin-bottom-50"></div>
-            </div>      
-        </div>
-    </form>
-</div>
 
 
 <script type="text/javascript">
@@ -739,14 +679,14 @@
 var peopleTalkCt = 0;
 
 jQuery(document).ready(function() {
-	setTimeout(function(){
+	//setTimeout(function(){
 		//$("#videoDocsImg img").css({"max-height":$("#form-home-subscribe").outerHeight()});
-	},300);
+	//},300);
 	topMenuActivated = false;
 	hideScrollTop = true;
 	checkScroll();
 
-	loadLiveNow();
+	//loadLiveNow();
 	$(".videoSignal").click(function(){
 		openVideo();
 	});
@@ -763,7 +703,7 @@ jQuery(document).ready(function() {
 
 	var timerCo = false;
 			
-	$("#main-search-bar").keyup(function(){
+	/*$("#main-search-bar").keyup(function(){
 		if($("#main-search-bar").val().length > 2){
 			if(timerCo != false) clearTimeout(timerCo);
 			timerCo = setTimeout(function(){ 
@@ -781,7 +721,7 @@ jQuery(document).ready(function() {
 			$(".info_co").removeClass("hidden");
 			$("#dropdown_search").html("");
 		}
-	});
+	});*/
 
 
     $("#change_co").click(function(){
@@ -799,11 +739,11 @@ jQuery(document).ready(function() {
 	});
 
 	$(".btn-show-map-home").click(function(){
-		search.app="search";
-		initCountType();
-  		initTypeSearch("all");
+		//search.app="search";
+		//initCountType();
+  		searchInterface.setSearchTypes("all");
   		$(this).html("<i class='fa fa-spin fa-circle-o-notch'></i> "+trad.currentlyloading);
-		startSearch(0, 30, function(){
+		startSearch(0, 100, function(){
 			if(typeof formInMap != "undefined" && formInMap.actived == true)
 				formInMap.cancel(true);
 	    	//else if(isMapEnd == false && notEmpty(contextData) && location.hash.indexOf("#page.type."+contextData.type+"."+contextData.id))
@@ -855,7 +795,7 @@ jQuery(document).ready(function() {
         urlCtrl.loadByHash( h ); 
     }); 
 
-    $(".tagSearchBtn").click(function(e) {  
+   /* $(".tagSearchBtn").click(function(e) {  
         e.preventDefault(); 
         $('#modalMainMenu').modal("hide"); 
         mylog.warn( ".tagSearchBtn",$(this).data("type"),$(this).data("stype"),$(this).data("tags") ); 
@@ -879,7 +819,7 @@ jQuery(document).ready(function() {
             startSearch();
             searchObj = {};
         }
-    }); 
+    }); */
 
 });
 function getRandomInt(min, max) {
@@ -973,7 +913,7 @@ function showTagOnMap (tag) {
 
 
 
-function loadLiveNow () {
+/*function loadLiveNow () {
 	mylog.log("loadLiveNow CO2.php");
 	var searchParams = {
 		"tpl":"/pod/nowList",
@@ -1004,7 +944,7 @@ function loadLiveNow () {
 					searchParams, function(data) {
 					coInterface.bindLBHLinks();
 	} , "html" );
-}
+}*/
 
 
 </script>

@@ -103,8 +103,8 @@
         ******************************************* -->
         <div id="firstLoader">
         <?php 
-            if(isset($themeParams["loadingModal"]))
-                $this->renderPartial( $themeParams["loadingModal"]  );
+            if(isset($params["loadingModal"]))
+                $this->renderPartial( $params["loadingModal"]  );
             else   
                 $this->renderPartial($layoutPath.'loadingModal',array("themeParams"=>$params));
         ?>
@@ -364,9 +364,9 @@
                         lazyLoad( v.init , null, callB);
                     }
                 });
-                if( typeof costum != "undefined" && notNull(costum) ){
+                //if( typeof costum != "undefined" && notNull(costum) ){
                    // costum.init();
-                }
+                //}
 
                 var pageUrls = <?php echo json_encode(Yii::app()->session['paramsConfig']["pages"]); ?>;
                 $.each( pageUrls ,function(k , v){ 
@@ -378,9 +378,10 @@
                         });
                     }
                 });
-                
-                if(themeObj.firstLoad){
-                    $("#loadingModal").css({"opacity": 0.8});
+                if(typeof themeObj.firstLoad == "function")
+                    themeObj.firstLoad();
+                else if(themeObj.firstLoad){
+                    //$("#loadingModal").css({"opacity": 0.95});
                     //setTimeout(function(){ $('.progressTop').val(40)}, 1000);
                     themeObj.firstLoad=false;
                     //hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";

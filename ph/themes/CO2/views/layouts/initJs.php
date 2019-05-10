@@ -56,7 +56,6 @@
             "init"   : "<?php echo Yii::app()->getModule( "costum" )->assetsUrl ?>/costum.js",
             callback : function(){
                 costum.init();
-
             }
         },
         "cotools" : <?php echo json_encode( array(
@@ -533,7 +532,7 @@
         invitor : "<?php echo @$_GET["invitor"]?>",
     };
     var themeObj = {
-        init : function(noLoading){$
+        init : function(noLoading){
             toastr.options = {
               "closeButton": false,
               "positionClass": "toast-bottom-right",
