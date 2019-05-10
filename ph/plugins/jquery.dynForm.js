@@ -1445,11 +1445,12 @@ var dyFObj = {
 			if($(this).parent().is(":visible"))
 				totalUploader++;
 		});
-		if(totalUploader.length>1){
+		if(totalUploader>1){
 			mylog.log("commonAfterSave fine-uploader-manual-trigger");
 			uploadObj.startAfterLoadUploader=false;
 			uploadCount=$(".fine-uploader-manual-trigger").length;
-			i=1
+			i=1;
+			insideCallBMulti=false;
 			$(".fine-uploader-manual-trigger").each(function(){
 				if(i==uploadCount)
 					uploadObj.startAfterLoadUploader=true;
@@ -1462,6 +1463,7 @@ var dyFObj = {
 		    		});
 		    	}
 				if( goToUpload ){
+					insideCallBMulti=true;
 		    		$(this).fineUploader('uploadStoredFiles');
 			    	//principalement pour les surveys
 			    	if(typeof callB == "function")
@@ -1469,6 +1471,14 @@ var dyFObj = {
 		    	}
 		    	i++;
 			});
+			if(!insideCallBMulti){
+				if(activeModuleId == "survey")//use case for answerList forms updating
+	        		window.location.reload();
+	        	else if(notNull(uploadObj.gotoUrl))
+					urlCtrl.loadByHash( uploadObj.gotoUrl );
+				else
+					urlCtrl.loadByHash( location.hash );
+			}
 		}else{
 			mylog.log("commonAfterSave else");
 			uploadObj.startAfterLoadUploader=true;
@@ -1483,14 +1493,14 @@ var dyFObj = {
 			if( goToUpload ){
 	    		$(uploadObj.domTarget).fineUploader('uploadStoredFiles');
 		    	//principalement pour les surveys
-		    	if(typeof callB == "function")
-	    			callB();
+		    	if(typeof callB == "function"){
+		    		callB();
+		    	}
 	    	}
 		    else { 
 		    	mylog.log("commonAfterSave isMapEnd", isMapEnd);
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
-				
 				if(activeModuleId == "survey")//use case for answerList forms updating
 	        		window.location.reload();
 	        	else if(notNull(uploadObj.gotoUrl))
@@ -1739,11 +1749,23 @@ var dyFObj = {
 
         	if(fieldObj.inputType == "tags"){
         		fieldClass += " select2TagsInput";
+        		mylog.log("text, numeric, tags, tags HERE", fieldObj);
+        		if(	typeof fieldObj.tagsList != "undefined" &&
+        			typeof fieldObj.tagsList != null && 
+        			typeof costum != "undefined" &&
+        			typeof costum != null && 
+        			typeof costum[fieldObj.tagsList] != "undefined"){
+        			fieldObj.values = costum[fieldObj.tagsList];
+        			fieldObj.data = costum[fieldObj.tagsList];
+        			mylog.log("text, numeric, tags, tags HERE", fieldObj);
+        		}
+
         		if(fieldObj.values){
         			if(!dyFObj.init.initValues[field])
         				dyFObj.init.initValues[field] = {};
         			dyFObj.init.initValues[field]["tags"] = fieldObj.values;
         		}
+        		mylog.log("build field "+field+">>>>>> text, numeric, tags, tags", fieldObj);
 
         		if(fieldObj.maximumSelectionLength)
         			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
@@ -3357,12 +3379,14 @@ var dyFObj = {
 						    	if(uploadObj.afterLoadUploader){
 						    		if(uploadObj.startAfterLoadUploader){
 							    		//toastr.info( "Fichiers bien chargés !!");
-							    		if(notNull(uploadObj.type) && uploadObj.type=="proposals"){
+							    		if(typeof uploadObj.type != "undefined" && notNull(uploadObj.type) && uploadObj.type=="proposals"){
 							    			dyFObj.coopAfterSave(uploadObj.callBackData);
-							    		}else if(typeof v.afterUploadComplete != "undefined" && jQuery.isFunction(v.afterUploadComplete) ){
+							    		}else if(typeof v.afterUploadComplete != "undefined" && notNull(v.afterUploadComplete) && jQuery.isFunction(v.afterUploadComplete) ){
 							    			v.afterUploadComplete();
-							    		}else{
+							    		}else if(notNull(uploadObj.gotoUrl)){
 							    			urlCtrl.loadByHash(uploadObj.gotoUrl);
+							    		}else{
+							    			urlCtrl.loadByHash(location.hash);
 							    		}
 							     		uploadObj.gotoUrl = null;
 							     	}
