@@ -31,6 +31,15 @@
 </style>
 <?php $visibleClass=(@$params["numberOfApp"]<=1) ? "hidden": ""; ?>
 <div id="menuApp" class="menuLeft hidden-xs">
+    
+    <?php if( isset(Yii::app()->session["costum"]["app"]["#welcome"]) ){ ?>
+    <a href="javascript:;" data-hash="welcome" 
+        class="homeModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app btn-menu-vertical col-xs-12 hidden-xs hidden-top link-submenu-header ">
+        <i class="fa fa-home"></i>
+        <span class="tooltips-menu-btn"><?php echo Yii::t("common", "Home"); ?></span>
+    </a>  
+    <?php } ?>
+
     <?php
         foreach ($params["pages"] as $key => $value) {
             if(@$value["inMenu"]==true){ ?>
