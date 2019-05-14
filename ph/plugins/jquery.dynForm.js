@@ -72,6 +72,7 @@ var finder
 			var errorHTML = '<div class="errorHandler alert alert-danger no-display">'+
 								'<i class="fa fa-remove-sign"></i> Merci de corriger les erreurs ci dessous.'+
 							'</div>';
+			$("body").removeClass("modal-open");
 			$(settings.formId).append(errorHTML);
 
 			if(settings.beforeBuild && jQuery.isFunction( settings.beforeBuild ) )
