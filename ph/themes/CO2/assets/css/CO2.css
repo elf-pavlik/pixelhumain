@@ -1375,6 +1375,7 @@ a, a:hover, a:focus, a:active, a.active{
     right: 0px;
     bottom: 0px;
     text-align: -webkit-center;
+    text-align: center;
 }
 #firstLoader{
     z-index:150000;
