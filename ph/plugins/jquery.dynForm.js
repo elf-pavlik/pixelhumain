@@ -1426,8 +1426,8 @@ var dyFObj = {
 			        	dyFObj[dyFObj.activeElem].save(dyFObj.activeModal+" #ajaxFormModal");
 			        if( dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save )
 			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save(); //use this for subDynForms
-			        else if(dyFObj[dyFObj.activeElem].saveUrl)
-			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
+			        else if( dyFObj[dyFObj.activeElem].saveUrl )
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].cIdtrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
 			        else
 			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, null, afterSave );
 			        return false;
