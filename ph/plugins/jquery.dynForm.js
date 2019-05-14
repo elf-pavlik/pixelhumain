@@ -6352,8 +6352,9 @@ var dyFCustom = {
 		}
 	},
 	presetValue : function(p) {
-		mylog.log("dyFCustom presetValue", p);
+		mylog.log("dyFCustom presetValue !", p);
 		$.each(p,function(k,v) {
+			mylog.log("dyFCustom presetValue k v", k, v, $("#"+k).length);
 			$("#"+k).val(v);
 			if(k=="type" && dyFObj.elementObj.col=="poi"){
 				$(".sectionBtn[data-key='"+v+"']").trigger("click");
