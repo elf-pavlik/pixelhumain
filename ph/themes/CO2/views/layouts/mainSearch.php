@@ -109,7 +109,8 @@
                 $this->renderPartial($layoutPath.'loadingModal',array("themeParams"=>$params));
         ?>
         </div>
-        <progress class="progressTop" max="100" value="0"></progress>   
+
+        <?php $this->renderPartial($layoutPath.'progressBar',array("themeParams"=>$params)); ?>
         <div id="mainMap">
             <?php 
             $this->renderPartial( $layoutPath.'mainMap.'.Yii::app()->params["CO2DomainName"], array("modulePath"=>$modulePath )); ?>
