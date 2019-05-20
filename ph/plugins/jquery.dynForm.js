@@ -227,6 +227,8 @@ function slugify (value, slug) {
 		.replace(/\-{2,}/g,'-');
 	}
 };
+
+
 var finder = {
 	object : {},
 	finderPopulation : {},
@@ -258,6 +260,7 @@ var finder = {
 		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
 		 	finder.callback[params.id]=callbackSelect;
+		 
 		if(params.values){
 			$.each(params.values, function(e, v){
 				finder.addInForm(params.id, e, v.type, v.name, v.profilThumbImageUrl);	
@@ -1101,7 +1104,7 @@ var dyFObj = {
 		mylog.log("step",form, data);
 		dyFObj.openForm( form ,afterLoad , data);
 	},
-	editElement : function (type,id, subType){
+	editElement : function (type,id, subType, dynFormCostum){
 		mylog.warn("--------------- editElement ",type,id,subType);
 		//get ajax of the elemetn content
 
@@ -1137,7 +1140,7 @@ var dyFObj = {
 					typeForm = dyFInputs.get(typeModules).ctrl;
 
 				mylog.log("editElement typeForm", typeForm);
-				dyFObj.openForm(typeForm,null, data.map);
+				dyFObj.openForm(typeForm,null, data.map, dynFormCostum);
 				//console(dyFObj.init.uploader, "editiiiiiii");
 				
 	        } else 
@@ -1225,6 +1228,7 @@ var dyFObj = {
 		//enables setting dynform customization 
 		//sample used in costum/views/tpls/wizard
 		if( typeof dynFormCostum != "undefined"){
+			mylog.warn("--------------- Open Form dynFormCostum set",dynFormCostum);
 			dyFObj.dynFormCostum = dynFormCostum;
 		}
 
@@ -1260,7 +1264,7 @@ var dyFObj = {
 	//(string) :: will get the definition if exist in typeObj[key].dybnForm 
 	//if doesn't exist tries to lazyload it from assets/js/dynForm 
 	//(object) :: is dynformp definition 
-	getDynFormObj : function(type, callback,afterLoad, data){
+	getDynFormObj : function(type, callback,afterLoad, data,dynFormCostum){
 		//alert(type+'.js');
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if (typeof type == "object"){
@@ -1275,6 +1279,10 @@ var dyFObj = {
 			mylog.log(" typeObj Loaded : ", type);
 			dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
+			
+			if( typeof dyFObj.dynFormCostum != "undefined")
+				dyFObj[dyFObj.activeElem].dynFormCostum = dyFObj.dynFormCostum;
+			
     		callback( dyFObj[dyFObj.activeElem], afterLoad, data );
 		} else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
@@ -1499,13 +1507,16 @@ var dyFObj = {
 		    	}
 	    	}
 		    else { 
-		    	mylog.log("commonAfterSave isMapEnd", isMapEnd);
+		    	mylog.log("commonAfterSave isMapEnd", isMapEnd, uploadObj.gotoUrl);
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
+
 				if(activeModuleId == "survey")//use case for answerList forms updating
 	        		window.location.reload();
+	        	/*
+				check it with @bouboule
 	        	else if(notNull(uploadObj.gotoUrl))
-					urlCtrl.loadByHash( uploadObj.gotoUrl );
+					urlCtrl.loadByHash( uploadObj.gotoUrl );*/
 				else
 					urlCtrl.loadByHash( location.hash );
 	        }
