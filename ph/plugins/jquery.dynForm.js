@@ -4192,17 +4192,22 @@ var dyFObj = {
 			
 		},
 		initCountry : function(){
+			mylog.log("formInMap initCountry");
 			if ( 	typeof dySObj != "undefined" && 
 					typeof dySObj.surveys != "undefined" && 
 					typeof dySObj.surveys.parentSurvey != "undefined" && 
 					typeof dySObj.surveys.parentSurvey.countryCode != "undefined" && 
 					dySObj.surveys.parentSurvey.countryCode != ""){
+				mylog.log("formInMap initCountry if");
 				dyFObj.formInMap.NE_country = dySObj.surveys.parentSurvey.countryCode;
-			} else if( notNull(currentUser) && notNull(currentUser.addressCountry) && dyFObj.formInMap.NE_country== "" ){
+			} else if( notNull(currentUser) && notNull(currentUser.addressCountry) && dyFObj.formInMap.NE_country == "" ){
+				mylog.log("formInMap initCountry elseif");
 				dyFObj.formInMap.NE_country = currentUser.addressCountry;
 			}else{
+				mylog.log("formInMap initCountry else");
 				dyFObj.formInMap.NE_country = "";
 			}
+			mylog.log("formInMap initCountry end", dyFObj.formInMap.NE_country);
 		},
 		initVarNE : function(){
 			mylog.log("initVarNE");
@@ -4414,7 +4419,7 @@ var dyFObj = {
 			return locality;
 		},
 		newAddress : function(newA){
-			mylog.log("newAddress ", newA);
+			mylog.log("newAddress !", newA);
 			if(notEmpty(newA) && newA == true ){
 				$('#ajaxFormModal .formLocality').show();
 				$('#ajaxFormModal #sumery').show();
@@ -4438,19 +4443,11 @@ var dyFObj = {
 					draggable: true
 				};
 
-				// dyFObj.formInMap.map = mapObj.init(paramsMapLocality);
-				// var paramMarker = {
-				// 	elt : elt,
-				// 	addPopUp : false, 
-				// 	center : true, 
-				// 	opt : opt
-				// };
-				// dyFObj.formInMap.map.addMarker(paramMarker);
-				// dyFObj.formInMap.map.addFct(0, 'dragend', function(){
-				// 	var latLonMarker = dyFObj.formInMap.map.markerList[0].getLatLng();
-				// 	dyFObj.formInMap.NE_lat = latLonMarker.lat;
-				// 	dyFObj.formInMap.NE_lng = latLonMarker.lng;
-				// });
+				dyFObj.formInMap.initCountry();
+				if(dyFObj.formInMap.NE_country != ""){
+					$("#ajaxFormModal #divPostalCode").removeClass("hidden");
+					$("#ajaxFormModal #divCity").removeClass("hidden");
+				}
 
 			}else{
 				$('#ajaxFormModal .formLocality').hide();
