@@ -1765,6 +1765,8 @@ var dyFObj = {
         			dyFObj.init.initValues[field]["minimumInputLength"] = fieldObj.minimumInputLength;
         			mylog.log("select2TagsInput fieldObj dyFObj.init.initValues[field]", dyFObj.init.initValues[field]);
         		}
+
+     
         		//TODO RApha bien géré les tags via network et costum 
         		// if(typeof fieldObj.data != "undefined"){
 
