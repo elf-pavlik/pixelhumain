@@ -21,7 +21,6 @@ var dyFInputs
 var dyFCustom
 var finder 
 
-
 ***************************************** */
 
 (function($) {
@@ -1105,7 +1104,7 @@ var dyFObj = {
 		dyFObj.openForm( form ,afterLoad , data);
 	},
 	editElement : function (type,id, subType, dynFormCostum){
-		mylog.warn("--------------- editElement ",type,id,subType);
+		mylog.warn("--------------- editElement dynFormCostum",type,id,subType,dynFormCostum);
 		//get ajax of the elemetn content
 
 		uploadObj.set(type, id);
@@ -1139,8 +1138,8 @@ var dyFObj = {
 				else 
 					typeForm = dyFInputs.get(typeModules).ctrl;
 
-				mylog.log("editElement typeForm", typeForm);
-				dyFObj.openForm(typeForm,null, data.map, dynFormCostum);
+				mylog.log("editElement typeForm ", typeForm);
+				dyFObj.openForm(typeForm,null, data.map,null, dynFormCostum);
 				//console(dyFObj.init.uploader, "editiiiiiii");
 				
 	        } else 
@@ -1356,7 +1355,7 @@ var dyFObj = {
 	  	$(dyFObj.activeModal).modal("show");
 	  	leftPosModal=($("#modalCoop").is(":visible")) ? $("#menuCoop").outerWidth() : $("#menuApp.menuLeft").outerWidth();
 		$(".main-container.vertical .portfolio-modal.modal").css("left",leftPosModal);
-		mylog.log("scopeObj dyFInputs", dyFInputs);
+		mylog.log( "scopeObj dyFInputs", dyFInputs );
 	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
