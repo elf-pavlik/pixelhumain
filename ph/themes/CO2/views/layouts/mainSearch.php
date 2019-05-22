@@ -382,7 +382,7 @@
                 if(typeof themeObj.firstLoad == "function")
                     themeObj.firstLoad();
                 else if(themeObj.firstLoad){
-                    if((location.hash == "" ||  location.hash == "#") && (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome")){
+                    if(location.hash == "#welcome" || ((location.hash == "" ||  location.hash == "#") && (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome"))){
                         setTimeout(function(){ $('.progressTop').val(60)
                             $("#loadingModal").css({"opacity": 0.8});
                         }, 500);
