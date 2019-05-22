@@ -19,7 +19,7 @@
                     else
                         $refSmallerRing=$ring1["height"];
                 }
-                $styleRing1=setLoader($ring1);
+                $styleRing1=setLoaderPopup($ring1);
             }
             if(isset(Yii::app()->session['costum']["css"]["loader"]["ring2"])){
                 $ring2=Yii::app()->session['costum']["css"]["loader"]["ring2"];
@@ -29,11 +29,11 @@
                     else
                         $refSmallerRing=$ring2["height"];
                 }
-                $styleRing2=setLoader($ring2);
+                $styleRing2=setLoaderPopup($ring2);
             }
         }
     } 
-    function setLoader($p){
+    function setLoaderPopup($p){
         $style="";    
         foreach($p as $k => $v){
             if($k=="color")

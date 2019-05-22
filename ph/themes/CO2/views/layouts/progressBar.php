@@ -11,5 +11,5 @@
         	<?php }
 } ?>
 </style>
-<progress class="progressTop" max="100" value="0"></progress>   
+<progress class="progressTop" max="100" value="20"></progress>   
        

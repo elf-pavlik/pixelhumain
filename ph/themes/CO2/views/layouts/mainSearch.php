@@ -382,12 +382,25 @@
                 if(typeof themeObj.firstLoad == "function")
                     themeObj.firstLoad();
                 else if(themeObj.firstLoad){
-                    //$("#loadingModal").css({"opacity": 0.95});
-                    //setTimeout(function(){ $('.progressTop').val(40)}, 1000);
-                    themeObj.firstLoad=false;
-                    //hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
-                    urlCtrl.loadByHash(location.hash);
-                    
+                    if((location.hash == "" ||  location.hash == "#") && (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome")){
+                        setTimeout(function(){ $('.progressTop').val(60)
+                            $("#loadingModal").css({"opacity": 0.8});
+                        }, 500);
+                        setTimeout(function(){ $('.progressTop').val(80)}, 500);
+                        setTimeout(function(){ $(".progressTop").val(100);}, 5000);
+                        setTimeout(function(){ 
+                            $(".progressTop").fadeOut(200);
+                            $("#firstLoader").fadeOut(400);
+                        }, 500);
+
+                    }else{
+                        //$("#loadingModal").css({"opacity": 0.95});
+                        //setTimeout(function(){ $('.progressTop').val(40)}, 1000);
+                        themeObj.firstLoad=false;
+                        $(".pageContent").html("<i class='fa fa-spin fa-spinner'></i>");
+                        //hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
+                        urlCtrl.loadByHash(location.hash);
+                    }    
                     //setTimeout(function(){ $('.progressTop').val(60)}, 3000);
                     /*setTimeout(function(){ $('.progressTop').val(80)}, 3500);
                     setTimeout(function(){ $(".progressTop").val(100);}, 4000);
