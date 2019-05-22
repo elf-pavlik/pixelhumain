@@ -2783,16 +2783,20 @@ var dyFObj = {
 				            '</label>'+
 							"<select class='col-md-10 col-xs-12' name='newElement_country' >"+
 								"<option value=''>"+trad.chooseCountry+"</option>";
+								mylog.log("mamp 1");
 								$.each(dyFObj.formInMap.countryList, function(key, v){
-									mylog.log("mamp" );
+									
 									if(	typeof dyFObj[dyFObj.activeElem] != "undefined" &&
-										typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined" && 
-										typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters != "undefined" && 
-										typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations != "undefined" &&
-										typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.subParams != "undefined" &&
-										typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.subParams.cities != "undefined" &&
-										typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.subParams.cities.country != "undefined" &&
-										$.inArray(v.countryCode, dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.subParams.cities.country)  > -1 ){
+										(	(	typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined" && 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters != "undefined" && 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations != "undefined" &&
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.country != "undefined" &&
+												$.inArray(v.countryCode, dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.country)  > -1 ) ||
+											(	typeof dyFObj[dyFObj.activeElem].dynFormCostum == "undefined" || 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters == "undefined" || 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations == "undefined" ||
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.country == "undefined" ) ) ) {
+										mylog.log("mamp 2", v.countryCode)
 										fieldHTML += "<option value='"+v.countryCode+"'>"+v.name+"</option>";
 									}
 									//fieldHTML += "<option value='"+v.countryCode+"'>"+v.name+"</option>";
