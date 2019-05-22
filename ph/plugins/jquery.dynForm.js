@@ -1787,6 +1787,8 @@ var dyFObj = {
         			dyFObj.init.initValues[field]["minimumInputLength"] = fieldObj.minimumInputLength;
         			mylog.log("select2TagsInput fieldObj dyFObj.init.initValues[field]", dyFObj.init.initValues[field]);
         		}
+
+     
         		//TODO RApha bien géré les tags via network et costum 
         		// if(typeof fieldObj.data != "undefined"){
 
@@ -2813,8 +2815,23 @@ var dyFObj = {
 				            '</label>'+
 							"<select class='col-md-10 col-xs-12' name='newElement_country' >"+
 								"<option value=''>"+trad.chooseCountry+"</option>";
+								mylog.log("mamp 1");
 								$.each(dyFObj.formInMap.countryList, function(key, v){
-									fieldHTML += "<option value='"+v.countryCode+"'>"+v.name+"</option>";
+									
+									if(	typeof dyFObj[dyFObj.activeElem] != "undefined" &&
+										(	(	typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined" && 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters != "undefined" && 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations != "undefined" &&
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.country != "undefined" &&
+												$.inArray(v.countryCode, dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.country)  > -1 ) ||
+											(	typeof dyFObj[dyFObj.activeElem].dynFormCostum == "undefined" || 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters == "undefined" || 
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations == "undefined" ||
+												typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.country == "undefined" ) ) ) {
+										mylog.log("mamp 2", v.countryCode)
+										fieldHTML += "<option value='"+v.countryCode+"'>"+v.name+"</option>";
+									}
+									//fieldHTML += "<option value='"+v.countryCode+"'>"+v.name+"</option>";
 								});
 				fieldHTML += "</select>"+
 							"<div id='divCity' class='hidden dropdown pull-left col-md-12 col-xs-12 no-padding'> "+
@@ -4687,16 +4704,28 @@ var dyFObj = {
 			mylog.log("autocompleteFormAddress", currentScopeType, scopeValue);
 			$("#ajaxFormModal #dropdown-newElement_"+currentScopeType+"-found").html("<li><a href='javascript:'><i class='fa fa-refresh fa-spin'></i></a></li>");
 			$("#ajaxFormModal #dropdown-newElement_"+currentScopeType+"-found").show();
+
+			//costum.admins[userId].isAdmin
+
+			var paramsSearch =  {
+				type: currentScopeType, 
+				scopeValue: scopeValue,
+				geoShape: true,
+				formInMap: true,
+				countryCode : $('#ajaxFormModal [name="newElement_country"]').val()
+			} ;
+			// mamp
+			if(	typeof dyFObj[dyFObj.activeElem] != "undefined" &&
+				typeof dyFObj[dyFObj.activeElem].dynFormCostum != "undefined" && 
+				typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters != "undefined" && 
+				typeof dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations != "undefined" ){
+				paramsSearch.subParams = dyFObj[dyFObj.activeElem].dynFormCostum.filters.locations.subParams;
+			}
+
 			$.ajax({
 				type: "POST",
 				url: baseUrl+"/"+moduleId+"/city/autocompletemultiscope",
-				data: {
-						type: currentScopeType, 
-						scopeValue: scopeValue,
-						geoShape: true,
-						formInMap: true,
-						countryCode : $('#ajaxFormModal [name="newElement_country"]').val()
-				},
+				data: paramsSearch,
 				dataType: "json",
 				success: function(data){
 					mylog.log("autocompleteFormAddress success", data);
@@ -5084,6 +5113,8 @@ var dyFInputs = {
 	        inputType : "formLocality",
 	        rules : ( notEmpty(rules) ? rules : null ),
 	    };
+
+
 
 		if(dyFObj.formInMap.countryList == null){
 			$("#btn-submit-form").prop('disabled', true);

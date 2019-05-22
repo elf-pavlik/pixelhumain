@@ -312,6 +312,7 @@
 					mylog.log(".item-street-found");
 
 					Sig.markerFindPlace.setLatLng([$(this).data("lat"), $(this).data("lng")]);
+					mylog.log("panTo CO2");
 					Sig.map.panTo([$(this).data("lat"), $(this).data("lng")]);
 					Sig.map.setZoom(16);
 					mylog.log("lat lon", $(this).data("lat"), $(this).data("lng"));
