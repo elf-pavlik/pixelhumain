@@ -198,10 +198,14 @@ if(  	@$params['enSavoirPlus'] &&
 							<i class="fa fa-plus-circle"></i> 
 							<span class="hidden-xs"><?php echo Yii::t("login","Sign Up"); ?></span>
 						</button>
-						<button class="btn-top btn btn-success hidden-xs" style="margin-right:10px;" onclick="showPanel('box-login');">
+						<!-- <button class="btn-top btn btn-success hidden-xs" style="margin-right:10px;" onclick="showPanel('box-login');">
 							<i class="fa fa-sign-in"></i> 
-							<span class="hidden-xs"><?php echo Yii::t("login","Login"); ?></span>
-						</button>
+							<span class="hidden-xs"><?php //echo Yii::t("login","Login"); ?></span>
+						</button> -->
+						<button class="btn-top btn btn-success hidden-xs" data-toggle="modal" data-target="#modalLogin" style="font-size: 17px;" id="loginNetwork">
+		                        <i class="fa fa-sign-in"></i> 
+		                        <span class="hidden-xs"><small style="width:70%;"><?php echo Yii::t("login","Login"); ?></small></span>
+		                </button>
 						<?php } else { ?>
 							<a class="btn-top btn bg-red hidden-xs" href="<?php echo Yii::app()->createUrl('/co2/person/logout?network='.Yii::app()->params['networkParams']); ?>" style="margin-right:10px;" onclick="">
 								<i class="fa fa-sign-out"></i> 
@@ -389,6 +393,12 @@ var headerScaling=false;
 	        enSavoirPlus();
 	        mylog.log("confidentiality");
 	        $("#modal-confidentiality").modal("show");        
+	    });
+
+	    $("#loginNetwork").on("click", function(){
+	        mylog.log("loginNetwork");
+	        $("#modalLogin").modal("show");
+	         $("#modalLogin").css('display', 'block');        
 	    });
 	});
 

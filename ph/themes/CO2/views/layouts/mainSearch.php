@@ -25,19 +25,19 @@
 
     if(!@Yii::app()->session['paramsConfig']) 
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
-    $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
-    $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
-    $metaImg = (@$this->module->image) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
+    $metaTitle = (isset($this->module->pageTitle)) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
+    $metaDesc = (isset($this->module->description)) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
+    $metaImg = (isset($this->module->image)) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
     $metaRelCanoncial=(isset($this->module->relCanonical)) ? $this->module->relCanonical : "https://www.communecter.org";
     $keywords = ""; 
-    if(@$this->module->keywords) 
+    if(isset($this->module->keywords))
         $keywords = $this->module->keywords; 
-    else if(@$this->keywords) 
+    else if(isset($this->keywords) )
         $keywords = $this->keywords; 
-    if(@$this->module->favicon) 
+    if(isset($this->module->favicon) )
         $favicon = $this->module->favicon;   
     else  
-        $favicon =(@$this->module->assetsUrl) ? $this->module->assetsUrl."/images/favicon.ico" : "/images/favicon.ico"; 
+        $favicon =(isset($this->module->assetsUrl)) ? $this->module->assetsUrl."/images/favicon.ico" : "/images/favicon.ico"; 
  
     $params = Yii::app()->session['paramsConfig']; 
 ?>

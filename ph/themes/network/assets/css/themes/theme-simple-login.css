@@ -30,7 +30,7 @@
   left: 0px !important;
   right: unset !important;
   margin:inherit;
-  width: 400px;
+  width: 100%;
   padding:0px !important;
   -moz-box-shadow: 0px 0px 5px 7px rgba(41, 41, 41, 0.35);
   -webkit-box-shadow: 0px 0px 5px 7px rgba(41, 41, 41, 0.35);

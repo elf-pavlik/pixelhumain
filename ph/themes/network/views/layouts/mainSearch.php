@@ -118,7 +118,8 @@
 	
 	
 		<?php //if(!isset(Yii::app()->session['userId']))
-		$this->renderPartial($layoutPath."simply_login_register", array("params" => $networkJson));
+		//$this->renderPartial($layoutPath."simply_login_register", array("params" => $networkJson));
+		$this->renderPartial($layoutPath.'loginRegister', array("subdomain" => @$subdomain)); 
 		?>
 
 	<!-- **************************************
