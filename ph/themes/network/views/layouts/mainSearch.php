@@ -15,13 +15,21 @@
 	$networkJson = Network::getNetworkJson(Yii::app()->params['networkParams']);
 
 	$params = CO2::getThemeParams("network");
-	Yii::app()->session['paramsConfig'] = $params; 
-    //var_dump(Yii::app()->session['paramsConfig']); exit;
+	Yii::app()->session['paramsConfig'] = $params;
+
+	//var_dump(Yii::app()->session['paramsConfig']); exit;
     $metaTitle = @$params["metaTitle"];
     $metaDesc = @$params["metaDesc"]; 
     $metaImg = Yii::app()->getRequest()->getBaseUrl(true)."/themes/CO2".@$params["metaImg"];
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
+	if(@$networkJson['skin']["logo"]){ 
+		if( stripos($networkJson['skin']["logo"], "http") === false)
+			$logoNetwork = $this->module->assetsUrl.'/images/'.$networkJson['skin']["logo"];
+		else 
+			$logoNetwork = $networkJson['skin']["logo"];
 
+	}
+	//var_dump(Yii::app()->session["paramsConfig"]);exit;
     if(@$_GET["el"])
         $this->renderPartial( 'co2.views.custom.init' ); 
     
@@ -119,7 +127,7 @@
 	
 		<?php //if(!isset(Yii::app()->session['userId']))
 		//$this->renderPartial($layoutPath."simply_login_register", array("params" => $networkJson));
-		$this->renderPartial($layoutPath.'loginRegister', array("subdomain" => @$subdomain)); 
+		$this->renderPartial('webroot.themes.CO2.views.layouts.loginRegister', array("subdomain" => @$subdomain, "logoNetwork"=> $logoNetwork)); 
 		?>
 
 	<!-- **************************************
@@ -190,7 +198,8 @@
 			'/plugins/font-awesome-custom/css/font-awesome.css',
 			'/plugins/jquery.dynForm.js',
 			'/js/api.js',
-
+			
+                '/plugins/cryptoJS-v3.1.2/rollups/aes.js',
 			'/plugins/fine-uploader/jquery.fine-uploader/fine-uploader-gallery.css',
 		    '/plugins/fine-uploader/jquery.fine-uploader/jquery.fine-uploader.js',
 		    '/plugins/fine-uploader/jquery.fine-uploader/fine-uploader-new.min.css'

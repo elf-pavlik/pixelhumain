@@ -63,6 +63,8 @@
 
 <?php //if($subdomain != "welcome"){ 
 $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']["logo"] : $this->module->getParentAssetsUrl()."/images/logoLTxt.jpg";
+if(@$logoNetwork && !empty($logoNetwork)) 
+    $logo=$logoNetwork;
 ?>
 <form class="portfolio-modal modal fade form-login box-login" id="modalLogin" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-content padding-top-15">
