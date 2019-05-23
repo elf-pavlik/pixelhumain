@@ -36,10 +36,11 @@
 <html lang="en" class="no-js">   
 
     <head>
-
+        <title><?php echo $metaTitle;?></title> 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <meta name="title" content="<?php echo $metaTitle; ?>"> 
         <meta name="description" content="<?php echo $metaDesc; ?>"> 
         <meta name="author" content="pixelhumain"> 
@@ -47,7 +48,21 @@
         <meta property="og:description" content="<?php echo $metaDesc; ?>"/> 
         <meta property="og:title" content="<?php echo $metaTitle; ?>"/> 
         <meta name="keywords" lang="<?php echo Yii::app()->language; ?>" content="<?php echo CHtml::encode($keywords); ?>" >  
-        <title><?php echo $metaTitle;?></title> 
+        
+        <script type="text/javascript">
+            <?php if(isset($_GET['_escaped_fragment_'])){ ?>
+                window.location.hash = '#<?php echo $_GET['_escaped_fragment_'] ?>';
+                <?php
+                }
+            ?>
+            console.log("hash 0",window.location.hash);
+            if (window.location.hash.indexOf('#!') === 0){
+                var hash = window.location.hash.substr(2);
+                console.log("hash",hash);
+                window.location.hash = '#'+hash;
+                console.log("window.location.hash",window.location.hash);
+            }
+        </script>
         <link rel='shortcut icon' type='image/x-icon' href="<?php echo $favicon;?>" />  
         <link rel="canonical" href="<?php echo $metaRelCanoncial ?>" />
  
