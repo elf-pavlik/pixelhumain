@@ -90,6 +90,7 @@
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
     if($this->module->id != "costum"){
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
+        $params=Yii::app()->session['paramsConfig'];
         Yii::app()->session["costum"]=null;
     }
     $this->renderPartial($layoutPath.'initJs', 
