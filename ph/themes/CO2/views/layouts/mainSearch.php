@@ -140,9 +140,15 @@
                 $this->renderPartial($layoutPath.'.rocketchat'); 
             } 
         ?>
-
+        <!-- /********* MAIN-CONTAINER ***********/
+            => Contain all structure of cotools (header + menu + view page + footer ) 
+        -->
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
             <?php $this->renderPartial($layoutPath.'header',array("page"=>"welcome","layoutPath"=>$layoutPath)); ?>
+            <!-- /********* WELCOME PAGE ***********/
+                - Home page of co or costum home directly intergrated in pageContent (view container)
+                - Hash will be catch after on jquery 
+            -->
             <div class="pageContent">
                 <?php 
                 echo $content; 
@@ -398,7 +404,10 @@
                 if(typeof themeObj.firstLoad == "function")
                     themeObj.firstLoad();
                 else if(themeObj.firstLoad){
-                    if(location.hash == "#welcome" || ((location.hash == "" ||  location.hash == "#") && (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome"))){
+                    //Specific case if welcome is 
+                    if(location.hash == "#welcome" 
+                        || ((location.hash == "" ||  location.hash == "#") && (userId=="" || (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome")))){
+                        alert();
                         setTimeout(function(){ $('.progressTop').val(60)
                             $("#loadingModal").css({"opacity": 0.8});
                         }, 500);
