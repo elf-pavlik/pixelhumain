@@ -233,6 +233,7 @@ var finder = {
 	typeAuthorized : {},
 	callback : {},
 	invite : null,
+	roles : null,
 	search : null,
 	initVar : function(){
 		mylog.log("finder initVar");
@@ -242,6 +243,7 @@ var finder = {
 		finder.typeAuthorized = {};
 		finder.callback = {};
 		finder.invite = null;
+		finder.roles = null;
 		finder.search = null;
 	},
 	set : function(){
@@ -252,15 +254,55 @@ var finder = {
 	},
 	//init : function(id, multiple, initType, values, update, callbackSelect){
 	init : function(params, callbackSelect){
-		mylog.log("finder init!", params, callbackSelect);
+		mylog.log("finder init", params, callbackSelect);
 		finder.object[params.id]={};
 		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
 		 	finder.callback[params.id]=callbackSelect;
 		if(params.values){
-			$.each(params.values, function(e, v){
-				finder.addInForm(params.id, e, v.type, v.name, v.profilThumbImageUrl);	
-			});
+
+			var valFin = params.values;
+			if(typeof params.values.contributors != "undefined"){
+
+				valFin = params.values.contributors;
+				mylog.log("finder init data", dyFObj.elementData.map.type, dyFObj.elementData.map.id);
+				$.ajax({
+					type: "POST",
+					url: baseUrl+'/'+moduleId+'/element/getdatadetail/type/'+dyFObj.elementData.map.type+
+										'/id/'+dyFObj.elementData.map.id+'/dataName/contributors/isInviting/true?tpl=json',
+					dataType: "json",
+					async : false,
+					success: function(data){
+						mylog.log("finder init data res ", data);
+						$.each(data, function(e, v){
+							var good = false;
+							if(params.roles == null){
+								mylog.log("finder init data rolesNull ");
+								good = true;
+							}
+							else if(notNull(params.roles)){
+								good = true ;
+								$.each(params.roles, function(kR, vR){
+									mylog.log("finder init data inArray ");
+									if($.inArray(vR, v.rolesLink) == -1)
+										good = false;
+								});
+							}
+							mylog.log("finder init data good ", good, e);
+							if(good == true)
+								finder.addInForm(params.id, e, v.type, v.name, v.profilThumbImageUrl);	
+						});
+					}
+				});
+			}else{
+				mylog.log("finder init valFin", valFin);
+				$.each(valFin, function(e, v){
+					finder.addInForm(params.id, e, v.type, v.name, v.profilThumbImageUrl);	
+				});
+			}
+			
+
+			
 		}
 		else if(!notNull(params.update)){
 			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[params.id]) > -1)
@@ -275,8 +317,12 @@ var finder = {
 			lazyLoad( modules.co2.url+'/js/invite.js', 
 					null,
 					function(){
+						if(typeof params.roles != "undefined" && params.roles != null){
+							finder.roles = params.roles;
+						}
 						return true ;
 					});
+
 		}
 		else
 			finder.invite = null ;
@@ -319,6 +365,10 @@ var finder = {
 
 		if(notNull(finder.finderPopulation[id]) && notNull(finder.finderPopulation[id].email)){
 			finder.object[keyForm][id].email = finder.finderPopulation[id].email;
+		}
+
+		if(notNull(finder.roles)){
+			finder.object[keyForm][id].roles = finder.roles;
 		}
 
 		if(notNull(finder.search) && notNull(finder.search.filterBy)){
@@ -2268,9 +2318,7 @@ var dyFObj = {
 	        			initValues=fieldObj.values;
 	        		else if(typeof value != "undefined" && notNull(value) && Object.keys(value).length > 0) 
 	        			initValues=value;
-	        		
-	        		//finder.init(field, fieldObj.multiple, fieldObj.initType, initValues, update);
-	        		//       init : id, multiple, initType, values, update, callbackSelect){
+
 	        		var finderParams = {
 	        			id : field,
 	        			multiple : fieldObj.multiple,
@@ -2278,6 +2326,7 @@ var dyFObj = {
 	        			values : initValues,
 	        			update : update,
 	        			invite : fieldObj.invite,
+	        			roles : fieldObj.roles,
 	        			search : fieldObj.search
 	        		};
 
