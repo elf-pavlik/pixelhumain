@@ -18,6 +18,7 @@
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
     $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
+    $metaAuthor = (@$this->module->author) ? $this->module->author : @Yii::app()->session['paramsConfig']["metaAuthor"];  
     $metaImg = (@$this->module->image) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
     $metaRelCanoncial=(isset($this->module->relCanonical)) ? $this->module->relCanonical : "https://www.communecter.org";
     $keywords = ""; 
@@ -43,7 +44,7 @@
         
         <meta name="title" content="<?php echo $metaTitle; ?>"> 
         <meta name="description" content="<?php echo $metaDesc; ?>"> 
-        <meta name="author" content="pixelhumain"> 
+        <meta name="author" content="<?php echo $metaAuthor; ?>"> 
         <meta property="og:image" content="<?php echo $metaImg; ?>"/> 
         <meta property="og:description" content="<?php echo $metaDesc; ?>"/> 
         <meta property="og:title" content="<?php echo $metaTitle; ?>"/> 
