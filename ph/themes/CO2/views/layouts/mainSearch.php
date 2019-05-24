@@ -408,7 +408,6 @@
                         setTimeout(function(){ $('.progressTop').val(60)
                             $("#loadingModal").css({"opacity": 0.8});
                         }, 500);
-                        coInterface.menu.set("");
                         setTimeout(function(){ $('.progressTop').val(80)}, 500);
                         setTimeout(function(){ $(".progressTop").val(100);}, 5000);
                         setTimeout(function(){ 
