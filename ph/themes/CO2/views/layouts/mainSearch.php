@@ -379,7 +379,6 @@
             var CO2DomainName = "<?php echo $CO2DomainName; ?>";
             var CO2params = <?php echo json_encode(Yii::app()->session['paramsConfig']); ?>;
             
-            
             jQuery(document).ready(function() { 
                 themeObj.init(); 
                 $.each(modules,function(k,v) { 
@@ -389,10 +388,7 @@
                         lazyLoad( v.init , null, callB);
                     }
                 });
-                //if( typeof costum != "undefined" && notNull(costum) ){
-                   // costum.init();
-                //}
-
+               
                 var pageUrls = <?php echo json_encode(Yii::app()->session['paramsConfig']["pages"]); ?>;
                 $.each( pageUrls ,function(k , v){ 
                     if(typeof urlCtrl.loadableUrls[k] == "undefined")
@@ -409,10 +405,10 @@
                     //Specific case if welcome is 
                     if(location.hash == "#welcome" 
                         || ((location.hash == "" ||  location.hash == "#") && (userId=="" || (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome")))){
-                        alert();
                         setTimeout(function(){ $('.progressTop').val(60)
                             $("#loadingModal").css({"opacity": 0.8});
                         }, 500);
+                        coInterface.menu.set("");
                         setTimeout(function(){ $('.progressTop').val(80)}, 500);
                         setTimeout(function(){ $(".progressTop").val(100);}, 5000);
                         setTimeout(function(){ 
@@ -421,17 +417,10 @@
                         }, 500);
 
                     }else{
-                        //$("#loadingModal").css({"opacity": 0.95});
-                        //setTimeout(function(){ $('.progressTop').val(40)}, 1000);
                         themeObj.firstLoad=false;
                         $(".pageContent").html("<i class='fa fa-spin fa-spinner'></i>");
-                        //hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
                         urlCtrl.loadByHash(location.hash);
                     }    
-                    //setTimeout(function(){ $('.progressTop').val(60)}, 3000);
-                    /*setTimeout(function(){ $('.progressTop').val(80)}, 3500);
-                    setTimeout(function(){ $(".progressTop").val(100);}, 4000);
-                    setTimeout(function(){ $(".progressTop").fadeOut(200);}, 4500);*/
                 }else
                     $("#page-top").show();
                 /*$(".close-footer-help").click(function(){
