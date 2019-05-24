@@ -194,16 +194,21 @@ if(  	@$params['enSavoirPlus'] &&
 					<br/>
 					<div class="centerButton">
 						<?php if (!@Yii::app()->session["userId"]){ ?>
-						<button class="btn-top btn btn-default hidden-xs" onclick="showPanel('box-register');">
+						<button class="btn-top btn btn-default hidden-xs" id="registerNetwork">
 							<i class="fa fa-plus-circle"></i> 
 							<span class="hidden-xs"><?php echo Yii::t("login","Sign Up"); ?></span>
 						</button>
-						<button class="btn-top btn btn-success hidden-xs" style="margin-right:10px;" onclick="showPanel('box-login');">
+						<!-- <button class="btn-top btn btn-success hidden-xs" style="margin-right:10px;" onclick="showPanel('box-login');">
 							<i class="fa fa-sign-in"></i> 
-							<span class="hidden-xs"><?php echo Yii::t("login","Login"); ?></span>
-						</button>
+							<span class="hidden-xs"><?php //echo Yii::t("login","Login"); ?></span>
+						</button> -->
+						<!--data-toggle="modal" data-target="#modalLogin"-->
+						<button class="btn-top btn btn-success hidden-xs"  style="font-size: 17px;" id="loginNetwork">
+		                        <i class="fa fa-sign-in"></i> 
+		                        <span class="hidden-xs"><small style="width:70%;"><?php echo Yii::t("login","Login"); ?></small></span>
+		                </button>
 						<?php } else { ?>
-							<a class="btn-top btn bg-red hidden-xs" href="<?php echo Yii::app()->createUrl('/co2/person/logout?network='.Yii::app()->params['networkParams']); ?>" style="margin-right:10px;" onclick="">
+							<a class="btn-top btn bg-red hidden-xs" id="logout" href="javascript:;" style="margin-right:10px;" onclick="">
 								<i class="fa fa-sign-out"></i> 
 								<span class="hidden-xs"><?php echo Yii::t("common","Log Out"); ?></span>
 							</a>
@@ -329,8 +334,8 @@ if(  	@$params['enSavoirPlus'] &&
                                 <?php } ?>
                                 <li role="separator" class="divider visible-xs"></li>
                                 <li class="text-left">
-                                    <a href="<?php echo Yii::app()->createUrl('/co2/person/logout'); ?>" 
-                                        class="bg-white letter-red logout">
+                                    <a href="javascript:;" 
+                                        class="bg-white letter-red logout" id="logout">
                                         <i class="fa fa-sign-out"></i> <?php echo Yii::t("common", "Log Out") ; ?>
                                     </a>
                                 </li>
@@ -384,11 +389,35 @@ if(  	@$params['enSavoirPlus'] &&
 
 <script type="text/javascript">
 var headerScaling=false;
+var logoutUrl='<?php echo Yii::app()->createUrl('/co2/person/logout?network='.Yii::app()->params['networkParams']); ?>';
 	jQuery(document).ready(function() {
 		$("#btn-documentation").on("click", function(){
 	        enSavoirPlus();
 	        mylog.log("confidentiality");
 	        $("#modal-confidentiality").modal("show");        
+	    });
+	    $("a.btn[data-target='#modalForgot']").addClass("modalForgotPassword").removeAttr("data-target").removeAttr("data-toggle");
+	    $("a.btn[data-target='#modalRegister']").addClass("modalRegister").removeAttr("data-target").removeAttr("data-toggle");
+		$("#registerNetwork, .modalRegister").off().on("click", function(){
+	        mylog.log("registerNetwork");
+	        $("#modalRegister").modal("show");
+	         $("#modalRegister").css('display', 'block');        
+	    });
+	    $("#logout").click(function(){ 
+	    	$.cookie("lyame", "null", { expires: 50, path : "/" });
+		  	$.cookie("drowsp", "null", { expires: 50, path : "/" });
+		  	$.cookie("remember", false, { expires: 50, path : "/" });
+	    	window.location.href=logoutUrl;
+	    });
+	    $(".modalForgotPassword").off().on("click", function(){
+	        mylog.log("registerNetwork");
+	        $("#modalForgot").modal("show");
+	         $("#modalForgot").css('display', 'block');        
+	    });
+	    $("#loginNetwork").on("click", function(){
+	        mylog.log("loginNetwork");
+	        $("#modalLogin").modal("show");
+	         $("#modalLogin").css('display', 'block');        
 	    });
 	});
 

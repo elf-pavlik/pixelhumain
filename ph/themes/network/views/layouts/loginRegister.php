@@ -74,11 +74,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <span class="name" >
-                        <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/KGOUGLE-logo.png" height="60" class="inline margin-bottom-15">
-                        <?php } else if(Yii::app()->params["CO2DomainName"] == "FI"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/FI-logo.png" height="90" class="inline margin-bottom-15">
-                        <?php } else { ?>
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
                                 <?php  
@@ -95,7 +90,6 @@
                                 <!-- <br/>Le commun avance <span class="text-red">montez à bord !</span> -->
                                 <hr>
                             </h4>
-                        <?php } ?>
                     </span>
                     <!--<h3 class="letter-red no-margin" style="margin-top:-15px!important;">se connecter</h3><br>-->
                    
@@ -106,7 +100,7 @@
                 </div>
             </div>
             <div class="col-md-4 col-md-offset-4 text-left">
-                <label><i class="fa fa-envelope"></i> <?php echo Yii::t("login","An email") ?></label><br>
+                <label><i class="fa fa-envelope"></i>!! <?php echo Yii::t("login","An email") ?></label><br>
                 <input class="form-control" name="email" id="email-login" type="text" placeholder="<?php echo Yii::t("login","email") ?>"><br>
                 
                 <label><i class="fa fa-key"></i> <?php echo Yii::t("login","A password") ?></label><br>
