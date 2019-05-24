@@ -127,7 +127,7 @@
 	
 		<?php //if(!isset(Yii::app()->session['userId']))
 		//$this->renderPartial($layoutPath."simply_login_register", array("params" => $networkJson));
-		$this->renderPartial('webroot.themes.CO2.views.layouts.loginRegister', array("subdomain" => @$subdomain, "logoNetwork"=> $logoNetwork)); 
+		$this->renderPartial('webroot.themes.CO2.views.layouts.loginRegister', array("subdomain" => @$subdomain, "logoNetwork"=> @$logoNetwork)); 
 		?>
 
 	<!-- **************************************
