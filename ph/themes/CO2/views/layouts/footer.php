@@ -49,13 +49,13 @@
 
 <?php
     $themeParams = Yii::app()->session['paramsConfig'];  
-    if(@$type=="cities")    { 
-        $lblCreate = "";
-        $themeParams["pages"]["#".$page]["mainTitle"] = "Rechercher une commune"; 
-        $themeParams["pages"]["#".$page]["placeholderMainSearch"] = "Rechercher une commune"; 
-    }
+    //if(@$type=="cities")    { 
+    //    $lblCreate = "";
+    //    $themeParams["pages"]["#".$page]["mainTitle"] = "Rechercher une commune"; 
+     //   $themeParams["pages"]["#".$page]["placeholderMainSearch"] = "Rechercher une commune"; 
+    //}
     //var_dump($page); exit;
-    $useFooter = @$themeParams["pages"]["#".$page]["useFooter"];
+    $useFooter = @$themeParams["pages"]["#welcome"]["useFooter"];
     $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
 
 if(@$useFooter != false){ 

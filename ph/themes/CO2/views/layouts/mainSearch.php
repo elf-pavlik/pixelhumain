@@ -16,20 +16,19 @@
 
     if(!@Yii::app()->session['paramsConfig']) 
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
-    $metaTitle = (@$this->module->pageTitle) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
-    $metaDesc = (@$this->module->description) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
-    $metaAuthor = (@$this->module->author) ? $this->module->author : @Yii::app()->session['paramsConfig']["metaAuthor"];  
-    $metaImg = (@$this->module->image) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
+    $metaTitle = (isset($this->module->pageTitle)) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
+    $metaDesc = (isset($this->module->description)) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
+    $metaImg = (isset($this->module->image)) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
     $metaRelCanoncial=(isset($this->module->relCanonical)) ? $this->module->relCanonical : "https://www.communecter.org";
     $keywords = ""; 
-    if(@$this->module->keywords) 
+    if(isset($this->module->keywords))
         $keywords = $this->module->keywords; 
-    else if(@$this->keywords) 
+    else if(isset($this->keywords) )
         $keywords = $this->keywords; 
-    if(@$this->module->favicon) 
+    if(isset($this->module->favicon) )
         $favicon = $this->module->favicon;   
     else  
-        $favicon =(@$this->module->assetsUrl) ? $this->module->assetsUrl."/images/favicon.ico" : "/images/favicon.ico"; 
+        $favicon =(isset($this->module->assetsUrl)) ? $this->module->assetsUrl."/images/favicon.ico" : "/images/favicon.ico"; 
  
     $params = Yii::app()->session['paramsConfig']; 
 ?>
@@ -141,14 +140,22 @@
                 $this->renderPartial($layoutPath.'.rocketchat'); 
             } 
         ?>
-
+        <!-- /********* MAIN-CONTAINER ***********/
+            => Contain all structure of cotools (header + menu + view page + footer ) 
+        -->
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
             <?php $this->renderPartial($layoutPath.'header',array("page"=>"welcome","layoutPath"=>$layoutPath)); ?>
+            <!-- /********* WELCOME PAGE ***********/
+                - Home page of co or costum home directly intergrated in pageContent (view container)
+                - Hash will be catch after on jquery 
+            -->
             <div class="pageContent">
                 <?php 
                 echo $content; 
                 ?>
             </div>
+            <?php $this->renderPartial($layoutPath.'footer', array(  "page" => "welcome")); ?>
+
         </div>
         <div class="portfolio-modal portfolio-modal-survey modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true" style="top:0px !important;">
             <div class="modal-content">
@@ -372,7 +379,6 @@
             var CO2DomainName = "<?php echo $CO2DomainName; ?>";
             var CO2params = <?php echo json_encode(Yii::app()->session['paramsConfig']); ?>;
             
-            
             jQuery(document).ready(function() { 
                 themeObj.init(); 
                 $.each(modules,function(k,v) { 
@@ -382,10 +388,7 @@
                         lazyLoad( v.init , null, callB);
                     }
                 });
-                //if( typeof costum != "undefined" && notNull(costum) ){
-                   // costum.init();
-                //}
-
+               
                 var pageUrls = <?php echo json_encode(Yii::app()->session['paramsConfig']["pages"]); ?>;
                 $.each( pageUrls ,function(k , v){ 
                     if(typeof urlCtrl.loadableUrls[k] == "undefined")
@@ -399,7 +402,9 @@
                 if(typeof themeObj.firstLoad == "function")
                     themeObj.firstLoad();
                 else if(themeObj.firstLoad){
-                    if(location.hash == "#welcome" || ((location.hash == "" ||  location.hash == "#") && (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome"))){
+                    //Specific case if welcome is 
+                    if(location.hash == "#welcome" 
+                        || ((location.hash == "" ||  location.hash == "#") && (userId=="" || (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome")))){
                         setTimeout(function(){ $('.progressTop').val(60)
                             $("#loadingModal").css({"opacity": 0.8});
                         }, 500);
@@ -411,17 +416,10 @@
                         }, 500);
 
                     }else{
-                        //$("#loadingModal").css({"opacity": 0.95});
-                        //setTimeout(function(){ $('.progressTop').val(40)}, 1000);
                         themeObj.firstLoad=false;
                         $(".pageContent").html("<i class='fa fa-spin fa-spinner'></i>");
-                        //hashLoading= (!notEmpty(location.hash)) ? "#myhome" : "#";
                         urlCtrl.loadByHash(location.hash);
                     }    
-                    //setTimeout(function(){ $('.progressTop').val(60)}, 3000);
-                    /*setTimeout(function(){ $('.progressTop').val(80)}, 3500);
-                    setTimeout(function(){ $(".progressTop").val(100);}, 4000);
-                    setTimeout(function(){ $(".progressTop").fadeOut(200);}, 4500);*/
                 }else
                     $("#page-top").show();
                 /*$(".close-footer-help").click(function(){
