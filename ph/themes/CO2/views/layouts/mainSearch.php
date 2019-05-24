@@ -154,6 +154,8 @@
                 echo $content; 
                 ?>
             </div>
+            <?php $this->renderPartial($layoutPath.'footer', array(  "page" => "welcome")); ?>
+
         </div>
         <div class="portfolio-modal portfolio-modal-survey modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true" style="top:0px !important;">
             <div class="modal-content">
