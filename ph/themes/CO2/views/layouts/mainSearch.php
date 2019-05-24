@@ -18,6 +18,7 @@
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
     $metaTitle = (isset($this->module->pageTitle)) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (isset($this->module->description)) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
+    $metaAuthor = (isset($this->module->author)) ? $this->module->author : @Yii::app()->session['paramsConfig']["metaAuthor"];  
     $metaImg = (isset($this->module->image)) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
     $metaRelCanoncial=(isset($this->module->relCanonical)) ? $this->module->relCanonical : "https://www.communecter.org";
     $keywords = ""; 
