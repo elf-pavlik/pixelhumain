@@ -19,7 +19,7 @@
             <?php 
             $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']["logo"] : Yii::app()->theme->baseUrl.$value["url"];
             $logoMin = (@Yii::app()->session['costum']["logoMin"]) ? Yii::app()->session['costum']["logoMin"] : $logo;
-            $height = (@$value["height"]) ? $value["height"] : 30;
+            $height = (@$value["height"]) ? $value["height"] : 40;
             ?>
             <img src="<?php echo $logo;?>" class="logo-menutop pull-left hidden-xs" height="<?php echo $height ?>">
             <img src="<?php echo $logoMin;?>" class="logo-menutop pull-left visible-xs" height="40">
@@ -217,7 +217,7 @@
                 </button>
             <?php } 
             if($key=="home"){ ?>
-                <a href="#myhome" class="lbh menu-button btn-menu btn-menu-home text-dark pull-right btn-menu-tooltips menu-btn-top" 
+                <a href="#home" class="lbh menu-button btn-menu btn-menu-home text-dark pull-right btn-menu-tooltips menu-btn-top" 
                        data-toggle="tooltip" data-placement="bottom" 
                       title="<?php echo Yii::t("common","Home") ?>" alt="<?php echo Yii::t("common","Home") ?>" style="width: inherit !important;text-transform: capitalize;">
                   <i class="fa fa-home"></i> <span class="hidden-xs hidden-sm" style="font-size: 16px;"><?php echo Yii::t("common","Home") ?></span>
