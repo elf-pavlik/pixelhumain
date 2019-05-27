@@ -2,7 +2,6 @@
     "name": "Carte ZéroDéchet",
     "mode": "server",
     "skin": {
-        "logo": "https://i2.wp.com/zerodechetlyon.org/wp-content/uploads/2017/02/cropped-logo-carre.png?w=436&h=436&crop=1&ssl=1",
         "title": "Carte Mon Commercant M'emballe Durablement Lyon",
         "shortDescription": "Carte Mon Commercant M'emballe Durablement du Groupe Local Zéro Déchet Lyon (v2019/04/09)",
         "displayScope": false,

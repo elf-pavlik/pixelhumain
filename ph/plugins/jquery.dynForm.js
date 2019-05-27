@@ -4886,7 +4886,7 @@ var dyFObj = {
 	checkRules : function(rules, params) {
 		$(".errorForm").addClass("hidden");
 		$(".errorForm").html("");
-		//mylog.log("checkRules", rules, params.formObj.jsonSchema.properties);
+		mylog.log("checkRules", rules, params);
 		var notError = true ;
 		$.each(params.formObj.jsonSchema.properties, function(kProp, valProp) {
 			if(typeof valProp.rules != "undefined" && 
@@ -4901,9 +4901,11 @@ var dyFObj = {
 				}
 
 				if(valProp.inputType == "finder" ){
+					mylog.log("checkRules ");
 					if( typeof valProp.rules.required != "undefined" &&
 						valProp.rules.required == true &&
 						Object.keys(finder.object[kProp]).length == 0 ){
+						mylog.log("checkRules 2", kProp, valProp);
 						dyFObj.showError(kProp+valProp.inputType, tradDynForm["This field is required."]);
 						notError = false;
 					}
@@ -4911,6 +4913,7 @@ var dyFObj = {
 					if( typeof valProp.rules.lengthMin != "undefined" &&
 						valProp.rules.lengthMin != null &&
 						Object.keys(finder.object[kProp]).length < valProp.rules.lengthMin ){
+						mylog.log("checkRules 3");
 						dyFObj.showError(kProp+valProp.inputType, "quantité minimum : "+valProp.rules.lengthMin);
 						notError = false;
 					}
@@ -4918,6 +4921,7 @@ var dyFObj = {
 			}
 			
 		});
+		mylog.log("checkRules", notError);
 		return notError ;
 		
 	},
