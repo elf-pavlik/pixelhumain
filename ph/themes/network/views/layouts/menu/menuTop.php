@@ -315,8 +315,8 @@ if(  	@$params['enSavoirPlus'] &&
                                         <i class="fa fa-language"></i> <?php echo Yii::t("common", "Languages") ; ?>
                                     </a>
                                     <ul class="dropdown-menu">
-                                      <li><a href="javascript:;" onclick="setLanguage('en')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/en.png"/><?php echo Yii::t("common","English") ?></a></li>
-                                      <li><a href="javascript:;" onclick="setLanguage('fr')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/fr.png"/><?php echo Yii::t("common","French") ?></a></li>
+                                      <li><a href="javascript:;" onclick="coInterface.setLanguage('en')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/en.png"/><?php echo Yii::t("common","English") ?></a></li>
+                                      <li><a href="javascript:;" onclick="coInterface.setLanguage('fr')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/fr.png"/><?php echo Yii::t("common","French") ?></a></li>
                                     </ul>
                                 </li>
                                 <?php if( Yii::app()->session["userIsAdmin"] ) { ?>

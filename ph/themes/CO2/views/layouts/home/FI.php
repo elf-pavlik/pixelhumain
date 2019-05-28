@@ -329,7 +329,7 @@ jQuery(document).ready(function() {
         e.preventDefault(); 
         $('#modalMainMenu').modal("hide"); 
         mylog.warn("***************************************"); 
-        mylog.warn("bindLBHLinks",$(this).attr("href")); 
+        mylog.warn("coInterface.bindLBHLinks",$(this).attr("href")); 
         mylog.warn("***************************************"); 
         var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href"); 
         urlCtrl.loadByHash( h ); 
@@ -448,7 +448,7 @@ function loadLiveNow () {
    		
     ajaxPost( "#nowList", baseUrl+'/'+moduleId+'/element/getdatadetail/type/0/id/0/dataName/liveNow?tpl=nowList',
 					searchParams, function(data) {
-					bindLBHLinks();
+					coInterface.bindLBHLinks();
      } , "html" );
 }
 
