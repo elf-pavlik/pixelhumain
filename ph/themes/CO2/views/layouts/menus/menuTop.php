@@ -30,7 +30,7 @@
             </div>
         <?php
         // END LOGO HTML NAV BAR
-        }else if($key=="searchBar"){ 
+        }else if($key=="searchBar" && !empty($dropdownResult)){ 
             $value["dropdownResult"]=$dropdownResult;
             echo ButtonCtk::searchBar($value);    
         // END INPUT SEARCH BAR IN NAV -->
