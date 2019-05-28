@@ -546,6 +546,7 @@
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
             };
+            if(typeof coInterface.simpleScroll != "undefined") coInterface.simpleScroll(0);
             if(typeof typeObj.buildCreateButton!= "undefined") typeObj.buildCreateButton(".toolbar-bottom-adds", true);
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
             if(typeof themeObj.initMyScopes != "undefined") themeObj.initMyScopes();
