@@ -19,7 +19,7 @@
             <?php 
             $logo = (@Yii::app()->session['costum']["logo"]) ? Yii::app()->session['costum']["logo"] : Yii::app()->theme->baseUrl.$value["url"];
             $logoMin = (@Yii::app()->session['costum']["logoMin"]) ? Yii::app()->session['costum']["logoMin"] : $logo;
-            $height = (@$value["height"]) ? $value["height"] : 30;
+            $height = (@$value["height"]) ? $value["height"] : 40;
             ?>
             <img src="<?php echo $logo;?>" class="logo-menutop pull-left hidden-xs" height="<?php echo $height ?>">
             <img src="<?php echo $logoMin;?>" class="logo-menutop pull-left visible-xs" height="40">
@@ -31,20 +31,22 @@
         <?php
         // END LOGO HTML NAV BAR
         }else if($key=="searchBar"){ 
-            $value["dropdownResult"]=$dropdownResult;
+           // $value["dropdownResult"]=$dropdownResult;
             echo ButtonCtk::searchBar($value);    
         // END INPUT SEARCH BAR IN NAV -->
-        }else if($key=="useFilter" && isset($useFilter) && !empty($useFilter)){   
-            $showScopeFilter=(@$value["scopeFilter"] && $value["scopeFilter"] && (!isset($useFilter["scope"]) || $useFilter["scope"])) ? true : false;
-            $showFilters=(@$value["showFilter"] && $value["showFilter"] && (!isset($useFilter["filters"]) || $useFilter["filters"])) ? true : false;
-            if($showScopeFilter){ ?> 
-            <button class="btn hidden-xs pull-left menu-btn-scope-filter text-red elipsis margin-right-10 navbar-item-left"
-                    data-type="<?php echo @$type; ?>">
-                    <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>
-            </button>
+        }else if($key=="useFilter"){   
+            if(isset($value["scopeFilter"]) && $value["scopeFilter"]){ ?> 
+                <button class="btn hidden-xs pull-left menu-btn-scope-filter text-red elipsis margin-right-10 navbar-item-left"
+                        data-type="<?php echo @$type; ?>" style="display: none;">
+                        <i class="fa fa-map-marker"></i> <span class="header-label-scope"><?php echo Yii::t("common","where ?") ?></span>
+                </button>
             <?php } 
-            if($showFilters){ ?>
-             <button class="btn btn-show-filters pull-left hidden-xs navbar-item-left"> <i class="fa fa-filter visible-sm pull-left" style="font-size:18px;"></i><span class="hidden-sm"><?php echo Yii::t("common", "Filters") ?></span> <span class="topbar-badge badge animated bounceIn badge-warning"></span> <i class="fa fa-angle-down"></i></button>
+            if(isset($value["showFilter"]) && $value["showFilter"]){ ?>
+                <button class="btn btn-show-filters pull-left hidden-xs navbar-item-left" style="display: none;"> 
+                    <i class="fa fa-filter visible-sm pull-left" style="font-size:18px;"></i>
+                        <span class="hidden-sm"><?php echo Yii::t("common", "Filters") ?></span> <span class="topbar-badge badge animated bounceIn badge-warning"></span> 
+                    <i class="fa fa-angle-down"></i>
+                </button>
             <?php }
             
         } 
@@ -80,7 +82,7 @@
                         <img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo Yii::app()->language ?>.png" width="22"/> <span class="caret"></span></a>
                         <ul class="dropdown-menu arrow_box dropdown-languages-nouser" role="menu" style="">
                             <?php foreach($themeParams["languages"] as $lang => $label){ ?>
-                                    <li><a href="javascript:;" onclick="setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png" width="25"/> <?php echo Yii::t("common",$label) ?></a></li>
+                                    <li><a href="javascript:;" onclick="coInterface.setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png" width="25"/> <?php echo Yii::t("common",$label) ?></a></li>
                                 <?php } ?>
                         </ul>
                     </li>
@@ -112,9 +114,18 @@
                             $href=($k=="logout") ? Yii::app()->createUrl($v["href"]) : $v["href"];
                             $blank=(@$blank) ? "target='_blank'" : "";
                             if($k=="admin"){ 
-                                if(Yii::app()->session["userIsAdmin"] || Yii::app()->session[ "userIsAdminPublic" ] || Yii::app()->session["isCostumAdmin"]){
+                                if(Yii::app()->session["userIsAdmin"] || 
+                                   Yii::app()->session[ "userIsAdminPublic" ] || 
+                                   Yii::app()->session["isCostumAdmin"]){
                                     $show=true;
                                     $label=(Yii::app()->session["userIsAdmin"]) ? Yii::t("common", "Admin") : Yii::t("common", "Admin public");
+
+                                    if(Yii::app()->session["userIsAdmin"])
+                                        echo '<li class="text-center">Super Admin</li>';
+                                    else if(Yii::app()->session[ "userIsAdminPublic" ])
+                                        echo '<li class="text-center">Admin Public</li>';
+                                    else if( Yii::app()->session["isCostumAdmin"])
+                                        echo '<li class="text-center">Costum Admin</li>';
                                 }else
                                     $show=false;
                             }
@@ -127,7 +138,7 @@
                                 <?php if($k=="languages"){ ?>
                                     <ul class="dropdown-menu">
                                     <?php foreach($themeParams["languages"] as $lang => $label){ ?>
-                                        <li><a href="javascript:;" onclick="setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png"/><span class="hidden-xs"><?php echo Yii::t("common",$label) ?></span></a></li>
+                                        <li><a href="javascript:;" onclick="coInterface.setLanguage('<?php echo $lang ?>')"><img src="<?php echo Yii::app()->getRequest()->getBaseUrl(true); ?>/images/flags/<?php echo $lang ?>.png"/><span class="hidden-xs"><?php echo Yii::t("common",$label) ?></span></a></li>
                                     <?php } ?>
                                     </ul>
                                 <?php } ?>
@@ -206,7 +217,7 @@
                 </button>
             <?php } 
             if($key=="home"){ ?>
-                <a href="#myhome" class="lbh menu-button btn-menu btn-menu-home text-dark pull-right btn-menu-tooltips menu-btn-top" 
+                <a href="#home" class="lbh menu-button btn-menu btn-menu-home text-dark pull-right btn-menu-tooltips menu-btn-top" 
                        data-toggle="tooltip" data-placement="bottom" 
                       title="<?php echo Yii::t("common","Home") ?>" alt="<?php echo Yii::t("common","Home") ?>" style="width: inherit !important;text-transform: capitalize;">
                   <i class="fa fa-home"></i> <span class="hidden-xs hidden-sm" style="font-size: 16px;"><?php echo Yii::t("common","Home") ?></span>
@@ -225,7 +236,7 @@
             <?php   
             if(@Yii::app()->session["paramsConfig"]["pages"]){
                 foreach (@Yii::app()->session["paramsConfig"]["pages"] as $key => $value) {
-                    if(@$value["inMenu"]==true && @$value["open"]==true){ ?>
+                    if(@$value["inMenu"]==true){ ?>
                     <a class="dropdown-item padding-5 text-center col-xs-6 lbh-menu-app" href="javascript:;" data-hash="<?php echo $key; ?>" data-toggle="tooltip" data-placement="bottom" ><i class="fa fa-<?php echo $value["icon"]; ?> fa-2x"></i><br/><span class="<?php echo str_replace("#","",$key); ?>ModSpan"><?php echo Yii::t("common", @$value["subdomainName"]); ?></span></a>
                 <?php } 
                 }
@@ -240,7 +251,7 @@
     </div>
 </div>
 <?php 
-$this->renderPartial($layoutPath.'loginRegister', array("subdomain" => @$subdomain)); 
+$this->renderPartial($layoutPath.'loginRegister'/*, array("subdomain" => @$subdomain)*/); 
 
 $this->renderPartial($layoutPath.'formCreateElement'); ?>
 

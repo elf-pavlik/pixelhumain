@@ -109,7 +109,9 @@
 #btn-month-next.btn:hover{
   color:white !important;
 }
-
+.responsive-calendar.light .day.active.focus{
+  z-index: 10;
+}
 @media screen and (max-width: 767px) {
   .responsive-calendar .day.active .btn {
       position: absolute;

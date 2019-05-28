@@ -191,7 +191,7 @@ jQuery(document).ready(function()
 {
 
 	//initNotifications();
-	//bindLBHLinks();
+	//coInterface.bindLBHLinks();
 	bindNotifEvents();
 	refreshNotifications();
 });
@@ -209,7 +209,7 @@ function bindNotifEvents(){
             notifCount();
         }, 200);
 
-	    bindLBHLinks();
+	    coInterface.bindLBHLinks();
 	});
 }
 

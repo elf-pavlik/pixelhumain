@@ -28,6 +28,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', e
 .iamgurdeeposahan {
     border-radius: 4px 4px 0 0;
 }
+#modal-confidentiality{
+    z-index: 100000;
+}
 .profilSocial .blockUsername > h2 {
     /*font-family: oswald;*/
     font-size: 27px;

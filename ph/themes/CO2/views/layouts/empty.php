@@ -210,7 +210,7 @@
   <script type="text/javascript">
     jQuery(document).ready(function() {
       
-      bindLBHLinks();
+      coInterface.bindLBHLinks();
       themeObj.init(true);
       $(".btn-show-mainmenu").click(function(){
         $("#dropdown-user").addClass("open");

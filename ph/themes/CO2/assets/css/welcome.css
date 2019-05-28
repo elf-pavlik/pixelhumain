@@ -156,7 +156,7 @@ a.btn.btn-github:hover{	color: #4078C0;	border-color: #4078C0;}
 .header-nowList{
 	display: none;
 }
-.el-nowList{
+/*.el-nowList{
 
 	width:23% !important;
 	margin-right:1%;
@@ -177,7 +177,7 @@ a.btn.btn-github:hover{	color: #4078C0;	border-color: #4078C0;}
 .el-nowList.no-img:hover .elemt_name, 
 .el-nowList.no-img:hover .elemt_date {
     width: 100%!important;
-}
+}*/
 /*.col-nowList hr{
 	margin-bottom: 50px!important;
 }*/

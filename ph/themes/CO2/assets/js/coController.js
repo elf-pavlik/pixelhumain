@@ -1,9 +1,9 @@
-function  bindLBHLinks() { 
+function  coInterface.bindLBHLinks() { 
 	$(".lbh").unbind("click").on("click",function(e) {  	
 		e.preventDefault();
 		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
-		mylog.warn("bindLBHLinks",$(this).attr("href"));
+		mylog.warn("coInterface.bindLBHLinks",$(this).attr("href"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 	    urlCtrl.loadByHash( h );
@@ -19,8 +19,8 @@ function  bindLBHLinks() {
 		e.preventDefault();
 		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
-		mylog.warn("bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
-		//alert("bindLBHLinks Preview"+$(this).data("modalshow"));
+		mylog.warn("coInterface.bindLBHLinks Preview", $(this).attr("href"),$(this).data("modalshow"));
+		//alert("coInterface.bindLBHLinks Preview"+$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		if( $(this).data("modalshow") ){
@@ -44,7 +44,7 @@ function  bindLBHLinks() {
 		e.preventDefault();
 		$("#openModal").modal("hide");
 		mylog.warn("***************************************");
-		mylog.warn("bindLBHLinks Preview ELEMENT", $(this).attr("href"),$(this).data("modalshow"));
+		mylog.warn("coInterface.bindLBHLinks Preview ELEMENT", $(this).attr("href"),$(this).data("modalshow"));
 		mylog.warn("***************************************");
 		var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href");
 		var url = (h.indexOf("#") == 0 ) ? "app/"+ urlCtrl.convertToPath(h) : "app/"+ h;
@@ -450,7 +450,7 @@ function showAjaxPanel (url,title,icon, mapEnd , urlObj) {
 				$(".modal-backdrop").hide();
 				bindExplainLinks();
 				bindTags();
-				bindLBHLinks();
+				coInterface.bindLBHLinks();
 				$(".progressTop").val(90);
 				setTimeout(function(){ $(".progressTop").val(100)}, 10);
 				$(".progressTop").fadeOut(200);
@@ -726,7 +726,7 @@ var smallMenu = {
 				$(dest).prepend(html);
 				
 			}
-			bindLBHLinks();
+			coInterface.bindLBHLinks();
 		 },"html" );
 	},
 	//openSmallMenuAjaxBuild("",baseUrl+"/"+moduleId+"/favorites/list/tpl/directory2","FAvoris")
@@ -787,7 +787,7 @@ var smallMenu = {
 				else
 					$(smallMenu.destination).css("cssText", "width: 83.5% !important;left: 16.5% !important;");
 			}
-			bindLBHLinks();
+			coInterface.bindLBHLinks();
 			if (typeof callback == "function") 
 				callback();
 		}
