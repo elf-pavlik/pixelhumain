@@ -254,13 +254,12 @@ var finder = {
 	},
 	//init : function(id, multiple, initType, values, update, callbackSelect){
 	init : function(params, callbackSelect){
-		mylog.log("finder init", params, callbackSelect);
+		mylog.log("finder init!", params, callbackSelect);
 		finder.object[params.id]={};
 		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
 		 	finder.callback[params.id]=callbackSelect;
 		if(params.values){
-
 			var valFin = params.values;
 			if(typeof params.values.contributors != "undefined"){
 
@@ -308,7 +307,10 @@ var finder = {
 			if(typeof contextData != "undefined" && notNull(contextData) && $.inArray(contextData.type, finder.typeAuthorized[params.id]) > -1)
 				finder.addInForm(params.id, contextData.id, contextData.type, contextData.name, contextData.profilThumbImageUrl);
 			else if(typeof finder.typeAuthorized[params.id] != "undefined" && 
-				((finder.typeAuthorized[params.id].length != 1 && finder.typeAuthorized[params.id][0] != "events") || finder.typeAuthorized[params.id][0] == "organizations"))  
+					( ( finder.typeAuthorized[params.id].length != 1 && 
+						finder.typeAuthorized[params.id][0] != "events" ) || 
+					finder.typeAuthorized[params.id][0] == "organizations" ) && 
+					!notNull(params.initElt) )  
 				finder.addInForm(params.id, userId, "citoyens", userConnected.name+" ("+tradDynForm.me+")", userConnected.profilThumbImageUrl);
 		}
 
@@ -345,7 +347,7 @@ var finder = {
         });
 	},
 	addInForm : function(keyForm, id, type, name, img){
-		//mylog.log("finder addInForm", keyForm, id, type, name, img);
+		mylog.log("finder addInForm", keyForm, id, type, name, img);
 		img= (img != "") ? baseUrl + img : modules.co2.url + "/images/thumb/default_"+type+".png";
 		//img= (img != "") ? img : modules.co2.url + "/images/thumb/default_"+type+".png";
 		var str="";
@@ -2327,7 +2329,8 @@ var dyFObj = {
 	        			update : update,
 	        			invite : fieldObj.invite,
 	        			roles : fieldObj.roles,
-	        			search : fieldObj.search
+	        			search : fieldObj.search,
+	        			initElt : fieldObj.initElt
 	        		};
 
 	        		finder.init(finderParams);
@@ -2924,8 +2927,9 @@ var dyFObj = {
 		$(id).append(fieldHTML);
 
 		//Post creation initialisation
-		if( fieldObj.init && $.isFunction(fieldObj.init) )
-        	fieldObj.init(field+fieldObj.inputType);
+		if( fieldObj.init && $.isFunction(fieldObj.init) ){
+			fieldObj.init(field+fieldObj.inputType);
+		}
         if(initField && $.isFunction(initField) )
         	initField ('.'+field+fieldObj.inputType);
 	},
