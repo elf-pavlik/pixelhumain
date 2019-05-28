@@ -17,6 +17,19 @@ function ajaxPost(id,ajaxUrl,params,callback, datatype){
     dataType = "json";*/
     if(datatype != "html" )
         $(id).html("");
+    if(params == null)
+      params = {};
+
+    if( activeModuleId == "costum" ){
+        mylog.log("costum LBH", costum.slug, contextData );
+        if(contextData && contextData.id){
+          params.costumSlug = costum.slug;
+          params.costumId = contextData.id;
+          params.costumType = contextData.type;
+        }
+        else
+          params.costumSlug = costum.slug;
+    } 
     $.ajax({
         url:ajaxUrl,
         data:params,
