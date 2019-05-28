@@ -23,13 +23,12 @@ function ajaxPost(id,ajaxUrl,params,callback, datatype){
 
     if( activeModuleId == "costum" ){
         mylog.log("costum LBH", costum.slug, contextData );
-        if(contextData && contextData.id){
-          params.costumSlug = costum.slug;
+        params.costumSlug = costum.slug;
+        //cas d'un costum utilisé comme un template par plusieru element 
+        if(contextData && contextData.id && costum.contextId == contextData.id ){ 
           params.costumId = contextData.id;
           params.costumType = contextData.type;
         }
-        else
-          params.costumSlug = costum.slug;
     } 
     $.ajax({
         url:ajaxUrl,
