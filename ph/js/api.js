@@ -13,6 +13,7 @@ function checkLoggued(ajaxUrl)
 
 function ajaxPost(id,ajaxUrl,params,callback, datatype){
     mylog.log("ajaxPost 2", id,ajaxUrl,params);
+    //alert("HERERE")
     /*if(dataType == null)
     dataType = "json";*/
     if(datatype != "html" )
