@@ -5084,7 +5084,8 @@ var dyFInputs = {
 
 					if( typeof object.slug != "undefined"){
 						mylog.log("object.add source", object.slug, object);
-						typeObj[key].dynForm.jsonSchema.properties.source = object.slug;
+						sourceObject = { inputType:"hidden", value : object.slug };
+						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 					}
 
 					if( typeof object.request != "undefined"){
