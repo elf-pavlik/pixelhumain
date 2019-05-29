@@ -8,7 +8,7 @@
     </button>
     <?php //if(false){
         foreach ($params["pages"] as $key => $value) {
-          
+            
             if(!empty($value["inMenu"]) && $value["inMenu"]==true ){ 
                 $url = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
                 $target = ( !empty($value["target"]) && $value["target"] === true ? "_blanc" : "") ;
