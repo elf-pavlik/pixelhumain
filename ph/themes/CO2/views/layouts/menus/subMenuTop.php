@@ -8,14 +8,14 @@
     </button>
     <?php //if(false){
         foreach ($params["pages"] as $key => $value) {
-          
+            
             if(!empty($value["inMenu"]) && $value["inMenu"]==true ){ 
                 $url = ( !empty($value["urlExtern"]) ? $value["urlExtern"] : "javascript:;") ;
                 $target = ( !empty($value["target"]) && $value["target"] === true ? "_blanc" : "") ;
                 if(!empty($value["urlExtern"])){ ?>
                     <a href="<?php echo $value["urlExtern"]; ?>" 
                     target="<?php echo $target; ?>" 
-                    class="<?php echo $key; ?>ModBtn btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+                    class="<?php echo $key; ?>ModBtn btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header">
                 <?php
                 } else { ?>
                     <a href="javascript:;" data-hash="<?php echo $key; ?>" 
