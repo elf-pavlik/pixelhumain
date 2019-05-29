@@ -404,8 +404,9 @@
                     themeObj.firstLoad();
                 else if(themeObj.firstLoad){
                     //Specific case if welcome is 
+                    isUserConnected=(userId=="") ? "unlogged" : "logged";
                     if(location.hash == "#welcome" 
-                        || ((location.hash == "" ||  location.hash == "#") && (userId=="" || (userId!="" && themeParams.pages["#app.index"].redirect.logged=="welcome")))){
+                        || ((location.hash == "" ||  location.hash == "#") && themeParams.pages["#app.index"].redirect["logged"]=="welcome")){
                         setTimeout(function(){ $('.progressTop').val(60)
                             $("#loadingModal").css({"opacity": 0.8});
                         }, 500);

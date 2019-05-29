@@ -15,7 +15,7 @@
                 if(!empty($value["urlExtern"])){ ?>
                     <a href="<?php echo $value["urlExtern"]; ?>" 
                     target="<?php echo $target; ?>" 
-                    class="<?php echo $key; ?>ModBtn btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header <?php if($subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+                    class="<?php echo $key; ?>ModBtn btn btn-link pull-left btn-menu-to-app hidden-xs hidden-top link-submenu-header">
                 <?php
                 } else { ?>
                     <a href="javascript:;" data-hash="<?php echo $key; ?>" 
