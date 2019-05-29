@@ -21,7 +21,6 @@ var dyFInputs
 var dyFCustom
 var finder 
 
-
 ***************************************** */
 
 (function($) {
@@ -72,6 +71,7 @@ var finder
 			var errorHTML = '<div class="errorHandler alert alert-danger no-display">'+
 								'<i class="fa fa-remove-sign"></i> Merci de corriger les erreurs ci dessous.'+
 							'</div>';
+			$("body").removeClass("modal-open");
 			$(settings.formId).append(errorHTML);
 
 			if(settings.beforeBuild && jQuery.isFunction( settings.beforeBuild ) )
@@ -226,6 +226,8 @@ function slugify (value, slug) {
 		.replace(/\-{2,}/g,'-');
 	}
 };
+
+
 var finder = {
 	object : {},
 	finderPopulation : {},
@@ -259,6 +261,7 @@ var finder = {
 		finder.typeAuthorized[params.id]=params.initType;
 		if(notNull(callbackSelect) && typeof callbackSelect == "function")
 		 	finder.callback[params.id]=callbackSelect;
+		 
 		if(params.values){
 
 			var valFin = params.values;
@@ -1150,8 +1153,8 @@ var dyFObj = {
 		mylog.log("step",form, data);
 		dyFObj.openForm( form ,afterLoad , data);
 	},
-	editElement : function (type,id, subType){
-		mylog.warn("--------------- editElement ",type,id,subType);
+	editElement : function (type,id, subType, dynFormCostum){
+		mylog.warn("--------------- editElement dynFormCostum",type,id,subType,dynFormCostum);
 		//get ajax of the elemetn content
 
 		uploadObj.set(type, id);
@@ -1185,8 +1188,8 @@ var dyFObj = {
 				else 
 					typeForm = dyFInputs.get(typeModules).ctrl;
 
-				mylog.log("editElement typeForm", typeForm);
-				dyFObj.openForm(typeForm,null, data.map);
+				mylog.log("editElement typeForm ", typeForm);
+				dyFObj.openForm(typeForm,null, data.map,null, dynFormCostum);
 				//console(dyFObj.init.uploader, "editiiiiiii");
 				
 	        } else 
@@ -1249,8 +1252,9 @@ var dyFObj = {
 
 	},
 	//entry point function for opening dynForms
-	openForm : function  (type, afterLoad,data, isSub) { 
+	openForm : function  (type, afterLoad,data, isSub, dynFormCostum) { 
 		//mylog.clear();
+
 		$.unblockUI();
 		$("#openModal").modal("hide");
 		mylog.warn("--------------- Open Form ",type, afterLoad,data);
@@ -1270,6 +1274,13 @@ var dyFObj = {
 		dyFObj.activeElem = (isSub) ? "subElementObj" : "elementObj";
 		dyFObj.activeModal = (isSub) ? "#openModal" : "#ajax-modal";
 
+		//enables setting dynform customization 
+		//sample used in costum/views/tpls/wizard
+		if( typeof dynFormCostum != "undefined"){
+			mylog.warn("--------------- Open Form dynFormCostum set",dynFormCostum);
+			dyFObj.dynFormCostum = dynFormCostum;
+		}
+
 		if(notNull(finder))
 			finder.initVar();
 
@@ -1286,7 +1297,7 @@ var dyFObj = {
 
 			dyFObj.getDynFormObj(type, function() { 
 				dyFObj.startBuild(afterLoad,data);
-			},afterLoad, data);
+			},afterLoad, data, dynFormCostum);
 		} else {
 			dyFObj.openFormAfterLogin = {
 				type : type, 
@@ -1302,7 +1313,7 @@ var dyFObj = {
 	//(string) :: will get the definition if exist in typeObj[key].dybnForm 
 	//if doesn't exist tries to lazyload it from assets/js/dynForm 
 	//(object) :: is dynformp definition 
-	getDynFormObj : function(type, callback,afterLoad, data){
+	getDynFormObj : function(type, callback,afterLoad, data,dynFormCostum){
 		//alert(type+'.js');
 		mylog.warn("------------ getDynFormObj",type, callback,afterLoad, data );
 		if (typeof type == "object"){
@@ -1317,6 +1328,10 @@ var dyFObj = {
 			mylog.log(" typeObj Loaded : ", type);
 			dyFObj[dyFObj.activeElem] = dyFInputs.get(type);
 			if( notNull(dyFInputs.get(type).col) ) uploadObj.type = dyFInputs.get(type).col;
+			
+			if( typeof dyFObj.dynFormCostum != "undefined")
+				dyFObj[dyFObj.activeElem].dynFormCostum = dyFObj.dynFormCostum;
+			
     		callback( dyFObj[dyFObj.activeElem], afterLoad, data );
 		} else {
 			//TODO : pouvoir surchargé le dossier dynform dans le theme
@@ -1359,6 +1374,10 @@ var dyFObj = {
 				  	//dyFInputs.get(type).dynForm = dynForm;
 					typeObj[type].dynForm = dynForm;
 					dyFObj[dyFObj.activeElem] = typeObj.get(type);
+
+					if( typeof dyFObj.dynFormCostum != "undefined")
+						dyFObj[dyFObj.activeElem].dynFormCostum = dyFObj.dynFormCostum;
+
 					//console.log("culuclucluccuucucuc",dyFObj[dyFObj.activeElem]);
 					if( notNull( typeObj.get(type).col) ) 
 						uploadObj.type = typeObj.get(type).col;
@@ -1386,7 +1405,7 @@ var dyFObj = {
 	  	$(dyFObj.activeModal).modal("show");
 	  	leftPosModal=($("#modalCoop").is(":visible")) ? $("#menuCoop").outerWidth() : $("#menuApp.menuLeft").outerWidth();
 		$(".main-container.vertical .portfolio-modal.modal").css("left",leftPosModal);
-		mylog.log("scopeObj dyFInputs", dyFInputs);
+		mylog.log( "scopeObj dyFInputs", dyFInputs );
 	  	dyFInputs.init();
 	  	afterLoad = ( notNull(afterLoad) ) ? afterLoad : null;
 	  	data = ( notNull(data) ) ? data : {}; 
@@ -1447,8 +1466,8 @@ var dyFObj = {
 							$("#"+e).fineUploader('setEndpoint', endPoint);
 						});
 				   	}
-				    if( typeof bindLBHLinks != "undefined")
-			        	bindLBHLinks();
+				    if( typeof coInterface.bindLBHLinks != "undefined")
+			        	coInterface.bindLBHLinks();
 			    },
 			    onSave : function()
 			    {
@@ -1464,8 +1483,8 @@ var dyFObj = {
 			        	dyFObj[dyFObj.activeElem].save(dyFObj.activeModal+" #ajaxFormModal");
 			        if( dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save )
 			        	dyFObj[dyFObj.activeElem].dynForm.jsonSchema.save(); //use this for subDynForms
-			        else if(dyFObj[dyFObj.activeElem].saveUrl)
-			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
+			        else if( dyFObj[dyFObj.activeElem].saveUrl )
+			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].cIdtrl, dyFObj[dyFObj.activeElem].saveUrl, afterSave );
 			        else
 			        	dyFObj.saveElement( "#ajaxFormModal", dyFObj[dyFObj.activeElem].col, dyFObj[dyFObj.activeElem].ctrl, null, afterSave );
 			        return false;
@@ -1537,13 +1556,16 @@ var dyFObj = {
 		    	}
 	    	}
 		    else { 
-		    	mylog.log("commonAfterSave isMapEnd", isMapEnd);
+		    	mylog.log("commonAfterSave isMapEnd", isMapEnd, uploadObj.gotoUrl);
 		    	if(typeof networkJson != "undefined")
 					isMapEnd = true;
+
 				if(activeModuleId == "survey")//use case for answerList forms updating
 	        		window.location.reload();
+	        	/*
+				check it with @bouboule
 	        	else if(notNull(uploadObj.gotoUrl))
-					urlCtrl.loadByHash( uploadObj.gotoUrl );
+					urlCtrl.loadByHash( uploadObj.gotoUrl );*/
 				else
 					urlCtrl.loadByHash( location.hash );
 	        }
@@ -2336,6 +2358,16 @@ var dyFObj = {
         	}
         }
         /* **************************************
+		* COLOR PICKER  , we use colorpicker.js
+		***************************************** */
+        else if ( fieldObj.inputType == "colorpicker" ) {
+        	if(placeholder == "")
+        		placeholder="#ff0066";
+        	mylog.log("build field "+field+">>>>>> colorpicker");
+        	fieldHTML += iconOpen+'<input id="'+field+'" type="text" class="form-control colorpickerInput '+fieldClass+'" name="'+field+'" id="'+field+'" value="'+value+'" placeholder="'+placeholder+'"/>'+iconClose;
+        }
+
+        /* **************************************
 		* DATE INPUT , we use bootstrap-datepicker
 		***************************************** */
         else if ( fieldObj.inputType == "date" ) {
@@ -3089,6 +3121,37 @@ var dyFObj = {
 				mylog.error("select2 library is missing");
 		} 
 
+		/* **************************************
+		* Color picker 
+		***************************************** */
+		function loadColorPicker(callback) {
+			mylog.log("loadColorPicker");
+			if( ! jQuery.isFunction(jQuery.ColorPicker) ) {
+				mylog.log("loadDateTimePicker2");
+				lazyLoad( baseUrl+'/plugins/colorpicker/js/colorpicker.js', 
+						  baseUrl+'/plugins/colorpicker/css/colorpicker.css',
+						  callback);
+		    }
+		}
+		var initColor = function(){
+			mylog.log("init .colorpickerInput");
+			$(".colorpickerInput").ColorPicker({ 
+		        color : "pink",
+		        onSubmit: function(hsb, hex, rgb, el) {
+					$(el).val(hex);
+					$(el).ColorPickerHide();
+				},
+				onBeforeShow: function () {
+					$(this).ColorPickerSetColor(this.value);
+				}
+		    }).bind('keyup', function(){
+				$(this).ColorPickerSetColor(this.value);
+			});
+		};
+
+		if(  $(".colorpickerInput").length){
+			loadColorPicker(initColor);
+		}
 		/* **************************************
 		* DATE INPUT , we use http://xdsoft.net/jqplugins/datetimepicker/
 		***************************************** */
@@ -5021,7 +5084,8 @@ var dyFInputs = {
 
 					if( typeof object.slug != "undefined"){
 						mylog.log("object.add source", object.slug, object);
-						typeObj[key].dynForm.jsonSchema.properties.source = object.slug;
+						sourceObject = { inputType:"hidden", value : object.slug };
+						typeObj[key].dynForm.jsonSchema.properties.source = sourceObject;
 					}
 
 					if( typeof object.request != "undefined"){
@@ -5476,7 +5540,7 @@ var dyFInputs = {
 			label : "ta mere",
        		placeholder:"",
        		rules: "",
-       		params : {"targetId":contextData.id, "targetType":contextData.type, 
+       		params : { "targetId":contextData.id, "targetType":contextData.type, 
      					"targetImg":contextData.profilThumbImageUrl, "targetName":contextData.name, 
      					"authorId":userId,"authorImg":userConnected.profilThumbImageUrl, "authorName":userConnected.name}
    		}
@@ -6072,6 +6136,15 @@ var dyFInputs = {
     	};
 	    return inputObj;
 	},
+	colorpicker : function(typeDate, label, placeholder, rules){
+    	var inputObj = {
+	        inputType : "colorpicker",
+	        placeholder: "#ff0066" ,
+	        label : ( notEmpty(label) ? label : "Choisir une couleur" ),
+	        rules : ( notEmpty(rules) ? rules : {} ) 
+	    }
+    	return inputObj;
+    },
 	allDay : function(checked){
 
     	var inputObj = {
@@ -6430,8 +6503,14 @@ var dyFCustom = {
 				
 			$.each(p,function(el,v) {
 				$("."+el).show();
+				alert("adminOnly show "+el);
 		 	});
 				
+		} else {
+			$.each(p,function(el,v) {
+				$("."+el).hide();
+				alert("adminOnly hide "+el);
+		 	});
 		}
 	},
 	presetValue : function(p) {
@@ -7628,7 +7707,7 @@ var scopeObj = {
 					
 					scopeObj.onclickScope(input, domTarget);
 
-					bindLBHLinks();
+					coInterface.bindLBHLinks();
 
 					//signal que le chargement est terminé
 					mylog.log("loadingDataGS false");

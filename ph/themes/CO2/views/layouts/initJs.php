@@ -56,7 +56,6 @@
             "init"   : "<?php echo Yii::app()->getModule( "costum" )->assetsUrl ?>/costum.js",
             callback : function(){
                 costum.init();
-
             }
         },
         "cotools" : <?php echo json_encode( array(
@@ -522,18 +521,7 @@
     var allReadyLoadWindow=false;
     var navInSlug=false;
     var historyReplace=true;
-    var searchObject={
-        text:"",
-        nbPage:0,
-        indexMin:0,
-        indexStep:30,
-        count:true,
-        tags:[],
-        initType : "",
-        types:[],
-        countType:[],
-        locality:{}
-    };
+   
     var myScopes = {};
     var initLoginRegister={
         email : '<?php echo @$_GET["email"]; ?>',
@@ -545,10 +533,6 @@
     };
     var themeObj = {
         init : function(noLoading){
-            if(!notNull(noLoading) || !noLoading){
-                themeObj.blockUi.setLoader();
-                $.blockUI({ message : themeObj.blockUi.processingMsg});
-            } 
             toastr.options = {
               "closeButton": false,
               "positionClass": "toast-bottom-right",
@@ -562,12 +546,11 @@
               "showMethod": "fadeIn",
               "hideMethod": "fadeOut"
             };
+            if(typeof coInterface.simpleScroll != "undefined") coInterface.simpleScroll(0);
             if(typeof typeObj.buildCreateButton!= "undefined") typeObj.buildCreateButton(".toolbar-bottom-adds", true);
             if(typeof initFloopDrawer != "undefined") initFloopDrawer();
-            if(typeof resizeInterface != "undefined") resizeInterface();
             if(typeof themeObj.initMyScopes != "undefined") themeObj.initMyScopes();
-            //if(typeof localStorage != "undefined" && typeof localStorage.circuit != "undefined")
-              //  circuit.obj = JSON.parse(localStorage.getItem("circuit"));
+            if(typeof coInterface.init != "undefined") coInterface.init();
             //Init mentions contact
             if(myContacts != null){
                 $.each(myContacts["citoyens"], function (key,value){
@@ -613,93 +596,12 @@
                     }
                 });
             }
-            document.onmouseover = function() {
-                //User's mouse is inside the page.
-                window.innerDocClick = true;
-            }
-
-            document.onmouseleave = function() {
-                //User's mouse has left the page.
-                window.innerDocClick = false;
-            }
-            window.onhashchange = function() {
-                if (!window.innerDocClick) {
-                    //Browser back button was clicked
-                    resetSearchObject();
-                    searchObject.text="",
-                    searchObject.tags=[];
-                    onchangeClick=true;
-                    console.log("reseeeeetObject search", searchObject);
-                }
-                mylog.warn("popstate history.state",history.state);
-                if( lastWindowUrl && "onhashchange" in window){
-                    console.log("history",history);
-                    if( allReadyLoadWindow == false && onchangeClick){
-                        lastSplit=lastWindowUrl.split(".");
-                        currentSplit=location.hash.split(".");    
-                        if(navInSlug || lastWindowUrl.indexOf("#page")>=0 && location.hash.indexOf("#page")>=0){
-                            if(navInSlug){
-                                if(lastSplit[0]==currentSplit[0]){
-                                    if(location.hash.indexOf("view")>=0){
-                                        dir="";
-                                        if(typeof currentSplit[4] != "undefined")
-                                            dir=currentSplit[4];
-
-                                        if(currentSplit[2] != "coop")
-                                        getProfilSubview(currentSplit[2],dir);
-                                    }
-                                    else
-                                        getProfilSubview("");
-
-                                }else
-                                    urlCtrl.loadByHash(location.hash,true);
-                            }else{
-                                if(lastSplit[2]==currentSplit[2] && lastSplit[4]==currentSplit[4]){
-                                    if(location.hash.indexOf("view")>=0){
-                                        dir="";
-                                        if(typeof currentSplit[8] != "undefined")
-                                            dir=currentSplit[8];
-
-                                        if(currentSplit[6] != "coop")
-                                        getProfilSubview(currentSplit[6],dir);
-                                    }
-                                    else
-                                        getProfilSubview("");
-
-                                }else
-                                    urlCtrl.loadByHash(location.hash,true);
-                            }
-                        }else if(lastWindowUrl.indexOf("#admin")>=0 && location.hash.indexOf("#admin")>=0){
-                           if(lastSplit[0]==currentSplit[0]){
-                                if(location.hash.indexOf("view")>=0){
-                                    getAdminSubview(currentSplit[2]);
-                                }
-                                else
-                                    getAdminSubview("");
-
-                            }else
-                                urlCtrl.loadByHash(location.hash,true);
-                        }else if(lastWindowUrl.indexOf("#docs")>=0 && location.hash.indexOf("#docs")>=0){
-                           if(lastSplit[0]==currentSplit[0]){
-                                page = (location.hash.indexOf("page")>=0) ? currentSplit[2] : "welcome";
-                                dir = (location.hash.indexOf("dir")>=0) ? currentSplit[4] : mainLanguage;
-                                navInDocs(page, dir);
-                            }else
-                                urlCtrl.loadByHash(location.hash,true);
-                        }else{
-                            urlCtrl.loadByHash(location.hash,true);
-                        }
-                    } 
-                    allReadyLoadWindow = false;
-                    onchangeClick=true;
-                }
-                urlBackHistory=lastWindowUrl;
-                lastWindowUrl = location.hash;
-            }
+            urlCtrl.bindCoNav();
+           
         },
         firstLoad:(costum!= null && costum.themeObj!=null && costum.themeObj.firstLoad != null) ? costum.themeObj.firstLoad: true,
         imgLoad : "CO2r.png" ,
-        mainContainer : ".main-container",
+        mainContainer : ".pageContent",
         blockUi : {
             setLoader : function(){
                 color1="#354c57";
@@ -738,7 +640,21 @@
                     '</span>';
             },
             processingMsg :"", 
-            errorMsg : ""
+            errorMsg : "",
+            /* ****************
+            Generic ajax panel loading process 
+            loads any REST Url endpoint returning HTML into the content section
+            also switches the global Title and Icon
+            **************/
+            show: function() { 
+                msg = '<h4 style="font-weight:300" class=" text-dark padding-10">'+
+                        '<i class="fa fa-spin fa-circle-o-notch"></i><br>'+trad.currentlyloading+'...'+
+                      '</h4>';
+
+                if( jsonHelper.notNull( "themeObj.blockUi.processingMsg" ) )
+                    msg = themeObj.blockUi.processingMsg;
+                $.blockUI({ message :  msg });
+            }
         },
         dynForm : {
             onLoadPanel : function (elementObj) { 

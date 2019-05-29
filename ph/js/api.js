@@ -12,11 +12,24 @@ function checkLoggued(ajaxUrl)
 }
 
 function ajaxPost(id,ajaxUrl,params,callback, datatype){
-    mylog.log("ajaxPost", id,ajaxUrl,params);
+    mylog.log("ajaxPost 2", id,ajaxUrl,params);
+    //alert("HERERE")
     /*if(dataType == null)
     dataType = "json";*/
     if(datatype != "html" )
         $(id).html("");
+    if(params == null)
+      params = {};
+
+    if( activeModuleId == "costum" ){
+        mylog.log("costum LBH", costum.slug, contextData );
+        params.costumSlug = costum.slug;
+        //cas d'un costum utilisé comme un template par plusieru element 
+        if(contextData && contextData.id && costum.contextId == contextData.id ){ 
+          params.costumId = contextData.id;
+          params.costumType = contextData.type;
+        }
+    } 
     $.ajax({
         url:ajaxUrl,
         data:params,

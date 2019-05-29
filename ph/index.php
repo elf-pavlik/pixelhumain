@@ -7,12 +7,13 @@ $config=dirname(__FILE__).'/protected/config/main.php';
 if( stripos($_SERVER['SERVER_NAME'], "127.0.0.1") === false && 
 	stripos($_SERVER['SERVER_NAME'], "localhost") === false && 
 	stripos($_SERVER['SERVER_NAME'], "::1") === false && 
-	stripos($_SERVER['SERVER_NAME'], "localhost:8080") === false && strpos($_SERVER['SERVER_NAME'], "local.")!==0 )
+	stripos($_SERVER['SERVER_NAME'], "localhost:8080") === false && strpos($_SERVER['SERVER_NAME'], "local.")!==0
+	&& strpos($_SERVER['SERVER_NAME'], "qa.")!==0 )
     defined('YII_DEBUG') or define('YII_DEBUG',false); // PROD
 else {
 	error_reporting(E_ALL);	
 	ini_set('display_errors', 'On');
-    defined('YII_DEBUG') or define('YII_DEBUG',true);//LOCAL DEV    
+    defined('YII_DEBUG') or define('YII_DEBUG',true);//LOCAL DEV OR QA  
 }
     
 // specify how many levels of call stack should be shown in each log message

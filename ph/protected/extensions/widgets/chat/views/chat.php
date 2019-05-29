@@ -71,7 +71,7 @@ jQuery(document).ready(function() {
         e.preventDefault(); 
         $('#modalMainMenu').modal("hide"); 
         mylog.warn("***************************************"); 
-        mylog.warn("bindLBHLinks",$(this).attr("href")); 
+        mylog.warn("coInterface.bindLBHLinks",$(this).attr("href")); 
         mylog.warn("***************************************"); 
         var h = ($(this).data("hash")) ? $(this).data("hash") : $(this).attr("href"); 
         urlCtrl.loadByHash( h ); 
