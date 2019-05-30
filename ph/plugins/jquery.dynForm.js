@@ -1810,6 +1810,7 @@ var dyFObj = {
 
         		if(fieldObj.maximumSelectionLength)
         			dyFObj.init.initValues[field]["maximumSelectionLength"] =  fieldObj.maximumSelectionLength;
+        		
         		mylog.log("select2TagsInput fieldObj.minimumInputLength", fieldObj.minimumInputLength);
         		if(typeof fieldObj.minimumInputLength != "undefined" && typeof fieldObj.minimumInputLength == "number"){
         			if(!dyFObj.init.initValues[field])
@@ -1817,6 +1818,8 @@ var dyFObj = {
         			dyFObj.init.initValues[field]["minimumInputLength"] = fieldObj.minimumInputLength;
         			mylog.log("select2TagsInput fieldObj dyFObj.init.initValues[field]", dyFObj.init.initValues[field]);
         		}
+
+
 
      
         		//TODO RApha bien géré les tags via network et costum 
@@ -3069,7 +3072,7 @@ var dyFObj = {
 						  "placeholder" : ( $(this).attr("placeholder") ) ? $(this).attr("placeholder") : "",
 						};
 						if(dyFObj.init.initValues[ $(this).attr("id") ].maximumSelectionLength)
-							selectOptions.maximumSelectionLength = dyFObj.init.initValues[$(this).attr("id")]["maximumSelectionLength"];
+							selectOptions.maximumSelectionSize = dyFObj.init.initValues[$(this).attr("id")]["maximumSelectionLength"];
 						mylog.log( "select2TagsInput dyFObj.init.initValues", dyFObj.init.initValues);
 
 						if(typeof dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength == "number" && dyFObj.init.initValues[ $(this).attr("id") ].minimumInputLength > 0){

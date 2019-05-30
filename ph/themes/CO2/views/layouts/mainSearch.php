@@ -236,7 +236,8 @@
                 '/plugins/jQuery-contextMenu/dist/jquery.contextMenu.min.css' , 
                 '/plugins/jQuery-contextMenu/dist/jquery.ui.position.min.js' , 
                 
-                '/plugins/select2/select2.min.js' , 
+                '/plugins/select2/select2.min.js' ,
+                '/plugins/select2/select2_locale_'.Yii::app()->language.'.js' ,  
                 '/plugins/moment/min/moment.min.js' ,
                 '/plugins/moment/min/moment-with-locales.min.js',
                 '/plugins/jquery.dynForm.js',
