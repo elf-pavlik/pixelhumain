@@ -6579,6 +6579,7 @@ var dyFCustom = {
 	 		dyFObj.elementObj.dynForm.jsonSchema.properties=dyFCustom.orderingProperties(dyFObj.elementObj.dynForm.jsonSchema.properties, dyFCustom.orderForm);
 	},
 	orderingProperties : function(properties, order){
+		mylog.log("sisi la famille", properties, order);
 		object={};
 		$.each(order, function(e, v){
 			object[v]=properties[v];
