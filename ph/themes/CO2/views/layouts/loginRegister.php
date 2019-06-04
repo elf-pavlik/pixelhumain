@@ -232,16 +232,18 @@ if(@$logoNetwork && !empty($logoNetwork))
                 <div class="form-group pull-left no-margin agreeContent" style="width:100%;">
                     <div class="checkbox-content pull-left no-padding">
                         <label for="agree" class="">
-                            <input type="checkbox" class="agree checkbox-info" id="agree" name="agree">
+                            <input type="checkbox" class="agree" id="agree" name="agree">
                             <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                         <span class="agreeMsg checkbox-msg letter-red">
+                            <?php echo Yii::t("login","I agree to the Terms of") ?> 
+                            <a href="https://www.communecter.org/doc/Conditions Générales d'Utilisation.pdf" target="_blank" class="bootbox-spp text-dark">
+                                <?php echo Yii::t("login","Service and Privacy Policy") ?>
+                            </a>
+                        </span>
                         </label>
+
                     </div>
-                    <span class="agreeMsg checkbox-msg letter-red">
-                        <?php echo Yii::t("login","I agree to the Terms of") ?> 
-                        <a href="https://www.communecter.org/doc/Conditions Générales d'Utilisation.pdf" target="_blank" class="bootbox-spp text-dark">
-                            <?php echo Yii::t("login","Service and Privacy Policy") ?>
-                        </a>
-                    </span>
+                   
 
                     <!--<div>
                         <label for="agree" class="checkbox-inline letter-red">

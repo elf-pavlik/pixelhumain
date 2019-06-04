@@ -2091,7 +2091,8 @@ margin-right: 5px;
 .checkbox-content label {
     margin-bottom: 0px;
     vertical-align: bottom;
-    font-size: 10px;
+    height: 20px;
+    cursor:pointer;
 }
 .checkbox-content .cr {
     position: relative;
