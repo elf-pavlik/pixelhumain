@@ -487,12 +487,16 @@ jQuery(document).ready(function() {
             removeParametersWithoutReloading();
         <?php } 
         } ?>
-    
+    //alert("HERE");
     if(!userConnected)
         Login.init();
     else
         addCustomValidators(); 
 
+    $("#modalRegister").on('show.bs.modal', function(){
+        //alert('The modal is fully shown.');
+        Login.runRegisterValidator();
+    });
     $('.form-register #username').keyup(function(e) { 
         validateUserName();
     });
