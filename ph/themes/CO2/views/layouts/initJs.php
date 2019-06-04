@@ -342,8 +342,8 @@
             return res;
         },
         authorizedButton : function(elt, config, context){
-            if( typeof context != "undefined")
-                mylog.log("authorizedButton",elt, config, context);
+            //if( typeof context != "undefined")
+              //  mylog.log("authorizedButton",elt, config, context);
             auth=false;
             if(notNull(context) && typeof context != "undefined"){ 
                 if(elt.add=="onlyMember" && 
@@ -411,7 +411,7 @@
                         '</a>';
                 }
             });
-            mylog.log("buildCreateButton menuButtonCreate", menuButtonCreate);
+            //mylog.log("buildCreateButton menuButtonCreate", menuButtonCreate);
             $(domContain).html(menuButtonCreate);            
             if(count <= 1 && notNull(dropdownButton) && dropdownButton){
                 oneButton='<a href="'+hash+'" '+
