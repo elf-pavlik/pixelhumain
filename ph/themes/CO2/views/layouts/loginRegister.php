@@ -233,8 +233,8 @@ if(@$logoNetwork && !empty($logoNetwork))
                     <div class="checkbox-content pull-left no-padding">
                         <label for="agree" class="">
                             <input type="checkbox" class="agree" id="agree" name="agree">
-                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                         <span class="agreeMsg checkbox-msg letter-red">
+                            <span class="cr pull-left"><i class="cr-icon fa fa-check"></i></span>
+                         <span class="agreeMsg checkbox-msg letter-red pull-left">
                             <?php echo Yii::t("login","I agree to the Terms of") ?> 
                             <a href="https://www.communecter.org/doc/Conditions Générales d'Utilisation.pdf" target="_blank" class="bootbox-spp text-dark">
                                 <?php echo Yii::t("login","Service and Privacy Policy") ?>
