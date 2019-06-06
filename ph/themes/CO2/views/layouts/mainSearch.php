@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 
-<!-- ****************************** THEME CO2 : mainSearch ******************************-->
+<!-- ****************************** THEME CO2 : mainSearch 2 ******************************-->
 <?php 
-    if(!isset(Yii::app()->session["userId"]) && 
-        isset( Yii::app()->request->cookies['remember'] ) && 
-        Yii::app()->request->cookies['remember']->value == "true" &&
-        isset( Yii::app()->request->cookies['lyame'] ) && 
-        isset( Yii::app()->request->cookies['drowsp'] ) && 
-        @Yii::app()->request->cookies['drowsp']->value != "null"){
-            $pwdDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['drowsp']->value);
-            $emailDecrypt = $this->pwdDecrypt(Yii::app()->request->cookies['lyame']->value);
-            $res = Person::login($emailDecrypt, $pwdDecrypt, false);
-    }
+
     $layoutPath = 'webroot.themes.'.Yii::app()->theme->name.'.views.layouts.';
     $themeAssetsUrl = Yii::app()->theme->baseUrl. '/assets';
     $parentModuleId = ( @Yii::app()->params["module"]["parent"] ) ?  Yii::app()->params["module"]["parent"] : $this->module->id;
@@ -27,6 +18,7 @@
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams(); 
     $metaTitle = (isset($this->module->pageTitle)) ? $this->module->pageTitle : Yii::app()->session['paramsConfig']["metaTitle"]; 
     $metaDesc = (isset($this->module->description)) ? $this->module->description : @Yii::app()->session['paramsConfig']["metaDesc"];  
+    $metaAuthor = (isset($this->module->author)) ? $this->module->author : @Yii::app()->session['paramsConfig']["metaAuthor"];  
     $metaImg = (isset($this->module->image)) ? Yii::app()->getRequest()->getBaseUrl(true).$this->module->image : "https://co.viequotidienne.re/"."/themes/CO2".@Yii::app()->session['paramsConfig']["metaImg"]; 
     $metaRelCanoncial=(isset($this->module->relCanonical)) ? $this->module->relCanonical : "https://www.communecter.org";
     $keywords = ""; 
@@ -45,18 +37,33 @@
 <html lang="en" class="no-js">   
 
     <head>
-
+        <title><?php echo $metaTitle;?></title> 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <meta name="title" content="<?php echo $metaTitle; ?>"> 
         <meta name="description" content="<?php echo $metaDesc; ?>"> 
-        <meta name="author" content="pixelhumain"> 
+        <meta name="author" content="<?php echo $metaAuthor; ?>"> 
         <meta property="og:image" content="<?php echo $metaImg; ?>"/> 
         <meta property="og:description" content="<?php echo $metaDesc; ?>"/> 
         <meta property="og:title" content="<?php echo $metaTitle; ?>"/> 
         <meta name="keywords" lang="<?php echo Yii::app()->language; ?>" content="<?php echo CHtml::encode($keywords); ?>" >  
-        <title><?php echo $metaTitle;?></title> 
+        
+        <script type="text/javascript">
+            <?php if(isset($_GET['_escaped_fragment_'])){ ?>
+                window.location.hash = '#<?php echo $_GET['_escaped_fragment_'] ?>';
+                <?php
+                }
+            ?>
+            console.log("hash 0",window.location.hash);
+            if (window.location.hash.indexOf('#!') === 0){
+                var hash = window.location.hash.substr(2);
+                console.log("hash",hash);
+                window.location.hash = '#'+hash;
+                console.log("window.location.hash",window.location.hash);
+            }
+        </script>
         <link rel='shortcut icon' type='image/x-icon' href="<?php echo $favicon;?>" />  
         <link rel="canonical" href="<?php echo $metaRelCanoncial ?>" />
  
@@ -84,6 +91,7 @@
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
     if($this->module->id != "costum"){
         Yii::app()->session['paramsConfig'] = CO2::getThemeParams();
+        $params=Yii::app()->session['paramsConfig'];
         Yii::app()->session["costum"]=null;
     }
     $this->renderPartial($layoutPath.'initJs', 
@@ -102,12 +110,24 @@
 
     </head>
 
-    <body id="page-top" class="index" style="display: none;">
-
+    <body id="page-top" class="index">
+    <!-- <script type="text/javascript">
+    var d = new Date();
+    var timecount = d.getTime();
+    </script> -->
         <!-- **************************************
         MAP CONTAINER
         ******************************************* -->
-        <progress class="progressTop" max="100" value="20"></progress>   
+        <div id="firstLoader">
+        <?php 
+            if(isset($params["loadingModal"]))
+                $this->renderPartial( $params["loadingModal"]  );
+            else   
+                $this->renderPartial($layoutPath.'loadingModal',array("themeParams"=>$params));
+        ?>
+        </div>
+
+        <?php $this->renderPartial($layoutPath.'progressBar',array("themeParams"=>$params)); ?>
         <div id="mainMap">
             <?php 
             $this->renderPartial( $layoutPath.'mainMap.'.Yii::app()->params["CO2DomainName"], array("modulePath"=>$modulePath )); ?>
@@ -121,9 +141,22 @@
                 $this->renderPartial($layoutPath.'.rocketchat'); 
             } 
         ?>
-
+        <!-- /********* MAIN-CONTAINER ***********/
+            => Contain all structure of cotools (header + menu + view page + footer ) 
+        -->
         <div class="main-container col-md-12 col-sm-12 col-xs-12 <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>">
-            <div class="pageContent"></div>
+            <?php $this->renderPartial($layoutPath.'header',array("page"=>"welcome","layoutPath"=>$layoutPath)); ?>
+            <!-- /********* WELCOME PAGE ***********/
+                - Home page of co or costum home directly intergrated in pageContent (view container)
+                - Hash will be catch after on jquery 
+            -->
+            <div class="pageContent">
+                <?php 
+                echo $content; 
+                ?>
+            </div>
+            <?php $this->renderPartial($layoutPath.'footer', array(  "page" => "welcome")); ?>
+
         </div>
         <div class="portfolio-modal portfolio-modal-survey modal fade <?php echo @Yii::app()->session['paramsConfig']["appRendering"] ?>" id="openModal" tabindex="-1" role="dialog" aria-hidden="true" style="top:0px !important;">
             <div class="modal-content">
@@ -293,12 +326,7 @@
             /* ***********************
             theme stuff
             ************************ */
-            $cssAnsScriptFilesModule = array(
-                //'/assets/js/cookie.js' ,
-                //'/assets/js/jqBootstrapValidation.js' ,
-                
-                //'/assets/data/mainCategories.js' ,
-                
+            $cssAnsScriptFilesModule = array(   
                 '/assets/vendor/bootstrap/js/bootstrap.min.js',
                 '/assets/vendor/bootstrap/css/bootstrap.min.css',
                 '/assets/css/sig/sig.css',
@@ -323,21 +351,15 @@
                 '/js/links.js',
                 '/js/default/index.js',
                 '/js/default/notifications.js',
-                //'/js/default/directory.js',
                 '/js/dataHelpers.js',
                 '/js/sig/localisationHtml5.js',
                 '/js/floopDrawerRight.js',
                 '/js/sig/geoloc.js',
-                //'/js/default/formInMap.js',
-                //'/js/default/formInMapOld.js',
                 '/js/default/globalsearch.js',
                 '/js/sig/findAddressGeoPos.js',
                 '/js/jquery.filter_input.js',
-                //'/js/breadcrum_co.js',
                 '/js/scopes/scopes.js',
-                //'/js/scopes/breadcrum_co.js',
-                //'/js/scopes/multiscopes.js',
-                );
+            );
             HtmlHelper::registerCssAndScriptsFiles($cssAnsScriptFilesModule, $this->module->getParentAssetsUrl() );
             /* ***********************
             END theme stuff
@@ -359,7 +381,6 @@
             var CO2DomainName = "<?php echo $CO2DomainName; ?>";
             var CO2params = <?php echo json_encode(Yii::app()->session['paramsConfig']); ?>;
             
-            
             jQuery(document).ready(function() { 
                 themeObj.init(); 
                 $.each(modules,function(k,v) { 
@@ -369,10 +390,7 @@
                         lazyLoad( v.init , null, callB);
                     }
                 });
-                if( typeof costum != "undefined" && notNull(costum) ){
-                   // costum.init();
-                }
-
+               
                 var pageUrls = <?php echo json_encode(Yii::app()->session['paramsConfig']["pages"]); ?>;
                 $.each( pageUrls ,function(k , v){ 
                     if(typeof urlCtrl.loadableUrls[k] == "undefined")
@@ -383,14 +401,30 @@
                         });
                     }
                 });
-                
-                if(themeObj.firstLoad){
-                    themeObj.firstLoad=false;
-                    urlCtrl.loadByHash(location.hash,true);
-                }
-                setTimeout(function(){
+                if(typeof themeObj.firstLoad == "function")
+                    themeObj.firstLoad();
+                else if(themeObj.firstLoad){
+                    //Specific case if welcome is 
+                    isUserConnected=(userId=="") ? "unlogged" : "logged";
+                    if(location.hash == "#welcome" 
+                        || ((location.hash == "" ||  location.hash == "#") && themeParams.pages["#app.index"].redirect["logged"]=="welcome")){
+                        setTimeout(function(){ $('.progressTop').val(60)
+                            $("#loadingModal").css({"opacity": 0.8});
+                        }, 500);
+                        setTimeout(function(){ $('.progressTop').val(80)}, 500);
+                        setTimeout(function(){ $(".progressTop").val(100);}, 5000);
+                        setTimeout(function(){ 
+                            $(".progressTop").fadeOut(200);
+                            $("#firstLoader").fadeOut(400);
+                        }, 500);
+
+                    }else{
+                        themeObj.firstLoad=false;
+                        $(".pageContent").html("<i class='fa fa-spin fa-spinner'></i>");
+                        urlCtrl.loadByHash(location.hash);
+                    }    
+                }else
                     $("#page-top").show();
-                }, 500);
                 /*$(".close-footer-help").click(function(){
                     $("#footer-help").remove();
                     if(typeof userId != "undefined" && userId != ""){
@@ -411,11 +445,6 @@
                 });*/
             });
         </script>
-        
-        <?php 
-       // if(@Yii::app()->session["costum"]["initScript"])
-         //   $this->renderPartial( Yii::app()->session["costum"]["initScript"] );
-         ?>
     </body>
 
 </html>

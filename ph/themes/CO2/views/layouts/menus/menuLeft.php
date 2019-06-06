@@ -31,11 +31,11 @@
 </style>
 <?php $visibleClass=(@$params["numberOfApp"]<=1) ? "hidden": ""; ?>
 <div id="menuApp" class="menuLeft hidden-xs">
-    <?php
+<?php
         foreach ($params["pages"] as $key => $value) {
             if(@$value["inMenu"]==true){ ?>
                 <a href="javascript:;" data-hash="<?php echo $key; ?>" 
-                class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app btn-menu-vertical col-xs-12 hidden-xs hidden-top link-submenu-header <?php if(@$subdomainName==$value["subdomainName"]) echo 'active'; ?>">
+                class="<?php echo $key; ?>ModBtn lbh-menu-app btn btn-link pull-left btn-menu-to-app btn-menu-vertical col-xs-12 hidden-xs hidden-top link-submenu-header">
                         
                 <i class="fa fa-<?php echo $value["icon"]; ?>"></i>
                 <span class="tooltips-menu-btn"><?php echo Yii::t("common", @$value["subdomainName"]); ?></span>

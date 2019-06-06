@@ -81,10 +81,7 @@ if(@$logoNetwork && !empty($logoNetwork))
                         
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div class="loginLogo col-md-offset-3 col-sm-offset-2 col-md-6 col-sm-8 col-xs-12">
-                                <?php  
-                                $nameTheme = ( (Yii::app()->theme->name == "network") ? "CO2" : Yii::app()->theme->name );
-                                ?>
-                                <img style="border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto" class="logoLoginRegister img-responsive" src="<?php echo $logo;?>"/>
+                                 <img style="border: 10px solid white; border-bottom-width:0px;max-height: inherit;margin:auto" class="logoLoginRegister img-responsive" src="<?php echo $logo;?>"/> 
                                 
                                 </div>
                             </div>
@@ -175,8 +172,6 @@ if(@$logoNetwork && !empty($logoNetwork))
 </form>
 <?php //} ?>
 
-<?php if(Yii::app()->params["CO2DomainName"] != "kgougle"){ //bloquage des inscriptions ?>
-<?php //if($subdomain != "welcome"){ ?>
 <div class="portfolio-modal modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-hidden="true">
     <form class="modal-content form-register box-register padding-top-15"  >
         <div class="close-modal" data-dismiss="modal">
@@ -234,8 +229,23 @@ if(@$logoNetwork && !empty($logoNetwork))
                 </div>
                 <input class="form-control" id="isInvitation" name="isInvitation" type="hidden" value="false">
                 <hr>
-                <div class="form-group pull-left no-margin padding-top-10" style="width:100%;">
-                    <div>
+                <div class="form-group pull-left no-margin agreeContent" style="width:100%;">
+                    <div class="checkbox-content pull-left no-padding">
+                        <label for="agree" class="">
+                            <input type="checkbox" class="agree" id="agree" name="agree">
+                            <span class="cr pull-left"><i class="cr-icon fa fa-check"></i></span>
+                         <span class="agreeMsg checkbox-msg letter-red pull-left">
+                            <?php echo Yii::t("login","I agree to the Terms of") ?> 
+                            <a href="https://www.communecter.org/doc/Conditions Générales d'Utilisation.pdf" target="_blank" class="bootbox-spp text-dark">
+                                <?php echo Yii::t("login","Service and Privacy Policy") ?>
+                            </a>
+                        </span>
+                        </label>
+
+                    </div>
+                   
+
+                    <!--<div>
                         <label for="agree" class="checkbox-inline letter-red">
                             <input type="checkbox" class="grey agree" id="agree" name="agree">
                             <?php echo Yii::t("login","I agree to the Terms of") ?> 
@@ -243,7 +253,7 @@ if(@$logoNetwork && !empty($logoNetwork))
                                 <?php echo Yii::t("login","Service and Privacy Policy") ?>
                             </a>
                         </label>
-                    </div>
+                    </div>-->
                 </div>
 
                 <br><hr>
@@ -263,8 +273,6 @@ if(@$logoNetwork && !empty($logoNetwork))
         </div>
     </form>
 </div>
-<?php //} ?>
-
 <div class="modal fade" role="dialog" id="modalRegisterSuccess">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -294,9 +302,6 @@ if(@$logoNetwork && !empty($logoNetwork))
         </div>
     </div>
 </div>
-
-
-<?php } ?>
 <div class="modal fade" role="dialog" id="modalNewPasswordSuccess" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -415,13 +420,7 @@ if(@$logoNetwork && !empty($logoNetwork))
             <div class="row">
                 <div class="col-lg-12">
                     <span class="name" >
-                        <?php if(Yii::app()->params["CO2DomainName"] == "kgougle"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/KGOUGLE-logo.png" height="60" class="inline margin-bottom-15">
-                       <?php } else if(Yii::app()->params["CO2DomainName"] == "FI"){ ?>
-                            <img src="<?php echo Yii::app()->theme->baseUrl; ?>/assets/img/FI-logo.png" height="60" class="inline margin-bottom-15">
-                       <?php } else { ?>
-                            <img src="<?php echo $logo ?>" height="100" class="inline margin-bottom-15">
-                        <?php } ?>
+                        <img src="<?php echo $logo ?>" height="100" class="inline margin-bottom-15">
                     </span>
                     <h3 class="letter-red no-margin" style="margin-top:-15px!important;"><?php echo Yii::t("login", "You didn't receive the validation email ?") ?></h3><br>
                     <p><?php echo Yii::t("login","Indicate your email link to your account to receive a new validation") ?>.<hr></p>
@@ -442,12 +441,6 @@ if(@$logoNetwork && !empty($logoNetwork))
                         <i class="fa fa-remove-sign"></i> <?php echo Yii::t("login","You have some form errors. Please check below.") ?>
                     </div>
                 </div>
-
-                <!-- <div class="form-actions">
-                     <button type="submit"  data-size="s" data-style="expand-right" style="background-color:#E33551" class="forgotBtn ladda-button center center-block">
-                        <span class="ladda-label">XXXXXXXX</span><span class="ladda-spinner"></span><span class="ladda-spinner"></span>
-                    </button>
-                </div> -->
 
                 <a href="javascript:" class="btn btn-danger pull-left" data-dismiss="modal"><i class="fa fa-times"></i> <?php echo Yii::t("common", "Back") ?></a>
                 <button class="btn btn-success text-white pull-right sendValidateEmailBtn"><i class="fa fa-sign-in"></i> <?php echo Yii::t("common","Validate") ?></button>
@@ -494,12 +487,16 @@ jQuery(document).ready(function() {
             removeParametersWithoutReloading();
         <?php } 
         } ?>
-    
+    //alert("HERE");
     if(!userConnected)
         Login.init();
     else
         addCustomValidators(); 
 
+    $("#modalRegister").on('show.bs.modal', function(){
+        //alert('The modal is fully shown.');
+        Login.runRegisterValidator();
+    });
     $('.form-register #username').keyup(function(e) { 
         validateUserName();
     });

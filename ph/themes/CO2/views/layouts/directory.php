@@ -104,27 +104,27 @@ echo $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layo
       $this->renderPartial( $layoutPath.'mainMap.'.Yii::app()->params["CO2DomainName"], array("modulePath"=>$modulePath )); ?>
   </div>
   <div class="main-container col-md-12 col-sm-12 col-xs-12 no-padding">
-  <?php $this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"]); ?>
+  <?php //$this->renderPartial( $layoutPath.'menuBottom.'.Yii::app()->params["CO2DomainName"]); ?>
 <?php 
     
     $me = isset(Yii::app()->session['userId']) ? Person::getById(Yii::app()->session['userId']) : null;
     $CO2DomainName = Yii::app()->params["CO2DomainName"];
-    $this->renderPartial( $layoutPath.'menus/'.$CO2DomainName, 
+   /* $this->renderPartial( $layoutPath.'menus/'.$CO2DomainName, 
                             array( "layoutPath"=>$layoutPath , 
                                     "subdomain"=>"", //$subdomain,
                                     "subdomainName"=>"", //$subdomainName,
                                     "mainTitle"=>"", //$mainTitle,
                                     "placeholderMainSearch"=>"", //$placeholderMainSearch,
                                     "type"=>@$type,
-                                    "me" => $me) );
+                                    "me" => $me) );*/
 
 
 
-    if(@$_GET["city"]){
-      $city = City::getById( $_GET["city"] );
-      if(@$city["custom"] && $city["custom"]["bannerTpl"])
-        $this->renderPartial( 'eco.views.custom.'.$city["custom"]["bannerTpl"] );
-    }
+    //if(@$_GET["city"]){
+      //$city = City::getById( $_GET["city"] );
+      //if(@$city["custom"] && $city["custom"]["bannerTpl"])
+       // $this->renderPartial( 'eco.views.custom.'.$city["custom"]["bannerTpl"] );
+    //}
 
 
 
@@ -140,8 +140,8 @@ echo $this->renderPartial('webroot.themes.'.Yii::app()->theme->name.'.views.layo
 <script type="text/javascript">
 var custom = {};
   <?php 
-    if( $this->module->id == "custom" ){
-      $this->renderPartial( 'co2.views.custom.init' ); 
+   // if( $this->module->id == "custom" ){
+     // $this->renderPartial( 'co2.views.custom.init' ); 
     ?>
   jQuery(document).ready(function() {
     

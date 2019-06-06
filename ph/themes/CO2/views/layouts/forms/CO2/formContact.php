@@ -181,7 +181,7 @@ function sendEmail(){
                 	$("#subject").val("");
 					$("#message").val("");
 					$("#captcha").val("");
-                	KScrollTo("#conf-send-mail");
+                	coInterface.scrollTo("#conf-send-mail");
                 }else{
                 	if(typeof data.captcha != "undefined" && data.captcha == false){
                 		toastr.error("Code de sécurité invalide");   	
@@ -195,7 +195,7 @@ function sendEmail(){
 	                	if(typeof data.telalpha!="undefined")
 	                		$("#telalpha").html(data.telalpha);
 
-	                	KScrollTo("#conf-fail-mail");
+	                	coInterface.scrollTo("#conf-fail-mail");
 	                }
                 } 				 
             },
@@ -203,14 +203,14 @@ function sendEmail(){
             toastr.error("Une erreur est survenue pendant l'envoie de votre message - error");
             $("#conf-fail-mail").removeClass("hidden");
         	$("#conf-send-mail, #form-group-contact").addClass("hidden");
-        	KScrollTo("#conf-fail-mail");
+        	coInterface.scrollTo("#conf-fail-mail");
         },
         statusCode:{
                 404: function(){
                 	toastr.error("Une erreur est survenue pendant l'envoie de votre message - 404");
                 	$("#conf-fail-mail").removeClass("hidden");
 	            	$("#conf-send-mail, #form-group-contact").addClass("hidden");
-	            	KScrollTo("#conf-fail-mail");
+	            	coInterface.scrollTo("#conf-fail-mail");
             }
         }
     });

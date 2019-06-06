@@ -1,6 +1,6 @@
 
 function ajaxPost(id,ajaxUrl,params,callback, datatype){
-    mylog.log("ajaxPost", id,ajaxUrl,params);
+    mylog.log("ajaxPost 3", id,ajaxUrl,params);
     /*if(dataType == null)
     dataType = "json";*/
     if(datatype != "html" )
