@@ -108,7 +108,7 @@ function initCommentsTools(listObjects, type, canComment, parentId){
     }
   });
 
-  initBtnShare();
+  directory.bindBtnShareElt();
   initReportAbuse();
   $(".newsAddComment").off().click(function(){
     var id = $(this).data("media-id");
