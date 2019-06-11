@@ -540,7 +540,7 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
     }
     initCommentsTools({newComment}, "comments", true, idComment);
   }
-  function linkify(inputText) {
+/*  function linkify(inputText) {
       var replacedText, replacePattern1, replacePattern2, replacePattern3;
 
       //URLs starting with http://, https://, or ftp://
@@ -556,7 +556,7 @@ function bindEventTextArea(idTextArea, idComment, contextType, isAnswer, parentC
       //replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
 
       return replacedText;
-  }
+  }*/
 
 
 
