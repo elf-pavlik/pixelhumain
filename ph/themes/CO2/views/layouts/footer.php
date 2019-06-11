@@ -55,10 +55,10 @@
      //   $themeParams["pages"]["#".$page]["placeholderMainSearch"] = "Rechercher une commune"; 
     //}
     //var_dump($page); exit;
-    $useFooter = @$themeParams["pages"]["#welcome"]["useFooter"];
-    $menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
+    //$useFooter = @$themeParams["pages"]["#welcome"]["useFooter"];
+    //$menuApp=(@$themeParams["appRendering"]) ? $themeParams["appRendering"] : "horizontal";
 
-if(@$useFooter != false){ 
+if(isset($themeParams["footer"]) && !empty($themeParams["footer"])){ 
     if(isset($themeParams["footer"]) && isset($themeParams["footer"]["url"])) {
         $this->renderPartial( $themeParams["footer"]["url"] );
     }else{
